@@ -10,7 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FunCall">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.act.LaunchActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.act.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
