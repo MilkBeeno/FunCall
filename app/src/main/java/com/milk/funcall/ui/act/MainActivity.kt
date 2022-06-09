@@ -1,7 +1,7 @@
 package com.milk.funcall.ui.act
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.milk.funcall.R
 
 class MainActivity : AppCompatActivity() {
