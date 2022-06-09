@@ -78,6 +78,7 @@ class BottomNavigation : FrameLayout {
             binding.ivHomeMedium.visibility = GONE
             binding.ivHomeSmall.setImageResource(R.drawable.main_nav_hone)
             binding.tvHome.setTextColor(getColor(R.color.FF5B5D66))
+            binding.ivHomeMedium.clearAnimation()
         }
         binding.llHome.backPressureClickListener {
             if (lastSelectType == Type.Home)
@@ -90,13 +91,15 @@ class BottomNavigation : FrameLayout {
     }
 
     private fun updateMessageNav(select: Boolean = false) {
-        if (select) binding.ivMessage.startAnimation(zoomAnimation)
-        binding.ivMessage.setImageResource(
-            if (select) R.drawable.main_nav_message_select else R.drawable.main_nav_message
-        )
-        binding.tvMessage.setTextColor(
-            if (select) getColor(R.color.FF8E58FB) else getColor(R.color.FF5B5D66)
-        )
+        if (select) {
+            binding.ivMessage.startAnimation(zoomAnimation)
+            binding.tvMessage.setTextColor(getColor(R.color.FF8E58FB))
+            binding.ivMessage.setImageResource(R.drawable.main_nav_message_select)
+        } else {
+            binding.ivMessage.clearAnimation()
+            binding.tvMessage.setTextColor(getColor(R.color.FF5B5D66))
+            binding.ivMessage.setImageResource(R.drawable.main_nav_message)
+        }
         binding.clMessage.backPressureClickListener {
             if (lastSelectType == Type.Message)
                 itemOnClickListener?.invoke(true, Type.Message)
@@ -108,13 +111,15 @@ class BottomNavigation : FrameLayout {
     }
 
     private fun updateMineNav(select: Boolean = false) {
-        if (select) binding.ivMine.startAnimation(zoomAnimation)
-        binding.ivMine.setImageResource(
-            if (select) R.drawable.main_nav_mine_select else R.drawable.main_nav_mine
-        )
-        binding.tvMine.setTextColor(
-            if (select) getColor(R.color.FF8E58FB) else getColor(R.color.FF5B5D66)
-        )
+        if (select) {
+            binding.ivMine.startAnimation(zoomAnimation)
+            binding.tvMine.setTextColor(getColor(R.color.FF8E58FB))
+            binding.ivMine.setImageResource(R.drawable.main_nav_mine_select)
+        } else {
+            binding.ivMine.clearAnimation()
+            binding.tvMine.setTextColor(getColor(R.color.FF5B5D66))
+            binding.ivMine.setImageResource(R.drawable.main_nav_mine)
+        }
         binding.llMine.backPressureClickListener {
             if (lastSelectType == Type.Mine)
                 itemOnClickListener?.invoke(true, Type.Mine)
