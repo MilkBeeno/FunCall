@@ -7,6 +7,7 @@ android {
     compileSdk 32
 
     defaultConfig {
+        // 正式包名: com.milk.simplefuncall 测试包名:com.milk.funcall
         applicationId "com.milk.funcall"
         minSdk 21
         targetSdk 32
