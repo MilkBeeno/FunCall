@@ -45,4 +45,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     // 屏幕适配方案
     implementation 'com.github.JessYanCoding:AndroidAutoSize:v1.2.1'
+    implementation 'com.github.MilkBeeno:Library:1.0.2'
 }
