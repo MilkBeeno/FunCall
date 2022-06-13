@@ -1,4 +1,4 @@
-package com.milk.funcall.paging
+package com.milk.common.paging
 
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable

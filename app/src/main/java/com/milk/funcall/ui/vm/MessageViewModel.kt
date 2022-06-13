@@ -2,7 +2,7 @@ package com.milk.funcall.ui.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.milk.funcall.paging.DBPagingSource
+import com.milk.common.paging.DBPagingSource
 import com.milk.funcall.repository.MessageRepository
 
 class MessageViewModel : ViewModel() {

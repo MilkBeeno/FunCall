@@ -1,4 +1,4 @@
-package com.milk.funcall.paging
+package com.milk.common.paging
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
