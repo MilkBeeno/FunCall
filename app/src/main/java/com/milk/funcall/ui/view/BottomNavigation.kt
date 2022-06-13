@@ -80,7 +80,7 @@ class BottomNavigation : FrameLayout {
             binding.tvHome.setTextColor(getColor(R.color.FF5B5D66))
             binding.ivHomeMedium.clearAnimation()
         }
-        binding.llHome.backPressureClickListener {
+        binding.llHome.backPressureClickListener(Type.Home) {
             if (lastSelectType == Type.Home)
                 itemOnClickListener?.invoke(true, Type.Home)
             else {
@@ -100,10 +100,8 @@ class BottomNavigation : FrameLayout {
             binding.tvMessage.setTextColor(getColor(R.color.FF5B5D66))
             binding.ivMessage.setImageResource(R.drawable.main_nav_message)
         }
-        binding.clMessage.backPressureClickListener {
-            if (lastSelectType == Type.Message)
-                itemOnClickListener?.invoke(true, Type.Message)
-            else {
+        binding.clMessage.backPressureClickListener(Type.Message) {
+            if (lastSelectType != Type.Message) {
                 itemOnClickListener?.invoke(false, Type.Message)
                 updateSelectNav(Type.Message)
             }
@@ -120,20 +118,18 @@ class BottomNavigation : FrameLayout {
             binding.tvMine.setTextColor(getColor(R.color.FF5B5D66))
             binding.ivMine.setImageResource(R.drawable.main_nav_mine)
         }
-        binding.llMine.backPressureClickListener {
-            if (lastSelectType == Type.Mine)
-                itemOnClickListener?.invoke(true, Type.Mine)
-            else {
+        binding.llMine.backPressureClickListener(Type.Mine) {
+            if (lastSelectType != Type.Mine) {
                 itemOnClickListener?.invoke(false, Type.Mine)
                 updateSelectNav(Type.Mine)
             }
         }
     }
 
-    private fun ViewGroup.backPressureClickListener(action: () -> Unit) {
+    private fun ViewGroup.backPressureClickListener(type: Type, action: () -> Unit) {
         setOnClickListener {
             val currentTime = System.currentTimeMillis()
-            if (currentTime - lastClickTime > clickMinTimeInterval) {
+            if (currentTime - lastClickTime > clickMinTimeInterval || type != lastSelectType) {
                 action()
                 lastClickTime = currentTime
             }

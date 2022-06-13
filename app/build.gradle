@@ -46,5 +46,11 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     // 屏幕适配方案
     implementation 'com.github.JessYanCoding:AndroidAutoSize:v1.2.1'
+    // 公共组件库
     implementation 'com.github.MilkBeeno:Library:1.0.2'
+    // paging3 依赖库
+    implementation("androidx.paging:paging-runtime:3.1.1")
+    // room 数据库
+    runtimeOnly("androidx.room:room-runtime:2.4.2")
+    annotationProcessor "androidx.room:room-compiler:2.4.2"
 }
