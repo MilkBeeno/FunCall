@@ -1,4 +1,4 @@
-package com.milk.funcall.ui.adapter
+package com.milk.funcall.paging
 
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
@@ -10,9 +10,7 @@ import androidx.annotation.*
 import androidx.recyclerview.widget.RecyclerView
 
 open class PagingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    /**
-     * Views indexed with their IDs
-     */
+
     private val views: SparseArray<View> = SparseArray()
 
 

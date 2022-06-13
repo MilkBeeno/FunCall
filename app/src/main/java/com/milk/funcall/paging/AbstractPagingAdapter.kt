@@ -1,4 +1,4 @@
-package com.milk.funcall.ui.adapter
+package com.milk.funcall.paging
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-abstract class BasePagingAdapter<T : Any>(
+abstract class AbstractPagingAdapter<T : Any>(
     private val layoutId: Int? = null,
     diffCallback: DiffUtil.ItemCallback<T>
 ) : PagingDataAdapter<T, PagingViewHolder>(diffCallback) {
@@ -67,7 +67,6 @@ abstract class BasePagingAdapter<T : Any>(
     override fun onBindViewHolder(holder: PagingViewHolder, position: Int) {
         setClick(holder, position)
         onConvert(holder, getItem(position)!!)
-
     }
 
     fun getData(position: Int): T {
@@ -108,7 +107,7 @@ abstract class BasePagingAdapter<T : Any>(
                 view?.setOnClickListener(null)
             }
         }
-        childLongClickViewIds.forEach {
+        childLongClickViewIds.forEach { it ->
             val view = holder.getViewOrNull<View>(it)
             if (itemChildLongClickListener != null) {
                 view?.setOnLongClickListener {
@@ -154,7 +153,7 @@ abstract class BasePagingAdapter<T : Any>(
         appendedListeners.clear()
     }
 
-    fun <K : Any> setPagerSource(pagerSource: SimplePagingSource<K, T>) {
+    fun <K : Any> setPagerSource(pagerSource: DBPagingSource<K, T>) {
         pagerSource.viewModelScope.launch(Dispatchers.IO) {
             pagerSource.pager.flow.collectLatest {
                 submitData(it)
@@ -162,31 +161,31 @@ abstract class BasePagingAdapter<T : Any>(
         }
     }
 
-    private var itemClickListener: ((adapter: BasePagingAdapter<T>, itemView: View, position: Int) -> Unit)? =
+    private var itemClickListener: ((adapter: AbstractPagingAdapter<T>, itemView: View, position: Int) -> Unit)? =
         null
 
-    fun setOnItemClickListener(listener: (adapter: BasePagingAdapter<T>, itemView: View, position: Int) -> Unit) {
+    fun setOnItemClickListener(listener: (adapter: AbstractPagingAdapter<T>, itemView: View, position: Int) -> Unit) {
         itemClickListener = listener
     }
 
-    private var itemChildClickListener: ((adapter: BasePagingAdapter<T>, itemView: View, position: Int) -> Unit)? =
+    private var itemChildClickListener: ((adapter: AbstractPagingAdapter<T>, itemView: View, position: Int) -> Unit)? =
         null
 
-    fun setOnItemChildClickListener(listener: (adapter: BasePagingAdapter<T>, itemView: View, position: Int) -> Unit) {
+    fun setOnItemChildClickListener(listener: (adapter: AbstractPagingAdapter<T>, itemView: View, position: Int) -> Unit) {
         itemChildClickListener = listener
     }
 
-    private var itemLongClickListener: ((adapter: BasePagingAdapter<T>, itemView: View, position: Int) -> Boolean)? =
+    private var itemLongClickListener: ((adapter: AbstractPagingAdapter<T>, itemView: View, position: Int) -> Boolean)? =
         null
 
-    fun setOnItemLongClickListener(listener: (adapter: BasePagingAdapter<T>, itemView: View, position: Int) -> Boolean) {
+    fun setOnItemLongClickListener(listener: (adapter: AbstractPagingAdapter<T>, itemView: View, position: Int) -> Boolean) {
         itemLongClickListener = listener
     }
 
-    private var itemChildLongClickListener: ((adapter: BasePagingAdapter<T>, itemView: View, position: Int) -> Boolean)? =
+    private var itemChildLongClickListener: ((adapter: AbstractPagingAdapter<T>, itemView: View, position: Int) -> Boolean)? =
         null
 
-    fun setOnItemChildLongClickListener(listener: (adapter: BasePagingAdapter<T>, itemView: View, position: Int) -> Boolean) {
+    fun setOnItemChildLongClickListener(listener: (adapter: AbstractPagingAdapter<T>, itemView: View, position: Int) -> Boolean) {
         itemChildLongClickListener = listener
     }
 

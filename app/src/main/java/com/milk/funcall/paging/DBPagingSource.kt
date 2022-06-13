@@ -1,19 +1,17 @@
-package com.milk.funcall.ui.adapter
+package com.milk.funcall.paging
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.Flow
 
-class SimplePagingSource<Key : Any, Value : Any>(
+class DBPagingSource<Key : Any, Value : Any>(
     val viewModelScope: CoroutineScope,
     pageSize: Int = 20,
     prefetchDistance: Int = 5,
     pagingSourceFactory: () -> PagingSource<Key, Value>
 ) {
-    val pager: Pager<Key, Value> = Pager(
+    val pager = Pager(
         PagingConfig(
             pageSize = pageSize,
             prefetchDistance = prefetchDistance,
@@ -21,6 +19,4 @@ class SimplePagingSource<Key : Any, Value : Any>(
         ),
         pagingSourceFactory = pagingSourceFactory
     )
-
-    fun flow(): Flow<PagingData<Value>> = pager.flow
 }

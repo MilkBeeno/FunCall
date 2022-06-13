@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -51,6 +52,12 @@ dependencies {
     // paging3 依赖库
     implementation("androidx.paging:paging-runtime:3.1.1")
     // room 数据库
-    runtimeOnly("androidx.room:room-runtime:2.4.2")
+    implementation("androidx.room:room-runtime:2.4.2")
+    implementation("androidx.room:room-paging:2.4.2")
+    implementation "androidx.room:room-ktx:2.4.2"
     annotationProcessor "androidx.room:room-compiler:2.4.2"
+    kapt "androidx.room:room-compiler:2.4.2"
+    // activity & fragment viewModel 初始化扩展包
+    implementation("androidx.activity:activity-ktx:1.6.0-alpha04")
+    implementation("androidx.fragment:fragment-ktx:1.4.1")
 }

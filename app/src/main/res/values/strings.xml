@@ -3,4 +3,5 @@
     <string name="main_nav_message">Message</string>
     <string name="main_nav_home">Home</string>
     <string name="main_nav_mine">Mine</string>
+    <string name="message_title">Message</string>
 </resources>

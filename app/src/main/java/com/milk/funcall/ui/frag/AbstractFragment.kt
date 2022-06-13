@@ -16,10 +16,13 @@ abstract class AbstractFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         isAddToFragment = true
-        return getContentView()
+        return getRootView()
     }
 
-    abstract fun getContentView(): View
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initializeData()
+    }
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
@@ -29,5 +32,7 @@ abstract class AbstractFragment : Fragment() {
         }
     }
 
+    abstract fun getRootView(): View
     abstract fun initializeView()
+    protected open fun initializeData() {}
 }

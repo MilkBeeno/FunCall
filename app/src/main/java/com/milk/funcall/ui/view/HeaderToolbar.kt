@@ -8,7 +8,7 @@ import android.widget.FrameLayout
 import androidx.annotation.StringRes
 import com.milk.funcall.databinding.ViewToolbarBinding
 
-class CustomToolbar : FrameLayout {
+class HeaderToolbar : FrameLayout {
 
     private val binding = ViewToolbarBinding
         .inflate(LayoutInflater.from(context), this, true)
