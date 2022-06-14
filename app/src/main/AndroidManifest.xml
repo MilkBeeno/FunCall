@@ -31,7 +31,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".main.ui.act.MessageActivity"
+            android:name=".main.ui.act.ChatMessageActivity"
             android:exported="false" />
     </application>
 </manifest>

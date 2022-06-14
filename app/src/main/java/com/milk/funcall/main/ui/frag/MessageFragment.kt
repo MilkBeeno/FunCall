@@ -4,7 +4,7 @@ import android.view.View
 import com.milk.funcall.common.ui.AbstractFragment
 import com.milk.funcall.R
 import com.milk.funcall.databinding.FragmentMessageBinding
-import com.milk.funcall.main.ui.act.MessageActivity
+import com.milk.funcall.main.ui.act.ChatMessageActivity
 
 class MessageFragment : AbstractFragment() {
     private val binding by lazy { FragmentMessageBinding.inflate(layoutInflater) }
@@ -18,7 +18,7 @@ class MessageFragment : AbstractFragment() {
     override fun initializeView() {
         binding.headerToolbar.setTitle(R.string.message_title)
         binding.tvName.setOnClickListener {
-            MessageActivity.create(requireContext(), 1234, "safsdf")
+            ChatMessageActivity.create(requireContext(), 1234, "safsdf")
         }
     }
 

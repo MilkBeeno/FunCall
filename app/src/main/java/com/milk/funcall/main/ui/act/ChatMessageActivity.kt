@@ -15,7 +15,7 @@ import com.milk.simple.ktx.setStatusBarColor
 import com.milk.simple.ktx.setStatusBarDark
 import com.milk.simple.ktx.viewBinding
 
-class MessageActivity : AppCompatActivity() {
+class ChatMessageActivity : AppCompatActivity() {
 
     private val binding by viewBinding<ActivityMessageBinding>()
     private val messageViewModel by viewModels<MessageViewModel>()
@@ -48,7 +48,7 @@ class MessageActivity : AppCompatActivity() {
         private const val TARGET_ID = "TARGET_ID"
         private const val TARGET_NAME = "TARGET_NAME"
         fun create(context: Context, targetId: Long, targetName: String) {
-            val intent = Intent(context, MessageActivity::class.java)
+            val intent = Intent(context, ChatMessageActivity::class.java)
             intent.putExtra(TARGET_ID, targetId)
             intent.putExtra(TARGET_NAME, targetName)
             context.startActivity(intent)
