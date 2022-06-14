@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.milk.funcall.ui.view.HeaderToolbar
+    <com.milk.funcall.common.ui.view.HeaderToolbar
         android:id="@+id/headerToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

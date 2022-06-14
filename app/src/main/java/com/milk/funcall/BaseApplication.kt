@@ -2,7 +2,7 @@ package com.milk.funcall
 
 import android.app.Application
 import android.util.Log
-import com.milk.funcall.mdr.DataBaseManager
+import com.milk.funcall.common.mdr.DataBaseManager
 import com.milk.simple.log.Logger
 
 class BaseApplication : Application() {
