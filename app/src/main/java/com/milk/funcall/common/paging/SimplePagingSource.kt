@@ -5,7 +5,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingSource
 import kotlinx.coroutines.CoroutineScope
 
-class DBPagingSource<Key : Any, Value : Any>(
+class SimplePagingSource<Key : Any, Value : Any>(
     val viewModelScope: CoroutineScope,
     pageSize: Int = 20,
     prefetchDistance: Int = 5,

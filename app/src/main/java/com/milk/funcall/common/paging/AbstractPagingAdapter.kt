@@ -153,7 +153,7 @@ abstract class AbstractPagingAdapter<T : Any>(
         appendedListeners.clear()
     }
 
-    fun <K : Any> setPagerSource(pagerSource: DBPagingSource<K, T>) {
+    fun <K : Any> setPagerSource(pagerSource: SimplePagingSource<K, T>) {
         pagerSource.viewModelScope.launch(Dispatchers.IO) {
             pagerSource.pager.flow.collectLatest {
                 submitData(it)

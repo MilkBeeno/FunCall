@@ -3,14 +3,16 @@ package com.milk.funcall.common.mdr.dao
 import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.milk.funcall.common.data.MessageEntity
+import com.milk.funcall.main.data.ChatMessageEntity
 
 @Dao
-interface MessageTableDao {
-    @Query("SELECT * FROM MessageTable WHERE userId=:userId AND targetId=:targetId")
-    fun obtainMessages(userId: Long, targetId: Long): PagingSource<Int, MessageEntity>
+interface ChatMessageTableDao {
 
-    @Insert
-    fun insertMessage(messageEntityList: MutableList<MessageEntity>)
+    @Query("SELECT * FROM ChatMessageTable WHERE userId=:userId AND targetId=:targetId")
+    fun obtainMessages(userId: Long, targetId: Long): PagingSource<Int, ChatMessageEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertMessage(chatMessageEntities: MutableList<ChatMessageEntity>)
 }

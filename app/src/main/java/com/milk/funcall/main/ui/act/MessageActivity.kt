@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.milk.funcall.R
 import com.milk.funcall.databinding.ActivityMessageBinding
-import com.milk.funcall.main.ui.adapter.MessageAdapter
+import com.milk.funcall.main.ui.adapter.ChatMessageAdapter
 import com.milk.funcall.main.ui.vm.MessageViewModel
 import com.milk.simple.ktx.color
 import com.milk.simple.ktx.setStatusBarColor
@@ -19,7 +19,7 @@ class MessageActivity : AppCompatActivity() {
 
     private val binding by viewBinding<ActivityMessageBinding>()
     private val messageViewModel by viewModels<MessageViewModel>()
-    private val messageAdapter by lazy { MessageAdapter() }
+    private val chatMessageAdapter by lazy { ChatMessageAdapter() }
     private val targetId by lazy { intent.getLongExtra(TARGET_ID, 0) }
     private val targetName by lazy { intent.getStringExtra(TARGET_NAME).toString() }
 
@@ -29,14 +29,19 @@ class MessageActivity : AppCompatActivity() {
         setStatusBarDark()
         setStatusBarColor(color(R.color.white))
         initializeView()
+        initializeData()
     }
 
     private fun initializeView() {
         binding.headerToolbar.setTitle(targetName)
         binding.headerToolbar.clickArrowBack()
-        binding.rvMessage.adapter = messageAdapter
+        binding.rvMessage.adapter = chatMessageAdapter
         binding.rvMessage.layoutManager = LinearLayoutManager(this)
-        messageAdapter.setPagerSource(messageViewModel.obtainPagingSource(targetId))
+    }
+
+    private fun initializeData() {
+        messageViewModel.updateTargetUser(targetId)
+        chatMessageAdapter.setPagerSource(messageViewModel.pagingSource)
     }
 
     companion object {

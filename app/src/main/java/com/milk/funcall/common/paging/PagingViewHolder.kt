@@ -13,7 +13,6 @@ open class PagingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
 
     private val views: SparseArray<View> = SparseArray()
 
-
     open fun <T : View> getView(@IdRes viewId: Int): T {
         val view = getViewOrNull<T>(viewId)
         checkNotNull(view) { "No view found with id $viewId" }
