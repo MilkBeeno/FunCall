@@ -9,9 +9,10 @@ import com.milk.funcall.ui.frag.HomeFragment
 import com.milk.funcall.ui.frag.MessageFragment
 import com.milk.funcall.ui.frag.MineFragment
 import com.milk.funcall.ui.view.BottomNavigation
+import com.milk.ktx.viewBinding
 
 class MainActivity : AppCompatActivity() {
-    private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+    private val binding by viewBinding<ActivityMainBinding>()
 
     private val fragments = mutableListOf<Fragment>()
     private val homeFragment = HomeFragment.create()

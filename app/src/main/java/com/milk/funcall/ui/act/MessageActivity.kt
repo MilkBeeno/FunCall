@@ -6,15 +6,18 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.milk.funcall.R
 import com.milk.funcall.databinding.ActivityMessageBinding
 import com.milk.funcall.ui.adapter.MessageAdapter
 import com.milk.funcall.ui.vm.MessageViewModel
+import com.milk.ktx.viewBinding
+import com.milk.simple.ktx.color
 
 class MessageActivity : AppCompatActivity() {
 
     private val messageViewModel by viewModels<MessageViewModel>()
     private val messageAdapter by lazy { MessageAdapter() }
-    private val binding by lazy { ActivityMessageBinding.inflate(layoutInflater) }
+    private val binding by viewBinding<ActivityMessageBinding>()
     private val targetId by lazy { intent.getLongExtra(TARGET_ID, 0) }
     private val targetName by lazy { intent.getStringExtra(TARGET_NAME).toString() }
 
@@ -25,6 +28,7 @@ class MessageActivity : AppCompatActivity() {
     }
 
     private fun initializeView() {
+        window?.statusBarColor = color(R.color.white)
         binding.headerToolbar.setTitle(targetName)
         binding.headerToolbar.clickArrowBack()
         binding.rvMessage.adapter = messageAdapter
