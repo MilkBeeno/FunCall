@@ -1,4 +1,4 @@
-package com.milk.funcall.main.repository
+package com.milk.funcall.main.repo
 
 import com.milk.funcall.common.Account
 import com.milk.funcall.common.mdr.DataBaseManager

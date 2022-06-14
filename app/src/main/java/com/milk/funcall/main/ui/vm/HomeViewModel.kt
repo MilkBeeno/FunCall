@@ -3,7 +3,7 @@ package com.milk.funcall.main.ui.vm
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.milk.funcall.main.data.ChatMessageEntity
-import com.milk.funcall.main.repository.MessageRepository
+import com.milk.funcall.main.repo.MessageRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

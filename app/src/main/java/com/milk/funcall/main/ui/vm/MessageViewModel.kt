@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.milk.funcall.common.paging.SimplePagingSource
 import com.milk.funcall.main.data.ChatMessageEntity
-import com.milk.funcall.main.repository.MessageRepository
+import com.milk.funcall.main.repo.MessageRepository
 
 class MessageViewModel : ViewModel() {
     var targetId: Long = 0
