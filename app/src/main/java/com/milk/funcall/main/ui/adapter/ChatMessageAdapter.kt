@@ -4,10 +4,10 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.DiffUtil
 import com.milk.funcall.R
+import com.milk.funcall.common.mdr.table.ChatMessageEntity
 import com.milk.funcall.common.paging.AbstractPagingAdapter
 import com.milk.funcall.common.paging.MultiTypeDelegate
 import com.milk.funcall.common.paging.PagingViewHolder
-import com.milk.funcall.common.mdr.table.ChatMessageEntity
 import com.milk.funcall.main.enum.ChatMessageType
 
 class ChatMessageAdapter : AbstractPagingAdapter<ChatMessageEntity>(
