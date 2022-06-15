@@ -13,9 +13,7 @@ class HomeFragment : AbstractFragment() {
     override fun getRootView(): View = binding.root
 
     override fun initializeView() {
-        binding.tvHome.setOnClickListener {
-            homeViewModel.addMessageData()
-        }
+
     }
 
     companion object {

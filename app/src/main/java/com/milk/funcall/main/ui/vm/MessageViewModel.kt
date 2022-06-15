@@ -3,7 +3,7 @@ package com.milk.funcall.main.ui.vm
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.milk.funcall.common.paging.SimplePagingSource
-import com.milk.funcall.main.data.ChatMessageEntity
+import com.milk.funcall.common.mdr.table.ChatMessageEntity
 import com.milk.funcall.main.repository.MessageRepository
 
 class MessageViewModel : ViewModel() {

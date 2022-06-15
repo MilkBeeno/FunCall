@@ -1,9 +1,8 @@
-package com.milk.funcall.main.data
+package com.milk.funcall.common.mdr.table
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
-import com.milk.funcall.main.enum.MessageType
 
 @Entity(
     tableName = "ChatMessageTable",
@@ -11,8 +10,6 @@ import com.milk.funcall.main.enum.MessageType
     indices = [Index(value = ["userId", "messageUniqueId"], unique = true)]
 )
 data class ChatMessageEntity(
-    @ColumnInfo(name = "messageType")
-    var messageType: Int = MessageType.Default.value,
     @ColumnInfo(name = "messageUniqueId")
     var messageUniqueId: String = "",
     @ColumnInfo(name = "userId")
@@ -23,6 +20,8 @@ data class ChatMessageEntity(
     var targetName: String = "",
     @ColumnInfo(name = "targetImage")
     var targetImage: String = "",
+    @ColumnInfo(name = "messageType")
+    var messageType: Int = 0,
     @ColumnInfo(name = "operationTime")
     var operationTime: Long = 0,
     @ColumnInfo(name = "messageContent")
@@ -30,5 +29,7 @@ data class ChatMessageEntity(
     @ColumnInfo(name = "isAcceptMessage")
     var isAcceptMessage: Boolean = false,
     @ColumnInfo(name = "isReadMessage")
-    var isReadMessage: Boolean = false
+    var isReadMessage: Boolean = false,
+    @ColumnInfo(name = "isSendSuccess")
+    var isSendSuccess: Boolean = false
 )

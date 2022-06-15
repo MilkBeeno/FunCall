@@ -2,7 +2,7 @@ package com.milk.funcall.main.repository
 
 import com.milk.funcall.common.Account
 import com.milk.funcall.common.mdr.DataBaseManager
-import com.milk.funcall.main.data.ChatMessageEntity
+import com.milk.funcall.common.mdr.table.ChatMessageEntity
 
 object MessageRepository {
 
