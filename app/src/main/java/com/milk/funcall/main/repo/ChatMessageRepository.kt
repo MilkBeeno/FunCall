@@ -4,7 +4,7 @@ import com.milk.funcall.common.Account
 import com.milk.funcall.common.mdr.DataBaseManager
 import com.milk.funcall.common.mdr.table.ChatMessageEntity
 
-object MessageRepository {
+object ChatMessageRepository {
 
     fun insertMessage(messageEntities: MutableList<ChatMessageEntity>) {
         DataBaseManager.DB.chatMessageTableDao().insertMessage(messageEntities)

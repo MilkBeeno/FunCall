@@ -2,9 +2,9 @@ package com.milk.funcall.main.ui.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.milk.funcall.common.paging.SimplePagingSource
 import com.milk.funcall.common.mdr.table.ChatMessageEntity
-import com.milk.funcall.main.repository.MessageRepository
+import com.milk.funcall.common.paging.SimplePagingSource
+import com.milk.funcall.main.repo.ChatMessageRepository
 
 class MessageViewModel : ViewModel() {
     var targetId: Long = 0
@@ -15,7 +15,7 @@ class MessageViewModel : ViewModel() {
                 pageSize = 20,
                 prefetchDistance = 5,
                 pagingSourceFactory = {
-                    MessageRepository.obtainMessages(targetId)
+                    ChatMessageRepository.obtainMessages(targetId)
                 }
             )
         }
