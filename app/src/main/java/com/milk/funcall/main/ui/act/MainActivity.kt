@@ -1,6 +1,9 @@
 package com.milk.funcall.main.ui.act
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -77,5 +80,18 @@ class MainActivity : AppCompatActivity() {
         transaction.hide(homeFragment)
         transaction.hide(messageFragment)
         transaction.hide(mineFragment)
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            moveTaskToBack(true)
+            return false
+        }
+        return super.onKeyDown(keyCode, event)
+    }
+
+    companion object {
+        fun create(context: Context) =
+            context.startActivity(Intent(context, MainActivity::class.java))
     }
 }

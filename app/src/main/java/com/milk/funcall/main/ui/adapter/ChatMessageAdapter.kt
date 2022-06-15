@@ -71,12 +71,12 @@ class ChatMessageAdapter : AbstractPagingAdapter<ChatMessageEntity>(
         private val viewIdMap = mutableMapOf<Int, Int>()
 
         init {
-            viewIdMap[ChatMessageType.TextSend.value] = R.layout.item_message_text_send
-            viewIdMap[ChatMessageType.TextReceived.value] = R.layout.item_message_text_receive
+            viewIdMap[ChatMessageType.TextSend.value] = R.layout.item_chat_message_text_send
+            viewIdMap[ChatMessageType.TextReceived.value] = R.layout.item_chat_message_text_receive
         }
 
         override fun getItemViewId(viewType: Int): Int {
-            return viewIdMap[viewType] ?: R.layout.item_message_text_send
+            return viewIdMap[viewType] ?: R.layout.item_chat_message_text_send
         }
     }
 }
