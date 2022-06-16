@@ -2,8 +2,8 @@ package com.milk.funcall.login.ui.act
 
 import android.animation.Animator
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.milk.funcall.common.constrant.KvKey
+import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityLaunchBinding
 import com.milk.funcall.main.ui.act.MainActivity
 import com.milk.simple.ktx.gone
@@ -12,7 +12,7 @@ import com.milk.simple.ktx.viewBinding
 import com.milk.simple.ktx.visible
 import com.milk.simple.mdr.KvManger
 
-class LaunchActivity : AppCompatActivity() {
+class LaunchActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityLaunchBinding>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,11 +42,11 @@ class LaunchActivity : AppCompatActivity() {
             override fun onAnimationRepeat(p0: Animator?) = Unit
             override fun onAnimationEnd(p0: Animator?) {
                 binding.secondLottieView.clearAnimation()
-                val isLogin = KvManger.getBoolean(KvKey.USER_IS_LOGIN)
+                val isLogin = KvManger.getBoolean(KvKey.USER_IS_LOGGED)
                 if (isLogin)
                     MainActivity.create(this@LaunchActivity)
                 else
-                    LoginActivity.create(this@LaunchActivity)
+                    GenderActivity.create(this@LaunchActivity)
                 this@LaunchActivity.finish()
             }
         })

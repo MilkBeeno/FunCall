@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.milk.funcall.R
+import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityMessageBinding
 import com.milk.funcall.main.ui.adapter.ChatMessageAdapter
 import com.milk.funcall.main.ui.vm.MessageViewModel
@@ -15,7 +16,7 @@ import com.milk.simple.ktx.setStatusBarColor
 import com.milk.simple.ktx.setStatusBarDark
 import com.milk.simple.ktx.viewBinding
 
-class ChatMessageActivity : AppCompatActivity() {
+class ChatMessageActivity : AbstractActivity() {
 
     private val binding by viewBinding<ActivityMessageBinding>()
     private val messageViewModel by viewModels<MessageViewModel>()

@@ -73,4 +73,6 @@ dependencies {
     implementation("androidx.fragment:fragment-ktx:1.4.1")
     // Lottie 动画
     implementation("com.airbnb.android:lottie:5.2.0")
+    // facebook 登录
+    implementation 'com.facebook.android:facebook-login:latest.release'
 }

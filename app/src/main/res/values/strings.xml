@@ -1,8 +1,24 @@
 <resources>
+    <!--Facebook 元素-->
+    <string name="facebook_app_id">1234</string>
+    <string name="fb_login_protocol_scheme">fb1234</string>
+    <string name="facebook_client_token">56789</string>
+    <!--App 内的翻译-->
     <string name="app_name">FunCall</string>
+    <!--启动页面翻译-->
+    <string name="launch_bottom_tips"><![CDATA[Messaging & Chat App]]></string>
+    <!--选择性别页面翻译-->
+    <string name="gender_title">Choose your gender</string>
+    <string name="gender_desc">Help us find the right friend for you</string>
+    <string name="gender_greeting">I am a</string>
+    <string name="gender_man">BOY</string>
+    <string name="gender_woman">GIRL</string>
+    <string name="gender_next">NEXT</string>
+    <string name="gender_next_desc">* Selected to leave, cannot be changed ~</string>
+    <!--主页面翻译-->
     <string name="main_nav_message">Message</string>
     <string name="main_nav_home">Home</string>
     <string name="main_nav_mine">Mine</string>
+    <!--聊天页面翻译-->
     <string name="message_title">Message</string>
-    <string name="launch_bottom_tips"><![CDATA[Messaging & Chat App]]></string>
 </resources>

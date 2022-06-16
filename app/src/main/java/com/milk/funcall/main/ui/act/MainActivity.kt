@@ -4,9 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityMainBinding
 import com.milk.funcall.main.ui.frag.HomeFragment
 import com.milk.funcall.main.ui.frag.MessageFragment
@@ -14,7 +14,7 @@ import com.milk.funcall.main.ui.frag.MineFragment
 import com.milk.funcall.main.ui.view.BottomNavigation
 import com.milk.simple.ktx.viewBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityMainBinding>()
 
     private val fragments = mutableListOf<Fragment>()
@@ -80,14 +80,6 @@ class MainActivity : AppCompatActivity() {
         transaction.hide(homeFragment)
         transaction.hide(messageFragment)
         transaction.hide(mineFragment)
-    }
-
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            moveTaskToBack(true)
-            return false
-        }
-        return super.onKeyDown(keyCode, event)
     }
 
     companion object {
