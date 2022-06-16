@@ -41,6 +41,7 @@ class LaunchActivity : AbstractActivity() {
             override fun onAnimationCancel(p0: Animator?) = Unit
             override fun onAnimationRepeat(p0: Animator?) = Unit
             override fun onAnimationEnd(p0: Animator?) {
+                binding.ivFunCall.gone()
                 binding.secondLottieView.clearAnimation()
                 val isLogin = KvManger.getBoolean(KvKey.USER_IS_LOGGED)
                 if (isLogin)
