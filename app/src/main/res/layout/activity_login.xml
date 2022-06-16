@@ -1,13 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/common_app_background"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
     tools:context=".login.ui.act.LoginActivity">
 
-    <FrameLayout
-        android:id="@+id/flContent"
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="81dp"
+        android:layout_height="81dp"
+        android:layout_marginTop="153dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/login_logo" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivFunCall"
+        android:layout_width="106dp"
+        android:layout_height="15dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="19dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/launch_fun_call" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/llGoogle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</FrameLayout>
+        android:layout_height="48dp"
+        android:layout_marginStart="38dp"
+        android:layout_marginTop="109dp"
+        android:layout_marginEnd="38dp"
+        android:background="@drawable/shape_login_button_background"
+        android:gravity="center">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/login_google" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="@string/login_google"
+            android:textColor="@color/FF8E58FB"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/llFacebook"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="38dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="38dp"
+        android:background="@drawable/shape_login_button_background"
+        android:gravity="center">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/login_facebook" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="@string/login_facebook"
+            android:textColor="@color/FF8E58FB"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/llTourist"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="38dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="38dp"
+        android:background="@drawable/shape_login_button_background"
+        android:gravity="center">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/login_tourist" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="@string/login_tourist"
+            android:textColor="@color/FF8E58FB"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.legacy.widget.Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="54dp"
+        android:gravity="center_vertical">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivPrivacyCheck"
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            android:layout_marginStart="36dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/login_privacy_checked" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvPrivacy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="13dp"
+            android:layout_marginEnd="22dp"
+            android:textColor="@color/FF898C99"
+            android:textSize="12sp"
+            tools:text="Agree to  User  Agreement  and  Privacy  Policy" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

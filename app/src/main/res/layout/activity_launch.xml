@@ -23,7 +23,7 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivFunCall"
-        android:layout_width="173dp"
+        android:layout_width="169dp"
         android:layout_height="24dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="132dp"
