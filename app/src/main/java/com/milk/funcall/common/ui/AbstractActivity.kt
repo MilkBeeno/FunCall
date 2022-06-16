@@ -14,8 +14,10 @@ abstract class AbstractActivity : FragmentActivity() {
         return super.getResources()
     }
 
+    protected open fun onInterceptKeyDownEvent() = false
+
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && onInterceptKeyDownEvent()) {
             moveTaskToBack(true)
             return false
         }

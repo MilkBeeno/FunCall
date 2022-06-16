@@ -51,4 +51,6 @@ class LaunchActivity : AbstractActivity() {
             }
         })
     }
+
+    override fun onInterceptKeyDownEvent(): Boolean = true
 }

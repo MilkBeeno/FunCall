@@ -3,7 +3,6 @@ package com.milk.funcall.main.ui.act
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.milk.funcall.common.ui.AbstractActivity
@@ -81,6 +80,8 @@ class MainActivity : AbstractActivity() {
         transaction.hide(messageFragment)
         transaction.hide(mineFragment)
     }
+
+    override fun onInterceptKeyDownEvent(): Boolean = true
 
     companion object {
         fun create(context: Context) =

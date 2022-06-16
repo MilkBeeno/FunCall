@@ -41,7 +41,7 @@ class GenderActivity : AbstractActivity() {
         }
         binding.tvGenderNext.setOnClickListener {
             LoginActivity.create(this, selectGender)
-            finish()
+            //finish()
         }
     }
 
@@ -82,6 +82,8 @@ class GenderActivity : AbstractActivity() {
         params.bottomMargin = if (select) 8 else 0
         binding.tvWomanSecond.layoutParams = params
     }
+
+    override fun onInterceptKeyDownEvent() = true
 
     companion object {
         fun create(context: Context) =
