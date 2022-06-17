@@ -33,7 +33,6 @@ class LaunchActivity : AbstractActivity() {
                 binding.ivFunCall.visible()
                 binding.secondLottieView.visible()
                 binding.firstLottieView.gone()
-                binding.firstLottieView.clearAnimation()
             }
         })
         binding.secondLottieView.addAnimatorListener(object : Animator.AnimatorListener {
@@ -41,8 +40,6 @@ class LaunchActivity : AbstractActivity() {
             override fun onAnimationCancel(p0: Animator?) = Unit
             override fun onAnimationRepeat(p0: Animator?) = Unit
             override fun onAnimationEnd(p0: Animator?) {
-                binding.ivFunCall.gone()
-                binding.secondLottieView.clearAnimation()
                 val isLogin = KvManger.getBoolean(KvKey.USER_IS_LOGGED)
                 if (isLogin)
                     MainActivity.create(this@LaunchActivity)
@@ -54,4 +51,10 @@ class LaunchActivity : AbstractActivity() {
     }
 
     override fun onInterceptKeyDownEvent(): Boolean = true
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.firstLottieView.clearAnimation()
+        binding.secondLottieView.clearAnimation()
+    }
 }
