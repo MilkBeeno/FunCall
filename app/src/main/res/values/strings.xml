@@ -22,6 +22,7 @@
     <string name="login_privacy_desc">Agree to \" User  Agreement \" and  \" Privacy  Policy \"</string>
     <string name="login_user_agreement">User  Agreement</string>
     <string name="login_user_privacy">Privacy  Policy</string>
+    <string name="login_check_privacy">Please confirm the privacy agreement first!</string>
     <!--主页面翻译-->
     <string name="main_nav_message">Message</string>
     <string name="main_nav_home">Home</string>

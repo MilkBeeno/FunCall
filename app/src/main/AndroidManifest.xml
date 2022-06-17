@@ -62,8 +62,15 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".login.ui.act.GenderActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
             android:name=".login.ui.act.LoginActivity"
             android:exported="false"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
@@ -75,11 +82,7 @@
         <activity
             android:name=".main.ui.act.ChatMessageActivity"
             android:exported="true"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".login.ui.act.GenderActivity"
-            android:exported="true"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
     </application>

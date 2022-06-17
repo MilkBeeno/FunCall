@@ -3,10 +3,24 @@ package com.milk.funcall.common.ui
 import android.content.res.Resources
 import android.os.Looper
 import android.view.KeyEvent
+import android.view.View
 import androidx.fragment.app.FragmentActivity
+import com.milk.simple.listener.MultipleClickListener
 import me.jessyan.autosize.AutoSizeCompat
 
-abstract class AbstractActivity : FragmentActivity() {
+abstract class AbstractActivity : FragmentActivity(), View.OnClickListener {
+
+    protected val multipleClickListener by lazy {
+        object : MultipleClickListener() {
+            override fun onMultipleClick(view: View) =
+                this@AbstractActivity.onMultipleClick(view)
+        }
+    }
+
+    override fun onClick(p0: View?) = multipleClickListener.onClick(p0)
+
+    protected open fun onMultipleClick(view: View) = Unit
+
     override fun getResources(): Resources {
         if (Looper.myLooper() == Looper.getMainLooper()) {
             AutoSizeCompat.autoConvertDensityOfGlobal(super.getResources())

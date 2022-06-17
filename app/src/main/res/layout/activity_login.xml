@@ -116,8 +116,8 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivPrivacyCheck"
-            android:layout_width="19dp"
-            android:layout_height="19dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_marginStart="36dp"
             android:scaleType="centerCrop"
             android:src="@drawable/login_privacy_checked" />
@@ -126,8 +126,8 @@
             android:id="@+id/tvPrivacy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="13dp"
             android:layout_marginEnd="22dp"
+            android:includeFontPadding="false"
             android:textColor="@color/FF898C99"
             android:textSize="12sp"
             tools:text="Agree to  User  Agreement  and  Privacy  Policy" />
