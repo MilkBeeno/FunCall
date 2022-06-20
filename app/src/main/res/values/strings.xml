@@ -24,10 +24,16 @@
     <string name="login_user_agreement">User  Agreement</string>
     <string name="login_user_privacy">Privacy  Policy</string>
     <string name="login_check_privacy">Please confirm the privacy agreement first!</string>
+    <!--创建名字页面翻译-->
+    <string name="create_name_title">Basic Information</string>
+    <string name="create_name_tag">Name</string>
+    <string name="create_name_default">Enter your name </string>
+    <string name="create_name_confirm">Start</string>
     <!--主页面翻译-->
     <string name="main_nav_message">Message</string>
     <string name="main_nav_home">Home</string>
     <string name="main_nav_mine">Mine</string>
     <!--聊天页面翻译-->
     <string name="message_title">Message</string>
+
 </resources>

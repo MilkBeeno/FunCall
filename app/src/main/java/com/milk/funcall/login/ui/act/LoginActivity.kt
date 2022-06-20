@@ -54,13 +54,14 @@ class LoginActivity : AbstractActivity() {
         super.onMultipleClick(view)
         when (view) {
             binding.llGoogle -> checkPrivacyIsChecked {
-
+                CreateNameActivity.create(this)
             }
             binding.llFacebook -> checkPrivacyIsChecked {
                 authLoginManager.facebookAuth()
+                CreateNameActivity.create(this)
             }
             binding.llTourist -> checkPrivacyIsChecked {
-
+                CreateNameActivity.create(this)
             }
             binding.ivPrivacyCheck -> {
                 loginViewModel.agreementPrivacy = !loginViewModel.agreementPrivacy

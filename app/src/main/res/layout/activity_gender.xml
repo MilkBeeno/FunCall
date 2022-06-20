@@ -135,7 +135,7 @@
         android:id="@+id/tvGenderNext"
         android:layout_width="match_parent"
         android:layout_height="43dp"
-        android:background="@drawable/shape_gender_next_background"
+        android:background="@drawable/shape_common_next_background"
         android:gravity="center"
         android:text="@string/gender_next"
         android:textColor="@color/white"
