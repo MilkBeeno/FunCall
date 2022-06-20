@@ -1,5 +1,6 @@
 package com.milk.funcall.common.author
 
+import android.content.Intent
 import androidx.fragment.app.FragmentActivity
 
 class AuthLoginManager(activity: FragmentActivity) {
@@ -17,4 +18,8 @@ class AuthLoginManager(activity: FragmentActivity) {
     }
 
     fun facebookAuth() = facebookAuth.startAuth()
+
+    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        facebookAuth.onActivityResult(requestCode, resultCode, data)
+    }
 }

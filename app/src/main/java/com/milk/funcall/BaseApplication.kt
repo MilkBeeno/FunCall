@@ -1,6 +1,7 @@
 package com.milk.funcall
 
 import android.app.Application
+import com.milk.funcall.common.author.FacebookAuth
 import com.milk.funcall.common.mdr.DataBaseManager
 import com.milk.simple.ktx.ioScope
 import com.milk.simple.log.Logger
@@ -22,6 +23,7 @@ class BaseApplication : Application() {
             KvManger.initialize(instance)
             Logger.initialize(BuildConfig.DEBUG)
             DataBaseManager.initialize(instance)
+            FacebookAuth.initializeSdk(instance)
         }
     }
 }

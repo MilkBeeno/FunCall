@@ -12,7 +12,6 @@ import com.facebook.login.LoginResult
 import com.milk.funcall.BuildConfig
 import com.milk.funcall.R
 import com.milk.simple.log.Logger
-import java.util.ArrayList
 
 class FacebookAuth(private val activity: FragmentActivity) : Auth {
     private val callbackManager by lazy { CallbackManager.Factory.create() }
@@ -53,11 +52,8 @@ class FacebookAuth(private val activity: FragmentActivity) : Auth {
         })
     }
 
-    override fun startAuth() {
-        val permissions = ArrayList<String>()
-        permissions.add("public_profile")
-        LoginManager.getInstance().logInWithReadPermissions(activity, permissions)
-    }
+    override fun startAuth() = LoginManager.getInstance()
+        .logInWithReadPermissions(activity, listOf("public_profile"))
 
     override fun onSuccessListener(success: (String) -> Unit) {
         successRequest = success
