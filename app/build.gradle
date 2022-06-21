@@ -76,4 +76,6 @@ dependencies {
     // facebook 登录
     implementation "com.facebook.android:facebook-android-sdk:14.0.0"
     implementation "com.facebook.android:facebook-login:14.0.0"
+    // swipeRefreshLayout 下拉刷新功能
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
 }
