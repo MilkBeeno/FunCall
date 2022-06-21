@@ -29,8 +29,8 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivUserGender"
-            android:layout_width="21dp"
-            android:layout_height="15dp"
+            android:layout_width="22dp"
+            android:layout_height="16dp"
             android:layout_gravity="bottom|end"
             android:layout_marginEnd="4dp"
             android:scaleType="centerCrop"
