@@ -29,6 +29,7 @@
     <string name="create_name_tag">Name</string>
     <string name="create_name_default">Enter your name </string>
     <string name="create_name_confirm">Start</string>
+    <string name="create_name_no_empty">User name empty is not allowed.</string>
     <!--主页面翻译-->
     <string name="main_nav_message">Message</string>
     <string name="main_nav_home">Home</string>

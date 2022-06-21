@@ -3,13 +3,17 @@ package com.milk.funcall.login.ui.act
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputFilter
 import android.view.View
-import androidx.core.widget.addTextChangedListener
 import com.milk.funcall.R
 import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.common.enum.Gender
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityCreateNameBinding
+import com.milk.funcall.main.ui.act.MainActivity
+import com.milk.simple.keyboard.KeyBoardUtil
+import com.milk.simple.ktx.immersiveStatusBar
+import com.milk.simple.ktx.showToast
 import com.milk.simple.ktx.string
 import com.milk.simple.mdr.KvManger
 
@@ -19,6 +23,7 @@ class CreateNameActivity : AbstractActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        immersiveStatusBar(binding.headerToolbar)
         initializeView()
     }
 
@@ -41,8 +46,9 @@ class CreateNameActivity : AbstractActivity() {
         binding.ivUserAvatar.setOnClickListener(this)
         binding.tvCreateName.setOnClickListener(this)
         binding.ivUserUpdate.setOnClickListener(this)
-        binding.etUserName.addTextChangedListener {
-
+        binding.etUserName.filters = arrayOf(InputFilter.LengthFilter(20))
+        binding.etUserName.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) KeyBoardUtil.hideKeyboard(this)
         }
     }
 
@@ -56,7 +62,10 @@ class CreateNameActivity : AbstractActivity() {
 
             }
             binding.tvCreateName -> {
-
+                if (binding.etUserName.text.toString().isBlank())
+                    showToast(string(R.string.create_name_no_empty))
+                else
+                    MainActivity.create(this)
             }
         }
     }
