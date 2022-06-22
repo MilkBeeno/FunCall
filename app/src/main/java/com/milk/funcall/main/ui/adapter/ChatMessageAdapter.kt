@@ -40,7 +40,7 @@ class ChatMessageAdapter : AbstractPagingAdapter<ChatMessageEntity>(
         return getItem(position)?.messageType ?: ChatMessageType.TextSend.value
     }
 
-    override fun onConvert(holder: PagingViewHolder, item: ChatMessageEntity) {
+    override fun convert(holder: PagingViewHolder, item: ChatMessageEntity) {
         updateMessageTime(holder, item)
         updatePeopleAvatar(holder, item)
         when (item.messageType) {
@@ -67,7 +67,7 @@ class ChatMessageAdapter : AbstractPagingAdapter<ChatMessageEntity>(
         holder.setText(R.id.tvReceiveContent, item.messageContent)
     }
 
-    inner class ChatMessageTypeDelegate : MultiTypeDelegate() {
+    inner class ChatMessageTypeDelegate : MultiTypeDelegate {
         private val viewIdMap = mutableMapOf<Int, Int>()
 
         init {

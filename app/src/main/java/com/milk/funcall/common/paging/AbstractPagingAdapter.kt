@@ -3,77 +3,130 @@ package com.milk.funcall.common.paging
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.IdRes
 import androidx.paging.LoadState
+import androidx.paging.Pager
 import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.DiffUtil
+import com.milk.funcall.common.paging.status.AppendStatus
+import com.milk.funcall.common.paging.status.RefreshStatus
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 abstract class AbstractPagingAdapter<T : Any>(
     private val layoutId: Int? = null,
+    private val coroutineScope: CoroutineScope? = null,
     diffCallback: DiffUtil.ItemCallback<T>
-) : PagingDataAdapter<T, PagingViewHolder>(diffCallback) {
+) : PagingDataAdapter<T, PagingViewHolder>(diffCallback), PagingAdapter<T> {
 
-    private var mMultiTypeDelegate: MultiTypeDelegate? = null
+    protected var pairHeaderAndFooter = Pair(first = false, second = false)
+    private var multiTypeDelegateImpl: MultiTypeDelegate? = null
+    private val childClickViewIds = LinkedHashSet<Int>()
+    private val childLongClickViewIds = LinkedHashSet<Int>()
+    private var itemClickListener: (
+        (adapter: AbstractPagingAdapter<T>, itemView: View, position: Int) -> Unit)? = null
+    private var itemLongClickListener: (
+        (adapter: AbstractPagingAdapter<T>, itemView: View, position: Int) -> Boolean)? = null
+    private var itemChildClickListener: (
+        (adapter: AbstractPagingAdapter<T>, itemView: View, position: Int) -> Unit)? = null
+    private var itemChildLongClickListener: (
+        (adapter: AbstractPagingAdapter<T>, itemView: View, position: Int) -> Boolean)? = null
+
     private var refreshing = false
     private var appending = false
-    private val refreshedListeners = mutableListOf<() -> Unit>()
-    private val appendedListeners = mutableListOf<() -> Unit>()
+    private var refreshedListener: ((RefreshStatus) -> Unit)? = null
+    private var appendedListener: ((AppendStatus) -> Unit)? = null
 
     init {
-        addLoadStateListener {
-            when (it.source.refresh) {
+        addLoadStateListener { combinedLoadStates ->
+            when (combinedLoadStates.source.refresh) {
                 is LoadState.Loading -> refreshing = true
                 is LoadState.NotLoading -> {
                     if (refreshing) {
                         refreshing = false
-                        refreshedListeners.forEach { listener ->
-                            listener.invoke()
-                        }
+                        if (itemCount <= 0)
+                            refreshedListener?.invoke(RefreshStatus.Empty)
+                        else
+                            refreshedListener?.invoke(RefreshStatus.Success)
                     }
                 }
-                else -> {
-                }
+                else -> refreshedListener?.invoke(
+                    if (itemCount < 0) RefreshStatus.Error else RefreshStatus.Failed
+                )
             }
-            when (it.source.append) {
+            when (combinedLoadStates.source.append) {
                 is LoadState.Loading -> appending = true
                 is LoadState.NotLoading -> {
                     if (appending) {
                         appending = false
-                        appendedListeners.forEach { listener ->
-                            listener.invoke()
-                        }
+                        appendedListener?.invoke(AppendStatus.Success)
                     }
                 }
-                else -> {
-                }
+                else -> appendedListener?.invoke(AppendStatus.Failed)
             }
         }
     }
 
-    fun setMultiTypeDelegate(multiTypeDelegate: MultiTypeDelegate?) {
-        this.mMultiTypeDelegate = multiTypeDelegate
+    override fun obtainHeaderAdapter(): HeaderLoadStateAdapter? = null
+
+    override fun obtainFooterAdapter(hasHeader: Boolean): FooterLoadStateAdapter? = null
+
+    override fun withLoadStateHeaderAdapter(): ConcatAdapter {
+        val headerAdapter = obtainHeaderAdapter()
+        return if (headerAdapter != null) {
+            val hasFooter = pairHeaderAndFooter.second
+            pairHeaderAndFooter = Pair(true, hasFooter)
+            withLoadStateHeader(headerAdapter)
+        } else ConcatAdapter(this)
+    }
+
+    override fun withLoadStateFooterAdapter(): ConcatAdapter {
+        val hasHeader = pairHeaderAndFooter.first
+        val footerAdapter = obtainFooterAdapter(hasHeader)
+        return if (footerAdapter != null) {
+            pairHeaderAndFooter = Pair(hasHeader, true)
+            withLoadStateFooter(footerAdapter)
+        } else ConcatAdapter(this)
+    }
+
+    override fun withLoadStateHeaderAndFooterAdapter(): ConcatAdapter {
+        val headerAdapter = obtainHeaderAdapter()
+        val footerAdapter = obtainFooterAdapter(headerAdapter != null)
+        return when {
+            headerAdapter != null && footerAdapter != null -> {
+                withLoadStateHeaderAndFooter(headerAdapter, footerAdapter)
+            }
+            headerAdapter != null -> {
+                withLoadStateHeader(headerAdapter)
+            }
+            footerAdapter != null -> {
+                withLoadStateFooter(footerAdapter)
+            }
+            else -> ConcatAdapter(this)
+        }
+    }
+
+    override fun setMultiTypeDelegate(multiTypeDelegate: MultiTypeDelegate?) {
+        multiTypeDelegateImpl = multiTypeDelegate
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PagingViewHolder {
-        val layout = mMultiTypeDelegate?.getItemViewId(viewType) ?: layoutId
-        checkNotNull(layout)
-        return PagingViewHolder(LayoutInflater.from(parent.context).inflate(layout, parent, false))
+        val finalLayoutId = multiTypeDelegateImpl?.getItemViewId(viewType) ?: layoutId
+        checkNotNull(finalLayoutId)
+        return PagingViewHolder(
+            LayoutInflater.from(parent.context).inflate(finalLayoutId, parent, false)
+        )
     }
-
 
     override fun onBindViewHolder(holder: PagingViewHolder, position: Int) {
-        setClick(holder, position)
-        onConvert(holder, getItem(position)!!)
+        dispatchClickEvent(holder)
+        convert(holder, getItem(position)!!)
     }
 
-    fun getData(position: Int): T {
-        return getItem(position)!!
-    }
-
-    private fun setClick(holder: PagingViewHolder, position: Int) {
+    private fun dispatchClickEvent(holder: PagingViewHolder) {
         if (itemClickListener != null) {
             holder.itemView.setOnClickListener {
                 if (holder.bindingAdapterPosition in 0 until itemCount) {
@@ -86,8 +139,8 @@ abstract class AbstractPagingAdapter<T : Any>(
         if (itemLongClickListener != null) {
             holder.itemView.setOnLongClickListener {
                 if (holder.bindingAdapterPosition in 0 until itemCount) {
-                    val invoke =
-                        itemLongClickListener?.invoke(this, it, holder.bindingAdapterPosition)
+                    val invoke = itemLongClickListener
+                        ?.invoke(this, it, holder.bindingAdapterPosition)
                     return@setOnLongClickListener invoke ?: false
                 }
                 return@setOnLongClickListener false
@@ -95,20 +148,21 @@ abstract class AbstractPagingAdapter<T : Any>(
         } else {
             holder.itemView.setOnLongClickListener(null)
         }
-        childClickViewIds.forEach {
-            val view = holder.getViewOrNull<View>(it)
+        childClickViewIds.forEach { id ->
+            val view = holder.getViewOrNull<View>(id)
             if (itemChildClickListener != null) {
                 view?.setOnClickListener {
                     if (holder.bindingAdapterPosition in 0 until itemCount) {
-                        itemChildClickListener?.invoke(this, it, holder.bindingAdapterPosition)
+                        itemChildClickListener
+                            ?.invoke(this, it, holder.bindingAdapterPosition)
                     }
                 }
             } else {
                 view?.setOnClickListener(null)
             }
         }
-        childLongClickViewIds.forEach { it ->
-            val view = holder.getViewOrNull<View>(it)
+        childLongClickViewIds.forEach { id ->
+            val view = holder.getViewOrNull<View>(id)
             if (itemChildLongClickListener != null) {
                 view?.setOnLongClickListener {
                     if (holder.bindingAdapterPosition in 0 until itemCount) {
@@ -127,81 +181,59 @@ abstract class AbstractPagingAdapter<T : Any>(
         }
     }
 
-    abstract fun onConvert(holder: PagingViewHolder, item: T)
-
-    fun addRefreshedListener(listener: () -> Unit) {
-        refreshedListeners.add(listener)
-    }
-
-    fun addAppendedListener(listener: () -> Unit) {
-        appendedListeners.add(listener)
-    }
-
-    fun removeRefreshedListener(listener: () -> Unit) {
-        refreshedListeners.remove(listener)
-    }
-
-    fun removeAllRefreshedListener(listener: () -> Unit) {
-        refreshedListeners.clear()
-    }
-
-    fun removeAppendedListener(listener: () -> Unit) {
-        appendedListeners.remove(listener)
-    }
-
-    fun removeAllAppendedListener(listener: () -> Unit) {
-        appendedListeners.clear()
-    }
-
-    fun <K : Any> setPagerSource(pagerSource: SimplePagingSource<K, T>) {
-        pagerSource.viewModelScope.launch(Dispatchers.IO) {
-            pagerSource.pager.flow.collectLatest {
+    override fun <K : Any> setPagerSource(pager: Pager<K, T>) {
+        coroutineScope ?: MainScope().launch(Dispatchers.IO) {
+            pager.flow.collectLatest {
                 submitData(it)
             }
         }
     }
 
-    private var itemClickListener: ((adapter: AbstractPagingAdapter<T>, itemView: View, position: Int) -> Unit)? =
-        null
-
-    fun setOnItemClickListener(listener: (adapter: AbstractPagingAdapter<T>, itemView: View, position: Int) -> Unit) {
+    override fun setOnItemClickListener(
+        listener: (adapter: AbstractPagingAdapter<T>, itemView: View, position: Int) -> Unit
+    ) {
         itemClickListener = listener
     }
 
-    private var itemChildClickListener: ((adapter: AbstractPagingAdapter<T>, itemView: View, position: Int) -> Unit)? =
-        null
-
-    fun setOnItemChildClickListener(listener: (adapter: AbstractPagingAdapter<T>, itemView: View, position: Int) -> Unit) {
-        itemChildClickListener = listener
-    }
-
-    private var itemLongClickListener: ((adapter: AbstractPagingAdapter<T>, itemView: View, position: Int) -> Boolean)? =
-        null
-
-    fun setOnItemLongClickListener(listener: (adapter: AbstractPagingAdapter<T>, itemView: View, position: Int) -> Boolean) {
+    override fun setOnItemLongClickListener(
+        listener: (adapter: AbstractPagingAdapter<T>, itemView: View, position: Int) -> Boolean
+    ) {
         itemLongClickListener = listener
     }
 
-    private var itemChildLongClickListener: ((adapter: AbstractPagingAdapter<T>, itemView: View, position: Int) -> Boolean)? =
-        null
+    override fun setOnItemChildClickListener(
+        listener: (adapter: AbstractPagingAdapter<T>, itemView: View, position: Int) -> Unit
+    ) {
+        itemChildClickListener = listener
+    }
 
-    fun setOnItemChildLongClickListener(listener: (adapter: AbstractPagingAdapter<T>, itemView: View, position: Int) -> Boolean) {
+    override fun setOnItemChildLongClickListener(
+        listener: (adapter: AbstractPagingAdapter<T>, itemView: View, position: Int) -> Boolean
+    ) {
         itemChildLongClickListener = listener
     }
 
-    private val childClickViewIds = LinkedHashSet<Int>()
-
-    fun addChildClickViewIds(@IdRes vararg viewIds: Int) {
-        for (viewId in viewIds) {
-            childClickViewIds.add(viewId)
-        }
+    override fun addChildClickViewIds(vararg viewIds: Int) {
+        viewIds.forEach { childClickViewIds.add(it) }
     }
 
-    private val childLongClickViewIds = LinkedHashSet<Int>()
+    override fun addChildLongClickViewIds(vararg viewIds: Int) {
+        viewIds.forEach { childLongClickViewIds.add(it) }
+    }
 
-    fun addChildLongClickViewIds(@IdRes vararg viewIds: Int) {
-        for (viewId in viewIds) {
-            childLongClickViewIds.add(viewId)
-        }
+    override fun addRefreshedListener(listener: (RefreshStatus) -> Unit) {
+        refreshedListener = listener
+    }
+
+    override fun addAppendedListener(listener: (AppendStatus) -> Unit) {
+        appendedListener = listener
+    }
+
+    override fun removeRefreshedListener() {
+        refreshedListener = null
+    }
+
+    override fun removeAppendedListener() {
+        appendedListener = null
     }
 }

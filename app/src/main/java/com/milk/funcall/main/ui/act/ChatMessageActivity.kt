@@ -4,17 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.milk.funcall.R
+import com.milk.funcall.common.paging.status.RefreshStatus
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityMessageBinding
 import com.milk.funcall.main.ui.adapter.ChatMessageAdapter
 import com.milk.funcall.main.ui.vm.MessageViewModel
-import com.milk.simple.ktx.color
-import com.milk.simple.ktx.setStatusBarColor
-import com.milk.simple.ktx.setStatusBarDark
-import com.milk.simple.ktx.viewBinding
+import com.milk.simple.ktx.*
 
 class ChatMessageActivity : AbstractActivity() {
 
@@ -38,11 +35,24 @@ class ChatMessageActivity : AbstractActivity() {
         binding.headerToolbar.setTitle(targetName)
         binding.rvMessage.adapter = chatMessageAdapter
         binding.rvMessage.layoutManager = LinearLayoutManager(this)
+        chatMessageAdapter.addRefreshedListener {
+            when (it) {
+                RefreshStatus.Success -> {
+                    binding.tvEmpty.gone()
+                }
+                RefreshStatus.Empty -> {
+                    binding.tvEmpty.visible()
+                }
+                else -> {
+                    // 其他状态目前不需要
+                }
+            }
+        }
     }
 
     private fun initializeData() {
         messageViewModel.updateTargetUser(targetId)
-        chatMessageAdapter.setPagerSource(messageViewModel.pagingSource)
+        chatMessageAdapter.setPagerSource(messageViewModel.pagingSource.pager)
     }
 
     companion object {

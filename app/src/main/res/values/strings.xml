@@ -36,5 +36,6 @@
     <string name="main_nav_mine">Mine</string>
     <!--聊天页面翻译-->
     <string name="message_title">Message</string>
+    <string name="message_list_empty">No Message</string>
 
 </resources>
