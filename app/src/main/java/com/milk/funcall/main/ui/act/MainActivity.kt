@@ -61,6 +61,7 @@ class MainActivity : AbstractActivity() {
                     transaction.add(binding.flContent.id, homeFragment)
                 }
                 transaction.show(homeFragment)
+                binding.background.setFullBackground()
             }
             is MessageFragment -> {
                 if (!fragments.contains(messageFragment)) {
@@ -68,6 +69,7 @@ class MainActivity : AbstractActivity() {
                     transaction.add(binding.flContent.id, messageFragment)
                 }
                 transaction.show(messageFragment)
+                binding.background.setFullBackground()
             }
             is MineFragment -> {
                 if (!fragments.contains(mineFragment)) {
@@ -75,6 +77,7 @@ class MainActivity : AbstractActivity() {
                     transaction.add(binding.flContent.id, mineFragment)
                 }
                 transaction.show(mineFragment)
+                binding.background.setMediumBackground()
             }
         }
         transaction.commit()
