@@ -4,6 +4,8 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.jeremyliao.liveeventbus.LiveEventBus
+import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.paging.status.AppendStatus
 import com.milk.funcall.common.paging.status.RefreshStatus
 import com.milk.funcall.common.ui.AbstractFragment
@@ -16,11 +18,21 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class HomeFragment : AbstractFragment() {
+
     private val homeViewModel by viewModels<HomeViewModel>()
     private val binding by lazy { FragmentHomeBinding.inflate(layoutInflater) }
     private val adapter by lazy { HomeAdapter() }
 
     override fun getRootView(): View = binding.root
+
+    override fun initializeObserver() {
+        super.initializeObserver()
+        LiveEventBus.get<Boolean>(EventKey.REFRESH_HOME_LIST)
+            .observe(this) {
+                binding.refresh.isRefreshing = true
+                adapter.refresh()
+            }
+    }
 
     override fun initializeView() {
         binding.rvHome.adapter = adapter.withLoadStateFooterAdapter()

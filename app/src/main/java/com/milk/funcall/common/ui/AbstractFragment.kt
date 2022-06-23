@@ -22,6 +22,7 @@ abstract class AbstractFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeData()
+        initializeObserver()
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -35,4 +36,5 @@ abstract class AbstractFragment : Fragment() {
     abstract fun getRootView(): View
     abstract fun initializeView()
     protected open fun initializeData() {}
+    protected open fun initializeObserver() {}
 }

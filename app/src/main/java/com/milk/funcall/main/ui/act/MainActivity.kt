@@ -5,12 +5,15 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import com.jeremyliao.liveeventbus.LiveEventBus
+import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityMainBinding
 import com.milk.funcall.main.ui.frag.HomeFragment
 import com.milk.funcall.main.ui.frag.MessageFragment
 import com.milk.funcall.main.ui.frag.MineFragment
 import com.milk.funcall.main.ui.view.BottomNavigation
+import com.milk.simple.ktx.immersiveStatusBar
 import com.milk.simple.ktx.viewBinding
 
 class MainActivity : AbstractActivity() {
@@ -24,6 +27,7 @@ class MainActivity : AbstractActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        immersiveStatusBar(binding.flContent)
         initializeView()
     }
 
@@ -33,7 +37,8 @@ class MainActivity : AbstractActivity() {
             when (type) {
                 BottomNavigation.Type.Home -> {
                     if (refresh) {
-                        // 刷新数据
+                        LiveEventBus.get<Boolean>(EventKey.REFRESH_HOME_LIST)
+                            .post(true)
                     } else setTabSelection(homeFragment)
                 }
                 BottomNavigation.Type.Message -> {

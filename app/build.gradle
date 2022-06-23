@@ -83,7 +83,6 @@ dependencies {
     implementation("io.coil-kt:coil-gif:2.1.0")
     implementation("io.coil-kt:coil-video:2.1.0")
     implementation("io.coil-kt:coil-svg:2.1.0")
-
-
-
+    // liveEventBus 事件通知
+    implementation 'io.github.jeremyliao:live-event-bus-x:1.8.0'
 }
