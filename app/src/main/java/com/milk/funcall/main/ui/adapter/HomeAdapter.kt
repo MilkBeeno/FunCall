@@ -25,6 +25,6 @@ class HomeAdapter : AbstractPagingAdapter<HomModel>(
     }
 
     override fun obtainFooterAdapter(hasHeader: Boolean): FooterLoadStateAdapter {
-        return FooterLoadStateAdapter(R.layout.view_paging_foot, hasHeader)
+        return FooterLoadStateAdapter(R.layout.layout_paging_foot, hasHeader)
     }
 }

@@ -37,6 +37,14 @@
     <!--聊天页面翻译-->
     <string name="message_title">Message</string>
     <string name="message_list_empty">No Message</string>
+    <!--我的页面翻译-->
+    <string name="mine_default_user_name">User\'s Nickname</string>
+    <string name="mine_follows">Follows</string>
+    <string name="mine_fans">Fans</string>
+    <string name="mine_edit_profile">Edit profile</string>
+    <string name="mine_sign_out">Sign out</string>
+    <string name="mine_about_us">About us</string>
+    <string name="mine_blacked_list">Blacked list</string>
 
 
 </resources>

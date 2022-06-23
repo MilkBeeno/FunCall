@@ -10,11 +10,11 @@ import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
 import androidx.annotation.ColorRes
 import com.milk.funcall.R
-import com.milk.funcall.databinding.ViewBottomNavigationBinding
+import com.milk.funcall.databinding.LayoutBottomNavigationBinding
 
 class BottomNavigation : FrameLayout {
 
-    private val binding = ViewBottomNavigationBinding
+    private val binding = LayoutBottomNavigationBinding
         .inflate(LayoutInflater.from(context), this, true)
 
     private var lastClickTime: Long = 0

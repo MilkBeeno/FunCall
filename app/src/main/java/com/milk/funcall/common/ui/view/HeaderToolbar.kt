@@ -6,11 +6,11 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.annotation.StringRes
-import com.milk.funcall.databinding.ViewToolbarBinding
+import com.milk.funcall.databinding.LayoutToolbarBinding
 
 class HeaderToolbar : FrameLayout {
 
-    private val binding = ViewToolbarBinding
+    private val binding = LayoutToolbarBinding
         .inflate(LayoutInflater.from(context), this, true)
 
     constructor(ctx: Context) : super(ctx)

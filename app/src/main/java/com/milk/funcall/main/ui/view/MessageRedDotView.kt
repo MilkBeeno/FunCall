@@ -6,11 +6,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.milk.funcall.R
-import com.milk.funcall.databinding.ViewMessageRedDotBinding
+import com.milk.funcall.databinding.LayoutMessageRedDotBinding
 
 class MessageRedDotView : FrameLayout {
 
-    private val binding = ViewMessageRedDotBinding
+    private val binding = LayoutMessageRedDotBinding
         .inflate(LayoutInflater.from(context), this, true)
 
     constructor(ctx: Context) : super(ctx)
