@@ -33,9 +33,9 @@ class CreateNameActivity : AbstractActivity() {
         val isFemale = gender == Gender.Woman.value
         binding.ivUserAvatar.setImageResource(
             if (isFemale)
-                R.drawable.create_name_default_woman
+                R.drawable.common_default_woman
             else
-                R.drawable.create_name_default_man
+                R.drawable.common_default_man
         )
         binding.ivUserGender.setImageResource(
             if (isFemale)

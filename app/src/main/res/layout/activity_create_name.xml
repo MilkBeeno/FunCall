@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            tools:src="@drawable/create_name_default_man" />
+            tools:src="@drawable/common_default_man" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivUserGender"

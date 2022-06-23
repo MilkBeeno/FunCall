@@ -56,7 +56,7 @@ class ChatMessageAdapter : AbstractPagingAdapter<ChatMessageEntity>(
 
     private fun updatePeopleAvatar(holder: PagingViewHolder, item: ChatMessageEntity) {
         val ivPeopleAvatar = holder.getView<AppCompatImageView>(R.id.ivPeopleAvatar)
-        ivPeopleAvatar.setImageResource(R.drawable.common_default_avatar)
+        ivPeopleAvatar.setImageResource(R.drawable.common_default_man)
     }
 
     private fun updateSendTextMessage(holder: PagingViewHolder, item: ChatMessageEntity) {
