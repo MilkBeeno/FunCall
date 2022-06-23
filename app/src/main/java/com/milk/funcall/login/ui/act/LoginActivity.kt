@@ -8,8 +8,8 @@ import androidx.activity.viewModels
 import com.milk.funcall.R
 import com.milk.funcall.common.author.AuthLoginManager
 import com.milk.funcall.common.constrant.KvKey
-import com.milk.funcall.common.enum.Gender
 import com.milk.funcall.common.ui.AbstractActivity
+import com.milk.funcall.common.ui.Gender
 import com.milk.funcall.databinding.ActivityLoginBinding
 import com.milk.funcall.login.ui.vm.LoginViewModel
 import com.milk.simple.ktx.*

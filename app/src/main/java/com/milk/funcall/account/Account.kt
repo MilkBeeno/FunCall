@@ -1,4 +1,4 @@
-package com.milk.funcall.common
+package com.milk.funcall.account
 
 import androidx.lifecycle.MutableLiveData
 

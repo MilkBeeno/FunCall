@@ -7,8 +7,8 @@ import android.text.InputFilter
 import android.view.View
 import com.milk.funcall.R
 import com.milk.funcall.common.constrant.KvKey
-import com.milk.funcall.common.enum.Gender
 import com.milk.funcall.common.ui.AbstractActivity
+import com.milk.funcall.common.ui.Gender
 import com.milk.funcall.databinding.ActivityCreateNameBinding
 import com.milk.funcall.main.ui.act.MainActivity
 import com.milk.simple.keyboard.KeyBoardUtil

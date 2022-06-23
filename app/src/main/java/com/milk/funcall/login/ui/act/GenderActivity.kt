@@ -5,8 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.milk.funcall.R
-import com.milk.funcall.common.enum.Gender
 import com.milk.funcall.common.ui.AbstractActivity
+import com.milk.funcall.common.ui.Gender
 import com.milk.funcall.databinding.ActivityGenderBinding
 import com.milk.simple.ktx.color
 import com.milk.simple.ktx.immersiveStatusBar
