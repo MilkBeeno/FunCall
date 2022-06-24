@@ -26,7 +26,7 @@ class ChatMessageAdapter : AbstractPagingAdapter<ChatMessageEntity>(
             return oldItem.userId == newItem.userId
                     && oldItem.targetId == newItem.targetId
                     && oldItem.targetName == newItem.targetName
-                    && oldItem.targetImage == newItem.targetImage
+                    && oldItem.targetAvatar == newItem.targetAvatar
                     && oldItem.operationTime == newItem.operationTime
                     && oldItem.isReadMessage == newItem.isReadMessage
         }

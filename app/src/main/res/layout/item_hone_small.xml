@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="166dp"
+    android:layout_height="125dp">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivMoment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:scaleType="centerCrop" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center_vertical">
+
+        <FrameLayout
+            android:layout_width="19dp"
+            android:layout_height="19dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivUserAvatar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/common_default_man" />
+
+            <View
+                android:id="@+id/vState"
+                android:layout_width="5dp"
+                android:layout_height="5dp"
+                android:layout_gravity="end|bottom" />
+        </FrameLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:ellipsize="end"
+            android:lines="1"
+            android:maxWidth="90dp"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            tools:text="User's Nickname" />
+
+        <androidx.legacy.widget.Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvState"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/FF58FFD3"
+            android:textSize="8sp"
+            tools:ignore="SmallSp"
+            tools:text="Online" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</FrameLayout>

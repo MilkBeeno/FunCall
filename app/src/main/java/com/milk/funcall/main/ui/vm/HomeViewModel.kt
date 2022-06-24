@@ -26,7 +26,7 @@ class HomeViewModel : ViewModel() {
         //Logger.d("打印的Index是=${index}", "hlc")
         val list = mutableListOf<HomModel>()
         for (i in 0..2) {
-            list.add(HomModel(userId = i * index.toLong(), userName = "数据是=${i * index}"))
+            //list.add(HomModel(userId = i * index.toLong(), userName = "数据是=${i * index}"))
         }
         if (index == 3) return throw Exception("错误")
         return ApiPagingResponse(code = 2000, message = "", data = list)

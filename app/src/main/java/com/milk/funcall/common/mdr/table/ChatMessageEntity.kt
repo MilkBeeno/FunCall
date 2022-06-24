@@ -18,8 +18,8 @@ data class ChatMessageEntity(
     var targetId: Long = 0,
     @ColumnInfo(name = "targetName")
     var targetName: String = "",
-    @ColumnInfo(name = "targetImage")
-    var targetImage: String = "",
+    @ColumnInfo(name = "targetAvatar")
+    var targetAvatar: String = "",
     @ColumnInfo(name = "messageType")
     var messageType: Int = 0,
     @ColumnInfo(name = "operationTime")

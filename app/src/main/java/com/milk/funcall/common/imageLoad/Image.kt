@@ -16,6 +16,19 @@ fun ImageView.loadCirclePicture(
 
 fun ImageView.loadRoundPicture(
     imageUrl: String,
+    @Px round: Float = 0f,
+    @DrawableRes placeholder: Int = R.drawable.home_default
+) = load(
+    imageUrl = imageUrl,
+    topLeft = round,
+    topRight = round,
+    bottomLeft = round,
+    bottomRight = round,
+    placeholder = placeholder
+)
+
+fun ImageView.loadRoundPicture(
+    imageUrl: String,
     @Px topLeft: Float = 0f,
     @Px topRight: Float = 0f,
     @Px bottomLeft: Float = 0f,
