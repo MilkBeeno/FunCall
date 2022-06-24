@@ -54,7 +54,7 @@ class MainActivity : AbstractActivity() {
     }
 
     private fun setTabSelection(fragment: Fragment) {
-        changeBackground(fragment == mineFragment)
+        changeBackground(fragment != mineFragment)
         val transaction = supportFragmentManager.beginTransaction()
         hideFragments(transaction)
         when (fragment) {
