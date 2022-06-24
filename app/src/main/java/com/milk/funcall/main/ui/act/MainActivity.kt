@@ -3,9 +3,11 @@ package com.milk.funcall.main.ui.act
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.jeremyliao.liveeventbus.LiveEventBus
+import com.milk.funcall.R
 import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityMainBinding
@@ -52,6 +54,7 @@ class MainActivity : AbstractActivity() {
     }
 
     private fun setTabSelection(fragment: Fragment) {
+        changeBackground(fragment == mineFragment)
         val transaction = supportFragmentManager.beginTransaction()
         hideFragments(transaction)
         when (fragment) {
@@ -61,7 +64,6 @@ class MainActivity : AbstractActivity() {
                     transaction.add(binding.flContent.id, homeFragment)
                 }
                 transaction.show(homeFragment)
-                binding.background.setFullBackground()
             }
             is MessageFragment -> {
                 if (!fragments.contains(messageFragment)) {
@@ -69,7 +71,6 @@ class MainActivity : AbstractActivity() {
                     transaction.add(binding.flContent.id, messageFragment)
                 }
                 transaction.show(messageFragment)
-                binding.background.setFullBackground()
             }
             is MineFragment -> {
                 if (!fragments.contains(mineFragment)) {
@@ -77,7 +78,6 @@ class MainActivity : AbstractActivity() {
                     transaction.add(binding.flContent.id, mineFragment)
                 }
                 transaction.show(mineFragment)
-                binding.background.setMediumBackground()
             }
         }
         transaction.commit()
@@ -87,6 +87,17 @@ class MainActivity : AbstractActivity() {
         transaction.hide(homeFragment)
         transaction.hide(messageFragment)
         transaction.hide(mineFragment)
+    }
+
+    private fun changeBackground(fullScreen: Boolean) {
+        binding.background.setImageResource(
+            if (fullScreen)
+                R.drawable.main_background_full
+            else
+                R.drawable.main_background_medium
+        )
+        binding.background.scaleType =
+            if (fullScreen) ImageView.ScaleType.FIT_XY else ImageView.ScaleType.FIT_START
     }
 
     override fun onInterceptKeyDownEvent(): Boolean = true

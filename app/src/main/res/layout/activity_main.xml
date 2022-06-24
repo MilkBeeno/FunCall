@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".main.ui.act.MainActivity">
 
-    <com.milk.funcall.main.ui.view.MainBackground
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

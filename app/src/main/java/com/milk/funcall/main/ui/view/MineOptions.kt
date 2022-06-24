@@ -7,11 +7,11 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import com.milk.funcall.databinding.LayoutMineBinding
+import com.milk.funcall.databinding.LayoutMineOptionBinding
 
 class MineOptions : FrameLayout {
     private val binding =
-        LayoutMineBinding.inflate(LayoutInflater.from(context), this)
+        LayoutMineOptionBinding.inflate(LayoutInflater.from(context), this)
 
     constructor(ctx: Context) : super(ctx)
     constructor(ctx: Context, attrs: AttributeSet) : super(ctx, attrs)
