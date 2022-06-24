@@ -10,7 +10,7 @@ import me.jessyan.autosize.AutoSizeCompat
 
 abstract class AbstractActivity : FragmentActivity(), View.OnClickListener {
 
-    protected val multipleClickListener by lazy {
+    private val multipleClickListener by lazy {
         object : MultipleClickListener() {
             override fun onMultipleClick(view: View) =
                 this@AbstractActivity.onMultipleClick(view)

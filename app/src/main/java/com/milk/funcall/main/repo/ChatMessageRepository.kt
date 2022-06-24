@@ -1,6 +1,6 @@
 package com.milk.funcall.main.repo
 
-import com.milk.funcall.account.Account
+import com.milk.funcall.main.Account
 import com.milk.funcall.common.mdr.DataBaseManager
 import com.milk.funcall.common.mdr.table.ChatMessageEntity
 

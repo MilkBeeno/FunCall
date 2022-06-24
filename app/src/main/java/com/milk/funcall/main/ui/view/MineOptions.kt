@@ -17,7 +17,7 @@ class MineOptions : FrameLayout {
     constructor(ctx: Context, attrs: AttributeSet) : super(ctx, attrs)
     constructor(ctx: Context, attrs: AttributeSet, defAttr: Int) : super(ctx, attrs, defAttr)
 
-    fun setOptionResource(
+    fun setOption(
         @DrawableRes image: Int,
         @StringRes string: Int,
         showLine: Boolean = true
