@@ -25,7 +25,7 @@ class HeaderToolbar : FrameLayout {
         binding.tvTitle.text = title
     }
 
-    fun clickArrowBack(
+    fun showArrowBack(
         action: () -> Unit = {
             if (context is Activity) (context as Activity).onBackPressed()
         }

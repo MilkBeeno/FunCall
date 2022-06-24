@@ -31,7 +31,7 @@ class ChatMessageActivity : AbstractActivity() {
     }
 
     private fun initializeView() {
-        binding.headerToolbar.clickArrowBack()
+        binding.headerToolbar.showArrowBack()
         binding.headerToolbar.setTitle(targetName)
         binding.rvMessage.adapter = chatMessageAdapter
         binding.rvMessage.layoutManager = LinearLayoutManager(this)

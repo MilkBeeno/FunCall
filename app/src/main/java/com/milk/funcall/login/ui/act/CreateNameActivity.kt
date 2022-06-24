@@ -28,7 +28,7 @@ class CreateNameActivity : AbstractActivity() {
     }
 
     private fun initializeView() {
-        binding.headerToolbar.clickArrowBack()
+        binding.headerToolbar.showArrowBack()
         binding.headerToolbar.setTitle(string(R.string.create_name_title))
         val isFemale = gender == Gender.Woman.value
         binding.ivUserAvatar.setImageResource(

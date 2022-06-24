@@ -45,6 +45,12 @@
     <string name="mine_sign_out">Sign out</string>
     <string name="mine_about_us">About us</string>
     <string name="mine_blacked_list">Blacked list</string>
-
+    <!--更改个人资料页面翻译-->
+    <string name="edit_profile_title">Edit profile</string>
+    <string name="edit_profile_save">Save</string>
+    <string name="edit_profile_name">Name</string>
+    <string name="edit_profile_about_me">About me</string>
+    <string name="edit_profile_name_hint">Please enter your name</string>
+    <string name="edit_profile_about_me_hint">Please introduce yourself</string>
 
 </resources>

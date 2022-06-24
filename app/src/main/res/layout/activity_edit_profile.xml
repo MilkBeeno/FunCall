@@ -1,9 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".main.ui.act.EditProfileActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.milk.funcall.common.ui.view.HeaderToolbar
+        android:id="@+id/headerToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="42dp" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="14dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/flEditAvatar"
+                android:layout_width="77dp"
+                android:layout_height="77dp"
+                android:layout_marginTop="19dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivUserAvatar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/common_default_man" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/edit_select_photo_album" />
+            </FrameLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="19dp"
+                android:text="@string/edit_profile_name"
+                android:textColor="@color/FF1E1E21"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etName"
+                android:layout_width="match_parent"
+                android:layout_height="43dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_edit_profile_input_background"
+                android:hint="@string/edit_profile_name_hint"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:textColor="@color/FFB7BACC"
+                android:textSize="14sp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="19dp"
+                android:text="@string/edit_profile_about_me"
+                android:textColor="@color/FF1E1E21"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="106dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_edit_profile_input_background">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etAboutMe"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:gravity="start"
+                    android:hint="@string/edit_profile_about_me_hint"
+                    android:padding="14dp"
+                    android:textColor="@color/FFB7BACC"
+                    android:textSize="14sp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginEnd="14dp"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="@color/FFB7BACC"
+                    android:textSize="12sp"
+                    tools:text="0/150" />
+            </FrameLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.core.widget.NestedScrollView>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvSave"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="14dp"
+        android:background="@drawable/shape_common_next_background"
+        android:gravity="center"
+        android:text="@string/edit_profile_save"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>
