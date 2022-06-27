@@ -5,5 +5,6 @@ data class HomModel(
     val userAvatar: String,
     val userName: String = "",
     val userImage: String = "",
-    val isOnline: Boolean = false
+    val isOnline: Boolean = false,
+    val isSmallImage: Boolean = false
 )

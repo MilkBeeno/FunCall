@@ -34,10 +34,11 @@
     <string name="main_nav_message">Message</string>
     <string name="main_nav_home">Home</string>
     <string name="main_nav_mine">Mine</string>
-    <!--聊天页面翻译-->
-    <string name="message_title">Message</string>
-    <string name="message_list_empty">No Message</string>
-    <!--我的页面翻译-->
+    <!--Home页面翻译-->
+    <string name="home_online">Online</string>
+    <string name="home_offline">Offline</string>
+    <string name="home_title">Discover</string>
+    <!--Mine页面翻译-->
     <string name="mine_default_user_name">User\'s Nickname</string>
     <string name="mine_follows">Follows</string>
     <string name="mine_fans">Fans</string>
@@ -45,6 +46,9 @@
     <string name="mine_sign_out">Sign out</string>
     <string name="mine_about_us">About us</string>
     <string name="mine_blacked_list">Blacked list</string>
+    <!--聊天页面翻译-->
+    <string name="message_title">Message</string>
+    <string name="message_list_empty">No Message</string>
     <!--更改个人资料页面翻译-->
     <string name="edit_profile_title">Edit profile</string>
     <string name="edit_profile_save">Save</string>

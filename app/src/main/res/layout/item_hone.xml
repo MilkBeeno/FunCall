@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="166dp"
-    android:layout_height="125dp">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:layout_width="166dp">
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/ivMoment"
+        android:id="@+id/ivUserImage"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="8dp"
+        android:layout_height="wrap_content"
+        android:minHeight="125dp"
         android:scaleType="centerCrop" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="8dp"
-        android:gravity="center_vertical">
+        android:layout_height="38dp"
+        android:background="@drawable/shape_home_top_shadow"
+        android:gravity="center_vertical"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp">
 
         <FrameLayout
             android:layout_width="19dp"

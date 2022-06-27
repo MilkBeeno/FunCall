@@ -3,9 +3,11 @@ package com.milk.funcall.main.ui.frag
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.jeremyliao.liveeventbus.LiveEventBus
+import com.milk.funcall.R
 import com.milk.funcall.common.constrant.EventKey
+import com.milk.funcall.common.paging.StaggeredGridDecoration
 import com.milk.funcall.common.paging.status.AppendStatus
 import com.milk.funcall.common.paging.status.RefreshStatus
 import com.milk.funcall.common.ui.AbstractFragment
@@ -35,9 +37,13 @@ class HomeFragment : AbstractFragment() {
     }
 
     override fun initializeView() {
+        binding.headerToolbar.setTitle(R.string.home_title)
         binding.rvHome.adapter = adapter.withLoadStateFooterAdapter()
         binding.rvHome.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        binding.rvHome.addItemDecoration(
+            StaggeredGridDecoration(requireContext(), 10, 4)
+        )
         lifecycleScope.launch {
             delay(3000)
             homeViewModel.pagingSource.flow.collectLatest {

@@ -20,15 +20,24 @@ class HomeViewModel : ViewModel() {
     )
     var isload = false
     private fun getData(index: Int): ApiPagingResponse<HomModel> {
-        if (index==1) return ApiPagingResponse(code = 2000, message = "", data = mutableListOf())
-      //  if (isload) return throw Exception("错误")
-        isload = true
+        //if (index==1) return ApiPagingResponse(code = 2000, message = "", data = mutableListOf())
+        //  if (isload) return throw Exception("错误")
+        // isload = true
         //Logger.d("打印的Index是=${index}", "hlc")
         val list = mutableListOf<HomModel>()
-        for (i in 0..2) {
-            //list.add(HomModel(userId = i * index.toLong(), userName = "数据是=${i * index}"))
+        for (i in 0..20) {
+            list.add(
+                HomModel(
+                    userId = (i * index).toLong(),
+                    userName = "用户名字是${(i * index)}Hello word！",
+                    userAvatar = "https://cdn.pixabay.com/photo/2018/04/19/21/17/panda-3334356_960_720.jpg",
+                    userImage = "https://cdn.pixabay.com/photo/2017/04/24/17/13/frog-2257133__340.jpg",
+                    isOnline = index < 5,
+                    isSmallImage = (i * index) % 2 == 0
+                )
+            )
         }
-        if (index == 3) return throw Exception("错误")
+        //if (index == 3) return throw Exception("错误")
         return ApiPagingResponse(code = 2000, message = "", data = list)
     }
 }
