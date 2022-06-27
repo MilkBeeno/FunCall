@@ -50,9 +50,15 @@
         </activity> <!-- 本地 Activity -->
         <activity
             android:name=".login.ui.act.LaunchActivity"
-            android:exported="false"
+            android:exported="true"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
+            tools:ignore="LockedOrientationActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".login.ui.act.GenderActivity"
             android:exported="false"
@@ -72,16 +78,10 @@
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".main.ui.act.MainActivity"
-            android:exported="true"
+            android:exported="false"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".main.ui.act.ChatMessageActivity"
             android:exported="false"

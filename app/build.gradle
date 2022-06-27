@@ -79,10 +79,17 @@ dependencies {
     // swipeRefreshLayout 下拉刷新功能
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
     // coil 图片加载框架
-    implementation("io.coil-kt:coil:2.1.0")
-    implementation("io.coil-kt:coil-gif:2.1.0")
-    implementation("io.coil-kt:coil-video:2.1.0")
-    implementation("io.coil-kt:coil-svg:2.1.0")
+    implementation "io.coil-kt:coil:2.1.0"
+    implementation "io.coil-kt:coil-gif:2.1.0"
+    implementation "io.coil-kt:coil-video:2.1.0"
+    implementation "io.coil-kt:coil-svg:2.1.0"
     // liveEventBus 事件通知
     implementation 'io.github.jeremyliao:live-event-bus-x:1.8.0'
+    // retrofit 网络请求
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+    implementation "com.google.code.gson:gson:2.8.8"
+    // Google 广告 ID 生成
+    implementation 'androidx.ads:ads-identifier:1.0.0-alpha04'
+    implementation 'com.google.guava:guava:28.0-android'
 }

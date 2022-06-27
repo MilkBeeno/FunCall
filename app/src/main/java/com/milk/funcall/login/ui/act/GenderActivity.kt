@@ -3,13 +3,17 @@ package com.milk.funcall.login.ui.act
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.milk.funcall.R
+import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.ui.Gender
 import com.milk.funcall.databinding.ActivityGenderBinding
+import com.milk.funcall.main.ui.act.MainActivity
 import com.milk.simple.ktx.color
 import com.milk.simple.ktx.immersiveStatusBar
+import com.milk.simple.mdr.KvManger
 
 class GenderActivity : AbstractActivity() {
     private val binding by lazy { ActivityGenderBinding.inflate(layoutInflater) }
@@ -25,24 +29,36 @@ class GenderActivity : AbstractActivity() {
     private fun initializeView() {
         updateManStatus(true)
         updateWomanStatus(false)
-        binding.clMan.setOnClickListener {
-            if (selectGender != Gender.Man) {
-                updateManStatus(true)
-                updateWomanStatus(false)
-                selectGender = Gender.Man
+        binding.clMan.setOnClickListener(this)
+        binding.clWoman.setOnClickListener(this)
+        binding.tvGenderNext.setOnClickListener(this)
+    }
+
+    override fun onMultipleClick(view: View) {
+        super.onMultipleClick(view)
+        when (view) {
+            binding.clMan -> {
+                if (selectGender != Gender.Man) {
+                    updateManStatus(true)
+                    updateWomanStatus(false)
+                    selectGender = Gender.Man
+                }
             }
-        }
-        binding.clWoman.setOnClickListener {
-            if (selectGender != Gender.Woman) {
-                updateManStatus(false)
-                updateWomanStatus(true)
-                selectGender = Gender.Woman
+            binding.clWoman -> {
+                if (selectGender != Gender.Woman) {
+                    updateManStatus(false)
+                    updateWomanStatus(true)
+                    selectGender = Gender.Woman
+                }
             }
-        }
-        binding.tvGenderNext.setOnClickListener {
-            LoginActivity.create(this, selectGender)
+            binding.tvGenderNext -> {
+                finish()
+                MainActivity.create(this)
+                KvManger.put(KvKey.USER_GENDER, selectGender.value)
+            }
         }
     }
+
 
     private fun updateManStatus(select: Boolean) {
         binding.clMan.setBackgroundResource(
