@@ -8,7 +8,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.DiffUtil
 import com.milk.funcall.R
 import com.milk.funcall.common.imageLoad.loadAvatar
-import com.milk.funcall.common.imageLoad.loadMoment
+import com.milk.funcall.common.imageLoad.loadSimple
 import com.milk.funcall.common.paging.AbstractPagingAdapter
 import com.milk.funcall.common.paging.FooterLoadStateAdapter
 import com.milk.funcall.common.paging.PagingViewHolder
@@ -36,7 +36,13 @@ class HomeAdapter : AbstractPagingAdapter<HomModel>(
             val params = layoutParams
             params.height = dpToPx(context, if (item.isSmallImage) 125f else 223f).toInt()
             layoutParams = params
-            loadMoment(item.userImage)
+            loadSimple(
+                item.userImage,
+                if (item.isSmallImage)
+                    R.drawable.home_default_small
+                else
+                    R.drawable.home_default_big
+            )
         }
         holder.getView<AppCompatImageView>(R.id.ivUserAvatar)
             .loadAvatar(item.userAvatar)

@@ -18,9 +18,9 @@ fun ImageView.loadAvatar(
     }
 }
 
-fun ImageView.loadMoment(
+fun ImageView.loadSimple(
     imageUrl: String,
-    @DrawableRes placeholder: Int = R.drawable.home_default
+    @DrawableRes placeholder: Int = R.drawable.home_default_big
 ) {
     load(imageUrl) {
         crossfade(true)
