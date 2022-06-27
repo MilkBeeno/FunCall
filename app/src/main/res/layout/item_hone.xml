@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:layout_width="166dp">
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/ivUserImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="125dp"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/roundCornerStyle_10" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -24,12 +26,16 @@
             android:layout_width="19dp"
             android:layout_height="19dp">
 
-            <androidx.appcompat.widget.AppCompatImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/ivUserAvatar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:padding="0.25dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/common_default_man" />
+                android:src="@drawable/common_default_man"
+                app:shapeAppearanceOverlay="@style/circleStyle"
+                app:strokeColor="@color/white"
+                app:strokeWidth="0.5dp" />
 
             <View
                 android:id="@+id/vState"

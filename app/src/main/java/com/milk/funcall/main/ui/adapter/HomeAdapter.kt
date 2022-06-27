@@ -7,8 +7,8 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.DiffUtil
 import com.milk.funcall.R
-import com.milk.funcall.common.imageLoad.loadCirclePicture
-import com.milk.funcall.common.imageLoad.loadRoundPicture
+import com.milk.funcall.common.imageLoad.loadAvatar
+import com.milk.funcall.common.imageLoad.loadMoment
 import com.milk.funcall.common.paging.AbstractPagingAdapter
 import com.milk.funcall.common.paging.FooterLoadStateAdapter
 import com.milk.funcall.common.paging.PagingViewHolder
@@ -36,10 +36,10 @@ class HomeAdapter : AbstractPagingAdapter<HomModel>(
             val params = layoutParams
             params.height = dpToPx(context, if (item.isSmallImage) 125f else 223f).toInt()
             layoutParams = params
-            loadRoundPicture(item.userImage, 20f)
+            loadMoment(item.userImage)
         }
         holder.getView<AppCompatImageView>(R.id.ivUserAvatar)
-            .loadCirclePicture(item.userAvatar)
+            .loadAvatar(item.userAvatar)
         holder.getView<View>(R.id.vState).setBackgroundResource(
             if (item.isOnline)
                 R.drawable.shape_home_online_state
