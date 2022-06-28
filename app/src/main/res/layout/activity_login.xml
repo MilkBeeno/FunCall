@@ -78,7 +78,7 @@
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/llTourist"
+        android:id="@+id/llDevice"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginStart="38dp"
@@ -97,7 +97,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:text="@string/login_tourist"
+            android:text="@string/login_device"
             android:textColor="@color/FF8E58FB"
             android:textSize="16sp"
             android:textStyle="bold" />

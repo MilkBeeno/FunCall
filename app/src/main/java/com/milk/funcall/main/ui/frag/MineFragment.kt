@@ -35,7 +35,7 @@ class MineFragment : AbstractFragment() {
 
     override fun initializeObserver() {
         lifecycleScope.launch {
-            Account.isLoggedState.collectLatest {
+            Account.isLogged.collectLatest {
                 if (it) binding.flNotSigned.gone() else binding.flNotSigned.visible()
             }
         }

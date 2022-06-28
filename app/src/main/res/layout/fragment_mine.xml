@@ -147,6 +147,8 @@
             android:layout_gravity="center"
             android:background="@drawable/shape_common_next_background"
             android:gravity="center"
-            android:text="@string/mine_login" />
+            android:text="@string/mine_login"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
     </FrameLayout>
 </FrameLayout>

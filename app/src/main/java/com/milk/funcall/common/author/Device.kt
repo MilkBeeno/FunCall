@@ -3,32 +3,27 @@ package com.milk.funcall.common.author
 import android.content.Context
 import androidx.ads.identifier.AdvertisingIdClient
 import androidx.ads.identifier.AdvertisingIdInfo
-import androidx.lifecycle.liveData
 import com.google.common.util.concurrent.FutureCallback
-import com.google.common.util.concurrent.Futures.addCallback
-import com.milk.simple.ktx.ioScope
+import com.google.common.util.concurrent.Futures
 import java.util.concurrent.Executors
 
-object AdIdClient {
-
-    fun determineAdvertisingInfo(context: Context) = liveData {
+object Device {
+    fun obtain(context: Context, resultRequest: (Boolean, String) -> Unit) {
         if (AdvertisingIdClient.isAdvertisingIdProviderAvailable(context)) {
             val advertisingIdInfoListenableFuture =
                 AdvertisingIdClient.getAdvertisingIdInfo(context)
-            addCallback(
+            Futures.addCallback(
                 advertisingIdInfoListenableFuture,
                 object : FutureCallback<AdvertisingIdInfo> {
                     override fun onSuccess(adInfo: AdvertisingIdInfo?) {
-                        ioScope { this@liveData.emit(value = adInfo?.id.toString()) }
+                        resultRequest(true, adInfo?.id.toString())
                     }
 
                     override fun onFailure(t: Throwable) {
-                        ioScope { emit(null) }
+                        resultRequest(true, "")
                     }
                 }, Executors.newSingleThreadExecutor()
             )
-        } else {
-            ioScope { emit(null) }
-        }
+        } else resultRequest(true, "")
     }
 }

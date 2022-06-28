@@ -19,11 +19,12 @@
     <!--登录页面翻译-->
     <string name="login_google">Google</string>
     <string name="login_facebook">Facebook</string>
-    <string name="login_tourist">Tourist</string>
+    <string name="login_device">Direct Use</string>
     <string name="login_privacy_desc">Agree to \" User  Agreement \" and  \" Privacy  Policy \"</string>
     <string name="login_user_agreement">User  Agreement</string>
     <string name="login_user_privacy">Privacy  Policy</string>
     <string name="login_check_privacy">Please confirm the privacy agreement first!</string>
+    <string name="login_obtain_device_failed">Login failed, unable to get Google Admob ID</string>
     <!--创建名字页面翻译-->
     <string name="create_name_title">Basic Information</string>
     <string name="create_name_tag">Name</string>

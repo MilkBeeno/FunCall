@@ -4,16 +4,15 @@ import android.content.Intent
 import androidx.fragment.app.FragmentActivity
 
 class AuthLoginManager(activity: FragmentActivity) {
-
     var cancel: (() -> Unit)? = null
     var failed: (() -> Unit)? = null
-    var success: ((String) -> Unit)? = null
+    var success: ((AuthType, String) -> Unit)? = null
 
     private val facebookAuth by lazy {
         FacebookAuth(activity).apply {
             onCancelListener { cancel?.invoke() }
             onFailedListener { failed?.invoke() }
-            onSuccessListener { success?.invoke(it) }
+            onSuccessListener { success?.invoke(AuthType.Facebook, it) }
         }
     }
 
