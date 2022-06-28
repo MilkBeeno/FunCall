@@ -92,4 +92,6 @@ dependencies {
     // Google 广告 ID 生成
     implementation 'androidx.ads:ads-identifier:1.0.0-alpha04'
     implementation 'com.google.guava:guava:28.0-android'
+    // image 高斯模糊库
+    implementation 'com.github.centerzx:ShapeBlurView:1.0.1'
 }

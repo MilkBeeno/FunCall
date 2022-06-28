@@ -46,6 +46,7 @@
     <string name="mine_sign_out">Sign out</string>
     <string name="mine_about_us">About us</string>
     <string name="mine_blacked_list">Blacked list</string>
+    <string name="mine_login">Log In</string>
     <!--聊天页面翻译-->
     <string name="message_title">Message</string>
     <string name="message_list_empty">No Message</string>
@@ -56,5 +57,4 @@
     <string name="edit_profile_about_me">About me</string>
     <string name="edit_profile_name_hint">Please enter your name</string>
     <string name="edit_profile_about_me_hint">Please introduce yourself</string>
-
 </resources>

@@ -14,7 +14,8 @@
             android:layout_width="77dp"
             android:layout_height="77dp"
             android:layout_marginTop="31dp"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            android:src="@drawable/common_default_man" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvUserName"
@@ -134,13 +135,18 @@
         android:layout_height="match_parent"
         android:visibility="gone">
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <net.center.blurview.ShapeBlurView
+            android:id="@+id/ivGaussianBlur"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center" />
+            android:id="@+id/tvLogin"
+            android:layout_width="132dp"
+            android:layout_height="42dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_common_next_background"
+            android:gravity="center"
+            android:text="@string/mine_login" />
     </FrameLayout>
 </FrameLayout>

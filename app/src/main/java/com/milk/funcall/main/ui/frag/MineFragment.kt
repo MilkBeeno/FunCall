@@ -1,11 +1,17 @@
 package com.milk.funcall.main.ui.frag
 
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import com.milk.funcall.R
 import com.milk.funcall.common.ui.AbstractFragment
 import com.milk.funcall.databinding.FragmentMineBinding
+import com.milk.funcall.login.ui.act.LoginActivity
 import com.milk.funcall.main.Account
 import com.milk.funcall.main.ui.act.*
+import com.milk.simple.ktx.gone
+import com.milk.simple.ktx.visible
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class MineFragment : AbstractFragment() {
     private val binding by lazy { FragmentMineBinding.inflate(layoutInflater) }
@@ -19,10 +25,20 @@ class MineFragment : AbstractFragment() {
         binding.blackedList.setOnClickListener(this)
         binding.aboutUs.setOnClickListener(this)
         binding.signOut.setOnClickListener(this)
+        binding.tvLogin.setOnClickListener(this)
+        binding.flNotSigned.setOnClickListener(this)
         binding.editProfile.setOption(R.drawable.mine_edit_profile, R.string.mine_edit_profile)
         binding.blackedList.setOption(R.drawable.mine_blacked_list, R.string.mine_blacked_list)
         binding.aboutUs.setOption(R.drawable.mine_about_us, R.string.mine_about_us)
         binding.signOut.setOption(R.drawable.mine_sign_out, R.string.mine_sign_out, false)
+    }
+
+    override fun initializeObserver() {
+        lifecycleScope.launch {
+            Account.isLoggedState.collectLatest {
+                if (it) binding.flNotSigned.gone() else binding.flNotSigned.visible()
+            }
+        }
     }
 
     override fun onMultipleClick(view: View) {
@@ -45,6 +61,9 @@ class MineFragment : AbstractFragment() {
             }
             binding.signOut -> {
                 Account.logout()
+            }
+            binding.tvLogin -> {
+                LoginActivity.create(requireContext())
             }
         }
     }
