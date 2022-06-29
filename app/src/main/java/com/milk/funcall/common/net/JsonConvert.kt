@@ -8,7 +8,7 @@ import com.google.gson.stream.JsonToken
 import com.google.gson.stream.JsonWriter
 import java.lang.reflect.Type
 
-object JsonFilter {
+object JsonConvert {
     val gson: Gson by lazy {
         GsonBuilder()
             .registerTypeAdapter(Boolean::class.java, BooleanTypeAdapter())

@@ -26,7 +26,7 @@ object ApiClient {
             mainRetrofit = Retrofit.Builder()
                 .baseUrl(MainHost().realUrl)
                 .client(client)
-                .addConverterFactory(GsonConverterFactory.create(JsonFilter.gson))
+                .addConverterFactory(GsonConverterFactory.create(JsonConvert.gson))
                 .build()
         return checkNotNull(mainRetrofit)
     }
