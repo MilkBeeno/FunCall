@@ -13,6 +13,7 @@ import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.web.WebActivity
 import com.milk.funcall.databinding.ActivityLoginBinding
 import com.milk.funcall.login.ui.vm.LoginViewModel
+import com.milk.funcall.main.ui.act.MainActivity
 import com.milk.simple.ktx.*
 
 class LoginActivity : AbstractActivity() {
@@ -51,10 +52,12 @@ class LoginActivity : AbstractActivity() {
             loginViewModel.login(type, accessToken)
         }
         loginViewModel.loginRequest = {
-
+            finish()
+            MainActivity.create(this)
         }
         loginViewModel.registerRequest = {
-
+            finish()
+            CreateNameActivity.create(this)
         }
         loginViewModel.failedRequest = {
 

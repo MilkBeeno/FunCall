@@ -1,14 +1,26 @@
 package com.milk.funcall.common.net
 
 import com.milk.funcall.common.data.ApiResponse
-import com.milk.simple.log.Logger
+import com.milk.funcall.common.net.handler.ApiErrorHandler
 
 
-suspend fun <T> retrofitCatch(action: suspend () -> ApiResponse<T>): ApiResponse<T> {
+suspend fun <T> retrofitCatch(
+    unifiedProcessing: Boolean = true,
+    action: suspend () -> ApiResponse<T>
+): ApiResponse<T> {
     return try {
-        action().apply { success = code == 200 }
+        val response = action()
+        when {
+            response.code == 200 -> {
+                response.success = true
+            }
+            unifiedProcessing -> {
+                ApiErrorHandler.post(response.code, response.message)
+            }
+        }
+        response
     } catch (e: Exception) {
-        Logger.d("Request is:${e.message}", "ApiError")
-        ApiResponse(code = 100, message = e.message.toString())
+        ApiErrorHandler.post(ApiErrorHandler.retrofitCatchCode, e.message.toString())
+        ApiResponse(ApiErrorHandler.retrofitCatchCode, e.message.toString())
     }
 }

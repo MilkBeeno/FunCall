@@ -3,6 +3,7 @@ package com.milk.funcall.common.net
 import com.milk.funcall.common.net.host.MainHost
 import com.milk.funcall.common.net.interceptor.ApiLogInterceptor
 import com.milk.funcall.common.net.interceptor.ApiParamsInterceptor
+import com.milk.funcall.common.net.json.JsonConvert
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

@@ -1,6 +1,6 @@
 package com.milk.funcall.common.net.interceptor
 
-import com.milk.funcall.common.net.JsonConvert
+import com.milk.funcall.common.net.json.JsonConvert
 import okhttp3.FormBody
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaTypeOrNull

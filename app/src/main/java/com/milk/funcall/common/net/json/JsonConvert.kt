@@ -1,4 +1,4 @@
-package com.milk.funcall.common.net
+package com.milk.funcall.common.net.json
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
