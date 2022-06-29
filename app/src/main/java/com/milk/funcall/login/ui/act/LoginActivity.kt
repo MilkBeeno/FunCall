@@ -12,6 +12,7 @@ import com.milk.funcall.common.author.DeviceNumber
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.web.WebActivity
 import com.milk.funcall.databinding.ActivityLoginBinding
+import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.login.ui.vm.LoginViewModel
 import com.milk.funcall.main.ui.act.MainActivity
 import com.milk.simple.ktx.*
@@ -20,6 +21,7 @@ class LoginActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityLoginBinding>()
     private val loginViewModel by viewModels<LoginViewModel>()
     private val authLoginManager = AuthLoginManager(this)
+    private val loadingDialog by lazy { LoadingDialog(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +29,7 @@ class LoginActivity : AbstractActivity() {
         immersiveStatusBar()
         initializeView()
         initializeCallback()
+        loadingDialog.show()
     }
 
     private fun initializeView() {
