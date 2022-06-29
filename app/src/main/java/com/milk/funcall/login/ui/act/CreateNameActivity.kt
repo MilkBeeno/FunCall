@@ -15,10 +15,11 @@ import com.milk.simple.keyboard.KeyBoardUtil
 import com.milk.simple.ktx.immersiveStatusBar
 import com.milk.simple.ktx.showToast
 import com.milk.simple.ktx.string
+import com.milk.simple.ktx.viewBinding
 import com.milk.simple.mdr.KvManger
 
 class CreateNameActivity : AbstractActivity() {
-    private val binding by lazy { ActivityCreateNameBinding.inflate(layoutInflater) }
+    private val binding by viewBinding<ActivityCreateNameBinding>()
     private val gender by lazy { KvManger.getInt(KvKey.USER_GENDER) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

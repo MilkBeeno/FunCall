@@ -10,9 +10,10 @@ import com.milk.funcall.databinding.ActivityEditProfileBinding
 import com.milk.simple.keyboard.KeyBoardUtil
 import com.milk.simple.ktx.immersiveStatusBar
 import com.milk.simple.ktx.string
+import com.milk.simple.ktx.viewBinding
 
 class EditProfileActivity : AbstractActivity() {
-    private val binding by lazy { ActivityEditProfileBinding.inflate(layoutInflater) }
+    private val binding by viewBinding<ActivityEditProfileBinding>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
