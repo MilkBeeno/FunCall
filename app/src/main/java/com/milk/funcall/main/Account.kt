@@ -13,7 +13,7 @@ object Account {
     var userId = MutableLiveData<Long>(123)
     var userName = MutableLiveData<String>("")
 
-    fun initialize() {
+    internal fun initialize() {
         ioScope {
             val loggedState = KvManger.getBoolean(KvKey.USER_LOGGED_STATE)
             if (loggedState) {
@@ -23,16 +23,16 @@ object Account {
         }
     }
 
-    fun logged(token: String) {
+    internal fun logged(token: String) {
         ioScope {
             isLogged.emit(true)
             accessToken.emit(token)
             KvManger.put(KvKey.USER_LOGGED_STATE, true)
-            KvManger.put(KvKey.USER_ACCESS_TOKEN, accessToken)
+            KvManger.put(KvKey.USER_ACCESS_TOKEN, token)
         }
     }
 
-    fun logout() {
+    internal fun logout() {
         ioScope {
             isLogged.emit(false)
             accessToken.emit("")
