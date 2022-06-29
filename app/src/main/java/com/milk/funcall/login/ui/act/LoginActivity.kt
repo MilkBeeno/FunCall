@@ -8,13 +8,12 @@ import androidx.activity.viewModels
 import com.milk.funcall.R
 import com.milk.funcall.common.author.AuthLoginManager
 import com.milk.funcall.common.author.AuthType
-import com.milk.funcall.common.author.Device
+import com.milk.funcall.common.author.DeviceNumber
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.web.WebActivity
 import com.milk.funcall.databinding.ActivityLoginBinding
 import com.milk.funcall.login.ui.vm.LoginViewModel
 import com.milk.simple.ktx.*
-import com.milk.simple.log.Logger
 
 class LoginActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityLoginBinding>()
@@ -90,7 +89,7 @@ class LoginActivity : AbstractActivity() {
 
     private fun checkIsAllowedToLoginAuth(request: (String) -> Unit) {
         if (loginViewModel.agreementPrivacy) {
-            Device.obtain(this@LoginActivity) { success, deviceId ->
+            DeviceNumber.obtain(this@LoginActivity) { success, deviceId ->
                 if (success && deviceId.isNotBlank())
                     mainScope { request(deviceId) }
                 else

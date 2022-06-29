@@ -7,7 +7,7 @@ import com.google.common.util.concurrent.FutureCallback
 import com.google.common.util.concurrent.Futures
 import java.util.concurrent.Executors
 
-object Device {
+object DeviceNumber {
     fun obtain(context: Context, resultRequest: (Boolean, String) -> Unit) {
         if (AdvertisingIdClient.isAdvertisingIdProviderAvailable(context)) {
             val advertisingIdInfoListenableFuture =
