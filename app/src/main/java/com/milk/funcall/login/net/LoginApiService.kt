@@ -10,7 +10,7 @@ interface LoginApiService {
 
     @FormUrlEncoded
     @POST("/funcall/login")
-    fun login(
+    suspend fun login(
         @Field("deviceUniqueCode") deviceNum: String,
         @Field("oauthType") authType: String,
         @Field("openid") accessToken: String

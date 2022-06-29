@@ -2,6 +2,7 @@ package com.milk.funcall.common.net
 
 import com.milk.funcall.common.net.host.MainHost
 import com.milk.funcall.common.net.interceptor.ApiLogInterceptor
+import com.milk.funcall.common.net.interceptor.ApiParamsInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -17,6 +18,7 @@ object ApiClient {
                 .connectTimeout(5, TimeUnit.SECONDS)
                 .readTimeout(8, TimeUnit.SECONDS)
                 .writeTimeout(8, TimeUnit.SECONDS)
+                .addInterceptor(ApiParamsInterceptor())
                 .addInterceptor(ApiLogInterceptor())
                 .build()
         }
