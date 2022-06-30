@@ -29,7 +29,6 @@ class LoginActivity : AbstractActivity() {
         immersiveStatusBar()
         initializeView()
         initializeCallback()
-        loadingDialog.show()
     }
 
     private fun initializeView() {
@@ -52,18 +51,21 @@ class LoginActivity : AbstractActivity() {
     private fun initializeCallback() {
         authLoginManager.success = { type, accessToken ->
             //Logger.d("获取的accessToken是=${accessToken}", "hlc")
+            loadingDialog.show()
             loginViewModel.login(type, accessToken)
         }
         loginViewModel.loginRequest = {
+            loadingDialog.dismiss()
             finish()
             MainActivity.create(this)
         }
         loginViewModel.registerRequest = {
+            loadingDialog.dismiss()
             finish()
             CreateNameActivity.create(this)
         }
         loginViewModel.failedRequest = {
-
+            loadingDialog.dismiss()
         }
     }
 
@@ -78,6 +80,7 @@ class LoginActivity : AbstractActivity() {
                 authLoginManager.facebookAuth()
             }
             binding.llDevice -> checkIsAllowedToLoginAuth {
+                loadingDialog.show()
                 loginViewModel.currentDeviceId = it
                 loginViewModel.login(AuthType.Device, it)
             }

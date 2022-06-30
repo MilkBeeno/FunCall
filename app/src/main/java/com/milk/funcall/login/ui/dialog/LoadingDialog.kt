@@ -7,12 +7,10 @@ import com.milk.funcall.databinding.DialogLoadingBinding
 
 class LoadingDialog(activity: AbstractActivity) : AbstractDialog<DialogLoadingBinding>(activity) {
     init {
-        binding.loading.setAnimation("loading.json")
-    }
-
-    override fun initialize() {
         setDimAmount(0.1f)
-        setCanceledOnTouchOutside(true)
+        setCancelable(false)
+        setCanceledOnTouchOutside(false)
+        binding.loading.setAnimation("loading.json")
     }
 
     override fun getViewBinding(): DialogLoadingBinding {

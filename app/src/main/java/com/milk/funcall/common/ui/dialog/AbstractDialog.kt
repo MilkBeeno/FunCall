@@ -7,8 +7,11 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
 
-abstract class AbstractDialog<T : ViewBinding>(protected val activity: FragmentActivity) {
+abstract class AbstractDialog<T : ViewBinding>(val activity: FragmentActivity) {
     private var dialog: Dialog? = null
+    private var dimAmount: Float = 0f
+    private var cancelable: Boolean = true
+    private var canceledOnTouchOutside: Boolean = true
     private var dismissRequest: (() -> Unit)? = null
     protected val binding: T by lazy { getViewBinding() }
 
@@ -21,21 +24,23 @@ abstract class AbstractDialog<T : ViewBinding>(protected val activity: FragmentA
         })
     }
 
+    abstract fun getViewBinding(): T
+
     private fun createDialog() {
         if (dialog == null) {
             dialog = Dialog(activity).apply {
                 setContentView(binding.root)
                 window?.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
                 window?.setBackgroundDrawableResource(android.R.color.transparent)
+                setCancelable(cancelable)
+                setCanceledOnTouchOutside(canceledOnTouchOutside)
                 setOnCancelListener { dismissRequest?.invoke() }
                 setOnDismissListener { dismissRequest?.invoke() }
-                initialize()
+                // 解决头设置透明度问题、需要放置这里
+                dialog?.window?.setDimAmount(dimAmount)
             }
         }
     }
-
-    abstract fun getViewBinding(): T
-    abstract fun initialize()
 
     open fun show() {
         createDialog()
@@ -47,10 +52,14 @@ abstract class AbstractDialog<T : ViewBinding>(protected val activity: FragmentA
     }
 
     open fun setDimAmount(amount: Float) {
-        dialog?.window?.setDimAmount(amount)
+        dimAmount = amount
     }
 
-    open fun setCanceledOnTouchOutside(cancel: Boolean = true) {
-        dialog?.setCanceledOnTouchOutside(cancel)
+    open fun setCanceledOnTouchOutside(cancel: Boolean) {
+        canceledOnTouchOutside = cancel
+    }
+
+    open fun setCancelable(flag: Boolean) {
+        cancelable = flag
     }
 }
