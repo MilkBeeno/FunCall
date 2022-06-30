@@ -15,5 +15,5 @@ data class UserInfoModel(
     val originalAvatarUrl: String = "",
     val selfIntroduction: String = "",
     val sortInfo: UserSortModel? = null,
-    val userMaterialList: UserMediaModel? = null
+    val userMaterialList: MutableList<UserMediaModel>? = null
 )
