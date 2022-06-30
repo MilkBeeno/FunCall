@@ -64,6 +64,7 @@ object Account {
 
     internal fun logout() {
         ioScope {
+            gender = Gender.Man
             isLogged = false
             accessToken = ""
             isLoggedState.emit(false)

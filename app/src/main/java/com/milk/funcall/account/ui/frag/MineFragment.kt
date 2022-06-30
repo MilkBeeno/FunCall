@@ -5,8 +5,10 @@ import androidx.lifecycle.lifecycleScope
 import com.milk.funcall.R
 import com.milk.funcall.account.Account
 import com.milk.funcall.account.ui.act.*
+import com.milk.funcall.account.ui.dialog.LogoutDialog
 import com.milk.funcall.common.ui.AbstractFragment
 import com.milk.funcall.databinding.FragmentMineBinding
+import com.milk.funcall.login.ui.act.GenderActivity
 import com.milk.funcall.login.ui.act.LoginActivity
 import com.milk.simple.ktx.gone
 import com.milk.simple.ktx.visible
@@ -15,6 +17,12 @@ import kotlinx.coroutines.launch
 
 class MineFragment : AbstractFragment() {
     private val binding by lazy { FragmentMineBinding.inflate(layoutInflater) }
+    private val dialog by lazy {
+        LogoutDialog(requireActivity()) {
+            Account.logout()
+            GenderActivity.create(requireActivity())
+        }
+    }
 
     override fun getRootView(): View = binding.root
 
@@ -44,27 +52,13 @@ class MineFragment : AbstractFragment() {
     override fun onMultipleClick(view: View) {
         super.onMultipleClick(view)
         when (view) {
-            binding.llFollows -> {
-                FollowsActivity.create(requireContext())
-            }
-            binding.llFans -> {
-                FansActivity.create(requireContext())
-            }
-            binding.editProfile -> {
-                EditProfileActivity.create(requireContext())
-            }
-            binding.blackedList -> {
-                BlackedListActivity.create(requireContext())
-            }
-            binding.aboutUs -> {
-                AboutUsActivity.create(requireContext())
-            }
-            binding.signOut -> {
-                Account.logout()
-            }
-            binding.tvLogin -> {
-                LoginActivity.create(requireContext())
-            }
+            binding.llFollows -> FollowsActivity.create(requireContext())
+            binding.llFans -> FansActivity.create(requireContext())
+            binding.editProfile -> EditProfileActivity.create(requireContext())
+            binding.blackedList -> BlackedListActivity.create(requireContext())
+            binding.aboutUs -> AboutUsActivity.create(requireContext())
+            binding.signOut -> dialog.show()
+            binding.tvLogin -> LoginActivity.create(requireContext())
         }
     }
 

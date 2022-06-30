@@ -1,11 +1,11 @@
 package com.milk.funcall.login.ui.dialog
 
 import android.view.LayoutInflater
-import com.milk.funcall.common.ui.AbstractActivity
-import com.milk.funcall.common.ui.dialog.AbstractDialog
+import androidx.fragment.app.FragmentActivity
+import com.milk.funcall.common.ui.dialog.SimpleDialog
 import com.milk.funcall.databinding.DialogLoadingBinding
 
-class LoadingDialog(activity: AbstractActivity) : AbstractDialog<DialogLoadingBinding>(activity) {
+class LoadingDialog(activity: FragmentActivity) : SimpleDialog<DialogLoadingBinding>(activity) {
     init {
         setDimAmount(0.1f)
         setCancelable(false)

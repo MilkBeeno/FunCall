@@ -49,6 +49,9 @@
     <string name="mine_about_us">About us</string>
     <string name="mine_blacked_list">Blacked list</string>
     <string name="mine_login">Log In</string>
+    <string name="mine_log_out_title">Are you sure you want to log out?</string>
+    <string name="mine_log_out_confirm">Sign Out</string>
+    <string name="mine_log_out_cancel">Cancel</string>
     <!--聊天页面翻译-->
     <string name="message_title">Message</string>
     <string name="message_list_empty">No Message</string>
