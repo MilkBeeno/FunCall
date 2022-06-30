@@ -1,5 +1,6 @@
 package com.milk.funcall.common.net.interceptor
 
+import com.milk.funcall.account.Account
 import com.milk.funcall.common.net.json.JsonConvert
 import okhttp3.FormBody
 import okhttp3.Interceptor
@@ -21,6 +22,8 @@ class ApiParamsInterceptor : Interceptor {
                 //val httpUrl = urlBuilder.build()
                 //urlBuilder.addEncodedQueryParameter("","")
                 requestBuilder.url(urlBuilder.build())
+                if (Account.accessToken.isNotBlank())
+                    requestBuilder.addHeader("X-Access-Token", Account.accessToken)
             }
             postModel -> {
                 val requestBody = request.body

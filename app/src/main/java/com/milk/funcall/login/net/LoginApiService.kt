@@ -1,5 +1,6 @@
 package com.milk.funcall.login.net
 
+import com.milk.funcall.user.data.UserInfoModel
 import com.milk.funcall.common.data.ApiResponse
 import com.milk.funcall.login.data.LoginModel
 import retrofit2.http.Field
@@ -18,5 +19,5 @@ interface LoginApiService {
     ): ApiResponse<LoginModel>
 
     @GET("/funcall/currentUserInfo")
-    suspend fun obtainUserInfo()
+    suspend fun obtainUserInfo():ApiResponse<UserInfoModel>
 }

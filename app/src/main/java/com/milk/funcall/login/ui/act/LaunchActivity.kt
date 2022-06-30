@@ -40,7 +40,7 @@ class LaunchActivity : AbstractActivity() {
             override fun onAnimationCancel(p0: Animator?) = Unit
             override fun onAnimationRepeat(p0: Animator?) = Unit
             override fun onAnimationEnd(p0: Animator?) {
-                if (Account.isLogged.value)
+                if (Account.isLogged)
                     MainActivity.create(this@LaunchActivity)
                 else
                     GenderActivity.create(this@LaunchActivity)

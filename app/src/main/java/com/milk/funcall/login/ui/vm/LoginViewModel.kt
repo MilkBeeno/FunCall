@@ -21,15 +21,23 @@ class LoginViewModel : ViewModel() {
             val apiResult = apiResponse.data
             if (apiResponse.success && apiResult != null) {
                 Account.logged(apiResult.accessToken)
-                if (apiResult.registeredFlag)
-                    loginRequest?.invoke()
-                else
-                    registerRequest?.invoke()
+
+                obtainUserInfo()
+                //if (apiResult.registeredFlag)
+                //    loginRequest?.invoke()
+               // else
+                //    registerRequest?.invoke()
             } else failedRequest?.invoke()
         }
     }
 
     private fun obtainUserInfo() {
+        ioScope {
+            val apiResponse = loginRepository.obtainUserInfo()
+            val apiResult = apiResponse.data
+            if (apiResponse.success && apiResult != null) {
 
+            } else failedRequest?.invoke()
+        }
     }
 }

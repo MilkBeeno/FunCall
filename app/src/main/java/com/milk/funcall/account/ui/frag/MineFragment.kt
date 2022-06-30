@@ -3,11 +3,11 @@ package com.milk.funcall.account.ui.frag
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import com.milk.funcall.R
+import com.milk.funcall.account.Account
+import com.milk.funcall.account.ui.act.*
 import com.milk.funcall.common.ui.AbstractFragment
 import com.milk.funcall.databinding.FragmentMineBinding
 import com.milk.funcall.login.ui.act.LoginActivity
-import com.milk.funcall.account.Account
-import com.milk.funcall.account.ui.act.*
 import com.milk.simple.ktx.gone
 import com.milk.simple.ktx.visible
 import kotlinx.coroutines.flow.collectLatest
@@ -35,7 +35,7 @@ class MineFragment : AbstractFragment() {
 
     override fun initializeObserver() {
         lifecycleScope.launch {
-            Account.isLogged.collectLatest {
+            Account.isLoggedState.collectLatest {
                 if (it) binding.flNotSigned.gone() else binding.flNotSigned.visible()
             }
         }

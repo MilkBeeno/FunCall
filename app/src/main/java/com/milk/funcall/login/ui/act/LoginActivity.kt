@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import com.milk.funcall.R
+import com.milk.funcall.app.ui.act.MainActivity
 import com.milk.funcall.common.author.AuthLoginManager
 import com.milk.funcall.common.author.AuthType
 import com.milk.funcall.common.author.DeviceNumber
@@ -14,7 +15,6 @@ import com.milk.funcall.common.web.WebActivity
 import com.milk.funcall.databinding.ActivityLoginBinding
 import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.login.ui.vm.LoginViewModel
-import com.milk.funcall.app.ui.act.MainActivity
 import com.milk.simple.ktx.*
 
 class LoginActivity : AbstractActivity() {

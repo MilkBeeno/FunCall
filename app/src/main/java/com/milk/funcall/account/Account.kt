@@ -1,8 +1,8 @@
 package com.milk.funcall.account
 
 import androidx.lifecycle.MutableLiveData
-import com.milk.funcall.account.ui.Gender
 import com.milk.funcall.common.constrant.KvKey
+import com.milk.funcall.user.type.Gender
 import com.milk.simple.ktx.ioScope
 import com.milk.simple.mdr.KvManger
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,40 +16,57 @@ object Account {
         }
         get() {
             val value = KvManger.getString(KvKey.USER_GENDER)
-            return if (value == Gender.Woman.value) Gender.Woman else Gender.Man
+            field = if (value == Gender.Woman.value) Gender.Woman else Gender.Man
+            return field
         }
 
-    internal val isLogged = MutableStateFlow(false)
-    internal var accessToken = MutableStateFlow("")
+    /** 获取本地保存当前用户的登录状态或更新登录状态 */
+    internal var isLogged: Boolean = false
+        set(value) {
+            KvManger.put(KvKey.USER_LOGGED_STATE, value)
+            field = value
+        }
+        get() {
+            field = KvManger.getBoolean(KvKey.USER_LOGGED_STATE)
+            return field
+        }
+
+    /** 登录状态事件流 */
+    internal val isLoggedState = MutableStateFlow(false)
+
+    /** 获取本地保存当前用户的登录 Token 或更新登录 Token */
+    internal var accessToken: String = ""
+        set(value) {
+            KvManger.put(KvKey.USER_ACCESS_TOKEN, value)
+            field = value
+        }
+        get() {
+            field = KvManger.getString(KvKey.USER_ACCESS_TOKEN)
+            return field
+        }
 
     var userId = MutableLiveData<Long>(123)
     var userName = MutableLiveData<String>("")
 
     internal fun initialize() {
         ioScope {
-            val loggedState = KvManger.getBoolean(KvKey.USER_LOGGED_STATE)
-            if (loggedState) {
-                isLogged.emit(true)
-                accessToken.emit(KvManger.getString(KvKey.USER_ACCESS_TOKEN))
-            } else isLogged.emit(false)
+            isLoggedState.emit(isLogged)
         }
     }
 
     internal fun logged(token: String) {
         ioScope {
-            isLogged.emit(true)
-            accessToken.emit(token)
-            KvManger.put(KvKey.USER_LOGGED_STATE, true)
-            KvManger.put(KvKey.USER_ACCESS_TOKEN, token)
+            isLogged = false
+            accessToken = token
+            isLoggedState.emit(true)
         }
     }
 
     internal fun logout() {
         ioScope {
-            isLogged.emit(false)
-            accessToken.emit("")
-            KvManger.put(KvKey.USER_LOGGED_STATE, false)
-            KvManger.put(KvKey.USER_ACCESS_TOKEN, "")
+            isLogged = false
+            accessToken = ""
+            isLoggedState.emit(false)
         }
     }
 

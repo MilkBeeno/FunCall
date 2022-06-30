@@ -9,7 +9,7 @@ class LoginRepository {
         ApiService.loginApiService.login(deviceNum, authType.value, accessToken)
     }
 
-    suspend fun obtainUserInfo(){
-
+    suspend fun obtainUserInfo() = retrofitCatch {
+        ApiService.loginApiService.obtainUserInfo()
     }
 }
