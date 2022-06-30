@@ -7,6 +7,6 @@ object KvKey {
     /** 用户通过 Google、Facebook、Device 登录后获取到有效的 AccessToken */
     const val USER_ACCESS_TOKEN = "USER_ACCESS_TOKEN"
 
-    /**  当前用户或游客的性别状态 */
+    /** 当前用户或游客的性别状态 */
     const val USER_GENDER = "USER_GENDER"
 }

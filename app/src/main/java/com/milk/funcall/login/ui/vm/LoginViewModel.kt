@@ -1,12 +1,13 @@
 package com.milk.funcall.login.ui.vm
 
 import androidx.lifecycle.ViewModel
+import com.milk.funcall.account.Account
 import com.milk.funcall.common.author.AuthType
 import com.milk.funcall.login.repo.LoginRepository
-import com.milk.funcall.main.Account
 import com.milk.simple.ktx.ioScope
 
 class LoginViewModel : ViewModel() {
+    private val loginRepository by lazy { LoginRepository() }
     var agreementPrivacy: Boolean = true
     var currentDeviceId: String = ""
     var loginRequest: (() -> Unit)? = null
@@ -16,7 +17,7 @@ class LoginViewModel : ViewModel() {
     fun login(authType: AuthType, accessToken: String) {
         ioScope {
             val apiResponse =
-                LoginRepository.login(currentDeviceId, authType, accessToken)
+                loginRepository.login(currentDeviceId, authType, accessToken)
             val apiResult = apiResponse.data
             if (apiResponse.success && apiResult != null) {
                 Account.logged(apiResult.accessToken)
@@ -26,5 +27,9 @@ class LoginViewModel : ViewModel() {
                     registerRequest?.invoke()
             } else failedRequest?.invoke()
         }
+    }
+
+    private fun obtainUserInfo() {
+
     }
 }

@@ -4,8 +4,8 @@ import android.animation.Animator
 import android.os.Bundle
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityLaunchBinding
-import com.milk.funcall.main.Account
-import com.milk.funcall.main.ui.act.MainActivity
+import com.milk.funcall.account.Account
+import com.milk.funcall.app.ui.act.MainActivity
 import com.milk.simple.ktx.gone
 import com.milk.simple.ktx.immersiveStatusBar
 import com.milk.simple.ktx.viewBinding

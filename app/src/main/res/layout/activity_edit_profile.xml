@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".main.ui.act.EditProfileActivity">
+    tools:context=".account.ui.act.EditProfileActivity">
 
     <com.milk.funcall.common.ui.view.HeaderToolbar
         android:id="@+id/headerToolbar"

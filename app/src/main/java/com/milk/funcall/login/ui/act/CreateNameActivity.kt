@@ -6,21 +6,21 @@ import android.os.Bundle
 import android.text.InputFilter
 import android.view.View
 import com.milk.funcall.R
-import com.milk.funcall.common.constrant.KvKey
+import com.milk.funcall.account.Account
+import com.milk.funcall.account.ui.Gender
+import com.milk.funcall.app.ui.act.MainActivity
 import com.milk.funcall.common.ui.AbstractActivity
-import com.milk.funcall.common.ui.Gender
 import com.milk.funcall.databinding.ActivityCreateNameBinding
-import com.milk.funcall.main.ui.act.MainActivity
 import com.milk.simple.keyboard.KeyBoardUtil
 import com.milk.simple.ktx.immersiveStatusBar
 import com.milk.simple.ktx.showToast
 import com.milk.simple.ktx.string
 import com.milk.simple.ktx.viewBinding
-import com.milk.simple.mdr.KvManger
 
 class CreateNameActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityCreateNameBinding>()
-    private val gender by lazy { KvManger.getInt(KvKey.USER_GENDER) }
+    private val gender = Account.gender
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -31,15 +31,14 @@ class CreateNameActivity : AbstractActivity() {
     private fun initializeView() {
         binding.headerToolbar.showArrowBack()
         binding.headerToolbar.setTitle(string(R.string.create_name_title))
-        val isFemale = gender == Gender.Woman.value
         binding.ivUserAvatar.setImageResource(
-            if (isFemale)
+            if (gender == Gender.Woman)
                 R.drawable.common_default_woman
             else
                 R.drawable.common_default_man
         )
         binding.ivUserGender.setImageResource(
-            if (isFemale)
+            if (gender == Gender.Woman)
                 R.drawable.create_name_gender_woman
             else
                 R.drawable.create_name_gender_man

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main.ui.act.MainActivity">
+    tools:context=".app.ui.act.MainActivity">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/background"
@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="UselessLeaf" />
 
-    <com.milk.funcall.main.ui.view.BottomNavigation
+    <com.milk.funcall.app.ui.view.BottomNavigation
         android:id="@+id/navigation"
         android:layout_width="match_parent"
         android:layout_height="50dp"

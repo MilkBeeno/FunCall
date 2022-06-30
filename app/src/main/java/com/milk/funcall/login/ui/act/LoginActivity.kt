@@ -14,7 +14,7 @@ import com.milk.funcall.common.web.WebActivity
 import com.milk.funcall.databinding.ActivityLoginBinding
 import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.login.ui.vm.LoginViewModel
-import com.milk.funcall.main.ui.act.MainActivity
+import com.milk.funcall.app.ui.act.MainActivity
 import com.milk.simple.ktx.*
 
 class LoginActivity : AbstractActivity() {
@@ -36,15 +36,18 @@ class LoginActivity : AbstractActivity() {
         binding.llFacebook.setOnClickListener(this)
         binding.llDevice.setOnClickListener(this)
         binding.ivPrivacyCheck.setOnClickListener(this)
-
         binding.tvPrivacy.text = string(R.string.login_privacy_desc)
         binding.tvPrivacy.setSpannableClick(
             Pair(
                 string(R.string.login_user_agreement),
-                colorClickableSpan(color(R.color.FF8E58FB)) { WebActivity.create(this) }),
+                colorClickableSpan(color(R.color.FF8E58FB)) {
+                    WebActivity.create(this)
+                }),
             Pair(
                 string(R.string.login_user_privacy),
-                colorClickableSpan(color(R.color.FF8E58FB)) { WebActivity.create(this) })
+                colorClickableSpan(color(R.color.FF8E58FB)) {
+                    WebActivity.create(this)
+                })
         )
     }
 
@@ -55,12 +58,10 @@ class LoginActivity : AbstractActivity() {
             loginViewModel.login(type, accessToken)
         }
         loginViewModel.loginRequest = {
-            loadingDialog.dismiss()
             finish()
             MainActivity.create(this)
         }
         loginViewModel.registerRequest = {
-            loadingDialog.dismiss()
             finish()
             CreateNameActivity.create(this)
         }
@@ -80,9 +81,8 @@ class LoginActivity : AbstractActivity() {
                 authLoginManager.facebookAuth()
             }
             binding.llDevice -> checkIsAllowedToLoginAuth {
-                loadingDialog.show()
                 loginViewModel.currentDeviceId = it
-                loginViewModel.login(AuthType.Device, it)
+                authLoginManager.success?.invoke(AuthType.Device, it)
             }
             binding.ivPrivacyCheck -> {
                 loginViewModel.agreementPrivacy = !loginViewModel.agreementPrivacy
