@@ -8,13 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
+import com.milk.funcall.account.ui.frag.MineFragment
+import com.milk.funcall.app.ui.view.BottomNavigation
+import com.milk.funcall.chat.ui.frag.MessageFragment
 import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityMainBinding
 import com.milk.funcall.user.ui.frag.HomeFragment
-import com.milk.funcall.chat.ui.frag.MessageFragment
-import com.milk.funcall.account.ui.frag.MineFragment
-import com.milk.funcall.app.ui.view.BottomNavigation
 import com.milk.simple.ktx.immersiveStatusBar
 import com.milk.simple.ktx.viewBinding
 
@@ -33,8 +33,15 @@ class MainActivity : AbstractActivity() {
         initializeView()
     }
 
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setTabSelection(homeFragment)
+        binding.navigation.updateSelectNav(BottomNavigation.Type.Home)
+    }
+
     private fun initializeView() {
         setTabSelection(homeFragment)
+        binding.navigation.updateSelectNav(BottomNavigation.Type.Home)
         binding.navigation.setItemOnClickListener { refresh, type ->
             when (type) {
                 BottomNavigation.Type.Home -> {

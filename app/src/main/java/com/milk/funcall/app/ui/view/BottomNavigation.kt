@@ -33,15 +33,12 @@ class BottomNavigation : FrameLayout {
     constructor(ctx: Context, attrs: AttributeSet) : super(ctx, attrs)
     constructor(ctx: Context, attrs: AttributeSet, defAttr: Int) : super(ctx, attrs, defAttr)
 
-    init {
-        updateSelectNav(Type.Home)
-    }
 
     fun setItemOnClickListener(listener: ((Boolean, Type) -> Unit)) {
         itemOnClickListener = listener
     }
 
-    private fun updateSelectNav(type: Type) {
+    fun updateSelectNav(type: Type) {
         when (type) {
             Type.Home -> {
                 updateHomeNav(true)
