@@ -13,7 +13,6 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.constant.RefreshState
 import com.scwang.smart.refresh.layout.constant.SpinnerStyle
 
-
 class RefreshHeader : LinearLayout, RefreshHeader {
     private val binding = LayoutRefreshBinding
         .inflate(LayoutInflater.from(context), this)
