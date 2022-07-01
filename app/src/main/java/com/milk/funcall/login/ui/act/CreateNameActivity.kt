@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.text.InputFilter
 import android.view.View
 import androidx.activity.viewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.asLiveData
 import com.milk.funcall.R
 import com.milk.funcall.account.Account
 import com.milk.funcall.app.ui.act.MainActivity
@@ -20,8 +20,6 @@ import com.milk.simple.ktx.immersiveStatusBar
 import com.milk.simple.ktx.showToast
 import com.milk.simple.ktx.string
 import com.milk.simple.ktx.viewBinding
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 class CreateNameActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityCreateNameBinding>()
@@ -49,24 +47,22 @@ class CreateNameActivity : AbstractActivity() {
     }
 
     private fun initializeObserver() {
-        lifecycleScope.launch {
-            createNameViewModel.avatar.collectLatest {
-                binding.ivUserAvatar.loadAvatar(
-                    it, if (gender == Gender.Woman)
-                        R.drawable.common_default_woman
-                    else
-                        R.drawable.common_default_man
-                )
-                binding.ivUserGender.setImageResource(
-                    if (gender == Gender.Woman)
-                        R.drawable.create_name_gender_woman
-                    else
-                        R.drawable.create_name_gender_man
-                )
-            }
-            createNameViewModel.name.collectLatest {
-                if (it.isNotBlank()) binding.etUserName.setText(it)
-            }
+        createNameViewModel.avatar.asLiveData().observe(this) {
+            binding.ivUserAvatar.loadAvatar(
+                it, if (gender == Gender.Woman)
+                    R.drawable.common_default_woman
+                else
+                    R.drawable.common_default_man
+            )
+            binding.ivUserGender.setImageResource(
+                if (gender == Gender.Woman)
+                    R.drawable.create_name_gender_woman
+                else
+                    R.drawable.create_name_gender_man
+            )
+        }
+        createNameViewModel.name.asLiveData().observe(this) {
+            if (it.isNotBlank()) binding.etUserName.setText(it)
         }
     }
 
