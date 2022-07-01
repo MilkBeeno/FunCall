@@ -31,7 +31,7 @@ class HomeFragment : AbstractFragment() {
         super.initializeObserver()
         LiveEventBus.get<Boolean>(EventKey.REFRESH_HOME_LIST)
             .observe(this) {
-                binding.refresh.isRefreshing = true
+                binding.refresh.finishRefresh(1500)
                 adapter.refresh()
             }
     }
@@ -50,11 +50,12 @@ class HomeFragment : AbstractFragment() {
                 adapter.submitData(it)
             }
         }
+        binding.refresh.setRefreshHeader(binding.refreshHeader)
         binding.refresh.setOnRefreshListener {
             adapter.refresh()
         }
         adapter.addRefreshedListener {
-            binding.refresh.isRefreshing = false
+            binding.refresh.finishRefresh(1500)
             when (it) {
                 RefreshStatus.Success -> {
                     Logger.d("当前数据加载成功", "hlc")

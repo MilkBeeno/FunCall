@@ -9,17 +9,23 @@
         android:layout_width="match_parent"
         android:layout_height="42dp" />
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <com.milk.funcall.common.ui.view.RefreshHeader
+            android:id="@+id/refreshHeader"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:gravity="center_horizontal" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvHome"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:overScrollMode="never"
             android:paddingStart="6dp"
             android:paddingEnd="6dp" />
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 </androidx.appcompat.widget.LinearLayoutCompat>
