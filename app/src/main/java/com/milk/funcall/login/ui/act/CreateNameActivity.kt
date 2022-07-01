@@ -32,7 +32,7 @@ class CreateNameActivity : AbstractActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         immersiveStatusBar(binding.headerToolbar)
-        createNameViewModel.obtainUserDefault(gender)
+        createNameViewModel.getUserAvatarName(gender)
         initializeView()
         initializeObserver()
     }

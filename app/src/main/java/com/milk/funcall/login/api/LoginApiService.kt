@@ -1,4 +1,4 @@
-package com.milk.funcall.login.net
+package com.milk.funcall.login.api
 
 import com.milk.funcall.common.data.ApiResponse
 import com.milk.funcall.login.data.AvatarNameModel
@@ -17,10 +17,10 @@ interface LoginApiService {
     ): ApiResponse<LoginModel>
 
     @GET("/funcall/currentUserInfo")
-    suspend fun obtainUserInfo(): ApiResponse<UserInfoModel>
+    suspend fun getUserInfo(): ApiResponse<UserInfoModel>
 
-    @GET("/funcall/currentUserInfo")
-    suspend fun obtainUserDefault(
+    @GET("/funcall/getRandomBasicInfo")
+    suspend fun getUserAvatarName(
         @Query("gender") gender: String
     ): ApiResponse<AvatarNameModel>
 }

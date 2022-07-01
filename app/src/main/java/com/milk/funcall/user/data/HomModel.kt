@@ -1,10 +1,14 @@
 package com.milk.funcall.user.data
 
 data class HomModel(
-    val userId: Long = 0,
-    val userAvatar: String,
-    val userName: String = "",
-    val userImage: String = "",
-    val isOnline: Boolean = false,
-    val isSmallImage: Boolean = false
+    // 请求分页页码
+    val groupNumber: Int = 0,
+    // 数据总页数
+    val pages: Int = 0,
+    // 每页最大显示数据条数
+    val size: Int = 0,
+    // 列表一共有多少条数据
+    val total: Int = 0,
+    // 真实的数据
+    val records: MutableList<HomDetailModel>? = null
 )

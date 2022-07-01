@@ -1,10 +1,10 @@
 package com.milk.funcall.common.net
 
 import com.milk.funcall.common.data.ApiResponse
+import com.milk.funcall.common.net.handler.ApiCode
 import com.milk.funcall.common.net.handler.ApiErrorHandler
 
-
-suspend fun <T> retrofitCatch(
+suspend fun <T> retrofit(
     unifiedProcessing: Boolean = true,
     action: suspend () -> ApiResponse<T>
 ): ApiResponse<T> {
@@ -20,7 +20,7 @@ suspend fun <T> retrofitCatch(
         }
         response
     } catch (e: Exception) {
-        ApiErrorHandler.post(ApiErrorHandler.retrofitCatchCode, e.message.toString())
-        ApiResponse(ApiErrorHandler.retrofitCatchCode, e.message.toString())
+        ApiErrorHandler.post(ApiCode.retrofitError, e.message.toString())
+        ApiResponse(ApiCode.retrofitError, e.message.toString())
     }
 }

@@ -11,10 +11,10 @@ class CreateNameViewModel : ViewModel() {
     val avatar = MutableStateFlow("")
     val name = MutableStateFlow("")
 
-    fun obtainUserDefault(gender: Gender) {
+    fun getUserAvatarName(gender: Gender) {
         ioScope {
             val apiResponse =
-                createNameRepository.obtainUserDefault(gender)
+                createNameRepository.getUserAvatarName(gender)
             val apiResult = apiResponse.data
             if (apiResponse.success && apiResult != null) {
                 avatar.emit(apiResult.avatarUrl)

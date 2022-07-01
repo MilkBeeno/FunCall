@@ -21,13 +21,13 @@ class LoginViewModel : ViewModel() {
             val apiResult = apiResponse.data
             if (apiResponse.success && apiResult != null) {
                 Account.logged(apiResult.accessToken)
-                obtainUserInfo(apiResult.registeredFlag)
+                getUserInfo(apiResult.registeredFlag)
             } else failedRequest?.invoke()
         }
     }
 
-    private suspend fun obtainUserInfo(registeredFlag: Boolean) {
-        val apiResponse = loginRepository.obtainUserInfo()
+    private suspend fun getUserInfo(registeredFlag: Boolean) {
+        val apiResponse = loginRepository.getUserInfo()
         val apiResult = apiResponse.data
         if (apiResponse.success && apiResult != null) {
             if (registeredFlag)

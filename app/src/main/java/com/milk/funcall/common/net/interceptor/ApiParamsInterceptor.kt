@@ -35,6 +35,8 @@ class ApiParamsInterceptor : Interceptor {
                     }
                 }
                 val jsonParams = JsonConvert.toJson(paramsMap)
+                if (Account.accessToken.isNotBlank())
+                    requestBuilder.addHeader("X-Access-Token", Account.accessToken)
                 requestBuilder.post(jsonParams.toRequestBody(jsonContentType))
             }
         }

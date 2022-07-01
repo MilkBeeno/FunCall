@@ -5,7 +5,7 @@ import androidx.paging.PagingState
 import com.milk.funcall.common.data.ApiPagingResponse
 
 class NetworkPagingSource<T : Any>(
-    private val netWorkRequest: (Int) -> ApiPagingResponse<T>
+    private val netWorkRequest: suspend (Int) -> ApiPagingResponse<T>
 ) : PagingSource<Int, T>() {
     // 实现必须定义如何从已加载分页数据的中间恢复刷新,使用 state.anchorPosition 作为最近访问的索引来映射正确的初始键.
     override fun getRefreshKey(state: PagingState<Int, T>): Int? = null

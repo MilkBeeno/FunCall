@@ -1,4 +1,4 @@
-package com.milk.funcall.login.net
+package com.milk.funcall.login.api
 
 import com.milk.funcall.common.net.ApiClient
 
