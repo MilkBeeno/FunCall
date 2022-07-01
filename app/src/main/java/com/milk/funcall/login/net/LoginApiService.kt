@@ -1,12 +1,10 @@
 package com.milk.funcall.login.net
 
-import com.milk.funcall.user.data.UserInfoModel
 import com.milk.funcall.common.data.ApiResponse
+import com.milk.funcall.login.data.AvatarNameModel
 import com.milk.funcall.login.data.LoginModel
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.POST
+import com.milk.funcall.user.data.UserInfoModel
+import retrofit2.http.*
 
 interface LoginApiService {
 
@@ -19,5 +17,10 @@ interface LoginApiService {
     ): ApiResponse<LoginModel>
 
     @GET("/funcall/currentUserInfo")
-    suspend fun obtainUserInfo():ApiResponse<UserInfoModel>
+    suspend fun obtainUserInfo(): ApiResponse<UserInfoModel>
+
+    @GET("/funcall/currentUserInfo")
+    suspend fun obtainUserDefault(
+        @Query("gender") gender: String
+    ): ApiResponse<AvatarNameModel>
 }

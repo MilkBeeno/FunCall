@@ -46,13 +46,14 @@
         android:layout_marginTop="46dp"
         android:background="@drawable/shape_create_name_background"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingStart="19dp"
+        android:paddingEnd="19dp">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvUserNameTag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="19dp"
             android:includeFontPadding="false"
             android:text="@string/create_name_tag"
             android:textColor="@color/FF8E58FB"
@@ -78,15 +79,6 @@
             android:maxLines="1"
             android:textColor="@color/FF45464D"
             android:textSize="16sp" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/ivUserUpdate"
-            android:layout_width="23dp"
-            android:layout_height="23dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="19dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/create_name_update" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
