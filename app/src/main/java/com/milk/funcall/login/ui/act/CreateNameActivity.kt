@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputFilter
+import android.view.KeyEvent
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.asLiveData
@@ -36,7 +37,6 @@ class CreateNameActivity : AbstractActivity() {
     }
 
     private fun initializeView() {
-        binding.headerToolbar.showArrowBack()
         binding.headerToolbar.setTitle(string(R.string.create_name_title))
         binding.ivUserAvatar.setOnClickListener(this)
         binding.tvCreateName.setOnClickListener(this)
@@ -79,6 +79,11 @@ class CreateNameActivity : AbstractActivity() {
                     MainActivity.create(this)
             }
         }
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK) return true
+        return super.onKeyDown(keyCode, event)
     }
 
     companion object {
