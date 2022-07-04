@@ -40,6 +40,7 @@
     <string name="home_online">Online</string>
     <string name="home_offline">Offline</string>
     <string name="home_title">Discover</string>
+    <string name="home_list_nothing">No Date Please try again later</string>
     <!--Mine页面翻译-->
     <string name="mine_default_user_name">User\'s Nickname</string>
     <string name="mine_follows">Follows</string>

@@ -20,12 +20,24 @@
             android:layout_height="56dp"
             android:gravity="center_horizontal" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvHome"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:overScrollMode="never"
-            android:paddingStart="6dp"
-            android:paddingEnd="6dp" />
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvHome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:overScrollMode="never"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp" />
+
+            <include
+                android:id="@+id/homeNothing"
+                layout="@layout/layout_list_nothing"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+        </FrameLayout>
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 </androidx.appcompat.widget.LinearLayoutCompat>
