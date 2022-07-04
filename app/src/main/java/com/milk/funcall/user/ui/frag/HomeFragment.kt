@@ -8,7 +8,6 @@ import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
 import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.paging.StaggeredGridDecoration
-import com.milk.funcall.common.paging.status.AppendStatus
 import com.milk.funcall.common.paging.status.RefreshStatus
 import com.milk.funcall.common.ui.AbstractFragment
 import com.milk.funcall.databinding.FragmentHomeBinding
@@ -36,16 +35,6 @@ class HomeFragment : AbstractFragment() {
                 binding.homeNothing.root.gone()
             else
                 binding.homeNothing.root.visible()
-        }
-        adapter.addAppendedListener {
-            when (it) {
-                AppendStatus.Failed -> {
-
-                }
-                AppendStatus.Success -> {
-
-                }
-            }
         }
         lifecycleScope.launch {
             homeViewModel.pagingSource.flow.collectLatest { adapter.submitData(it) }

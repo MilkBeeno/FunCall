@@ -72,41 +72,24 @@ abstract class AbstractPagingAdapter<T : Any>(
 
     override fun obtainHeaderAdapter(): HeaderLoadStateAdapter? = null
 
-    override fun obtainFooterAdapter(hasHeader: Boolean): FooterLoadStateAdapter? = null
+    override fun obtainFooterAdapter(): FooterLoadStateAdapter? = null
 
     override fun withLoadStateHeaderAdapter(): ConcatAdapter {
-        val headerAdapter = obtainHeaderAdapter()
-        return if (headerAdapter != null) {
-            val hasFooter = pairHeaderAndFooter.second
-            pairHeaderAndFooter = Pair(true, hasFooter)
-            withLoadStateHeader(headerAdapter)
-        } else ConcatAdapter(this)
+        val headerAdapter = checkNotNull(obtainHeaderAdapter())
+        pairHeaderAndFooter = Pair(first = true, second = false)
+        return withLoadStateHeader(headerAdapter)
     }
 
     override fun withLoadStateFooterAdapter(): ConcatAdapter {
-        val hasHeader = pairHeaderAndFooter.first
-        val footerAdapter = obtainFooterAdapter(hasHeader)
-        return if (footerAdapter != null) {
-            pairHeaderAndFooter = Pair(hasHeader, true)
-            withLoadStateFooter(footerAdapter)
-        } else ConcatAdapter(this)
+        val footerAdapter = checkNotNull(obtainFooterAdapter())
+        pairHeaderAndFooter = Pair(first = false, second = true)
+        return withLoadStateFooter(footerAdapter)
     }
 
     override fun withLoadStateHeaderAndFooterAdapter(): ConcatAdapter {
-        val headerAdapter = obtainHeaderAdapter()
-        val footerAdapter = obtainFooterAdapter(headerAdapter != null)
-        return when {
-            headerAdapter != null && footerAdapter != null -> {
-                withLoadStateHeaderAndFooter(headerAdapter, footerAdapter)
-            }
-            headerAdapter != null -> {
-                withLoadStateHeader(headerAdapter)
-            }
-            footerAdapter != null -> {
-                withLoadStateFooter(footerAdapter)
-            }
-            else -> ConcatAdapter(this)
-        }
+        val headerAdapter = checkNotNull(obtainHeaderAdapter())
+        val footerAdapter = checkNotNull(obtainFooterAdapter())
+        return withLoadStateHeaderAndFooter(headerAdapter, footerAdapter)
     }
 
     override fun setMultiTypeDelegate(multiTypeDelegate: MultiTypeDelegate?) {

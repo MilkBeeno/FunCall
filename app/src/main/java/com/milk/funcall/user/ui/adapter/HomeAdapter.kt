@@ -14,7 +14,7 @@ import com.milk.funcall.common.paging.FooterLoadStateAdapter
 import com.milk.funcall.common.paging.PagingViewHolder
 import com.milk.funcall.user.data.HomDetailModel
 import com.milk.funcall.user.type.OnlineState
-import com.milk.simple.ktx.color
+import com.milk.simple.ktx.*
 
 class HomeAdapter : AbstractPagingAdapter<HomDetailModel>(
     layoutId = R.layout.item_hone,
@@ -54,8 +54,30 @@ class HomeAdapter : AbstractPagingAdapter<HomDetailModel>(
         }
     }
 
-    override fun obtainFooterAdapter(hasHeader: Boolean): FooterLoadStateAdapter {
-        return FooterLoadStateAdapter(R.layout.layout_paging_foot, hasHeader)
+    override fun obtainFooterAdapter(): FooterLoadStateAdapter {
+        return FooterLoadStateAdapter(
+            footLayoutId = R.layout.layout_paging_foot,
+            pageSize = 8,
+            hasHeader = pairHeaderAndFooter.first
+        ) { root, state ->
+            val textView = root.findViewById<AppCompatTextView>(R.id.tvFooter)
+            when (state) {
+                FooterLoadStateAdapter.LoadMoreState.Error -> {
+                    root.gone()
+                    root.context.showToast(
+                        root.context.string(R.string.home_list_load_more_error)
+                    )
+                }
+                FooterLoadStateAdapter.LoadMoreState.Loading -> {
+                    root.visible()
+                    textView.text = root.context.string(R.string.home_list_load_more_loading)
+                }
+                FooterLoadStateAdapter.LoadMoreState.NoMoreData -> {
+                    root.visible()
+                    textView.text = root.context.string(R.string.home_list_no_more_data)
+                }
+            }
+        }
     }
 
     private fun dpToPx(context: Context, value: Float): Float {

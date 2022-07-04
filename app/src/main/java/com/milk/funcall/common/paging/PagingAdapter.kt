@@ -39,5 +39,5 @@ interface PagingAdapter<T : Any> {
     )
 
     fun obtainHeaderAdapter(): HeaderLoadStateAdapter?
-    fun obtainFooterAdapter(hasHeader: Boolean): FooterLoadStateAdapter?
+    fun obtainFooterAdapter(): FooterLoadStateAdapter?
 }

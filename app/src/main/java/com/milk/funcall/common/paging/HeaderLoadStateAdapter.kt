@@ -23,5 +23,9 @@ open class HeaderLoadStateAdapter(
         return HeaderViewHolder(footView)
     }
 
+    override fun displayLoadStateAsItem(loadState: LoadState): Boolean {
+        return !(loadState is LoadState.NotLoading && !loadState.endOfPaginationReached)
+    }
+
     inner class HeaderViewHolder(footView: View) : RecyclerView.ViewHolder(footView)
 }

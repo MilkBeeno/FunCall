@@ -63,4 +63,7 @@
     <string name="edit_profile_about_me">About me</string>
     <string name="edit_profile_name_hint">Please enter your name</string>
     <string name="edit_profile_about_me_hint">Please introduce yourself</string>
+    <string name="home_list_load_more_error">failed to load more please try again later.</string>
+    <string name="home_list_load_more_loading">Loading</string>
+    <string name="home_list_no_more_data">No more data</string>
 </resources>

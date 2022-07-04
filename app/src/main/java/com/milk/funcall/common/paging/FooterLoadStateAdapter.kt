@@ -10,27 +10,24 @@ import androidx.recyclerview.widget.RecyclerView
 
 open class FooterLoadStateAdapter(
     @LayoutRes private val footLayoutId: Int = 0,
+    private val pageSize: Int = 0,
     private val hasHeader: Boolean = false,
-    private val bindTailView: (v: View, state: LoadMoreState) -> Unit? = { _, _ -> }
+    private val bindFooterView: (v: View, state: LoadMoreState) -> Unit? = { _, _ -> }
 ) : LoadStateAdapter<FooterLoadStateAdapter.FooterViewHolder>() {
     override fun onBindViewHolder(holder: FooterViewHolder, loadState: LoadState) {
-        val rootView = holder.itemView.apply { visibility = View.GONE }
         when (loadState) {
             is LoadState.Loading -> {
-                rootView.visibility = View.VISIBLE
-                bindTailView(rootView, LoadMoreState.LOADING)
+                bindFooterView(holder.itemView, LoadMoreState.Loading)
             }
             is LoadState.Error -> {
-                rootView.visibility = View.VISIBLE
-                bindTailView(rootView, LoadMoreState.ERROR)
+                bindFooterView(holder.itemView, LoadMoreState.Error)
             }
             is LoadState.NotLoading -> {
-                val currentItemCount = if (hasHeader) 2 else 1
+                val onePageSize = pageSize + if (hasHeader) 1 else 0
                 if (loadState.endOfPaginationReached
-                    && holder.bindingAdapter?.itemCount ?: 0 > currentItemCount
+                    && holder.absoluteAdapterPosition >= onePageSize
                 ) {
-                    rootView.visibility = View.VISIBLE
-                    bindTailView(rootView, LoadMoreState.LOADED)
+                    bindFooterView(holder.itemView, LoadMoreState.NoMoreData)
                 }
             }
         }
@@ -48,5 +45,5 @@ open class FooterLoadStateAdapter(
     }
 
     inner class FooterViewHolder(footView: View) : RecyclerView.ViewHolder(footView)
-    enum class LoadMoreState { LOADED, LOADING, ERROR }
+    enum class LoadMoreState { Loading, NoMoreData, Error }
 }
