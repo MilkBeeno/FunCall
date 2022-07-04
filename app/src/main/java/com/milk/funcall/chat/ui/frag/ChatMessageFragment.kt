@@ -1,13 +1,13 @@
 package com.milk.funcall.chat.ui.frag
 
 import android.view.View
-import com.milk.funcall.common.ui.AbstractFragment
 import com.milk.funcall.R
-import com.milk.funcall.databinding.FragmentMessageBinding
 import com.milk.funcall.chat.ui.act.ChatMessageActivity
+import com.milk.funcall.common.ui.AbstractFragment
+import com.milk.funcall.databinding.FragmentChatMessageBinding
 
-class MessageFragment : AbstractFragment() {
-    private val binding by lazy { FragmentMessageBinding.inflate(layoutInflater) }
+class ChatMessageFragment : AbstractFragment() {
+    private val binding by lazy { FragmentChatMessageBinding.inflate(layoutInflater) }
 
     override fun getRootView(): View = binding.root
 
@@ -23,6 +23,6 @@ class MessageFragment : AbstractFragment() {
     }
 
     companion object {
-        fun create() = MessageFragment()
+        fun create() = ChatMessageFragment()
     }
 }

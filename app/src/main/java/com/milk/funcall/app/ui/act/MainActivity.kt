@@ -10,7 +10,7 @@ import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
 import com.milk.funcall.account.ui.frag.MineFragment
 import com.milk.funcall.app.ui.view.BottomNavigation
-import com.milk.funcall.chat.ui.frag.MessageFragment
+import com.milk.funcall.chat.ui.frag.ChatMessageFragment
 import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityMainBinding
@@ -23,7 +23,7 @@ class MainActivity : AbstractActivity() {
 
     private val fragments = mutableListOf<Fragment>()
     private val homeFragment = HomeFragment.create()
-    private val messageFragment = MessageFragment.create()
+    private val messageFragment = ChatMessageFragment.create()
     private val mineFragment = MineFragment.create()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,7 +72,7 @@ class MainActivity : AbstractActivity() {
                 }
                 transaction.show(homeFragment)
             }
-            is MessageFragment -> {
+            is ChatMessageFragment -> {
                 if (!fragments.contains(messageFragment)) {
                     fragments.add(messageFragment)
                     transaction.add(binding.flContent.id, messageFragment)
