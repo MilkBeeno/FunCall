@@ -23,25 +23,22 @@ class HomeAdapter : AbstractPagingAdapter<HomDetailModel>(
             return oldItem.userId == newItem.userId
         }
 
-        override fun areContentsTheSame(oldItem: HomDetailModel, newItem: HomDetailModel): Boolean {
-            return oldItem.userName == newItem.userName
-                    && oldItem.userAvatar == newItem.userAvatar
-                    && oldItem.userImage == newItem.userImage
-                    && oldItem.onlineState == newItem.onlineState
-        }
+        override fun areContentsTheSame(oldItem: HomDetailModel, newItem: HomDetailModel) = false
     }
 ) {
     override fun convert(holder: PagingViewHolder, item: HomDetailModel) {
-        val showSmallImage = holder.layoutPosition == 1
         val isOnline = item.onlineState == OnlineState.Online.value
         holder.setText(R.id.tvUserName, item.userName)
         holder.getView<AppCompatImageView>(R.id.ivUserImage).apply {
             val params = layoutParams
-            params.height = dpToPx(context, if (showSmallImage) 125f else 223f).toInt()
+            params.height = dpToPx(context, if (item.isMediumImage) 125f else 223f).toInt()
             layoutParams = params
             loadSimple(
                 item.userImage,
-                if (showSmallImage) R.drawable.home_default_small else R.drawable.home_default_big
+                if (item.isMediumImage)
+                    R.drawable.home_default_small
+                else
+                    R.drawable.home_default_big
             )
         }
         holder.getView<AppCompatImageView>(R.id.ivUserAvatar)

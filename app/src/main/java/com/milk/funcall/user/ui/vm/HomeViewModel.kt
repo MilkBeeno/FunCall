@@ -27,6 +27,9 @@ class HomeViewModel : ViewModel() {
         val apiResponse = homeRepository.getHomeList(index, groupNumber)
         val apiResult = apiResponse.data?.records
         if (apiResponse.success) groupNumber = apiResponse.data?.groupNumber ?: 0
+        if (index == 1) apiResult?.forEachIndexed { position, homDetailModel ->
+            if (position == 1) homDetailModel.isMediumImage = true
+        }
         return ApiPagingResponse(
             code = apiResponse.code,
             message = apiResponse.message,

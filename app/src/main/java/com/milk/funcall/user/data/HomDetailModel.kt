@@ -15,5 +15,7 @@ data class HomDetailModel(
     val userName: String = "",
     val onlineState: String = "",
     @SerializedName("videoUrl")
-    val userVideo: String = ""
+    val userVideo: String = "",
+    // 本地用来判断是否是小图
+    var isMediumImage: Boolean = false
 )
