@@ -41,6 +41,10 @@
     <string name="home_offline">Offline</string>
     <string name="home_title">Discover</string>
     <string name="home_list_nothing">No Date Please try again later</string>
+    <string name="home_list_refresh_failed">Refreshed Failed</string>
+    <string name="home_list_load_more_error">failed to load more please try again later.</string>
+    <string name="home_list_load_more_loading">Loading</string>
+    <string name="home_list_no_more_data">No more data</string>
     <!--Mine页面翻译-->
     <string name="mine_default_user_name">User\'s Nickname</string>
     <string name="mine_follows">Follows</string>
@@ -63,7 +67,4 @@
     <string name="edit_profile_about_me">About me</string>
     <string name="edit_profile_name_hint">Please enter your name</string>
     <string name="edit_profile_about_me_hint">Please introduce yourself</string>
-    <string name="home_list_load_more_error">failed to load more please try again later.</string>
-    <string name="home_list_load_more_loading">Loading</string>
-    <string name="home_list_no_more_data">No more data</string>
 </resources>

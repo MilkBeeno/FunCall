@@ -14,6 +14,8 @@ import com.milk.funcall.databinding.FragmentHomeBinding
 import com.milk.funcall.user.ui.adapter.HomeAdapter
 import com.milk.funcall.user.ui.vm.HomeViewModel
 import com.milk.simple.ktx.gone
+import com.milk.simple.ktx.showToast
+import com.milk.simple.ktx.string
 import com.milk.simple.ktx.visible
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -31,10 +33,17 @@ class HomeFragment : AbstractFragment() {
             binding.refresh.finishRefresh(1500)
             if (adapter.itemCount > 0)
                 binding.rvHome.scrollToPosition(0)
-            if (it == RefreshStatus.Success)
-                binding.homeNothing.root.gone()
-            else
-                binding.homeNothing.root.visible()
+            when (it) {
+                RefreshStatus.Success -> binding.homeNothing.root.gone()
+                else -> {
+                    if (adapter.itemCount > 0) {
+                        binding.homeNothing.root.gone()
+                        requireContext().showToast(
+                            requireContext().string(R.string.home_list_refresh_failed)
+                        )
+                    } else binding.homeNothing.root.visible()
+                }
+            }
         }
         lifecycleScope.launch {
             homeViewModel.pagingSource.flow.collectLatest { adapter.submitData(it) }
