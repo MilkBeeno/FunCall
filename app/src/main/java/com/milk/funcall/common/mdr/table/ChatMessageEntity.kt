@@ -9,27 +9,45 @@ import androidx.room.Index
     primaryKeys = ["chatUserId", "chatMsgUniqueId"],
     indices = [Index(value = ["chatUserId", "chatMsgUniqueId"], unique = true)]
 )
-data class ChatMessageEntity(
+class ChatMessageEntity {
     @ColumnInfo(name = "chatMsgUniqueId")
-    var messageUniqueId: String = "",
+    var messageUniqueId: String = ""
+
     @ColumnInfo(name = "chatUserId")
-    var userId: Long = 0,
+    var userId: Long = 0
+
     @ColumnInfo(name = "chatTargetId")
-    var targetId: Long = 0,
+    var targetId: Long = 0
+
     @ColumnInfo(name = "chatTargetName")
-    var targetName: String = "",
+    var targetName: String = ""
+
     @ColumnInfo(name = "chatTargetAvatar")
-    var targetAvatar: String = "",
+    var targetAvatar: String = ""
+
     @ColumnInfo(name = "chatMsgType")
-    var messageType: Int = 0,
+    var messageType: Int = 0
+
     @ColumnInfo(name = "chatOperationTime")
-    var operationTime: Long = 0,
+    var operationTime: Long = 0
+
     @ColumnInfo(name = "chatMsgContent")
-    var messageContent: String = "",
+    var messageContent: String = ""
+
     @ColumnInfo(name = "chatIsAcceptMsg")
-    var isAcceptMessage: Boolean = false,
+    var isAcceptMessage: Boolean = false
+
     @ColumnInfo(name = "chatIsReadMsg")
-    var isReadMessage: Boolean = false,
+    var isReadMessage: Boolean = false
+
     @ColumnInfo(name = "chatIsSendSuccess")
     var isSendSuccess: Boolean = false
-)
+
+    override fun toString(): String {
+        return "messageUniqueId=$messageUniqueId,userId=$userId,targetId=$targetId," +
+                "targetName=$targetName,targetAvatar=$targetAvatar,messageType=$messageType," +
+                "operationTime=$operationTime,messageContent=$messageContent," +
+                "isAcceptMessage=$isAcceptMessage,isReadMessage=$isReadMessage," +
+                "isSendSuccess=$isSendSuccess"
+    }
+}

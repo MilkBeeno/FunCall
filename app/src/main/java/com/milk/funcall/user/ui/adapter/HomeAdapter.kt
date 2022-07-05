@@ -27,7 +27,7 @@ class HomeAdapter : AbstractPagingAdapter<HomDetailModel>(
     }
 ) {
     override fun convert(holder: PagingViewHolder, item: HomDetailModel) {
-        val isOnline = item.onlineState == OnlineState.Online.value
+        val isOnline = item.userOnline == OnlineState.Online.value
         holder.setText(R.id.tvUserName, item.userName)
         holder.getView<AppCompatImageView>(R.id.ivUserImage).apply {
             val params = layoutParams
