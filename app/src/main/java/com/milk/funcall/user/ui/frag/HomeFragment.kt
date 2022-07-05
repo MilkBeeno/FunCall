@@ -53,7 +53,11 @@ class HomeFragment : AbstractFragment() {
     override fun initializeObserver() {
         super.initializeObserver()
         LiveEventBus.get<Boolean>(EventKey.REFRESH_HOME_LIST)
-            .observe(this) { binding.refresh.autoRefresh() }
+            .observe(this) {
+                if (adapter.itemCount > 0)
+                    binding.rvHome.smoothScrollToPosition(0)
+                binding.refresh.autoRefresh()
+            }
     }
 
     override fun initializeView() {

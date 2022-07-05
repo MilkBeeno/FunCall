@@ -2,7 +2,7 @@ package com.milk.funcall.account.data
 
 import com.milk.funcall.common.mdr.table.UserInfoEntity
 
-data class FansModel(
+data class FansOrFollowsModel(
     var current: Int = 0,
     var pages: Int = 0,
     var records: MutableList<UserInfoEntity>? = null

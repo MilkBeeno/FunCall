@@ -14,8 +14,8 @@ class HomeViewModel : ViewModel() {
 
     val pagingSource = Pager(
         PagingConfig(
-            pageSize = 12,
-            prefetchDistance = 1,
+            pageSize = 8,
+            prefetchDistance = 2,
             enablePlaceholders = false
         ),
         pagingSourceFactory = {

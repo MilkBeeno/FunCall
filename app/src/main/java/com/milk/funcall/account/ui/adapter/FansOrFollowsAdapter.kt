@@ -13,8 +13,8 @@ import com.milk.funcall.common.paging.PagingViewHolder
 import com.milk.funcall.user.type.OnlineState
 import com.milk.simple.ktx.color
 
-class FansAdapter : AbstractPagingAdapter<UserInfoEntity>(
-    layoutId = R.layout.item_fans,
+class FansOrFollowsAdapter : AbstractPagingAdapter<UserInfoEntity>(
+    layoutId = R.layout.item_fans_or_follows,
     diffCallback = object : DiffUtil.ItemCallback<UserInfoEntity>() {
         override fun areItemsTheSame(oldItem: UserInfoEntity, newItem: UserInfoEntity): Boolean {
             return oldItem.userId == newItem.userId

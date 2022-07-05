@@ -8,7 +8,7 @@ import com.milk.funcall.common.data.ApiPagingResponse
 import com.milk.funcall.common.mdr.table.UserInfoEntity
 import com.milk.funcall.common.paging.NetworkPagingSource
 
-class FansViewModel : ViewModel() {
+class FollowsViewModel : ViewModel() {
     private val fansOrFollowsRepository by lazy { FansOrFollowsRepository() }
     val pagingSource = Pager(
         PagingConfig(
@@ -17,12 +17,12 @@ class FansViewModel : ViewModel() {
             enablePlaceholders = false
         ),
         pagingSourceFactory = {
-            NetworkPagingSource { getFans(it) }
+            NetworkPagingSource { getFollows(it) }
         }
     )
 
-    private suspend fun getFans(index: Int): ApiPagingResponse<UserInfoEntity> {
-        val apiResponse = fansOrFollowsRepository.getFans(index)
+    private suspend fun getFollows(index: Int): ApiPagingResponse<UserInfoEntity> {
+        val apiResponse = fansOrFollowsRepository.getFollows(index)
         val apiResult = apiResponse.data?.records
         return ApiPagingResponse(
             code = apiResponse.code,

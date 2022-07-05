@@ -73,4 +73,7 @@
     <!--个人粉丝页面翻译-->
     <string name="fans_list_empty">No fans yet</string>
     <string name="fans_list_to_publish">to publish content</string>
+    <!--个人关注页面翻译-->
+    <string name="follows_list_empty">Users who have not yet followed</string>
+    <string name="follows_list_to_attention">to pay attention</string>
 </resources>

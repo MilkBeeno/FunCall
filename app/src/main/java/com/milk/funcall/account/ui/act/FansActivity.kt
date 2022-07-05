@@ -3,11 +3,12 @@ package com.milk.funcall.account.ui.act
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.milk.funcall.R
-import com.milk.funcall.account.ui.adapter.FansAdapter
+import com.milk.funcall.account.ui.adapter.FansOrFollowsAdapter
 import com.milk.funcall.account.ui.vm.FansViewModel
 import com.milk.funcall.common.paging.SimpleGridDecoration
 import com.milk.funcall.common.paging.status.RefreshStatus
@@ -23,7 +24,7 @@ import kotlinx.coroutines.launch
 class FansActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityFansBinding>()
     private val fansViewModel by viewModels<FansViewModel>()
-    private val fansAdapter by lazy { FansAdapter() }
+    private val fansAdapter by lazy { FansOrFollowsAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +40,7 @@ class FansActivity : AbstractActivity() {
         binding.rvFans.layoutManager = GridLayoutManager(this, 2)
         binding.rvFans.addItemDecoration(SimpleGridDecoration(this))
         binding.rvFans.adapter = fansAdapter
+        binding.tvPublish.setOnClickListener(this)
     }
 
     private fun initializeData() {
@@ -50,6 +52,15 @@ class FansActivity : AbstractActivity() {
         }
         lifecycleScope.launch {
             fansViewModel.pagingSource.flow.collectLatest { fansAdapter.submitData(it) }
+        }
+    }
+
+    override fun onMultipleClick(view: View) {
+        super.onMultipleClick(view)
+        when (view) {
+            binding.tvPublish -> {
+
+            }
         }
     }
 
