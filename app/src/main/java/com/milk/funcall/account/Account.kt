@@ -56,7 +56,7 @@ object Account {
 
     internal fun logged(token: String) {
         ioScope {
-            isLogged = false
+            isLogged = true
             accessToken = token
             isLoggedState.emit(true)
         }
