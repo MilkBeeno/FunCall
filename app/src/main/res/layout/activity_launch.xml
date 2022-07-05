@@ -28,7 +28,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="132dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/launch_fun_call"
+        android:src="@drawable/common_fun_call"
         android:visibility="gone" />
 
     <androidx.appcompat.widget.AppCompatTextView

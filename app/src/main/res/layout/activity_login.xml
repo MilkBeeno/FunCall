@@ -22,7 +22,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="19dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/launch_fun_call" />
+        android:src="@drawable/common_fun_call" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/llGoogle"

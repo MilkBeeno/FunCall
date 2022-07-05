@@ -57,6 +57,9 @@
     <string name="mine_log_out_title">Are you sure you want to log out?</string>
     <string name="mine_log_out_confirm">Sign Out</string>
     <string name="mine_log_out_cancel">Cancel</string>
+    <!--关于我们页面翻译-->
+    <string name="about_us_user_agreement">User Agreement</string>
+    <string name="about_us_user_privacy">Privacy policy</string>
     <!--聊天页面翻译-->
     <string name="message_title">Message</string>
     <string name="message_list_empty">No Message</string>
@@ -67,4 +70,5 @@
     <string name="edit_profile_about_me">About me</string>
     <string name="edit_profile_name_hint">Please enter your name</string>
     <string name="edit_profile_about_me_hint">Please introduce yourself</string>
+
 </resources>
