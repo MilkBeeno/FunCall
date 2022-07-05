@@ -26,14 +26,14 @@ class LoginViewModel : ViewModel() {
         }
     }
 
+    /** 登录成功后、获取当前用户信息；注册成功后、先设置用户名和头像、在获取注册的用户信息 */
     private suspend fun getUserInfo(registeredFlag: Boolean) {
         val apiResponse = loginRepository.getUserInfo()
         val apiResult = apiResponse.data
+        if (registeredFlag) loginRequest?.invoke() else registerRequest?.invoke()
         if (apiResponse.success && apiResult != null) {
             if (registeredFlag)
-                loginRequest?.invoke()
-            else
-                registerRequest?.invoke()
+                Account.saveAccountInfo(apiResult)
         } else failedRequest?.invoke()
     }
 }

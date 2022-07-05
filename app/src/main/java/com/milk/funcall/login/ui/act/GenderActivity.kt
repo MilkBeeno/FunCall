@@ -7,17 +7,17 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.milk.funcall.R
 import com.milk.funcall.account.Account
-import com.milk.funcall.user.type.Gender
 import com.milk.funcall.app.ui.act.MainActivity
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityGenderBinding
+import com.milk.funcall.user.type.Gender
 import com.milk.simple.ktx.color
 import com.milk.simple.ktx.immersiveStatusBar
 import com.milk.simple.ktx.viewBinding
 
 class GenderActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityGenderBinding>()
-    private var selectGender = Account.gender
+    private var selectGender = Gender.Man
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,9 +52,9 @@ class GenderActivity : AbstractActivity() {
                 }
             }
             binding.tvGenderNext -> {
-                finish()
+                Account.userGender = selectGender.value
                 MainActivity.create(this)
-                Account.gender = selectGender
+                finish()
             }
         }
     }

@@ -22,8 +22,8 @@ class ApiParamsInterceptor : Interceptor {
                 //val httpUrl = urlBuilder.build()
                 //urlBuilder.addEncodedQueryParameter("","")
                 requestBuilder.url(urlBuilder.build())
-                if (Account.accessToken.isNotBlank())
-                    requestBuilder.addHeader("X-Access-Token", Account.accessToken)
+                if (Account.userToken.isNotBlank())
+                    requestBuilder.addHeader("X-Access-Token", Account.userToken)
             }
             postModel -> {
                 val requestBody = request.body
@@ -35,8 +35,8 @@ class ApiParamsInterceptor : Interceptor {
                     }
                 }
                 val jsonParams = JsonConvert.toJson(paramsMap)
-                if (Account.accessToken.isNotBlank())
-                    requestBuilder.addHeader("X-Access-Token", Account.accessToken)
+                if (Account.userToken.isNotBlank())
+                    requestBuilder.addHeader("X-Access-Token", Account.userToken)
                 requestBuilder.post(jsonParams.toRequestBody(jsonContentType))
             }
         }

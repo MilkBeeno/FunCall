@@ -10,5 +10,5 @@ data class HomModel(
     // 列表一共有多少条数据
     val total: Int = 0,
     // 真实的数据
-    val records: MutableList<UserInfoModel>? = null
+    val records: MutableList<UserSimpleInfoModel>? = null
 )

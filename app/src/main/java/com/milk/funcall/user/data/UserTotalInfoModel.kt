@@ -1,19 +1,16 @@
 package com.milk.funcall.user.data
 
-data class UserDetailModel(
-    val avatarUrl: String = "",
+import com.milk.funcall.common.mdr.table.UserInfoEntity
+
+data class UserTotalInfoModel(
     val fansNum: Int = 0,
     val followNum: Int = 0,
-    val gender: String = "",
-    val id: Long = 0,
     val uid: Long = 0,
     val link: String = "",
-    val nickname: String = "",
     val notifyUnreadNum: String = "",
-    val onlineState: String = "",
     val openid: String = "",
     val originalAvatarUrl: String = "",
     val selfIntroduction: String = "",
     val sortInfo: UserSortModel? = null,
     val userMaterialList: MutableList<UserMediaModel>? = null
-)
+) : UserInfoEntity()

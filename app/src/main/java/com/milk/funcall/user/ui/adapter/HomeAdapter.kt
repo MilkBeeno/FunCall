@@ -12,21 +12,21 @@ import com.milk.funcall.common.imageLoad.loadSimple
 import com.milk.funcall.common.paging.AbstractPagingAdapter
 import com.milk.funcall.common.paging.FooterLoadStateAdapter
 import com.milk.funcall.common.paging.PagingViewHolder
-import com.milk.funcall.user.data.UserInfoModel
+import com.milk.funcall.user.data.UserSimpleInfoModel
 import com.milk.funcall.user.type.OnlineState
 import com.milk.simple.ktx.*
 
-class HomeAdapter : AbstractPagingAdapter<UserInfoModel>(
+class HomeAdapter : AbstractPagingAdapter<UserSimpleInfoModel>(
     layoutId = R.layout.item_hone,
-    diffCallback = object : DiffUtil.ItemCallback<UserInfoModel>() {
-        override fun areItemsTheSame(oldItem: UserInfoModel, newItem: UserInfoModel): Boolean {
+    diffCallback = object : DiffUtil.ItemCallback<UserSimpleInfoModel>() {
+        override fun areItemsTheSame(oldItem: UserSimpleInfoModel, newItem: UserSimpleInfoModel): Boolean {
             return oldItem.userId == newItem.userId
         }
 
-        override fun areContentsTheSame(oldItem: UserInfoModel, newItem: UserInfoModel) = false
+        override fun areContentsTheSame(oldItem: UserSimpleInfoModel, newItem: UserSimpleInfoModel) = false
     }
 ) {
-    override fun convert(holder: PagingViewHolder, item: UserInfoModel) {
+    override fun convert(holder: PagingViewHolder, item: UserSimpleInfoModel) {
         val isOnline = item.userOnline == OnlineState.Online.value
         holder.setText(R.id.tvUserName, item.userName)
         holder.getView<AppCompatImageView>(R.id.ivUserImage).apply {

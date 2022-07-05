@@ -2,10 +2,10 @@ package com.milk.funcall.login.ui.act
 
 import android.animation.Animator
 import android.os.Bundle
-import com.milk.funcall.common.ui.AbstractActivity
-import com.milk.funcall.databinding.ActivityLaunchBinding
 import com.milk.funcall.account.Account
 import com.milk.funcall.app.ui.act.MainActivity
+import com.milk.funcall.common.ui.AbstractActivity
+import com.milk.funcall.databinding.ActivityLaunchBinding
 import com.milk.simple.ktx.gone
 import com.milk.simple.ktx.immersiveStatusBar
 import com.milk.simple.ktx.viewBinding
@@ -40,7 +40,7 @@ class LaunchActivity : AbstractActivity() {
             override fun onAnimationCancel(p0: Animator?) = Unit
             override fun onAnimationRepeat(p0: Animator?) = Unit
             override fun onAnimationEnd(p0: Animator?) {
-                if (Account.isLogged)
+                if (Account.userLogged)
                     MainActivity.create(this@LaunchActivity)
                 else
                     GenderActivity.create(this@LaunchActivity)

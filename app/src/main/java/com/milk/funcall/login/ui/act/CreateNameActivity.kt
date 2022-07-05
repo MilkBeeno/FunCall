@@ -25,45 +25,46 @@ import com.milk.simple.ktx.viewBinding
 class CreateNameActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityCreateNameBinding>()
     private val createNameViewModel by viewModels<CreateNameViewModel>()
-    private val gender = Account.gender
+    private val isMale by lazy { Account.userGender == Gender.Man.value }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         immersiveStatusBar(binding.headerToolbar)
-        createNameViewModel.getUserAvatarName(gender)
-        initializeView()
         initializeObserver()
+        initializeView()
+        initializeData()
     }
 
     private fun initializeView() {
         binding.headerToolbar.setTitle(string(R.string.create_name_title))
-        binding.ivUserAvatar.setOnClickListener(this)
-        binding.tvCreateName.setOnClickListener(this)
+        val defaultGender =
+            if (isMale) R.drawable.create_name_gender_woman else R.drawable.create_name_gender_man
+        binding.ivUserGender.setImageResource(defaultGender)
         binding.etUserName.filters = arrayOf(InputFilter.LengthFilter(20))
         binding.etUserName.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) KeyBoardUtil.hideKeyboard(this)
         }
+        binding.ivUserAvatar.setOnClickListener(this)
+        binding.tvCreateName.setOnClickListener(this)
     }
 
     private fun initializeObserver() {
+        val defaultAvatar =
+            if (isMale) R.drawable.common_default_woman else R.drawable.common_default_man
         createNameViewModel.avatar.asLiveData().observe(this) {
-            binding.ivUserAvatar.loadAvatar(
-                it, if (gender == Gender.Woman)
-                    R.drawable.common_default_woman
-                else
-                    R.drawable.common_default_man
-            )
-            binding.ivUserGender.setImageResource(
-                if (gender == Gender.Woman)
-                    R.drawable.create_name_gender_woman
-                else
-                    R.drawable.create_name_gender_man
-            )
+            if (it.isNotBlank())
+                binding.ivUserAvatar.loadAvatar(it, defaultAvatar)
+            else
+                binding.ivUserAvatar.setImageResource(defaultAvatar)
         }
         createNameViewModel.name.asLiveData().observe(this) {
             if (it.isNotBlank()) binding.etUserName.setText(it)
         }
+    }
+
+    private fun initializeData() {
+        createNameViewModel.getUserAvatarName()
     }
 
     override fun onMultipleClick(view: View) {

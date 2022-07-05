@@ -12,7 +12,7 @@ class ChatMessageRepository {
 
     fun obtainMessages(targetId: Long) =
         DataBaseManager.DB.chatMessageTableDao()
-            .obtainMessages(Account.userId.value ?: 0, targetId)
+            .obtainMessages(Account.userId, targetId)
 
     fun createUid(userId: Long, targetId: Long) =
         System.currentTimeMillis().toString()

@@ -1,8 +1,8 @@
 package com.milk.funcall.login.ui.vm
 
 import androidx.lifecycle.ViewModel
+import com.milk.funcall.account.Account
 import com.milk.funcall.login.repo.CreateNameRepository
-import com.milk.funcall.user.type.Gender
 import com.milk.simple.ktx.ioScope
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -11,15 +11,13 @@ class CreateNameViewModel : ViewModel() {
     val avatar = MutableStateFlow("")
     val name = MutableStateFlow("")
 
-    fun getUserAvatarName(gender: Gender) {
+    fun getUserAvatarName() {
         ioScope {
             val apiResponse =
-                createNameRepository.getUserAvatarName(gender)
+                createNameRepository.getUserAvatarName(Account.userGender)
             val apiResult = apiResponse.data
-            if (apiResponse.success && apiResult != null) {
-                avatar.emit(apiResult.avatarUrl)
-                name.emit(apiResult.nickname)
-            }
+            avatar.emit(apiResult?.avatarUrl ?: "")
+            name.emit(apiResult?.nickname ?: "")
         }
     }
 }
