@@ -6,6 +6,9 @@
     <string name="facebook_client_token" translatable="false">f00bc187672428f3026d4beb24a3de78</string>
     <!--App 内的翻译-->
     <string name="app_name">Fun Call</string>
+    <string name="common_list_loading">Loading</string>
+    <string name="common_list_no_more_data">No more data</string>
+    <string name="common_list_load_more_error">failed to load more please try again later.</string>
     <!--启动页面翻译-->
     <string name="launch_bottom_tips"><![CDATA[Messaging & Chat App]]></string>
     <!--选择性别页面翻译-->
@@ -42,9 +45,6 @@
     <string name="home_title">Discover</string>
     <string name="home_list_nothing">No Date Please try again later</string>
     <string name="home_list_refresh_failed">Refreshed Failed</string>
-    <string name="home_list_load_more_error">failed to load more please try again later.</string>
-    <string name="home_list_load_more_loading">Loading</string>
-    <string name="home_list_no_more_data">No more data</string>
     <!--Mine页面翻译-->
     <string name="mine_default_user_name">User\'s Nickname</string>
     <string name="mine_follows">Follows</string>
@@ -70,5 +70,7 @@
     <string name="edit_profile_about_me">About me</string>
     <string name="edit_profile_name_hint">Please enter your name</string>
     <string name="edit_profile_about_me_hint">Please introduce yourself</string>
-
+    <!--个人粉丝页面翻译-->
+    <string name="fans_list_empty">No fans yet</string>
+    <string name="fans_list_to_publish">to publish content</string>
 </resources>

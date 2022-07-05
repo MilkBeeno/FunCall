@@ -12,21 +12,21 @@ import com.milk.funcall.common.imageLoad.loadSimple
 import com.milk.funcall.common.paging.AbstractPagingAdapter
 import com.milk.funcall.common.paging.FooterLoadStateAdapter
 import com.milk.funcall.common.paging.PagingViewHolder
-import com.milk.funcall.user.data.HomDetailModel
+import com.milk.funcall.user.data.UserInfoModel
 import com.milk.funcall.user.type.OnlineState
 import com.milk.simple.ktx.*
 
-class HomeAdapter : AbstractPagingAdapter<HomDetailModel>(
+class HomeAdapter : AbstractPagingAdapter<UserInfoModel>(
     layoutId = R.layout.item_hone,
-    diffCallback = object : DiffUtil.ItemCallback<HomDetailModel>() {
-        override fun areItemsTheSame(oldItem: HomDetailModel, newItem: HomDetailModel): Boolean {
+    diffCallback = object : DiffUtil.ItemCallback<UserInfoModel>() {
+        override fun areItemsTheSame(oldItem: UserInfoModel, newItem: UserInfoModel): Boolean {
             return oldItem.userId == newItem.userId
         }
 
-        override fun areContentsTheSame(oldItem: HomDetailModel, newItem: HomDetailModel) = false
+        override fun areContentsTheSame(oldItem: UserInfoModel, newItem: UserInfoModel) = false
     }
 ) {
-    override fun convert(holder: PagingViewHolder, item: HomDetailModel) {
+    override fun convert(holder: PagingViewHolder, item: UserInfoModel) {
         val isOnline = item.userOnline == OnlineState.Online.value
         holder.setText(R.id.tvUserName, item.userName)
         holder.getView<AppCompatImageView>(R.id.ivUserImage).apply {
@@ -59,22 +59,22 @@ class HomeAdapter : AbstractPagingAdapter<HomDetailModel>(
             footLayoutId = R.layout.layout_paging_foot,
             pageSize = 8,
             hasHeader = pairHeaderAndFooter.first
-        ) { root, state ->
-            val textView = root.findViewById<AppCompatTextView>(R.id.tvFooter)
+        ) { rootView, state ->
+            val textView = rootView.findViewById<AppCompatTextView>(R.id.tvFooter)
             when (state) {
                 FooterLoadStateAdapter.LoadMoreState.Error -> {
-                    root.gone()
-                    root.context.showToast(
-                        root.context.string(R.string.home_list_load_more_error)
+                    rootView.gone()
+                    rootView.context.showToast(
+                        rootView.context.string(R.string.common_list_load_more_error)
                     )
                 }
                 FooterLoadStateAdapter.LoadMoreState.Loading -> {
-                    root.visible()
-                    textView.text = root.context.string(R.string.home_list_load_more_loading)
+                    rootView.visible()
+                    textView.text = rootView.context.string(R.string.common_list_loading)
                 }
                 FooterLoadStateAdapter.LoadMoreState.NoMoreData -> {
-                    root.visible()
-                    textView.text = root.context.string(R.string.home_list_no_more_data)
+                    rootView.visible()
+                    textView.text = rootView.context.string(R.string.common_list_no_more_data)
                 }
             }
         }

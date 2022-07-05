@@ -3,7 +3,7 @@ package com.milk.funcall.login.api
 import com.milk.funcall.common.data.ApiResponse
 import com.milk.funcall.login.data.AvatarNameModel
 import com.milk.funcall.login.data.LoginModel
-import com.milk.funcall.user.data.UserInfoModel
+import com.milk.funcall.user.data.UserDetailModel
 import retrofit2.http.*
 
 interface LoginApiService {
@@ -17,7 +17,7 @@ interface LoginApiService {
     ): ApiResponse<LoginModel>
 
     @GET("/funcall/currentUserInfo")
-    suspend fun getUserInfo(): ApiResponse<UserInfoModel>
+    suspend fun getUserInfo(): ApiResponse<UserDetailModel>
 
     @GET("/funcall/getRandomBasicInfo")
     suspend fun getUserAvatarName(

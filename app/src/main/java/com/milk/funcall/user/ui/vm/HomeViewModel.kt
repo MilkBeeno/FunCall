@@ -5,7 +5,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import com.milk.funcall.common.data.ApiPagingResponse
 import com.milk.funcall.common.paging.NetworkPagingSource
-import com.milk.funcall.user.data.HomDetailModel
+import com.milk.funcall.user.data.UserInfoModel
 import com.milk.funcall.user.repo.HomeRepository
 
 class HomeViewModel : ViewModel() {
@@ -23,7 +23,7 @@ class HomeViewModel : ViewModel() {
         }
     )
 
-    private suspend fun getHomeList(index: Int): ApiPagingResponse<HomDetailModel> {
+    private suspend fun getHomeList(index: Int): ApiPagingResponse<UserInfoModel> {
         val apiResponse = homeRepository.getHomeList(index, groupNumber)
         val apiResult = apiResponse.data?.records
         if (apiResponse.success) groupNumber = apiResponse.data?.groupNumber ?: 0
