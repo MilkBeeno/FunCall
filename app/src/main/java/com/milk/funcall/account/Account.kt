@@ -105,17 +105,17 @@ object Account {
         }
 
     internal fun initialize() {
-        ioScope {
-            userLoggedFlow.emit(userLogged)
-            if (userLogged) {
+        if (userLogged) {
+            ioScope {
+                userLoggedFlow.emit(userLogged)
                 userIdFlow.emit(userId)
                 userNameFlow.emit(userName)
                 userGenderFlow.emit(userGender)
                 userAvatarFlow.emit(userAvatar)
                 userFansFlow.emit(userFans)
                 userFollowsFlow.emit(userFollows)
-            } else userGender = Gender.Man.value
-        }
+            }
+        } else userGender = Gender.Man.value
     }
 
     internal fun logout() {
