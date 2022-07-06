@@ -39,12 +39,12 @@ class FacebookAuth(private val activity: FragmentActivity) : Auth {
                 }
             })
         activity.lifecycle.addObserver(object : DefaultLifecycleObserver {
-            override fun onDestroy(owner: LifecycleOwner) {
-                super.onDestroy(owner)
+            override fun onStop(owner: LifecycleOwner) {
+                super.onStop(owner)
                 try {
                     LoginManager.getInstance().logOut()
                 } catch (e: Exception) {
-                    Logger.e("Facebook Logout Error:$e", "OAuthManager")
+                    Logger.e("Facebook Logout Error:$e", "AuthManager")
                 } finally {
                     LoginManager.getInstance().unregisterCallback(callbackManager)
                 }
@@ -52,8 +52,10 @@ class FacebookAuth(private val activity: FragmentActivity) : Auth {
         })
     }
 
-    override fun startAuth() = LoginManager.getInstance()
-        .logInWithReadPermissions(activity, listOf("public_profile"))
+    override fun startAuth() {
+        LoginManager.getInstance()
+            .logInWithReadPermissions(activity, listOf("public_profile"))
+    }
 
     override fun onSuccessListener(success: (String) -> Unit) {
         successRequest = success

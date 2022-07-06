@@ -98,4 +98,7 @@ dependencies {
     // firebase 统计功能
     implementation platform('com.google.firebase:firebase-bom:30.1.0')
     implementation("com.google.firebase:firebase-analytics:21.0.0")
+    // google 登录功能
+    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.google.android.gms:play-services-auth:20.2.0'
 }

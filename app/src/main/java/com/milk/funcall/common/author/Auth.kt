@@ -9,5 +9,4 @@ interface Auth {
     fun onCancelListener(cancel: () -> Unit = {})
     fun onFailedListener(failed: () -> Unit = {})
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
-    enum class Type { Facebook, Google }
 }

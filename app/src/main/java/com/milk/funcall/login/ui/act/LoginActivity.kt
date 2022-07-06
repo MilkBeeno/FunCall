@@ -20,8 +20,9 @@ import com.milk.simple.ktx.*
 class LoginActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityLoginBinding>()
     private val loginViewModel by viewModels<LoginViewModel>()
-    private val authLoginManager = AuthLoginManager(this)
+    private val authLoginManager by lazy { AuthLoginManager(this) }
     private val loadingDialog by lazy { LoadingDialog(this) }
+    private var isNotAuthorizing: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +54,7 @@ class LoginActivity : AbstractActivity() {
 
     private fun initializeCallback() {
         authLoginManager.success = { type, accessToken ->
-            //Logger.d("获取的accessToken是=${accessToken}", "hlc")
+            // Logger.d("获取的accessToken是=${accessToken}", "hlc")
             loadingDialog.show()
             loginViewModel.login(type, accessToken)
         }
@@ -66,6 +67,7 @@ class LoginActivity : AbstractActivity() {
             CreateNameActivity.create(this)
         }
         loginViewModel.failedRequest = {
+            isNotAuthorizing = true
             loadingDialog.dismiss()
         }
     }
@@ -74,15 +76,25 @@ class LoginActivity : AbstractActivity() {
         super.onMultipleClick(view)
         when (view) {
             binding.llGoogle -> checkIsAllowedToLoginAuth {
-                loginViewModel.currentDeviceId = it
+                if (isNotAuthorizing) {
+                    isNotAuthorizing = false
+                    loginViewModel.currentDeviceId = it
+                    authLoginManager.googleAuth()
+                }
             }
             binding.llFacebook -> checkIsAllowedToLoginAuth {
-                loginViewModel.currentDeviceId = it
-                authLoginManager.facebookAuth()
+                if (isNotAuthorizing) {
+                    isNotAuthorizing = false
+                    authLoginManager.facebookAuth()
+                    loginViewModel.currentDeviceId = it
+                }
             }
             binding.llDevice -> checkIsAllowedToLoginAuth {
-                loginViewModel.currentDeviceId = it
-                authLoginManager.success?.invoke(AuthType.Device, it)
+                if (isNotAuthorizing) {
+                    isNotAuthorizing = false
+                    loginViewModel.currentDeviceId = it
+                    authLoginManager.success?.invoke(AuthType.Device, it)
+                }
             }
             binding.ivPrivacyCheck -> {
                 loginViewModel.agreementPrivacy = !loginViewModel.agreementPrivacy

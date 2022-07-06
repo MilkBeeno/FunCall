@@ -28,6 +28,8 @@
     <string name="login_user_privacy">Privacy  Policy</string>
     <string name="login_check_privacy">Please confirm the privacy agreement first!</string>
     <string name="login_obtain_device_failed">Login failed, unable to get Google Admob ID</string>
+    <string name="login_google_auth_failed">Google auth failure,please try again.</string>
+    <string name="login_facebook_auth_failed">Facebook auth failure,please try again.</string>
     <string name="login_dialog">Logging in …</string>
     <!--创建名字页面翻译-->
     <string name="create_name_title">Basic Information</string>
