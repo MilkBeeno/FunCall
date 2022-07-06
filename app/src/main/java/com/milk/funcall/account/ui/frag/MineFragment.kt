@@ -1,19 +1,19 @@
 package com.milk.funcall.account.ui.frag
 
 import android.view.View
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.asLiveData
 import com.milk.funcall.R
 import com.milk.funcall.account.Account
 import com.milk.funcall.account.ui.act.*
 import com.milk.funcall.account.ui.dialog.LogoutDialog
+import com.milk.funcall.common.imageLoad.loadAvatar
 import com.milk.funcall.common.ui.AbstractFragment
 import com.milk.funcall.databinding.FragmentMineBinding
 import com.milk.funcall.login.ui.act.GenderActivity
 import com.milk.funcall.login.ui.act.LoginActivity
 import com.milk.simple.ktx.gone
+import com.milk.simple.ktx.string
 import com.milk.simple.ktx.visible
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 class MineFragment : AbstractFragment() {
     private val binding by lazy { FragmentMineBinding.inflate(layoutInflater) }
@@ -42,10 +42,27 @@ class MineFragment : AbstractFragment() {
     }
 
     override fun initializeObserver() {
-        lifecycleScope.launch {
-            Account.userLoggedFlow.collectLatest {
-                if (it) binding.flNotSigned.gone() else binding.flNotSigned.visible()
-            }
+        Account.userLoggedFlow.asLiveData().observe(this) {
+            if (it) binding.flNotSigned.gone() else binding.flNotSigned.visible()
+        }
+        Account.userAvatarFlow.asLiveData().observe(this) {
+            if (it.isNotBlank())
+                binding.ivUserAvatar.loadAvatar(it)
+            else
+                binding.ivUserAvatar.setImageResource(R.drawable.common_default_man)
+        }
+        Account.userGenderFlow.asLiveData().observe(this) {
+            binding.ivUserGender.updateGender(it)
+        }
+        Account.userNameFlow.asLiveData().observe(this) {
+            binding.tvUserName.text =
+                it.ifBlank { requireActivity().string(R.string.mine_default_user_name) }
+        }
+        Account.userFansFlow.asLiveData().observe(this) {
+            binding.tvFans.text = it.toString()
+        }
+        Account.userFollowsFlow.asLiveData().observe(this) {
+            binding.tvFollows.text = it.toString()
         }
     }
 
