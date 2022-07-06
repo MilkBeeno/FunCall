@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "413266931435",
+    "project_id": "fun-call",
+    "storage_bucket": "fun-call.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:413266931435:android:d23881e56fcf5a206bd8ae",
+        "android_client_info": {
+          "package_name": "com.milk.simplefuncall"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "413266931435-5114dssgeo9rl1f26nqvaf8n32l57o3t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaymgVHOAH6bcBQcvDi0nb7Ys-IUaKm-4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "413266931435-5114dssgeo9rl1f26nqvaf8n32l57o3t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
