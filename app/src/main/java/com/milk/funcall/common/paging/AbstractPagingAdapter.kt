@@ -219,4 +219,8 @@ abstract class AbstractPagingAdapter<T : Any>(
     override fun removeAppendedListener() {
         appendedListener = null
     }
+
+    override fun getNoNullItem(position: Int): T {
+        return checkNotNull(getItem(position))
+    }
 }

@@ -39,8 +39,8 @@ class FacebookAuth(private val activity: FragmentActivity) : Auth {
                 }
             })
         activity.lifecycle.addObserver(object : DefaultLifecycleObserver {
-            override fun onStop(owner: LifecycleOwner) {
-                super.onStop(owner)
+            override fun onDestroy(owner: LifecycleOwner) {
+                super.onDestroy(owner)
                 try {
                     LoginManager.getInstance().logOut()
                 } catch (e: Exception) {

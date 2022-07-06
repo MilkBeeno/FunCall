@@ -21,6 +21,7 @@ interface PagingAdapter<T : Any> {
     fun <K : Any> setPagerSource(pager: Pager<K, T>)
     fun addChildClickViewIds(@IdRes vararg viewIds: Int)
     fun addChildLongClickViewIds(@IdRes vararg viewIds: Int)
+    fun getNoNullItem(position: Int): T
 
     fun setOnItemClickListener(
         listener: (adapter: AbstractPagingAdapter<T>, itemView: View, position: Int) -> Unit

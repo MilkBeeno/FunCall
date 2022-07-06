@@ -37,8 +37,8 @@ class GoogleAuth(private val activity: FragmentActivity) : Auth {
                 .build()
         )
         activity.lifecycle.addObserver(object : DefaultLifecycleObserver {
-            override fun onStop(owner: LifecycleOwner) {
-                super.onStop(owner)
+            override fun onDestroy(owner: LifecycleOwner) {
+                super.onDestroy(owner)
                 googleSignInClient?.signOut()?.addOnFailureListener {
                     Logger.d("Google auth signOut error={$it}", "AuthManager")
                 }
@@ -76,7 +76,7 @@ class GoogleAuth(private val activity: FragmentActivity) : Auth {
                 else
                     firebaseAuthWithGoogle(account.idToken.toString())
             } catch (e: ApiException) {
-                failedRequest?.invoke()
+                cancelRequest?.invoke()
             }
         }
     }

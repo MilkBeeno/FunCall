@@ -8,11 +8,15 @@ import com.milk.simple.ktx.string
 
 class AuthLoginManager(activity: FragmentActivity) {
     var success: ((AuthType, String) -> Unit)? = null
+    var cancel: (() -> Unit)? = null
+    var failed: (() -> Unit)? = null
 
     private val googleAuth by lazy {
         GoogleAuth(activity).apply {
             onSuccessListener { success?.invoke(AuthType.Google, it) }
+            onCancelListener { cancel?.invoke() }
             onFailedListener {
+                failed?.invoke()
                 activity.showToast(activity.string(R.string.login_google_auth_failed))
             }
         }
@@ -20,7 +24,9 @@ class AuthLoginManager(activity: FragmentActivity) {
     private val facebookAuth by lazy {
         FacebookAuth(activity).apply {
             onSuccessListener { success?.invoke(AuthType.Facebook, it) }
+            onCancelListener { cancel?.invoke() }
             onFailedListener {
+                failed?.invoke()
                 activity.showToast(activity.string(R.string.login_facebook_auth_failed))
             }
         }

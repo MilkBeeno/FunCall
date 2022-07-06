@@ -1,6 +1,7 @@
 package com.milk.funcall.user.data
 
 import com.milk.funcall.common.mdr.table.UserInfoEntity
+import java.io.Serializable
 
 data class UserTotalInfoModel(
     val fansNum: Int = 0,
@@ -13,4 +14,4 @@ data class UserTotalInfoModel(
     val selfIntroduction: String = "",
     val sortInfo: UserSortModel? = null,
     val userMaterialList: MutableList<UserMediaModel>? = null
-) : UserInfoEntity()
+) : UserInfoEntity(), Serializable

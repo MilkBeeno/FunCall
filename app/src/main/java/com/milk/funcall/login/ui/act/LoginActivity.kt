@@ -58,6 +58,8 @@ class LoginActivity : AbstractActivity() {
             loadingDialog.show()
             loginViewModel.login(type, accessToken)
         }
+        authLoginManager.cancel = { isNotAuthorizing = true }
+        authLoginManager.failed = { isNotAuthorizing = true }
         loginViewModel.loginRequest = {
             finish()
             MainActivity.create(this)
