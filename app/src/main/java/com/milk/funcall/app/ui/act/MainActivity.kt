@@ -3,11 +3,9 @@ package com.milk.funcall.app.ui.act
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.jeremyliao.liveeventbus.LiveEventBus
-import com.milk.funcall.R
 import com.milk.funcall.account.ui.frag.MineFragment
 import com.milk.funcall.app.ui.view.BottomNavigation
 import com.milk.funcall.chat.ui.frag.ChatMessageFragment
@@ -20,7 +18,6 @@ import com.milk.simple.ktx.viewBinding
 
 class MainActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityMainBinding>()
-
     private val fragments = mutableListOf<Fragment>()
     private val homeFragment = HomeFragment.create()
     private val messageFragment = ChatMessageFragment.create()
@@ -61,7 +58,6 @@ class MainActivity : AbstractActivity() {
     }
 
     private fun setTabSelection(fragment: Fragment) {
-        changeBackground(fragment != mineFragment)
         val transaction = supportFragmentManager.beginTransaction()
         hideFragments(transaction)
         when (fragment) {
@@ -94,17 +90,6 @@ class MainActivity : AbstractActivity() {
         transaction.hide(homeFragment)
         transaction.hide(messageFragment)
         transaction.hide(mineFragment)
-    }
-
-    private fun changeBackground(fullScreen: Boolean) {
-        binding.background.setImageResource(
-            if (fullScreen)
-                R.drawable.main_background_full
-            else
-                R.drawable.main_background_medium
-        )
-        binding.background.scaleType =
-            if (fullScreen) ImageView.ScaleType.FIT_XY else ImageView.ScaleType.FIT_START
     }
 
     override fun onInterceptKeyDownEvent(): Boolean = true
