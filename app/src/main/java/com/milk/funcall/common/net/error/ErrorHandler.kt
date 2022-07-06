@@ -1,4 +1,4 @@
-package com.milk.funcall.common.net.handler
+package com.milk.funcall.common.net.error
 
 import android.app.Application
 
