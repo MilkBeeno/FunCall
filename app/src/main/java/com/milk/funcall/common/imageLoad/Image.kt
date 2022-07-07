@@ -12,7 +12,7 @@ fun ImageView.loadAvatar(
 ) {
     load(imageUrl) {
         crossfade(true)
-        crossfade(500)
+        crossfade(200)
         placeholder(placeholder)
         error(placeholder)
     }
@@ -24,7 +24,7 @@ fun ImageView.loadSimple(
 ) {
     load(imageUrl) {
         crossfade(true)
-        crossfade(500)
+        crossfade(300)
         placeholder(placeholder)
         error(placeholder)
     }
@@ -33,13 +33,13 @@ fun ImageView.loadSimple(
 fun ImageView.load(@DrawableRes imageId: Int) {
     load(imageId) {
         crossfade(true)
-        crossfade(500)
+        crossfade(200)
     }
 }
 
 fun ImageView.load(filePath: File) {
     load(filePath) {
         crossfade(true)
-        crossfade(500)
+        crossfade(200)
     }
 }
