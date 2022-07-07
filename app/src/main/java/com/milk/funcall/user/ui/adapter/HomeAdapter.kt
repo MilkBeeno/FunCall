@@ -19,11 +19,17 @@ import com.milk.simple.ktx.*
 class HomeAdapter : AbstractPagingAdapter<UserSimpleInfoModel>(
     layoutId = R.layout.item_hone,
     diffCallback = object : DiffUtil.ItemCallback<UserSimpleInfoModel>() {
-        override fun areItemsTheSame(oldItem: UserSimpleInfoModel, newItem: UserSimpleInfoModel): Boolean {
+        override fun areItemsTheSame(
+            oldItem: UserSimpleInfoModel,
+            newItem: UserSimpleInfoModel
+        ): Boolean {
             return oldItem.userId == newItem.userId
         }
 
-        override fun areContentsTheSame(oldItem: UserSimpleInfoModel, newItem: UserSimpleInfoModel) = false
+        override fun areContentsTheSame(
+            oldItem: UserSimpleInfoModel,
+            newItem: UserSimpleInfoModel
+        ) = false
     }
 ) {
     override fun convert(holder: PagingViewHolder, item: UserSimpleInfoModel) {
