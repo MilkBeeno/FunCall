@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical">
+
+    <FrameLayout
+        android:layout_width="77dp"
+        android:layout_height="77dp"
+        android:layout_marginStart="14dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivUserAvatar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/circleStyle"
+            tools:src="@drawable/common_default_man" />
+
+        <com.milk.funcall.common.ui.view.GenderImageView
+            android:id="@+id/ivUserGender"
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            android:layout_gravity="end|bottom"
+            android:layout_marginEnd="4dp"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/common_gender_man" />
+    </FrameLayout>
+
+    <androidx.legacy.widget.Space
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/llMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="29dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/shape_user_info_message"
+        android:gravity="center_vertical">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="29dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/user_info_message" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="14dp"
+            android:text="@string/user_info_message"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/llFollow"
+        android:layout_width="wrap_content"
+        android:layout_height="29dp"
+        android:layout_marginEnd="14dp"
+        android:gravity="center_vertical"
+        android:visibility="gone"
+        tools:background="@drawable/shape_user_info_un_follow"
+        tools:visibility="visible">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivFollow"
+            android:layout_width="29dp"
+            android:layout_height="29dp"
+            android:scaleType="centerCrop"
+            tools:layout_marginStart="14dp"
+            tools:src="@drawable/user_info_un_follow" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvFollow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="14dp"
+            android:text="@string/user_info_follow"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:visibility="gone"
+            tools:visibility="visible" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.appcompat.widget.LinearLayoutCompat>

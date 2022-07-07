@@ -78,4 +78,14 @@
     <!--个人关注页面翻译-->
     <string name="follows_list_empty">Users who have not yet followed</string>
     <string name="follows_list_to_attention">to pay attention</string>
+    <!--用户信息展示页面翻译-->
+    <string name="user_info_message">Message</string>
+    <string name="user_info_follow">Follow</string>
+    <string name="user_info_copy">Copy</string>
+    <string name="user_info_not_bio">No profile yet ~</string>
+    <string name="user_info_not_link">Social platform homepage link has not been uploaded yet ~</string>
+    <string name="user_info_video">Video</string>
+    <string name="user_info_image">Photos</string>
+    <string name="user_info_obtain_failed">Failed to get user information.</string>
+    <string name="user_info_contact_details">How to contact me :</string>
 </resources>

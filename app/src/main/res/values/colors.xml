@@ -2,6 +2,7 @@
 <resources>
     <color name="transparent">#00000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="white_00">#00FFFFFF</color>
     <!-- 自定义颜色值 -->
     <color name="FF5B5D66">#FF5B5D66</color>
     <color name="FF8E58FB">#FF8E58FB</color>
@@ -29,4 +30,8 @@
     <color name="black_00">#00000000</color>
     <color name="FFC1AEE9">#FFC1AEE9</color>
     <color name="FFEDEDED">#FFEDEDED</color>
+    <color name="FFFFFBF2">#FFFFFBF2</color>
+    <color name="FFFFF9FD">#FFFFF9FD</color>
+    <color name="FFF8F4FB">#FFF8F4FB</color>
+    <color name="FFB3B3B3">#FFB3B3B3</color>
 </resources>

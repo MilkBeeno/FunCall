@@ -154,10 +154,10 @@ object Account {
             userGenderFlow.emit(info.userGender)
             userAvatar = info.userAvatar
             userAvatarFlow.emit(info.userAvatar)
-            userFans = info.fansNum
-            userFansFlow.emit(info.fansNum)
-            userFollows = info.followNum
-            userFollowsFlow.emit(info.followNum)
+            userFans = info.userFans
+            userFansFlow.emit(info.userFans)
+            userFollows = info.userFollows
+            userFollowsFlow.emit(info.userFollows)
         }
     }
 }
