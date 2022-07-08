@@ -29,5 +29,8 @@ data class UserTotalInfoModel(
     val userBio: String = "",
     @SerializedName("sortInfo")
     val userSortInfo: UserSortModel? = null,
-    val userMaterialList: MutableList<UserMediaModel>? = null
+    val userMaterialList: MutableList<UserMediaModel>? = null,
+    // 本地数据转换、将统一媒体数据分为 视频数据 和 图片数据
+    var userImageList: MutableList<UserMediaModel> = mutableListOf(),
+    var userVideoList: MutableList<UserMediaModel> = mutableListOf(),
 ) : UserInfoEntity(), Serializable

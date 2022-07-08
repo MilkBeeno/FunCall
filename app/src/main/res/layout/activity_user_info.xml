@@ -11,14 +11,15 @@
         android:id="@+id/userLoading"
         android:layout_width="51dp"
         android:layout_height="51dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:lottie_autoPlay="true"
         app:lottie_fileName="refresh.json"
-        app:lottie_repeatCount="-1" />
+        app:lottie_repeatCount="-1"
+        tools:visibility="gone" />
     <!--标题栏-->
     <com.milk.funcall.common.ui.view.HeaderToolbar
         android:id="@+id/headerToolbar"
@@ -31,9 +32,10 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/headerToolbar">
+        app:layout_constraintTop_toBottomOf="@+id/headerToolbar"
+        tools:visibility="visible">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -95,42 +97,57 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="22dp"
                 android:background="@drawable/shape_user_info_bottom"
-                android:orientation="vertical"
-                android:paddingStart="14dp"
-                android:paddingEnd="14dp">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tvVideo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
                     android:layout_marginTop="14dp"
+                    android:layout_marginEnd="14dp"
                     android:text="@string/user_info_video"
                     android:textColor="@color/FF1E1E21"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
                 <FrameLayout
+                    android:id="@+id/flVideo"
                     android:layout_width="match_parent"
                     android:layout_height="186dp"
-                    android:layout_marginTop="11dp" />
+                    android:layout_marginStart="14dp"
+                    android:layout_marginTop="11dp"
+                    android:layout_marginEnd="14dp"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
                 <TextView
                     android:id="@+id/tvImage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
                     android:layout_marginTop="19dp"
+                    android:layout_marginEnd="14dp"
                     android:text="@string/user_info_image"
                     android:textColor="@color/FF1E1E21"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvImage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
                     android:layout_marginTop="11dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginBottom="10dp"
                     android:overScrollMode="never"
-                    android:visibility="visible" />
+                    android:visibility="gone"
+                    tools:visibility="visible" />
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.core.widget.NestedScrollView>
@@ -140,7 +157,7 @@
         android:layout_width="match_parent"
         android:layout_height="96dp"
         android:layout_gravity="bottom"
-        android:background="@color/white_00"
+        android:background="@drawable/shape_user_info_next"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent">
 
@@ -149,6 +166,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="14dp"
             android:scaleType="centerCrop"
             android:src="@drawable/user_info_next" />
     </FrameLayout>

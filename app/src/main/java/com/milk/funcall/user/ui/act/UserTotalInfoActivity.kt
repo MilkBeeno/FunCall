@@ -11,8 +11,12 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.lifecycle.asLiveData
 import com.milk.funcall.R
 import com.milk.funcall.common.imageLoad.loadAvatar
+import com.milk.funcall.common.paging.SimpleGridDecoration
+import com.milk.funcall.common.ui.manager.NoScrollGridLayoutManager
 import com.milk.funcall.databinding.ActivityUserInfoBinding
+import com.milk.funcall.user.data.UserMediaModel
 import com.milk.funcall.user.type.Gender
+import com.milk.funcall.user.ui.adapter.UserImageAdapter
 import com.milk.funcall.user.ui.vm.UserTotalInfoViewModel
 import com.milk.simple.ktx.*
 
@@ -27,17 +31,12 @@ class UserTotalInfoActivity : AppCompatActivity() {
         setContentView(binding.root)
         initializeView()
         initializeObserver()
-        loadData()
+        loadUserInfo()
     }
 
     private fun initializeView() {
         immersiveStatusBar(binding.headerToolbar)
         binding.headerToolbar.showArrowBack()
-        binding.userLoading.visible()
-        binding.nlContent.gone()
-        binding.llUserNext.gone()
-        binding.top.llFollow.gone()
-        binding.link.clLink.gone()
     }
 
     private fun initializeObserver() {
@@ -58,6 +57,8 @@ class UserTotalInfoActivity : AppCompatActivity() {
             setFollowState(it.isFollowed)
             setUserBasic(it.userIdx, it.userName, it.userBio)
             setLink(it.userLink)
+            setVideoList(it.userVideoList)
+            setImageList(it.userImageList)
         }
         userTotalInfoViewModel.userFollowedChangeFlow.asLiveData().observe(this) {
             setFollowState(it)
@@ -111,7 +112,24 @@ class UserTotalInfoActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadData() {
+    private fun setVideoList(imageList: MutableList<UserMediaModel>) {
+        if (imageList.isNotEmpty()) {
+            binding.tvVideo.visible()
+            binding.flVideo.visible()
+        }
+    }
+
+    private fun setImageList(imageList: MutableList<UserMediaModel>) {
+        if (imageList.isNotEmpty()) {
+            binding.tvImage.visible()
+            binding.rvImage.visible()
+            binding.rvImage.layoutManager = NoScrollGridLayoutManager(this, 2)
+            binding.rvImage.addItemDecoration(SimpleGridDecoration(this))
+            binding.rvImage.adapter = UserImageAdapter(imageList)
+        }
+    }
+
+    private fun loadUserInfo() {
         userTotalInfoViewModel.getUserTotalInfo(userId)
     }
 
