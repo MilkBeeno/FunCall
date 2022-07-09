@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.lifecycle.asLiveData
 import com.milk.funcall.R
-import com.milk.funcall.common.imageLoad.loadAvatar
+import com.milk.funcall.common.media.loadAvatar
 import com.milk.funcall.common.paging.SimpleGridDecoration
 import com.milk.funcall.common.ui.manager.NoScrollGridLayoutManager
 import com.milk.funcall.databinding.ActivityUserInfoBinding

@@ -1,4 +1,4 @@
-package com.milk.funcall.common.imageLoad
+package com.milk.funcall.common.media
 
 //.components {
 //    add(SvgDecoder.Factory())

@@ -6,7 +6,7 @@ import com.milk.funcall.R
 import com.milk.funcall.account.Account
 import com.milk.funcall.account.ui.act.*
 import com.milk.funcall.account.ui.dialog.LogoutDialog
-import com.milk.funcall.common.imageLoad.loadAvatar
+import com.milk.funcall.common.media.loadAvatar
 import com.milk.funcall.common.ui.AbstractFragment
 import com.milk.funcall.databinding.FragmentMineBinding
 import com.milk.funcall.login.ui.act.GenderActivity

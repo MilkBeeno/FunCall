@@ -11,7 +11,7 @@ import androidx.lifecycle.asLiveData
 import com.milk.funcall.R
 import com.milk.funcall.account.Account
 import com.milk.funcall.app.ui.act.MainActivity
-import com.milk.funcall.common.imageLoad.loadAvatar
+import com.milk.funcall.common.media.loadAvatar
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityCreateNameBinding
 import com.milk.funcall.login.ui.vm.CreateNameViewModel

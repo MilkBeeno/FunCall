@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.imageview.ShapeableImageView
 import com.milk.funcall.R
-import com.milk.funcall.common.imageLoad.loadSimple
+import com.milk.funcall.common.media.loadSimple
 import com.milk.funcall.user.data.UserMediaModel
 
 class UserImageAdapter(private val imageList: MutableList<UserMediaModel>) :

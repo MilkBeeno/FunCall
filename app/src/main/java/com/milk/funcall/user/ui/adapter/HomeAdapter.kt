@@ -7,8 +7,8 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.DiffUtil
 import com.milk.funcall.R
-import com.milk.funcall.common.imageLoad.loadAvatar
-import com.milk.funcall.common.imageLoad.loadSimple
+import com.milk.funcall.common.media.loadAvatar
+import com.milk.funcall.common.media.loadSimple
 import com.milk.funcall.common.paging.AbstractPagingAdapter
 import com.milk.funcall.common.paging.FooterLoadStateAdapter
 import com.milk.funcall.common.paging.PagingViewHolder
