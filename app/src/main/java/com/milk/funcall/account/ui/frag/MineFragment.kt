@@ -6,11 +6,12 @@ import com.milk.funcall.R
 import com.milk.funcall.account.Account
 import com.milk.funcall.account.ui.act.*
 import com.milk.funcall.account.ui.dialog.LogoutDialog
-import com.milk.funcall.common.media.loadAvatar
+import com.milk.funcall.common.media.ImageLoader
 import com.milk.funcall.common.ui.AbstractFragment
 import com.milk.funcall.databinding.FragmentMineBinding
 import com.milk.funcall.login.ui.act.GenderActivity
 import com.milk.funcall.login.ui.act.LoginActivity
+import com.milk.funcall.user.type.Gender
 import com.milk.simple.ktx.gone
 import com.milk.simple.ktx.string
 import com.milk.simple.ktx.visible
@@ -46,10 +47,13 @@ class MineFragment : AbstractFragment() {
             if (it) binding.flNotSigned.gone() else binding.flNotSigned.visible()
         }
         Account.userAvatarFlow.asLiveData().observe(this) {
-            if (it.isNotBlank())
-                binding.ivUserAvatar.loadAvatar(it)
-            else
-                binding.ivUserAvatar.setImageResource(R.drawable.common_default_man)
+            if (it.isNotBlank()) {
+                val isMale = Account.userGender == Gender.Man.value
+                ImageLoader.Builder()
+                    .loadAvatar(it, isMale)
+                    .target(binding.ivUserAvatar)
+                    .build()
+            } else binding.ivUserAvatar.setImageResource(R.drawable.common_default_man)
         }
         Account.userGenderFlow.asLiveData().observe(this) {
             binding.ivUserGender.updateGender(it)

@@ -10,26 +10,25 @@ import okhttp3.Cache
 import okhttp3.OkHttpClient
 import java.io.File
 
-object LoaderManager {
-    private lateinit var current: Application
+object MediaLoaderManager {
     private const val MAX_FACTORY_CACHE = 10 * 1024 * 1024L
-
-    private val memoryCache by lazy {
-        MemoryCache
-            .Builder(current)
-            .maxSizePercent(0.2)
-            .weakReferencesEnabled(true)
-            .build()
-    }
 
     fun initialize(application: Application) {
         Coil.setImageLoader(
             ImageLoader.Builder(application)
                 .memoryCachePolicy(CachePolicy.ENABLED)
-                .memoryCache(memoryCache)
+                .memoryCache(createMemoryCache(application))
                 .callFactory(createOkHttp(application))
                 .build()
         )
+    }
+
+    private fun createMemoryCache(application: Application): MemoryCache {
+        return MemoryCache
+            .Builder(application)
+            .maxSizePercent(0.2)
+            .weakReferencesEnabled(true)
+            .build()
     }
 
     private fun createOkHttp(application: Application): OkHttpClient {

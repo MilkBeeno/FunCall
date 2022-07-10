@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.lifecycle.asLiveData
 import com.milk.funcall.R
-import com.milk.funcall.common.media.loadAvatar
+import com.milk.funcall.common.media.ImageLoader
 import com.milk.funcall.common.paging.SimpleGridDecoration
 import com.milk.funcall.common.ui.manager.NoScrollGridLayoutManager
 import com.milk.funcall.databinding.ActivityUserInfoBinding
@@ -66,11 +66,11 @@ class UserTotalInfoActivity : AppCompatActivity() {
     }
 
     private fun setUserAvatar(avatar: String, gender: String) {
-        val default = if (gender == Gender.Woman.value)
-            R.drawable.common_default_woman
-        else
-            R.drawable.common_default_man
-        binding.top.ivUserAvatar.loadAvatar(avatar, default)
+        val isMale = gender == Gender.Man.value
+        ImageLoader.Builder()
+            .loadAvatar(avatar, isMale)
+            .target(binding.top.ivUserAvatar)
+            .build()
         binding.top.ivUserGender.updateGender(gender)
     }
 

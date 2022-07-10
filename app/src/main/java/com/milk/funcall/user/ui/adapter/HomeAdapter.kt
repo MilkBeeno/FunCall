@@ -7,12 +7,12 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.DiffUtil
 import com.milk.funcall.R
-import com.milk.funcall.common.media.loadAvatar
-import com.milk.funcall.common.media.loadSimple
+import com.milk.funcall.common.media.ImageLoader
 import com.milk.funcall.common.paging.AbstractPagingAdapter
 import com.milk.funcall.common.paging.FooterLoadStateAdapter
 import com.milk.funcall.common.paging.PagingViewHolder
 import com.milk.funcall.user.data.UserSimpleInfoModel
+import com.milk.funcall.user.type.Gender
 import com.milk.funcall.user.type.OnlineState
 import com.milk.simple.ktx.*
 
@@ -39,16 +39,22 @@ class HomeAdapter : AbstractPagingAdapter<UserSimpleInfoModel>(
             val params = layoutParams
             params.height = dpToPx(context, if (item.isMediumImage) 125f else 223f).toInt()
             layoutParams = params
-            loadSimple(
-                item.userImage,
-                if (item.isMediumImage)
-                    R.drawable.home_default_small
-                else
-                    R.drawable.home_default_big
-            )
+            ImageLoader.Builder()
+                .request(item.userImage)
+                .placeholder(
+                    if (item.isMediumImage)
+                        R.drawable.common_list_default_small
+                    else
+                        R.drawable.common_list_default_big
+                )
+                .target(this)
+                .build()
         }
-        holder.getView<AppCompatImageView>(R.id.ivUserAvatar)
-            .loadAvatar(item.userAvatar)
+        val isMale = item.userGender == Gender.Man.value
+        ImageLoader.Builder()
+            .loadAvatar(item.userAvatar, isMale)
+            .target(holder.getView(R.id.ivUserAvatar))
+            .build()
         holder.getView<View>(R.id.vState).setBackgroundResource(
             if (isOnline) R.drawable.shape_home_online_state else R.drawable.shape_home_offline_state
         )

@@ -11,7 +11,7 @@ import androidx.lifecycle.asLiveData
 import com.milk.funcall.R
 import com.milk.funcall.account.Account
 import com.milk.funcall.app.ui.act.MainActivity
-import com.milk.funcall.common.media.loadAvatar
+import com.milk.funcall.common.media.ImageLoader
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityCreateNameBinding
 import com.milk.funcall.login.ui.vm.CreateNameViewModel
@@ -50,13 +50,17 @@ class CreateNameActivity : AbstractActivity() {
     }
 
     private fun initializeObserver() {
-        val defaultAvatar =
-            if (isMale) R.drawable.common_default_woman else R.drawable.common_default_man
         createNameViewModel.avatar.asLiveData().observe(this) {
             if (it.isNotBlank())
-                binding.ivUserAvatar.loadAvatar(it, defaultAvatar)
-            else
+                ImageLoader.Builder()
+                    .loadAvatar(it, isMale)
+                    .target(binding.ivUserAvatar)
+                    .build()
+            else {
+                val defaultAvatar =
+                    if (isMale) R.drawable.common_default_woman else R.drawable.common_default_man
                 binding.ivUserAvatar.setImageResource(defaultAvatar)
+            }
         }
         createNameViewModel.name.asLiveData().observe(this) {
             if (it.isNotBlank()) binding.etUserName.setText(it)

@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.imageview.ShapeableImageView
 import com.milk.funcall.R
-import com.milk.funcall.common.media.loadSimple
+import com.milk.funcall.common.media.ImageLoader
 import com.milk.funcall.user.data.UserMediaModel
 
 class UserImageAdapter(private val imageList: MutableList<UserMediaModel>) :
@@ -19,8 +19,13 @@ class UserImageAdapter(private val imageList: MutableList<UserMediaModel>) :
     }
 
     override fun onBindViewHolder(holder: ImagesViewHolder, position: Int) {
-        holder.itemView.findViewById<ShapeableImageView>(R.id.ivUserImage)
-            .loadSimple(imageList[position].url, R.drawable.user_info_image)
+        val targetView =
+            holder.itemView.findViewById<ShapeableImageView>(R.id.ivUserImage)
+        ImageLoader.Builder()
+            .request(imageList[position].url)
+            .target(targetView)
+            .placeholder(R.drawable.common_list_default_medium)
+            .build()
     }
 
     override fun getItemCount(): Int {
