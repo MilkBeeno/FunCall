@@ -6,11 +6,11 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.milk.funcall.R
+import com.milk.funcall.chat.ui.adapter.ChatMessageAdapter
+import com.milk.funcall.chat.vm.MessageViewModel
 import com.milk.funcall.common.paging.status.RefreshStatus
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityMessageBinding
-import com.milk.funcall.chat.ui.adapter.ChatMessageAdapter
-import com.milk.funcall.chat.vm.MessageViewModel
 import com.milk.simple.ktx.*
 
 class ChatMessageActivity : AbstractActivity() {
@@ -24,13 +24,13 @@ class ChatMessageActivity : AbstractActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        setStatusBarDark()
-        setStatusBarColor(color(R.color.white))
         initializeView()
         initializeData()
     }
 
     private fun initializeView() {
+        setStatusBarDark()
+        setStatusBarColor(color(R.color.white))
         binding.headerToolbar.showArrowBack()
         binding.headerToolbar.setTitle(targetName)
         binding.rvMessage.adapter = chatMessageAdapter

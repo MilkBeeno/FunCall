@@ -17,12 +17,12 @@ class LaunchActivity : AbstractActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        immersiveStatusBar()
         initializeView()
         Account.initialize()
     }
 
     private fun initializeView() {
+        immersiveStatusBar()
         binding.firstLottieView.setAnimation("launch_first.json")
         binding.secondLottieView.setAnimation("launch_second.json")
         binding.firstLottieView.addAnimatorListener(object : Animator.AnimatorListener {

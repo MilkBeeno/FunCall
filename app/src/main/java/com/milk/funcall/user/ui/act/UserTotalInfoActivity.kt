@@ -35,7 +35,8 @@ class UserTotalInfoActivity : AppCompatActivity() {
     }
 
     private fun initializeView() {
-        immersiveStatusBar(binding.headerToolbar)
+        immersiveStatusBar()
+        binding.headerToolbar.statusBarPadding()
         binding.headerToolbar.showArrowBack()
     }
 

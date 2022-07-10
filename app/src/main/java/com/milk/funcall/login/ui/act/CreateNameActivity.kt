@@ -17,10 +17,7 @@ import com.milk.funcall.databinding.ActivityCreateNameBinding
 import com.milk.funcall.login.ui.vm.CreateNameViewModel
 import com.milk.funcall.user.type.Gender
 import com.milk.simple.keyboard.KeyBoardUtil
-import com.milk.simple.ktx.immersiveStatusBar
-import com.milk.simple.ktx.showToast
-import com.milk.simple.ktx.string
-import com.milk.simple.ktx.viewBinding
+import com.milk.simple.ktx.*
 
 class CreateNameActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityCreateNameBinding>()
@@ -30,13 +27,14 @@ class CreateNameActivity : AbstractActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        immersiveStatusBar(binding.headerToolbar)
         initializeObserver()
         initializeView()
         initializeData()
     }
 
     private fun initializeView() {
+        immersiveStatusBar()
+        binding.headerToolbar.statusBarPadding()
         binding.headerToolbar.setTitle(string(R.string.create_name_title))
         val defaultGender =
             if (isMale) R.drawable.create_name_gender_woman else R.drawable.create_name_gender_man

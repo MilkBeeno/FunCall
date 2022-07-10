@@ -27,12 +27,12 @@ class LoginActivity : AbstractActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        immersiveStatusBar()
         initializeView()
         initializeCallback()
     }
 
     private fun initializeView() {
+        immersiveStatusBar()
         binding.llGoogle.setOnClickListener(this)
         binding.llFacebook.setOnClickListener(this)
         binding.llDevice.setOnClickListener(this)

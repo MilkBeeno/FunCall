@@ -10,6 +10,7 @@ import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityAboutUsBinding
 import com.milk.simple.ktx.immersiveStatusBar
 import com.milk.simple.ktx.showToast
+import com.milk.simple.ktx.statusBarPadding
 import com.milk.simple.ktx.viewBinding
 
 class AboutUsActivity : AbstractActivity() {
@@ -17,7 +18,12 @@ class AboutUsActivity : AbstractActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        immersiveStatusBar(binding.headerToolbar)
+        initializeView()
+    }
+
+    private fun initializeView() {
+        immersiveStatusBar()
+        binding.headerToolbar.statusBarPadding()
         binding.headerToolbar.showArrowBack()
         binding.headerToolbar.setTitle(R.string.mine_about_us)
         binding.tvVersion.text = "v".plus(BuildConfig.VERSION_NAME)

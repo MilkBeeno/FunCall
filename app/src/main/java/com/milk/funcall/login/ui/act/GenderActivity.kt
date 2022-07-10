@@ -21,12 +21,12 @@ class GenderActivity : AbstractActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        immersiveStatusBar()
         setContentView(binding.root)
         initializeView()
     }
 
     private fun initializeView() {
+        immersiveStatusBar()
         updateManStatus(true)
         updateWomanStatus(false)
         binding.clMan.setOnClickListener(this)

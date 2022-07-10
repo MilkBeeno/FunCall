@@ -14,10 +14,7 @@ import com.milk.funcall.common.paging.SimpleGridDecoration
 import com.milk.funcall.common.paging.status.RefreshStatus
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityFansBinding
-import com.milk.simple.ktx.gone
-import com.milk.simple.ktx.immersiveStatusBar
-import com.milk.simple.ktx.viewBinding
-import com.milk.simple.ktx.visible
+import com.milk.simple.ktx.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -34,7 +31,8 @@ class FansActivity : AbstractActivity() {
     }
 
     private fun initializeView() {
-        immersiveStatusBar(binding.headerToolbar)
+        immersiveStatusBar()
+        binding.headerToolbar.statusBarPadding()
         binding.headerToolbar.showArrowBack()
         binding.headerToolbar.setTitle(R.string.mine_fans)
         binding.rvFans.layoutManager = GridLayoutManager(this, 2)

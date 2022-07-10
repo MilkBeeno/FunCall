@@ -14,6 +14,7 @@ import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityMainBinding
 import com.milk.funcall.user.ui.frag.HomeFragment
 import com.milk.simple.ktx.immersiveStatusBar
+import com.milk.simple.ktx.statusBarPadding
 import com.milk.simple.ktx.viewBinding
 
 class MainActivity : AbstractActivity() {
@@ -26,7 +27,6 @@ class MainActivity : AbstractActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        immersiveStatusBar(binding.flContent)
         initializeView()
     }
 
@@ -37,6 +37,8 @@ class MainActivity : AbstractActivity() {
     }
 
     private fun initializeView() {
+        immersiveStatusBar()
+        binding.flContent.statusBarPadding()
         setTabSelection(homeFragment)
         binding.navigation.updateSelectNav(BottomNavigation.Type.Home)
         binding.navigation.setItemOnClickListener { refresh, type ->
