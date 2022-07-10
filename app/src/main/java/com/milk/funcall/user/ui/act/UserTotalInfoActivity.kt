@@ -1,17 +1,20 @@
 package com.milk.funcall.user.ui.act
 
 import android.annotation.SuppressLint
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.TypedValue
+import android.view.View
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.lifecycle.asLiveData
 import com.milk.funcall.R
 import com.milk.funcall.common.media.ImageLoader
 import com.milk.funcall.common.paging.SimpleGridDecoration
+import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.ui.manager.NoScrollGridLayoutManager
 import com.milk.funcall.databinding.ActivityUserInfoBinding
 import com.milk.funcall.user.data.UserMediaModel
@@ -20,7 +23,7 @@ import com.milk.funcall.user.ui.adapter.UserImageAdapter
 import com.milk.funcall.user.ui.vm.UserTotalInfoViewModel
 import com.milk.simple.ktx.*
 
-class UserTotalInfoActivity : AppCompatActivity() {
+class UserTotalInfoActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityUserInfoBinding>()
     private val userTotalInfoViewModel by viewModels<UserTotalInfoViewModel>()
     private val userId by lazy { intent.getLongExtra(USER_ID, 0) }
@@ -39,6 +42,7 @@ class UserTotalInfoActivity : AppCompatActivity() {
         binding.headerToolbar.statusBarPadding()
         binding.root.navigationBarPadding()
         binding.headerToolbar.showArrowBack()
+        binding.link.tvCopy.setOnClickListener(this)
     }
 
     private fun initializeObserver() {
@@ -133,6 +137,19 @@ class UserTotalInfoActivity : AppCompatActivity() {
 
     private fun loadUserInfo() {
         userTotalInfoViewModel.getUserTotalInfo(userId)
+    }
+
+    override fun onMultipleClick(view: View) {
+        super.onMultipleClick(view)
+        when (view) {
+            binding.link.tvCopy -> {
+                val label = string(R.string.app_name)
+                val link = binding.link.tvContact.text.toString()
+                val cmb = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                cmb.setPrimaryClip(ClipData.newPlainText(label, link))
+                showToast(string(R.string.user_info_copy_success))
+            }
+        }
     }
 
     private fun Context.dp2px(float: Float): Int {
