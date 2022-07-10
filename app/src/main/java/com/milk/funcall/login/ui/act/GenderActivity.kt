@@ -13,6 +13,7 @@ import com.milk.funcall.databinding.ActivityGenderBinding
 import com.milk.funcall.user.type.Gender
 import com.milk.simple.ktx.color
 import com.milk.simple.ktx.immersiveStatusBar
+import com.milk.simple.ktx.navigationBarPadding
 import com.milk.simple.ktx.viewBinding
 
 class GenderActivity : AbstractActivity() {
@@ -27,6 +28,7 @@ class GenderActivity : AbstractActivity() {
 
     private fun initializeView() {
         immersiveStatusBar()
+        binding.root.navigationBarPadding()
         updateManStatus(true)
         updateWomanStatus(false)
         binding.clMan.setOnClickListener(this)

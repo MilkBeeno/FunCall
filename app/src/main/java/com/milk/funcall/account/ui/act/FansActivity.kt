@@ -33,6 +33,7 @@ class FansActivity : AbstractActivity() {
     private fun initializeView() {
         immersiveStatusBar()
         binding.headerToolbar.statusBarPadding()
+        binding.root.navigationBarPadding()
         binding.headerToolbar.showArrowBack()
         binding.headerToolbar.setTitle(R.string.mine_fans)
         binding.rvFans.layoutManager = GridLayoutManager(this, 2)

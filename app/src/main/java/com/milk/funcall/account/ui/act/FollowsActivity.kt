@@ -33,6 +33,7 @@ class FollowsActivity : AbstractActivity() {
     private fun initializeView() {
         immersiveStatusBar()
         binding.headerToolbar.statusBarPadding()
+        binding.root.navigationBarPadding()
         binding.headerToolbar.showArrowBack()
         binding.headerToolbar.setTitle(R.string.mine_fans)
         binding.rvFollows.layoutManager = GridLayoutManager(this, 2)

@@ -33,6 +33,7 @@ class LoginActivity : AbstractActivity() {
 
     private fun initializeView() {
         immersiveStatusBar()
+        binding.root.navigationBarPadding()
         binding.llGoogle.setOnClickListener(this)
         binding.llFacebook.setOnClickListener(this)
         binding.llDevice.setOnClickListener(this)

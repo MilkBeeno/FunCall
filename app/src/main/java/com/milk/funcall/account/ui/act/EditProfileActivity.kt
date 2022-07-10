@@ -8,10 +8,7 @@ import com.milk.funcall.R
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityEditProfileBinding
 import com.milk.simple.keyboard.KeyBoardUtil
-import com.milk.simple.ktx.immersiveStatusBar
-import com.milk.simple.ktx.statusBarPadding
-import com.milk.simple.ktx.string
-import com.milk.simple.ktx.viewBinding
+import com.milk.simple.ktx.*
 
 class EditProfileActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityEditProfileBinding>()
@@ -24,6 +21,7 @@ class EditProfileActivity : AbstractActivity() {
     private fun initializeView() {
         immersiveStatusBar()
         binding.headerToolbar.statusBarPadding()
+        binding.root.navigationBarPadding()
         binding.headerToolbar.showArrowBack()
         binding.headerToolbar.setTitle(string(R.string.edit_profile_title))
         binding.etName.setOnFocusChangeListener { _, hasFocus ->

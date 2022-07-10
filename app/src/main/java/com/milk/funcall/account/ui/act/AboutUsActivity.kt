@@ -8,10 +8,7 @@ import com.milk.funcall.BuildConfig
 import com.milk.funcall.R
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityAboutUsBinding
-import com.milk.simple.ktx.immersiveStatusBar
-import com.milk.simple.ktx.showToast
-import com.milk.simple.ktx.statusBarPadding
-import com.milk.simple.ktx.viewBinding
+import com.milk.simple.ktx.*
 
 class AboutUsActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityAboutUsBinding>()
@@ -24,6 +21,7 @@ class AboutUsActivity : AbstractActivity() {
     private fun initializeView() {
         immersiveStatusBar()
         binding.headerToolbar.statusBarPadding()
+        binding.root.navigationBarPadding()
         binding.headerToolbar.showArrowBack()
         binding.headerToolbar.setTitle(R.string.mine_about_us)
         binding.tvVersion.text = "v".plus(BuildConfig.VERSION_NAME)

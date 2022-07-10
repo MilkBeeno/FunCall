@@ -31,6 +31,7 @@ class ChatMessageActivity : AbstractActivity() {
     private fun initializeView() {
         setStatusBarDark()
         setStatusBarColor(color(R.color.white))
+        binding.root.navigationBarPadding()
         binding.headerToolbar.showArrowBack()
         binding.headerToolbar.setTitle(targetName)
         binding.rvMessage.adapter = chatMessageAdapter

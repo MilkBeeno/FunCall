@@ -6,10 +6,7 @@ import com.milk.funcall.account.Account
 import com.milk.funcall.app.ui.act.MainActivity
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityLaunchBinding
-import com.milk.simple.ktx.gone
-import com.milk.simple.ktx.immersiveStatusBar
-import com.milk.simple.ktx.viewBinding
-import com.milk.simple.ktx.visible
+import com.milk.simple.ktx.*
 
 class LaunchActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityLaunchBinding>()
@@ -23,6 +20,7 @@ class LaunchActivity : AbstractActivity() {
 
     private fun initializeView() {
         immersiveStatusBar()
+        binding.root.navigationBarPadding()
         binding.firstLottieView.setAnimation("launch_first.json")
         binding.secondLottieView.setAnimation("launch_second.json")
         binding.firstLottieView.addAnimatorListener(object : Animator.AnimatorListener {

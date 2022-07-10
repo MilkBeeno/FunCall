@@ -35,6 +35,7 @@ class CreateNameActivity : AbstractActivity() {
     private fun initializeView() {
         immersiveStatusBar()
         binding.headerToolbar.statusBarPadding()
+        binding.root.navigationBarPadding()
         binding.headerToolbar.setTitle(string(R.string.create_name_title))
         val defaultGender =
             if (isMale) R.drawable.create_name_gender_woman else R.drawable.create_name_gender_man

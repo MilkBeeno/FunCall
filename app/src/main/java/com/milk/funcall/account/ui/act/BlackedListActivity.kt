@@ -7,6 +7,7 @@ import com.milk.funcall.R
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityBlackedListBinding
 import com.milk.simple.ktx.immersiveStatusBar
+import com.milk.simple.ktx.navigationBarPadding
 import com.milk.simple.ktx.statusBarPadding
 import com.milk.simple.ktx.viewBinding
 
@@ -21,6 +22,7 @@ class BlackedListActivity : AbstractActivity() {
     private fun initializeView() {
         immersiveStatusBar()
         binding.headerToolbar.statusBarPadding()
+        binding.root.navigationBarPadding()
         binding.headerToolbar.showArrowBack()
         binding.headerToolbar.setTitle(R.string.mine_blacked_list)
     }
