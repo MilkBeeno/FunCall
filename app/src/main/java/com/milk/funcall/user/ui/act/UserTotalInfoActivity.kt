@@ -61,6 +61,7 @@ class UserTotalInfoActivity : AbstractActivity() {
                 setUserLink(it.userLink)
                 setUserVideo(it.userVideoList)
                 setUserImage(it.userImageList)
+                setMediaEmpty(it.userVideoList.isEmpty() && it.userImageList.isEmpty())
             } else {
                 showToast(string(R.string.user_info_obtain_failed))
                 finish()
@@ -133,6 +134,11 @@ class UserTotalInfoActivity : AbstractActivity() {
             binding.rvImage.adapter = UserImageAdapter(imageList)
         }
     }
+
+    private fun setMediaEmpty(isEmpty: Boolean) {
+        if (isEmpty) binding.ivMediaEmpty.visible()
+    }
+
 
     private fun loadUserInfo() {
         binding.lvLoading.visible()

@@ -132,6 +132,16 @@
                     android:overScrollMode="never"
                     android:visibility="gone"
                     tools:visibility="visible" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivMediaEmpty"
+                    android:layout_width="204dp"
+                    android:layout_height="228dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="24dp"
+                    android:src="@drawable/user_info_media_empty"
+                    android:visibility="gone" />
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.core.widget.NestedScrollView>

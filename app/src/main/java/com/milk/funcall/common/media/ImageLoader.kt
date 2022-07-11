@@ -57,6 +57,8 @@ class ImageLoader(
             when {
                 errorResId > 0 -> error(errorResId)
                 errorDrawable != null -> error(errorDrawable)
+                placeholderResId > 0 -> error(placeholderResId)
+                placeholderDrawable != null -> error(placeholderDrawable)
             }
         }
     }
