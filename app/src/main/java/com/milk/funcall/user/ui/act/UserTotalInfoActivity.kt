@@ -43,60 +43,59 @@ class UserTotalInfoActivity : AbstractActivity() {
         binding.root.navigationBarPadding()
         binding.headerToolbar.showArrowBack()
         binding.link.tvCopy.setOnClickListener(this)
+        binding.ivUserNext.setOnClickListener(this)
     }
 
     private fun initializeObserver() {
-        userTotalInfoViewModel.dataRequestStateFlow.asLiveData().observe(this) {
-            if (it) {
-                binding.userLoading.gone()
-                binding.nlContent.visible()
+        userTotalInfoViewModel.userTotalInfoFlow.asLiveData().observe(this) {
+            if (it != null) {
+                isBlacked = it.isBlacked
+                binding.lvLoading.gone()
                 binding.llUserNext.visible()
-                binding.userLoading.cancelAnimation()
+                binding.basic.root.visible()
+                binding.link.root.visible()
+                binding.llMedia.visible()
+                setUserAvatar(it.userAvatar, it.userGender)
+                setUserFollow(it.isFollowed)
+                setUserBasic(it.userIdx, it.userName, it.userBio)
+                setUserLink(it.userLink)
+                setUserVideo(it.userVideoList)
+                setUserImage(it.userImageList)
             } else {
                 showToast(string(R.string.user_info_obtain_failed))
                 finish()
             }
         }
-        userTotalInfoViewModel.userTotalInfoFlow.asLiveData().observe(this) {
-            isBlacked = it.isBlacked
-            setUserAvatar(it.userAvatar, it.userGender)
-            setFollowState(it.isFollowed)
-            setUserBasic(it.userIdx, it.userName, it.userBio)
-            setLink(it.userLink)
-            setVideoList(it.userVideoList)
-            setImageList(it.userImageList)
-        }
         userTotalInfoViewModel.userFollowedChangeFlow.asLiveData().observe(this) {
-            setFollowState(it)
+            setUserFollow(it)
         }
     }
 
     private fun setUserAvatar(avatar: String, gender: String) {
-        val isMale = gender == Gender.Man.value
         ImageLoader.Builder()
-            .loadAvatar(avatar, isMale)
-            .target(binding.top.ivUserAvatar)
+            .loadAvatar(avatar, isMale = gender == Gender.Man.value)
+            .target(binding.basic.ivUserAvatar)
             .build()
-        binding.top.ivUserGender.updateGender(gender)
+        binding.basic.ivUserGender.updateGender(gender)
     }
 
-    private fun setFollowState(isFollowed: Boolean) {
-        binding.top.llFollow.visible()
-        val params = binding.top.ivFollow.layoutParams as LinearLayoutCompat.LayoutParams
+    private fun setUserFollow(isFollowed: Boolean) {
+        binding.basic.llFollow.visible()
+        val params = binding.basic.ivFollow.layoutParams as LinearLayoutCompat.LayoutParams
         if (isFollowed) {
-            binding.top.tvFollow.gone()
-            binding.top.ivFollow.setImageResource(R.drawable.user_info_followed)
-            binding.top.llFollow.setBackgroundResource(R.drawable.shape_user_info_followed)
+            binding.basic.tvFollow.gone()
+            binding.basic.ivFollow.setImageResource(R.drawable.user_info_followed)
+            binding.basic.llFollow.setBackgroundResource(R.drawable.shape_user_info_followed)
             params.marginStart = dp2px(8f)
             params.marginEnd = dp2px(8f)
-            binding.top.ivFollow.layoutParams = params
+            binding.basic.ivFollow.layoutParams = params
         } else {
-            binding.top.tvFollow.visible()
-            binding.top.ivFollow.setImageResource(R.drawable.user_info_un_follow)
-            binding.top.llFollow.setBackgroundResource(R.drawable.shape_user_info_un_follow)
+            binding.basic.tvFollow.visible()
+            binding.basic.ivFollow.setImageResource(R.drawable.user_info_un_follow)
+            binding.basic.llFollow.setBackgroundResource(R.drawable.shape_user_info_un_follow)
             params.marginStart = dp2px(10f)
             params.marginEnd = 0
-            binding.top.ivFollow.layoutParams = params
+            binding.basic.ivFollow.layoutParams = params
         }
     }
 
@@ -107,7 +106,7 @@ class UserTotalInfoActivity : AbstractActivity() {
         binding.tvUserBio.text = userBio
     }
 
-    private fun setLink(link: String) {
+    private fun setUserLink(link: String) {
         if (link.isNotBlank()) {
             binding.link.clLink.visible()
             binding.link.tvNotLink.gone()
@@ -118,14 +117,14 @@ class UserTotalInfoActivity : AbstractActivity() {
         }
     }
 
-    private fun setVideoList(imageList: MutableList<UserMediaModel>) {
+    private fun setUserVideo(imageList: MutableList<UserMediaModel>) {
         if (imageList.isNotEmpty()) {
             binding.tvVideo.visible()
             binding.flVideo.visible()
         }
     }
 
-    private fun setImageList(imageList: MutableList<UserMediaModel>) {
+    private fun setUserImage(imageList: MutableList<UserMediaModel>) {
         if (imageList.isNotEmpty()) {
             binding.tvImage.visible()
             binding.rvImage.visible()
@@ -136,6 +135,7 @@ class UserTotalInfoActivity : AbstractActivity() {
     }
 
     private fun loadUserInfo() {
+        binding.lvLoading.visible()
         userTotalInfoViewModel.getUserTotalInfo(userId)
     }
 
@@ -148,6 +148,10 @@ class UserTotalInfoActivity : AbstractActivity() {
                 val cmb = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 cmb.setPrimaryClip(ClipData.newPlainText(label, link))
                 showToast(string(R.string.user_info_copy_success))
+            }
+            binding.ivUserNext -> {
+                create(this)
+                finish()
             }
         }
     }

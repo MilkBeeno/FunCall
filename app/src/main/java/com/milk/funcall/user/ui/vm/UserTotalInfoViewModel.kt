@@ -10,16 +10,13 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 
 class UserTotalInfoViewModel : ViewModel() {
     private val userTotalInfoRepository by lazy { UserTotalInfoRepository() }
-    val dataRequestStateFlow = MutableSharedFlow<Boolean>()
-    val userTotalInfoFlow = MutableSharedFlow<UserTotalInfoModel>()
-    val userFollowedChangeFlow = MutableSharedFlow<Boolean>()
     private val userVideoList = mutableListOf<UserMediaModel>()
     private val userImageList = mutableListOf<UserMediaModel>()
+    val userTotalInfoFlow = MutableSharedFlow<UserTotalInfoModel?>()
+    val userFollowedChangeFlow = MutableSharedFlow<Boolean>()
 
     fun getUserTotalInfo(userId: Long) {
         ioScope {
-            userVideoList.clear()
-            userImageList.clear()
             val apiResponse = if (userId > 0)
                 userTotalInfoRepository.getUserTotalInfo(userId)
             else
@@ -30,11 +27,10 @@ class UserTotalInfoViewModel : ViewModel() {
                     val isVideo = it.materialType == Material.Video.value
                     if (isVideo) userVideoList.add(it) else userImageList.add(it)
                 }
-                dataRequestStateFlow.emit(true)
                 apiResult.userVideoList = userVideoList
                 apiResult.userImageList = userImageList
                 userTotalInfoFlow.emit(apiResult)
-            } else dataRequestStateFlow.emit(false)
+            } else userTotalInfoFlow.emit(null)
         }
     }
 }
