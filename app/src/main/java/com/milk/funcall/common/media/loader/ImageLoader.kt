@@ -1,4 +1,4 @@
-package com.milk.funcall.common.media
+package com.milk.funcall.common.media.loader
 
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable

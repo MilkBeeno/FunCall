@@ -1,5 +1,6 @@
 package com.milk.funcall.login.ui.act
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -8,10 +9,19 @@ import android.view.KeyEvent
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.asLiveData
+import com.bumptech.glide.Glide
+import com.luck.picture.lib.basic.PictureSelector
+import com.luck.picture.lib.config.SelectMimeType
+import com.luck.picture.lib.config.SelectModeConfig
+import com.luck.picture.lib.entity.LocalMedia
+import com.luck.picture.lib.interfaces.OnResultCallbackListener
+import com.luck.picture.lib.language.LanguageConfig
 import com.milk.funcall.R
 import com.milk.funcall.account.Account
 import com.milk.funcall.app.ui.act.MainActivity
-import com.milk.funcall.common.media.ImageLoader
+import com.milk.funcall.common.media.engine.GlideEngine
+import com.milk.funcall.common.media.engine.ImageCropEngine
+import com.milk.funcall.common.media.loader.ImageLoader
 import com.milk.funcall.common.permission.Permission
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityCreateNameBinding
@@ -19,6 +29,7 @@ import com.milk.funcall.login.ui.vm.CreateNameViewModel
 import com.milk.funcall.user.type.Gender
 import com.milk.simple.keyboard.KeyBoardUtil
 import com.milk.simple.ktx.*
+import java.io.File
 
 class CreateNameActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityCreateNameBinding>()
@@ -103,8 +114,25 @@ class CreateNameActivity : AbstractActivity() {
             })
     }
 
+    @SuppressLint("CheckResult")
     private fun toSelectAvatarImage() {
-
+        PictureSelector.create(this)
+            .openGallery(SelectMimeType.ofImage())
+            .setImageEngine(GlideEngine.createGlideEngine())
+            .setLanguage(LanguageConfig.ENGLISH)
+            .setSelectionMode(SelectModeConfig.SINGLE)
+            .isDirectReturnSingle(true)
+            .setCropEngine(ImageCropEngine())
+            .forResult(object : OnResultCallbackListener<LocalMedia> {
+                override fun onCancel() = Unit
+                override fun onResult(result: ArrayList<LocalMedia>?) {
+                    if (result != null) {
+                        Glide.with(this@CreateNameActivity)
+                            .load(File(result[0].path))
+                            .into(binding.ivUserAvatar)
+                    }
+                }
+            })
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {

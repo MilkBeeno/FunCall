@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.milk.funcall.R
-import com.milk.funcall.common.media.ImageLoader
+import com.milk.funcall.common.media.loader.ImageLoader
 import com.milk.funcall.user.data.UserMediaModel
 
 class ImageMediaAdapter(private val imageList: MutableList<UserMediaModel>) :

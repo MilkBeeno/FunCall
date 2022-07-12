@@ -1,4 +1,4 @@
-package com.milk.funcall.common.media
+package com.milk.funcall.common.media.loader
 
 import android.app.Application
 import android.content.Context
@@ -10,7 +10,7 @@ import okhttp3.Cache
 import okhttp3.OkHttpClient
 import java.io.File
 
-object MediaLoaderManager {
+object LoaderManager {
     private const val MAX_FACTORY_CACHE = 10 * 1024 * 1024L
 
     fun initialize(application: Application) {

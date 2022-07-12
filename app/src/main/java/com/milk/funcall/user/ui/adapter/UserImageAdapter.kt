@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.imageview.ShapeableImageView
 import com.milk.funcall.R
-import com.milk.funcall.common.media.ImageLoader
+import com.milk.funcall.common.media.loader.ImageLoader
 import com.milk.funcall.user.data.UserMediaModel
 
 class UserImageAdapter(
