@@ -37,13 +37,13 @@ class ImageMediaActivity : AbstractActivity() {
     }
 
     private fun initializeObserver() {
-        Account.newUserViewOtherFlow.asLiveData().observe(this) {
+        Account.userViewOtherFlow.asLiveData().observe(this) {
             if (!it) {
                 guideDialog.show()
                 guideDialog.setOnDismissListener {
                     ioScope {
-                        Account.newUserViewOther = true
-                        Account.newUserViewOtherFlow.emit(true)
+                        Account.userViewOther = true
+                        Account.userViewOtherFlow.emit(true)
                     }
                 }
             }

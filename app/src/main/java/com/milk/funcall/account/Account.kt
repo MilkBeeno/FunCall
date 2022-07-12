@@ -105,16 +105,16 @@ object Account {
             return field
         }
 
-    /** 当前用户如果是新用户、是否观看过他人个人资料页面图片 */
-    internal val newUserViewOtherFlow = MutableStateFlow(false)
-    var newUserViewOther: Boolean = false
+    /** 当前用户是否观看过他人个人资料页面图片 */
+    internal val userViewOtherFlow = MutableStateFlow(false)
+    var userViewOther: Boolean = false
         set(value) {
             Logger.d("USERID=$userId","hlc")
-            KvManger.put(KvKey.NEW_USER_VIEW_OTHER.plus(userId), value)
+            KvManger.put(KvKey.USER_VIEW_OTHER.plus(userId), value)
             field = value
         }
         get() {
-            field = KvManger.getBoolean(KvKey.NEW_USER_VIEW_OTHER.plus(userId))
+            field = KvManger.getBoolean(KvKey.USER_VIEW_OTHER.plus(userId))
             return field
         }
 
@@ -128,7 +128,7 @@ object Account {
                 userAvatarFlow.emit(userAvatar)
                 userFansFlow.emit(userFans)
                 userFollowsFlow.emit(userFollows)
-                newUserViewOtherFlow.emit(newUserViewOther)
+                userViewOtherFlow.emit(userViewOther)
             }
         } else userGender = Gender.Man.value
     }
