@@ -88,5 +88,5 @@
     <string name="user_info_image">Photos</string>
     <string name="user_info_obtain_failed">Failed to get user information.</string>
     <string name="user_info_contact_details">How to contact me :</string>
-    <string name="user_info_copy_success">User id copy successful.</string>
+    <string name="user_info_copy_success">Contact details copy successful.</string>
 </resources>

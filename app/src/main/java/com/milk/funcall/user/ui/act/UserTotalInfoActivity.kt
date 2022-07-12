@@ -13,6 +13,7 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.lifecycle.asLiveData
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
+import com.milk.funcall.chat.ui.act.ChatMessageActivity
 import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.common.media.ImageLoader
 import com.milk.funcall.common.paging.SimpleGridDecoration
@@ -29,6 +30,8 @@ class UserTotalInfoActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityUserInfoBinding>()
     private val userTotalInfoViewModel by viewModels<UserTotalInfoViewModel>()
     private val userId by lazy { intent.getLongExtra(USER_ID, 0) }
+    private var targetId: Long = 0
+    private var targetName: String = ""
     private var isBlacked: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,11 +49,14 @@ class UserTotalInfoActivity : AbstractActivity() {
         binding.headerToolbar.showArrowBack()
         binding.link.tvCopy.setOnClickListener(this)
         binding.ivUserNext.setOnClickListener(this)
+        binding.basic.llMessage.setOnClickListener(this)
     }
 
     private fun initializeObserver() {
         userTotalInfoViewModel.userTotalInfoFlow.asLiveData().observe(this) {
             if (it != null) {
+                targetId = it.userId
+                targetName = it.userName
                 isBlacked = it.isBlacked
                 binding.lvLoading.gone()
                 binding.llUserNext.visible()
@@ -120,8 +126,8 @@ class UserTotalInfoActivity : AbstractActivity() {
         }
     }
 
-    private fun setUserVideo(imageList: MutableList<UserMediaModel>) {
-        if (imageList.isNotEmpty()) {
+    private fun setUserVideo(userVideoList: MutableList<UserMediaModel>) {
+        if (userVideoList.isNotEmpty()) {
             binding.tvVideo.visible()
             binding.flVideo.visible()
         }
@@ -134,9 +140,10 @@ class UserTotalInfoActivity : AbstractActivity() {
             binding.rvImage.layoutManager = NoScrollGridLayoutManager(this, 2)
             binding.rvImage.addItemDecoration(SimpleGridDecoration(this))
             binding.rvImage.adapter = UserImageAdapter(imageList) {
-                ImageMediaActivity.create(this, it)
-                LiveEventBus.get<MutableList<UserMediaModel>>(KvKey.DISPLAY_IMAGE_MEDIA_LIST)
-                    .post(imageList)
+                ImageMediaActivity.create(this, targetId, targetName, isBlacked)
+                LiveEventBus
+                    .get<Pair<Int, MutableList<UserMediaModel>>>(KvKey.DISPLAY_IMAGE_MEDIA_LIST)
+                    .post(Pair(it, imageList))
             }
         }
     }
@@ -144,7 +151,6 @@ class UserTotalInfoActivity : AbstractActivity() {
     private fun setMediaEmpty(isEmpty: Boolean) {
         if (isEmpty) binding.ivMediaEmpty.visible()
     }
-
 
     private fun loadUserInfo() {
         binding.lvLoading.visible()
@@ -164,6 +170,10 @@ class UserTotalInfoActivity : AbstractActivity() {
             binding.ivUserNext -> {
                 create(this)
                 finish()
+            }
+            binding.basic.llMessage -> {
+                if (isBlacked) return
+                ChatMessageActivity.create(this, targetId, targetName)
             }
         }
     }
