@@ -5,7 +5,7 @@
         android:angle="90"
         android:centerColor="@color/black_50"
         android:endColor="@color/FF1E1E21"
-        android:startColor="@color/black_00" />
+        android:startColor="@color/transparent" />
     <corners
         android:topLeftRadius="10dp"
         android:topRightRadius="10dp" />

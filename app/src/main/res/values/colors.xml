@@ -2,8 +2,10 @@
 <resources>
     <color name="transparent">#00000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="white_00">#00FFFFFF</color>
-    <!-- 自定义颜色值 -->
+    <color name="white_30">#B3FFFFFF</color>
+    <color name="black">#FF000000</color>
+    <color name="black_70">#99000000</color>
+    <color name="black_50">#80000000</color>
     <color name="FF5B5D66">#FF5B5D66</color>
     <color name="FF8E58FB">#FF8E58FB</color>
     <color name="FF1E1E21">#FF1E1E21</color>
@@ -25,9 +27,6 @@
     <color name="FFB7BACC">#FFB7BACC</color>
     <color name="FF58FFD3">#FF58FFD3</color>
     <color name="FFEAECF6">#FFEAECF6</color>
-    <color name="black_70">#99000000</color>
-    <color name="black_50">#80000000</color>
-    <color name="black_00">#00000000</color>
     <color name="FFC1AEE9">#FFC1AEE9</color>
     <color name="FFEDEDED">#FFEDEDED</color>
     <color name="FFFFFBF2">#FFFFFBF2</color>

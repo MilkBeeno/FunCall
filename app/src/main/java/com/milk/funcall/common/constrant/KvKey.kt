@@ -24,4 +24,7 @@ object KvKey {
 
     /** 当前用户关注数量 */
     const val ACCOUNT_USER_FOLLOWS_NUMBER = "ACCOUNT_USER_FOLLOWS_NUMBER"
+
+    /** 查看用户图片媒体列表 */
+    const val DISPLAY_IMAGE_MEDIA_LIST = "DISPLAY_IMAGE_MEDIA_LIST"
 }

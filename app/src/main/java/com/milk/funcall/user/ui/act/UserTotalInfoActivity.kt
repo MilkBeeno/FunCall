@@ -11,7 +11,9 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.lifecycle.asLiveData
+import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
+import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.common.media.ImageLoader
 import com.milk.funcall.common.paging.SimpleGridDecoration
 import com.milk.funcall.common.ui.AbstractActivity
@@ -131,7 +133,11 @@ class UserTotalInfoActivity : AbstractActivity() {
             binding.rvImage.visible()
             binding.rvImage.layoutManager = NoScrollGridLayoutManager(this, 2)
             binding.rvImage.addItemDecoration(SimpleGridDecoration(this))
-            binding.rvImage.adapter = UserImageAdapter(imageList)
+            binding.rvImage.adapter = UserImageAdapter(imageList) {
+                ImageMediaActivity.create(this, it)
+                LiveEventBus.get<MutableList<UserMediaModel>>(KvKey.DISPLAY_IMAGE_MEDIA_LIST)
+                    .post(imageList)
+            }
         }
     }
 

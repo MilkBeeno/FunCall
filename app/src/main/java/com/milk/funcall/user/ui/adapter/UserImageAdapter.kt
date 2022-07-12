@@ -9,8 +9,10 @@ import com.milk.funcall.R
 import com.milk.funcall.common.media.ImageLoader
 import com.milk.funcall.user.data.UserMediaModel
 
-class UserImageAdapter(private val imageList: MutableList<UserMediaModel>) :
-    RecyclerView.Adapter<UserImageAdapter.ImagesViewHolder>() {
+class UserImageAdapter(
+    private val imageList: MutableList<UserMediaModel>,
+    private val clickRequest: (Int) -> Unit = {}
+) : RecyclerView.Adapter<UserImageAdapter.ImagesViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImagesViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -26,6 +28,7 @@ class UserImageAdapter(private val imageList: MutableList<UserMediaModel>) :
             .target(targetView)
             .placeholder(R.drawable.common_list_default_medium)
             .build()
+        holder.itemView.setOnClickListener { clickRequest(position) }
     }
 
     override fun getItemCount(): Int {

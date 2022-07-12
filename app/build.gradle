@@ -101,4 +101,6 @@ dependencies {
     // google 登录功能
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.android.gms:play-services-auth:20.2.0'
+    // 滑动指示器库
+    implementation 'me.relex:circleindicator:2.1.6'
 }

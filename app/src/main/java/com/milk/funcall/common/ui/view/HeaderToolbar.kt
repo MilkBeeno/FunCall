@@ -5,7 +5,9 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import com.milk.funcall.R
 import com.milk.funcall.databinding.LayoutToolbarBinding
 
 class HeaderToolbar : FrameLayout {
@@ -26,10 +28,12 @@ class HeaderToolbar : FrameLayout {
     }
 
     fun showArrowBack(
+        @DrawableRes drawableResId: Int = R.drawable.common_arrow_back,
         action: () -> Unit = {
             if (context is Activity) (context as Activity).onBackPressed()
         }
     ) {
+        binding.ivBack.setImageResource(drawableResId)
         binding.ivBack.visibility = VISIBLE
         binding.ivBack.setOnClickListener { action() }
     }
