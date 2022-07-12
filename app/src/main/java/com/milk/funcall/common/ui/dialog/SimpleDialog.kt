@@ -91,4 +91,8 @@ abstract class SimpleDialog<T : ViewBinding>(val activity: FragmentActivity) {
     open fun setCancelable(flag: Boolean) {
         cancelable = flag
     }
+
+    open fun setOnDismissListener(listener: () -> Unit) {
+        dismissRequest = listener
+    }
 }

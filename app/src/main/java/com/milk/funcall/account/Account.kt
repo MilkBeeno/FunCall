@@ -104,6 +104,18 @@ object Account {
             return field
         }
 
+    /** 当前用户如果是新用户、是否观看过他人个人资料页面图片 */
+    internal val newUserViewOtherFlow = MutableStateFlow(false)
+    var newUserViewOther: Boolean = false
+        set(value) {
+            KvManger.put(KvKey.NEW_USER_VIEW_OTHER.plus(userId), value)
+            field = value
+        }
+        get() {
+            field = KvManger.getBoolean(KvKey.NEW_USER_VIEW_OTHER)
+            return field
+        }
+
     internal fun initialize() {
         if (userLogged) {
             ioScope {
@@ -114,6 +126,7 @@ object Account {
                 userAvatarFlow.emit(userAvatar)
                 userFansFlow.emit(userFans)
                 userFollowsFlow.emit(userFollows)
+                newUserViewOtherFlow.emit(newUserViewOther)
             }
         } else userGender = Gender.Man.value
     }

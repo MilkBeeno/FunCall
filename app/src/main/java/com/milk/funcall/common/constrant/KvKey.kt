@@ -25,6 +25,9 @@ object KvKey {
     /** 当前用户关注数量 */
     const val ACCOUNT_USER_FOLLOWS_NUMBER = "ACCOUNT_USER_FOLLOWS_NUMBER"
 
+    /** 当前用户如果是新用户、是否观看过他人个人资料页面图片 */
+    const val NEW_USER_VIEW_OTHER = "ACCOUNT_NEW_USER_VIEW_OTHER"
+
     /** 查看用户图片媒体列表 */
     const val DISPLAY_IMAGE_MEDIA_LIST = "DISPLAY_IMAGE_MEDIA_LIST"
 }
