@@ -12,6 +12,7 @@ import com.milk.funcall.R
 import com.milk.funcall.account.Account
 import com.milk.funcall.app.ui.act.MainActivity
 import com.milk.funcall.common.media.ImageLoader
+import com.milk.funcall.common.permission.Permission
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityCreateNameBinding
 import com.milk.funcall.login.ui.vm.CreateNameViewModel
@@ -73,9 +74,7 @@ class CreateNameActivity : AbstractActivity() {
     override fun onMultipleClick(view: View) {
         super.onMultipleClick(view)
         when (view) {
-            binding.ivUserAvatar -> {
-                // 系统去选择头像
-            }
+            binding.ivUserAvatar -> checkStoragePermission()
             binding.tvCreateName -> {
                 if (binding.etUserName.text.toString().trim().isBlank())
                     showToast(string(R.string.create_name_no_empty))
@@ -83,6 +82,29 @@ class CreateNameActivity : AbstractActivity() {
                     MainActivity.create(this)
             }
         }
+    }
+
+    private fun checkStoragePermission() {
+        Permission.checkStoragePermission(
+            activity = this,
+            refuseRequest = { scope, deniedList ->
+                scope.showForwardToSettingsDialog(
+                    deniedList,
+                    string(R.string.common_media_permission_title),
+                    string(R.string.common_confirm).uppercase(),
+                    string(R.string.common_cancel).uppercase()
+                )
+            },
+            resultRequest = { allGranted, _ ->
+                if (allGranted)
+                    toSelectAvatarImage()
+                else
+                    showToast(string(R.string.common_refuse))
+            })
+    }
+
+    private fun toSelectAvatarImage() {
+
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {

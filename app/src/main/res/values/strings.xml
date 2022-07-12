@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!--Facebook 元素-->
     <string name="facebook_app_name" translatable="false">@string/app_name</string>
     <string name="facebook_app_id" translatable="false">367605238837463</string>
@@ -9,6 +9,10 @@
     <string name="common_list_loading">Loading</string>
     <string name="common_list_no_more_data">No more data</string>
     <string name="common_list_load_more_error">failed to load more please try again later.</string>
+    <string name="common_refuse">You have denied access to albums and media.</string>
+    <string name="common_media_permission_title">Get photo and media permissions</string>
+    <string name="common_confirm">OK</string>
+    <string name="common_cancel" tools:ignore="ButtonCase">CANCEL</string>
     <!--启动页面翻译-->
     <string name="launch_bottom_tips"><![CDATA[Messaging & Chat App]]></string>
     <!--选择性别页面翻译-->

@@ -103,4 +103,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:20.2.0'
     // 滑动指示器库
     implementation 'me.relex:circleindicator:2.1.6'
+    // 图片选择库
+    implementation 'com.github.qingmei2:rximagepicker:0.2.0'
+    // 应用权限库
+    implementation 'com.guolindev.permissionx:permissionx:1.6.4'
 }
