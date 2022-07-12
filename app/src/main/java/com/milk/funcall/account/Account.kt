@@ -4,6 +4,7 @@ import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.user.data.UserTotalInfoModel
 import com.milk.funcall.user.type.Gender
 import com.milk.simple.ktx.ioScope
+import com.milk.simple.log.Logger
 import com.milk.simple.mdr.KvManger
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -108,11 +109,12 @@ object Account {
     internal val newUserViewOtherFlow = MutableStateFlow(false)
     var newUserViewOther: Boolean = false
         set(value) {
+            Logger.d("USERID=$userId","hlc")
             KvManger.put(KvKey.NEW_USER_VIEW_OTHER.plus(userId), value)
             field = value
         }
         get() {
-            field = KvManger.getBoolean(KvKey.NEW_USER_VIEW_OTHER)
+            field = KvManger.getBoolean(KvKey.NEW_USER_VIEW_OTHER.plus(userId))
             return field
         }
 
