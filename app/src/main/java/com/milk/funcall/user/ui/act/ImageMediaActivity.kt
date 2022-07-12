@@ -17,7 +17,6 @@ import com.milk.funcall.user.ui.adapter.ImageMediaAdapter
 import com.milk.funcall.user.ui.dialog.ImageMediaGuideDialog
 import com.milk.simple.ktx.*
 
-
 class ImageMediaActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityImageMediaBinding>()
     private val position by lazy { intent.getIntExtra(IMAGE_POSITION, 0) }
