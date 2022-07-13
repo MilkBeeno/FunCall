@@ -23,4 +23,12 @@ interface LoginApiService {
     suspend fun getUserAvatarName(
         @Query("gender") gender: String
     ): ApiResponse<AvatarNameModel>
+
+    @FormUrlEncoded
+    @POST("/funcall/registeredUser")
+    suspend fun updateUserProfile(
+        @Field("nickname") nickName: String,
+        @Field("avatarUrl") avatarUrl: String,
+        @Field("gender") gender: String
+    ): ApiResponse<String>
 }

@@ -25,19 +25,20 @@ import com.milk.funcall.common.media.engine.SandboxFileEngine
 import com.milk.funcall.common.media.loader.ImageLoader
 import com.milk.funcall.common.permission.Permission
 import com.milk.funcall.common.ui.AbstractActivity
-import com.milk.funcall.databinding.ActivityCreateNameBinding
-import com.milk.funcall.login.ui.vm.CreateNameViewModel
+import com.milk.funcall.databinding.ActivityPresetProfileBinding
+import com.milk.funcall.login.ui.dialog.LoadingDialog
+import com.milk.funcall.login.ui.vm.PresetProfileViewModel
 import com.milk.funcall.user.ui.config.AvatarImage
 import com.milk.funcall.user.ui.config.GenderImage
 import com.milk.simple.keyboard.KeyBoardUtil
 import com.milk.simple.ktx.*
 
-class CreateNameActivity : AbstractActivity() {
-    private val binding by viewBinding<ActivityCreateNameBinding>()
-    private val createNameViewModel by viewModels<CreateNameViewModel>()
+class PresetProfileActivity : AbstractActivity() {
+    private val binding by viewBinding<ActivityPresetProfileBinding>()
+    private val presetProfileViewModel by viewModels<PresetProfileViewModel>()
     private val defaultGender by lazy { GenderImage().obtain(Account.userGender) }
     private val defaultAvatar by lazy { AvatarImage().obtain(Account.userGender) }
-    private var availableImagePath: String = ""
+    private val uploadDialog by lazy { LoadingDialog(this, string(R.string.common_uploading)) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,42 +52,64 @@ class CreateNameActivity : AbstractActivity() {
         immersiveStatusBar()
         binding.headerToolbar.statusBarPadding()
         binding.root.navigationBarPadding()
-        binding.headerToolbar.setTitle(string(R.string.create_name_title))
+        binding.headerToolbar.setTitle(string(R.string.preset_profile_title))
         binding.ivUserGender.setImageResource(defaultGender)
         binding.ivUserAvatar.setImageResource(defaultAvatar)
         binding.etUserName.filters = arrayOf(InputFilter.LengthFilter(20))
         binding.ivUserAvatar.setOnClickListener(this)
-        binding.tvCreateName.setOnClickListener(this)
+        binding.tvStart.setOnClickListener(this)
         binding.etUserName.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) KeyBoardUtil.hideKeyboard(this)
         }
     }
 
     private fun initializeObserver() {
-        createNameViewModel.avatar.asLiveData().observe(this) {
-            ImageLoader.Builder()
+        presetProfileViewModel.avatar.asLiveData().observe(this) {
+            if (it.isNotBlank()) ImageLoader.Builder()
                 .loadAvatar(it)
                 .target(binding.ivUserAvatar)
                 .build()
         }
-        createNameViewModel.name.asLiveData().observe(this) {
+        presetProfileViewModel.name.asLiveData().observe(this) {
             binding.etUserName.setText(it)
+        }
+        presetProfileViewModel.uploadImage.asLiveData().observe(this) {
+            if (it) {
+                val name = binding.etUserName.text.toString()
+                presetProfileViewModel.presetProfile(name)
+            } else showToast(string(R.string.preset_profile_picture_upload_failed))
+        }
+        presetProfileViewModel.presetProfile.asLiveData().observe(this) {
+            if (it) {
+                uploadDialog.dismiss()
+                MainActivity.create(this)
+                finish()
+            }
         }
     }
 
     private fun initializeData() {
-        createNameViewModel.getUserAvatarName()
+        presetProfileViewModel.getUserAvatarName()
     }
 
     override fun onMultipleClick(view: View) {
         super.onMultipleClick(view)
         when (view) {
             binding.ivUserAvatar -> checkStoragePermission()
-            binding.tvCreateName -> {
-                if (binding.etUserName.text.toString().trim().isBlank())
-                    showToast(string(R.string.create_name_no_empty))
-                else
-                    MainActivity.create(this)
+            binding.tvStart -> {
+                when {
+                    binding.etUserName.text.toString().trim().isBlank() -> {
+                        showToast(string(R.string.preset_profile_name_empty))
+                    }
+                    presetProfileViewModel.localImagePath.isBlank() -> {
+                        showToast(string(R.string.preset_profile_picture_empty))
+                    }
+                    else -> {
+                        uploadDialog.show()
+                        val name = binding.etUserName.text.toString()
+                        presetProfileViewModel.updateUserProfile(name)
+                    }
+                }
             }
         }
     }
@@ -125,13 +148,13 @@ class CreateNameActivity : AbstractActivity() {
                 override fun onCancel() = Unit
                 override fun onResult(result: ArrayList<LocalMedia>?) {
                     if (result != null) {
-                        availableImagePath = result[0].availablePath
+                        presetProfileViewModel.localImagePath = result[0].availablePath
                         ImageLoader.Builder()
-                            .request(availableImagePath)
+                            .request(result[0].availablePath)
                             .target(binding.ivUserAvatar)
                             .build()
                         MediaLogger
-                            .analyticalSelectResults(this@CreateNameActivity, result)
+                            .analyticalSelectResults(this@PresetProfileActivity, result)
                     }
                 }
             })
@@ -144,6 +167,6 @@ class CreateNameActivity : AbstractActivity() {
 
     companion object {
         fun create(context: Context) =
-            context.startActivity(Intent(context, CreateNameActivity::class.java))
+            context.startActivity(Intent(context, PresetProfileActivity::class.java))
     }
 }

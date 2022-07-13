@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit
 
 object ApiClient {
     private var mainRetrofit: Retrofit? = null
-
     private val client: OkHttpClient
         get() {
             return OkHttpClient.Builder()
@@ -24,6 +23,18 @@ object ApiClient {
                 .build()
         }
 
+    private var uploadRetrofit: Retrofit? = null
+    private val uploadClient: OkHttpClient
+        get() {
+            return OkHttpClient.Builder()
+                .callTimeout(15, TimeUnit.SECONDS)
+                .connectTimeout(5, TimeUnit.SECONDS)
+                .readTimeout(8, TimeUnit.SECONDS)
+                .writeTimeout(8, TimeUnit.SECONDS)
+                .addInterceptor(ApiLogInterceptor())
+                .build()
+        }
+
     fun obtainRetrofit(): Retrofit {
         if (mainRetrofit == null)
             mainRetrofit = Retrofit.Builder()
@@ -32,5 +43,15 @@ object ApiClient {
                 .addConverterFactory(GsonConverterFactory.create(JsonConvert.gson))
                 .build()
         return checkNotNull(mainRetrofit)
+    }
+
+    fun obtainUploadRetrofit(): Retrofit {
+        if (uploadRetrofit == null)
+            uploadRetrofit = Retrofit.Builder()
+                .baseUrl(MainHost().realUrl)
+                .client(uploadClient)
+                .addConverterFactory(GsonConverterFactory.create(JsonConvert.gson))
+                .build()
+        return checkNotNull(uploadRetrofit)
     }
 }
