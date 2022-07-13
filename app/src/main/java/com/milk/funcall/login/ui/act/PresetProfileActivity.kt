@@ -71,7 +71,7 @@ class PresetProfileActivity : AbstractActivity() {
                 .build()
         }
         presetProfileViewModel.name.asLiveData().observe(this) {
-            binding.etUserName.setText(it)
+            if (it.isNotBlank()) binding.etUserName.setText(it)
         }
         presetProfileViewModel.uploadImage.asLiveData().observe(this) {
             if (it) {
