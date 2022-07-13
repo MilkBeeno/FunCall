@@ -10,7 +10,7 @@ data class UserTotalInfoModel(
     @SerializedName("blackFlag")
     val isBlacked: Boolean = false,
     @SerializedName("followFlag")
-    val isFollowed: Boolean = false,
+    var isFollowed: Boolean = false,
     @SerializedName("followNum")
     val userFollows: Int = 0,
     // 展示给用户的 ID

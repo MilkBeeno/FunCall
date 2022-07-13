@@ -28,6 +28,6 @@
         android:layout_marginBottom="24dp"
         android:textColor="@color/white"
         android:textSize="16sp"
-        tools:text="@string/login_dialog" />
+        tools:text="@string/common_loading" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

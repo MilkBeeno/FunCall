@@ -12,6 +12,7 @@ class UserTotalInfoViewModel : ViewModel() {
     private val userTotalInfoRepository by lazy { UserTotalInfoRepository() }
     private val userVideoList = mutableListOf<UserMediaModel>()
     private val userImageList = mutableListOf<UserMediaModel>()
+    var userTotalInfo: UserTotalInfoModel? = null
     val userTotalInfoFlow = MutableSharedFlow<UserTotalInfoModel?>()
     val userFollowedChangeFlow = MutableSharedFlow<Boolean>()
 
@@ -29,8 +30,22 @@ class UserTotalInfoViewModel : ViewModel() {
                 }
                 apiResult.userVideoList = userVideoList
                 apiResult.userImageList = userImageList
+                userTotalInfo = apiResult
                 userTotalInfoFlow.emit(apiResult)
             } else userTotalInfoFlow.emit(null)
+        }
+    }
+
+    fun changeFollowState() {
+        ioScope {
+            val targetId = userTotalInfo?.userId ?: 0
+            val isFollow = userTotalInfo?.isFollowed ?: false
+            val apiResponse =
+                userTotalInfoRepository.changeFollowState(targetId, isFollow)
+            if (apiResponse.success) {
+                userTotalInfo?.isFollowed = !isFollow
+                userFollowedChangeFlow.emit(!isFollow)
+            }
         }
     }
 }

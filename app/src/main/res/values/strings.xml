@@ -13,6 +13,7 @@
     <string name="common_media_permission_title">Get photo and media permissions</string>
     <string name="common_confirm">OK</string>
     <string name="common_cancel" tools:ignore="ButtonCase">CANCEL</string>
+    <string name="common_loading">Logging…</string>
     <string name="common_uploading">Uploading…</string>
     <!--启动页面翻译-->
     <string name="launch_bottom_tips"><![CDATA[Messaging & Chat App]]></string>
@@ -35,7 +36,6 @@
     <string name="login_obtain_device_failed">Login failed, unable to get Google Admob ID</string>
     <string name="login_google_auth_failed">Google auth failure,please try again.</string>
     <string name="login_facebook_auth_failed">Facebook auth failure,please try again.</string>
-    <string name="login_dialog">Logging in …</string>
     <!--创建名字页面翻译-->
     <string name="preset_profile_title">Basic Information</string>
     <string name="preset_profile_tag">Name</string>

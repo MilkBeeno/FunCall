@@ -21,7 +21,7 @@ class LoginActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityLoginBinding>()
     private val loginViewModel by viewModels<LoginViewModel>()
     private val authLoginManager by lazy { AuthLoginManager(this) }
-    private val loadingDialog by lazy { LoadingDialog(this, string(R.string.login_dialog)) }
+    private val loadingDialog by lazy { LoadingDialog(this, string(R.string.common_loading)) }
     private var isNotAuthorizing: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {

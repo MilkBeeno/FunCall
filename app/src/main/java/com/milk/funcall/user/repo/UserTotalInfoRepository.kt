@@ -12,4 +12,8 @@ class UserTotalInfoRepository {
     suspend fun getNextUserTotalInfo() = retrofit {
         ApiService.userTotalInfApiService.getNextUserTotalInfo(Account.userGender)
     }
+
+    suspend fun changeFollowState(targetId: Long, isFollow: Boolean) = retrofit {
+        ApiService.userTotalInfApiService.changeFollowState(targetId, isFollow)
+    }
 }

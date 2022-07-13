@@ -20,7 +20,9 @@ import com.milk.funcall.common.paging.SimpleGridDecoration
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.ui.manager.NoScrollGridLayoutManager
 import com.milk.funcall.databinding.ActivityUserInfoBinding
+import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.user.data.UserMediaModel
+import com.milk.funcall.user.data.UserTotalInfoModel
 import com.milk.funcall.user.ui.adapter.UserImageAdapter
 import com.milk.funcall.user.ui.vm.UserTotalInfoViewModel
 import com.milk.simple.ktx.*
@@ -29,9 +31,7 @@ class UserTotalInfoActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityUserInfoBinding>()
     private val userTotalInfoViewModel by viewModels<UserTotalInfoViewModel>()
     private val userId by lazy { intent.getLongExtra(USER_ID, 0) }
-    private var targetId: Long = 0
-    private var targetName: String = ""
-    private var isBlacked: Boolean = false
+    private val loadingDialog by lazy { LoadingDialog(this, string(R.string.common_loading)) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,42 +49,29 @@ class UserTotalInfoActivity : AbstractActivity() {
         binding.link.tvCopy.setOnClickListener(this)
         binding.ivUserNext.setOnClickListener(this)
         binding.basic.llMessage.setOnClickListener(this)
+        binding.basic.llFollow.setOnClickListener(this)
     }
 
     private fun initializeObserver() {
         userTotalInfoViewModel.userTotalInfoFlow.asLiveData().observe(this) {
             if (it != null) {
-                targetId = it.userId
-                targetName = it.userName
-                isBlacked = it.isBlacked
                 binding.lvLoading.gone()
                 binding.llUserNext.visible()
                 binding.basic.root.visible()
                 binding.link.root.visible()
                 binding.llMedia.visible()
-                setUserAvatar(it.userAvatar, it.userGender)
+                setUserBasic(it)
+                setUserMedia(it)
                 setUserFollow(it.isFollowed)
-                setUserBasic(it.userIdx, it.userName, it.userBio)
-                setUserLink(it.userLink)
-                setUserVideo(it.userVideoList)
-                setUserImage(it.userImageList)
-                setMediaEmpty(it.userVideoList.isEmpty() && it.userImageList.isEmpty())
             } else {
                 showToast(string(R.string.user_info_obtain_failed))
                 finish()
             }
         }
         userTotalInfoViewModel.userFollowedChangeFlow.asLiveData().observe(this) {
+            loadingDialog.dismiss()
             setUserFollow(it)
         }
-    }
-
-    private fun setUserAvatar(avatar: String, gender: String) {
-        ImageLoader.Builder()
-            .loadAvatar(avatar, gender)
-            .target(binding.basic.ivUserAvatar)
-            .build()
-        binding.basic.ivUserGender.updateGender(gender)
     }
 
     private fun setUserFollow(isFollowed: Boolean) {
@@ -108,47 +95,51 @@ class UserTotalInfoActivity : AbstractActivity() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun setUserBasic(userId: String, userName: String, userBio: String) {
-        binding.tvUserId.text = "ID : ".plus(userId)
-        binding.tvUserName.text = userName
-        binding.tvUserBio.text = userBio
-    }
-
-    private fun setUserLink(link: String) {
-        if (link.isNotBlank()) {
+    private fun setUserBasic(userInfo: UserTotalInfoModel) {
+        ImageLoader.Builder()
+            .loadAvatar(userInfo.userAvatar, userInfo.userGender)
+            .target(binding.basic.ivUserAvatar)
+            .build()
+        binding.basic.ivUserGender.updateGender(userInfo.userGender)
+        binding.tvUserName.text = userInfo.userName
+        binding.tvUserId.text = "ID : ".plus(userInfo.userIdx)
+        binding.tvUserBio.text = userInfo.userBio
+        if (userInfo.userLink.isNotBlank()) {
             binding.link.clLink.visible()
             binding.link.tvNotLink.gone()
-            binding.link.tvContact.text = link
+            binding.link.tvContact.text = userInfo.userLink
         } else {
             binding.link.clLink.gone()
             binding.link.tvNotLink.visible()
         }
     }
 
-    private fun setUserVideo(userVideoList: MutableList<UserMediaModel>) {
-        if (userVideoList.isNotEmpty()) {
+    private fun setUserMedia(userInfo: UserTotalInfoModel) {
+        // 设置 Video 信息
+        if (userInfo.userVideoList.isNotEmpty()) {
             binding.tvVideo.visible()
             binding.flVideo.visible()
         }
-    }
-
-    private fun setUserImage(imageList: MutableList<UserMediaModel>) {
-        if (imageList.isNotEmpty()) {
+        // 设置 Image 信息
+        if (userInfo.userImageList.isNotEmpty()) {
             binding.tvImage.visible()
             binding.rvImage.visible()
             binding.rvImage.layoutManager = NoScrollGridLayoutManager(this, 2)
             binding.rvImage.addItemDecoration(SimpleGridDecoration(this))
-            binding.rvImage.adapter = UserImageAdapter(imageList) {
-                ImageMediaActivity.create(this, targetId, targetName, isBlacked)
+            binding.rvImage.adapter = UserImageAdapter(userInfo.userImageList) {
+                ImageMediaActivity.create(
+                    context = this,
+                    targetId = userInfo.userId,
+                    targetName = userInfo.userName,
+                    isBlacked = userInfo.isBlacked
+                )
                 LiveEventBus
                     .get<Pair<Int, MutableList<UserMediaModel>>>(KvKey.DISPLAY_IMAGE_MEDIA_LIST)
-                    .post(Pair(it, imageList))
+                    .post(Pair(it, userInfo.userImageList))
             }
         }
-    }
-
-    private fun setMediaEmpty(isEmpty: Boolean) {
-        if (isEmpty) binding.ivMediaEmpty.visible()
+        if (userInfo.userVideoList.isEmpty() && userInfo.userImageList.isEmpty())
+            binding.ivMediaEmpty.visible()
     }
 
     private fun loadUserInfo() {
@@ -159,6 +150,10 @@ class UserTotalInfoActivity : AbstractActivity() {
     override fun onMultipleClick(view: View) {
         super.onMultipleClick(view)
         when (view) {
+            binding.basic.llFollow -> {
+                loadingDialog.show()
+                userTotalInfoViewModel.changeFollowState()
+            }
             binding.link.tvCopy -> {
                 val label = string(R.string.app_name)
                 val link = binding.link.tvContact.text.toString()
@@ -171,8 +166,10 @@ class UserTotalInfoActivity : AbstractActivity() {
                 finish()
             }
             binding.basic.llMessage -> {
-                if (isBlacked) return
-                ChatMessageActivity.create(this, targetId, targetName)
+                userTotalInfoViewModel.userTotalInfo?.let {
+                    if (it.isBlacked) return
+                    ChatMessageActivity.create(this, it.userId, it.userName)
+                }
             }
         }
     }
