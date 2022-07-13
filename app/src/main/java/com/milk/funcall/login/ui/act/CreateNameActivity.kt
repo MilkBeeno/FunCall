@@ -9,7 +9,6 @@ import android.view.KeyEvent
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.asLiveData
-import com.bumptech.glide.Glide
 import com.luck.picture.lib.basic.PictureSelector
 import com.luck.picture.lib.config.SelectMimeType
 import com.luck.picture.lib.config.SelectModeConfig
@@ -19,22 +18,26 @@ import com.luck.picture.lib.language.LanguageConfig
 import com.milk.funcall.R
 import com.milk.funcall.account.Account
 import com.milk.funcall.app.ui.act.MainActivity
-import com.milk.funcall.common.media.engine.GlideEngine
+import com.milk.funcall.common.media.MediaLogger
+import com.milk.funcall.common.media.engine.CoilEngine
 import com.milk.funcall.common.media.engine.ImageCropEngine
+import com.milk.funcall.common.media.engine.SandboxFileEngine
 import com.milk.funcall.common.media.loader.ImageLoader
 import com.milk.funcall.common.permission.Permission
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityCreateNameBinding
 import com.milk.funcall.login.ui.vm.CreateNameViewModel
-import com.milk.funcall.user.type.Gender
+import com.milk.funcall.user.ui.config.AvatarImage
+import com.milk.funcall.user.ui.config.GenderImage
 import com.milk.simple.keyboard.KeyBoardUtil
 import com.milk.simple.ktx.*
-import java.io.File
 
 class CreateNameActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityCreateNameBinding>()
     private val createNameViewModel by viewModels<CreateNameViewModel>()
-    private val isMale by lazy { Account.userGender == Gender.Man.value }
+    private val defaultGender by lazy { GenderImage().obtain(Account.userGender) }
+    private val defaultAvatar by lazy { AvatarImage().obtain(Account.userGender) }
+    private var availableImagePath: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,32 +52,25 @@ class CreateNameActivity : AbstractActivity() {
         binding.headerToolbar.statusBarPadding()
         binding.root.navigationBarPadding()
         binding.headerToolbar.setTitle(string(R.string.create_name_title))
-        val defaultGender =
-            if (isMale) R.drawable.create_name_gender_woman else R.drawable.create_name_gender_man
         binding.ivUserGender.setImageResource(defaultGender)
+        binding.ivUserAvatar.setImageResource(defaultAvatar)
         binding.etUserName.filters = arrayOf(InputFilter.LengthFilter(20))
+        binding.ivUserAvatar.setOnClickListener(this)
+        binding.tvCreateName.setOnClickListener(this)
         binding.etUserName.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) KeyBoardUtil.hideKeyboard(this)
         }
-        binding.ivUserAvatar.setOnClickListener(this)
-        binding.tvCreateName.setOnClickListener(this)
     }
 
     private fun initializeObserver() {
         createNameViewModel.avatar.asLiveData().observe(this) {
-            if (it.isNotBlank())
-                ImageLoader.Builder()
-                    .loadAvatar(it, isMale)
-                    .target(binding.ivUserAvatar)
-                    .build()
-            else {
-                val defaultAvatar =
-                    if (isMale) R.drawable.common_default_woman else R.drawable.common_default_man
-                binding.ivUserAvatar.setImageResource(defaultAvatar)
-            }
+            ImageLoader.Builder()
+                .loadAvatar(it)
+                .target(binding.ivUserAvatar)
+                .build()
         }
         createNameViewModel.name.asLiveData().observe(this) {
-            if (it.isNotBlank()) binding.etUserName.setText(it)
+            binding.etUserName.setText(it)
         }
     }
 
@@ -118,18 +114,24 @@ class CreateNameActivity : AbstractActivity() {
     private fun toSelectAvatarImage() {
         PictureSelector.create(this)
             .openGallery(SelectMimeType.ofImage())
-            .setImageEngine(GlideEngine.createGlideEngine())
+            .setImageEngine(CoilEngine())
             .setLanguage(LanguageConfig.ENGLISH)
             .setSelectionMode(SelectModeConfig.SINGLE)
+            .isCameraRotateImage(true)
             .isDirectReturnSingle(true)
             .setCropEngine(ImageCropEngine())
+            .setSandboxFileEngine(SandboxFileEngine())
             .forResult(object : OnResultCallbackListener<LocalMedia> {
                 override fun onCancel() = Unit
                 override fun onResult(result: ArrayList<LocalMedia>?) {
                     if (result != null) {
-                        Glide.with(this@CreateNameActivity)
-                            .load(File(result[0].path))
-                            .into(binding.ivUserAvatar)
+                        availableImagePath = result[0].availablePath
+                        ImageLoader.Builder()
+                            .request(availableImagePath)
+                            .target(binding.ivUserAvatar)
+                            .build()
+                        MediaLogger
+                            .analyticalSelectResults(this@CreateNameActivity, result)
                     }
                 }
             })

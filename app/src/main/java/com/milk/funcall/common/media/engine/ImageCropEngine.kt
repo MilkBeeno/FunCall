@@ -9,8 +9,11 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.engine.CropFileEngine
 import com.luck.picture.lib.utils.ActivityCompatHelper
+import com.milk.funcall.R
+import com.milk.simple.ktx.color
 import com.yalantis.ucrop.UCrop
 import com.yalantis.ucrop.UCropImageEngine
 import java.io.File
@@ -63,39 +66,20 @@ class ImageCropEngine : CropFileEngine {
         val options = UCrop.Options()
         options.setHideBottomControls(true)
         options.setFreeStyleCropEnabled(false)
-        options.setShowCropFrame(true)
-        options.setShowCropGrid(true)
+        options.setShowCropFrame(false)
+        options.setShowCropGrid(false)
         options.setCircleDimmedLayer(true)
         options.withAspectRatio(1f, 1f)
         options.setCropOutputPathDir(getSandboxPath(context))
-        options.isCropDragSmoothToCenter(false)
-        // options.setSkipCropMimeType(getNotSupportCrop());
+        options.isCropDragSmoothToCenter(true)
+        options.setSkipCropMimeType(*getNotSupportCrop())
         options.isForbidCropGifWebp(true)
         options.isForbidSkipMultipleCrop(false)
         options.setMaxScaleMultiplier(100f)
-        //        if (selectorStyle != null && selectorStyle.getSelectMainStyle().getStatusBarColor() != 0) {
-//            SelectMainStyle mainStyle = selectorStyle.getSelectMainStyle();
-//            boolean isDarkStatusBarBlack = mainStyle.isDarkStatusBarBlack();
-//            int statusBarColor = mainStyle.getStatusBarColor();
-//            options.isDarkStatusBarBlack(isDarkStatusBarBlack);
-//            if (StyleUtils.checkStyleValidity(statusBarColor)) {
-//                options.setStatusBarColor(statusBarColor);
-//                options.setToolbarColor(statusBarColor);
-//            } else {
-//                options.setStatusBarColor(ContextCompat.getColor(getContext(), R.color.ps_color_grey));
-//                options.setToolbarColor(ContextCompat.getColor(getContext(), R.color.ps_color_grey));
-//            }
-//            TitleBarStyle titleBarStyle = selectorStyle.getTitleBarStyle();
-//            if (StyleUtils.checkStyleValidity(titleBarStyle.getTitleTextColor())) {
-//                options.setToolbarWidgetColor(titleBarStyle.getTitleTextColor());
-//            } else {
-//                options.setToolbarWidgetColor(ContextCompat.getColor(getContext(), R.color.ps_color_white));
-//            }
-//        } else {
-//            options.setStatusBarColor(ContextCompat.getColor(getContext(), R.color.ps_color_grey));
-//            options.setToolbarColor(ContextCompat.getColor(getContext(), R.color.ps_color_grey));
-//            options.setToolbarWidgetColor(ContextCompat.getColor(getContext(), R.color.ps_color_white));
-//        }
+        options.isDarkStatusBarBlack(true)
+        options.setStatusBarColor(context.color(R.color.FF393A3E))
+        options.setToolbarColor(context.color(R.color.FF393A3E))
+        options.setToolbarWidgetColor(context.color(R.color.white))
         return options
     }
 
@@ -106,5 +90,9 @@ class ImageCropEngine : CropFileEngine {
             customFile.mkdirs()
         }
         return customFile.absolutePath + File.separator
+    }
+
+    private fun getNotSupportCrop(): Array<String> {
+        return arrayOf(PictureMimeType.ofGIF(), PictureMimeType.ofWEBP())
     }
 }

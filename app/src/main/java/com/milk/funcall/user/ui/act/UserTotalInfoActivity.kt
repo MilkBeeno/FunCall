@@ -21,7 +21,6 @@ import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.ui.manager.NoScrollGridLayoutManager
 import com.milk.funcall.databinding.ActivityUserInfoBinding
 import com.milk.funcall.user.data.UserMediaModel
-import com.milk.funcall.user.type.Gender
 import com.milk.funcall.user.ui.adapter.UserImageAdapter
 import com.milk.funcall.user.ui.vm.UserTotalInfoViewModel
 import com.milk.simple.ktx.*
@@ -82,7 +81,7 @@ class UserTotalInfoActivity : AbstractActivity() {
 
     private fun setUserAvatar(avatar: String, gender: String) {
         ImageLoader.Builder()
-            .loadAvatar(avatar, isMale = gender == Gender.Man.value)
+            .loadAvatar(avatar, gender)
             .target(binding.basic.ivUserAvatar)
             .build()
         binding.basic.ivUserGender.updateGender(gender)

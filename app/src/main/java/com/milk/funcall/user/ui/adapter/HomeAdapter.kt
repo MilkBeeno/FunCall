@@ -12,7 +12,6 @@ import com.milk.funcall.common.paging.AbstractPagingAdapter
 import com.milk.funcall.common.paging.FooterLoadStateAdapter
 import com.milk.funcall.common.paging.PagingViewHolder
 import com.milk.funcall.user.data.UserSimpleInfoModel
-import com.milk.funcall.user.type.Gender
 import com.milk.funcall.user.type.OnlineState
 import com.milk.simple.ktx.*
 
@@ -50,9 +49,8 @@ class HomeAdapter : AbstractPagingAdapter<UserSimpleInfoModel>(
                 .target(this)
                 .build()
         }
-        val isMale = item.userGender == Gender.Man.value
         ImageLoader.Builder()
-            .loadAvatar(item.userAvatar, isMale)
+            .loadAvatar(item.userAvatar, item.userGender)
             .target(holder.getView(R.id.ivUserAvatar))
             .build()
         holder.getView<View>(R.id.vState).setBackgroundResource(

@@ -8,7 +8,6 @@ import com.milk.funcall.common.mdr.table.UserInfoEntity
 import com.milk.funcall.common.media.loader.ImageLoader
 import com.milk.funcall.common.paging.AbstractPagingAdapter
 import com.milk.funcall.common.paging.PagingViewHolder
-import com.milk.funcall.user.type.Gender
 import com.milk.funcall.user.type.OnlineState
 import com.milk.simple.ktx.color
 
@@ -36,9 +35,8 @@ class FansOrFollowsAdapter : AbstractPagingAdapter<UserInfoEntity>(
             .placeholder(R.drawable.common_list_default_big)
             .target(holder.getView(R.id.ivUserImage))
             .build()
-        val isMale = item.userGender == Gender.Man.value
         ImageLoader.Builder()
-            .loadAvatar(item.userAvatar, isMale)
+            .loadAvatar(item.userAvatar, item.userGender)
             .target(holder.getView(R.id.ivUserAvatar))
             .build()
         holder.getView<View>(R.id.vState).setBackgroundResource(

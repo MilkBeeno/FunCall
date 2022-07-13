@@ -9,6 +9,8 @@ import coil.load
 import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
 import com.milk.funcall.R
+import com.milk.funcall.account.Account
+import com.milk.funcall.user.type.Gender
 import okhttp3.HttpUrl
 import java.io.File
 import java.nio.ByteBuffer
@@ -147,10 +149,12 @@ class ImageLoader(
             this.data = data
         }
 
-        fun loadAvatar(data: Any?, isMale: Boolean) = apply {
+        fun loadAvatar(data: Any?, gender: String = Account.userGender) = apply {
             request(data)
-            placeholderResId =
-                if (isMale) R.drawable.common_default_man else R.drawable.common_default_woman
+            placeholderResId = if (gender == Gender.Woman.value)
+                R.drawable.common_default_woman
+            else
+                R.drawable.common_default_man
         }
 
         fun placeholder(@DrawableRes drawableResId: Int) = apply {
