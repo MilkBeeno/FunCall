@@ -121,7 +121,7 @@ object Account {
     internal fun initialize() {
         if (userLogged) {
             ioScope {
-                userLoggedFlow.emit(false)
+                userLoggedFlow.emit(userLogged)
                 userIdFlow.emit(userId)
                 userNameFlow.emit(userName)
                 userGenderFlow.emit(userGender)
