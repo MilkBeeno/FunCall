@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.milk.funcall.account.Account
 import com.milk.funcall.common.media.uploader.MediaUploadRepository
 import com.milk.funcall.login.repo.PresetProfileRepository
+import com.milk.funcall.user.repo.AccountRepository
 import com.milk.simple.ktx.ioScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,6 +41,7 @@ class PresetProfileViewModel : ViewModel() {
         val finalUrl = uploadImageUrl.ifBlank { avatar.value }
         ioScope {
             val apiResponse = presetProfileRepository.updateUserProfile(name, finalUrl)
+            if (apiResponse.success) AccountRepository.getAccountInfo(false)
             presetProfile.emit(apiResponse.success)
         }
     }

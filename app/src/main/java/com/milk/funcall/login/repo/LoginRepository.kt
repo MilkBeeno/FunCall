@@ -8,6 +8,4 @@ class LoginRepository {
     suspend fun login(deviceNum: String, authType: AuthType, accessToken: String) = retrofit {
         ApiService.loginApiService.login(deviceNum, authType.value, accessToken)
     }
-
-    suspend fun getUserInfo() = retrofit { ApiService.loginApiService.getUserInfo() }
 }

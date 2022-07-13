@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.milk.funcall.account.Account
 import com.milk.funcall.common.author.AuthType
 import com.milk.funcall.login.repo.LoginRepository
+import com.milk.funcall.user.repo.AccountRepository
 import com.milk.simple.ktx.ioScope
 
 class LoginViewModel : ViewModel() {
@@ -21,19 +22,12 @@ class LoginViewModel : ViewModel() {
             val apiResult = apiResponse.data
             if (apiResponse.success && apiResult != null) {
                 Account.logged(apiResult.accessToken)
-                getUserInfo(apiResult.registeredFlag)
+                if (apiResult.registeredFlag) {
+                    loginRequest?.invoke()
+                    // 登录成功后 1.老用户直接获取用户信息 2.新用户去预设头像名字信息后获取用户信息
+                    AccountRepository.getAccountInfo(true)
+                } else registerRequest?.invoke()
             } else failedRequest?.invoke()
         }
-    }
-
-    /** 登录成功后、获取当前用户信息；注册成功后、先设置用户名和头像、在获取注册的用户信息 */
-    private suspend fun getUserInfo(registeredFlag: Boolean) {
-        val apiResponse = loginRepository.getUserInfo()
-        val apiResult = apiResponse.data
-        if (registeredFlag) loginRequest?.invoke() else registerRequest?.invoke()
-        if (apiResponse.success && apiResult != null) {
-            if (registeredFlag)
-                Account.saveAccountInfo(apiResult)
-        } else failedRequest?.invoke()
     }
 }

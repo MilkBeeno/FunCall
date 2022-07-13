@@ -109,7 +109,7 @@ object Account {
     internal val userViewOtherFlow = MutableStateFlow(false)
     var userViewOther: Boolean = false
         set(value) {
-            Logger.d("USERID=$userId","hlc")
+            Logger.d("USERID=$userId", "hlc")
             KvManger.put(KvKey.USER_VIEW_OTHER.plus(userId), value)
             field = value
         }
@@ -159,13 +159,13 @@ object Account {
         ioScope { userLoggedFlow.emit(true) }
     }
 
-    fun saveAccountInfo(info: UserTotalInfoModel) {
+    fun saveAccountInfo(info: UserTotalInfoModel, registered: Boolean = true) {
         ioScope {
             userId = info.userId
             userIdFlow.emit(info.userId)
             userName = info.userName
             userNameFlow.emit(info.userName)
-            userGender = info.userGender
+            if (registered) userGender = info.userGender
             userGenderFlow.emit(info.userGender)
             userAvatar = info.userAvatar
             userAvatarFlow.emit(info.userAvatar)
