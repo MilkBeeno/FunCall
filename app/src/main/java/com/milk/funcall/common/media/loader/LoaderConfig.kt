@@ -10,7 +10,7 @@ import okhttp3.Cache
 import okhttp3.OkHttpClient
 import java.io.File
 
-object LoaderManager {
+object LoaderConfig {
     private const val MAX_FACTORY_CACHE = 10 * 1024 * 1024L
 
     fun initialize(application: Application) {
