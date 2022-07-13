@@ -80,11 +80,11 @@ class PresetProfileActivity : AbstractActivity() {
             } else showToast(string(R.string.preset_profile_picture_upload_failed))
         }
         presetProfileViewModel.presetProfile.asLiveData().observe(this) {
+            uploadDialog.dismiss()
             if (it) {
-                uploadDialog.dismiss()
                 MainActivity.create(this)
                 finish()
-            }
+            } else showToast(string(R.string.preset_profile_profile_update_failed))
         }
     }
 
@@ -100,9 +100,6 @@ class PresetProfileActivity : AbstractActivity() {
                 when {
                     binding.etUserName.text.toString().trim().isBlank() -> {
                         showToast(string(R.string.preset_profile_name_empty))
-                    }
-                    presetProfileViewModel.localImagePath.isBlank() -> {
-                        showToast(string(R.string.preset_profile_picture_empty))
                     }
                     else -> {
                         uploadDialog.show()

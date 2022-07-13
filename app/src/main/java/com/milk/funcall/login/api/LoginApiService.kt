@@ -25,6 +25,7 @@ interface LoginApiService {
     ): ApiResponse<AvatarNameModel>
 
     @FormUrlEncoded
+    @Headers("Encoded:false")
     @POST("/funcall/registeredUser")
     suspend fun updateUserProfile(
         @Field("nickname") nickName: String,

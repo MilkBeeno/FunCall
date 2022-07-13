@@ -26,12 +26,16 @@ class ApiParamsInterceptor : Interceptor {
                     requestBuilder.addHeader("X-Access-Token", Account.userToken)
             }
             postModel -> {
+                val isNoEncoded = request.headers["Encoded"] == "false"
                 val requestBody = request.body
                 val paramsMap = mutableMapOf<String, String>()
                 if (requestBody is FormBody) {
                     for (index in 0 until requestBody.size) {
                         paramsMap[requestBody.encodedName(index)] =
-                            requestBody.encodedValue(index)
+                            if (isNoEncoded)
+                                requestBody.value(index)
+                            else
+                                requestBody.encodedValue(index)
                     }
                 }
                 val jsonParams = JsonConvert.toJson(paramsMap)
