@@ -22,8 +22,9 @@ abstract class SimpleDialog<T : ViewBinding>(val activity: FragmentActivity) {
 
     init {
         activity.lifecycle.addObserver(object : DefaultLifecycleObserver {
-            override fun onStop(owner: LifecycleOwner) {
-                super.onStop(owner)
+            override fun onDestroy(owner: LifecycleOwner) {
+                super.onDestroy(owner)
+                dialog?.dismiss()
                 dialog = null
             }
         })
