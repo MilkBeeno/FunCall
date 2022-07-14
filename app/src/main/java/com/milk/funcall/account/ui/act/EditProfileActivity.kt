@@ -44,9 +44,16 @@ class EditProfileActivity : AbstractActivity() {
             if (it.isNotBlank()) {
                 ImageLoader.Builder()
                     .loadAvatar(it)
+                    .error(defaultAvatar)
                     .target(binding.ivUserAvatar)
                     .build()
             } else binding.ivUserAvatar.setImageResource(defaultAvatar)
+        }
+        Account.userNameFlow.asLiveData().observe(this) {
+            if (it.isNotBlank()) binding.etName.setText(it)
+        }
+        Account.userBioFlow.asLiveData().observe(this) {
+            if (it.isNotBlank()) binding.etAboutMe.setText(it)
         }
     }
 

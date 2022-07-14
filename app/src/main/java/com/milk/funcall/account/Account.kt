@@ -105,6 +105,18 @@ object Account {
             return field
         }
 
+    /** 当前用户的个人简介 */
+    internal val userBioFlow = MutableStateFlow("")
+    private var userBio: String = ""
+        set(value) {
+            KvManger.put(KvKey.ACCOUNT_USER_BIO, value)
+            field = value
+        }
+        get() {
+            field = KvManger.getString(KvKey.ACCOUNT_USER_BIO)
+            return field
+        }
+
     /** 当前用户是否观看过他人个人资料页面图片 */
     internal val userViewOtherFlow = MutableStateFlow(false)
     var userViewOther: Boolean = false
@@ -128,6 +140,7 @@ object Account {
                 userAvatarFlow.emit(userAvatar)
                 userFansFlow.emit(userFans)
                 userFollowsFlow.emit(userFollows)
+                userBioFlow.emit(userBio)
                 userViewOtherFlow.emit(userViewOther)
             }
         } else userGender = Gender.Man.value
@@ -149,6 +162,8 @@ object Account {
             userFans = 0
             userFansFlow.emit(0)
             userFollows = 0
+            userBio = ""
+            userBioFlow.emit("")
             userFollowsFlow.emit(0)
         }
     }
@@ -173,6 +188,8 @@ object Account {
             userFansFlow.emit(info.userFans)
             userFollows = info.userFollows
             userFollowsFlow.emit(info.userFollows)
+            userBio = info.userBio
+            userBioFlow.emit(info.userBio)
         }
     }
 }

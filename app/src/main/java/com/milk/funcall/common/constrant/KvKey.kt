@@ -25,6 +25,9 @@ object KvKey {
     /** 当前用户关注数量 */
     const val ACCOUNT_USER_FOLLOWS_NUMBER = "ACCOUNT_USER_FOLLOWS_NUMBER"
 
+    /** 当前用户的个人简介 */
+    const val ACCOUNT_USER_BIO = "ACCOUNT_USER_PROFILE"
+
     /** 当前用户是否观看过他人个人资料页面图片 */
     const val USER_VIEW_OTHER = "ACCOUNT_NEW_USER_VIEW_OTHER"
 

@@ -97,6 +97,8 @@ class ImageLoader(
             when {
                 errorResId > 0 -> error(errorResId)
                 errorDrawable != null -> error(errorDrawable)
+                placeholderResId > 0 -> error(placeholderResId)
+                placeholderDrawable != null -> error(placeholderDrawable)
             }
         }
     }
@@ -112,6 +114,8 @@ class ImageLoader(
             when {
                 errorResId > 0 -> error(errorResId)
                 errorDrawable != null -> error(errorDrawable)
+                placeholderResId > 0 -> error(placeholderResId)
+                placeholderDrawable != null -> error(placeholderDrawable)
             }
         }
     }
@@ -151,6 +155,7 @@ class ImageLoader(
 
         fun loadAvatar(data: Any?, gender: String = Account.userGender) = apply {
             request(data)
+            isCircle = true
             placeholderResId = if (gender == Gender.Woman.value)
                 R.drawable.common_default_woman
             else

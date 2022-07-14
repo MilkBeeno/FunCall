@@ -63,7 +63,8 @@
                 android:hint="@string/edit_profile_name_hint"
                 android:paddingStart="14dp"
                 android:paddingEnd="14dp"
-                android:textColor="@color/FFB7BACC"
+                android:textColor="@color/FF2E2F33"
+                android:textColorHint="@color/FFB7BACC"
                 android:textSize="14sp" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -89,7 +90,8 @@
                     android:gravity="start"
                     android:hint="@string/edit_profile_about_me_hint"
                     android:padding="14dp"
-                    android:textColor="@color/FFB7BACC"
+                    android:textColor="@color/FF2E2F33"
+                    android:textColorHint="@color/FFB7BACC"
                     android:textSize="14sp" />
 
                 <androidx.appcompat.widget.AppCompatTextView
