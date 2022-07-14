@@ -145,7 +145,7 @@ class PresetProfileActivity : AbstractActivity() {
                 override fun onCancel() = Unit
                 override fun onResult(result: ArrayList<LocalMedia>?) {
                     if (result != null) {
-                        presetProfileViewModel.localImagePath = result[0].availablePath
+                        presetProfileViewModel.localAvatarPath = result[0].availablePath
                         ImageLoader.Builder()
                             .request(result[0].availablePath)
                             .target(binding.ivUserAvatar)

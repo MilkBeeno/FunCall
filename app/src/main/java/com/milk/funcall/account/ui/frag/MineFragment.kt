@@ -11,12 +11,15 @@ import com.milk.funcall.common.ui.AbstractFragment
 import com.milk.funcall.databinding.FragmentMineBinding
 import com.milk.funcall.login.ui.act.GenderActivity
 import com.milk.funcall.login.ui.act.LoginActivity
+import com.milk.funcall.user.ui.config.AvatarImage
+import com.milk.funcall.user.ui.config.GenderImage
 import com.milk.simple.ktx.gone
 import com.milk.simple.ktx.string
 import com.milk.simple.ktx.visible
 
 class MineFragment : AbstractFragment() {
     private val binding by lazy { FragmentMineBinding.inflate(layoutInflater) }
+    private val defaultAvatar by lazy { AvatarImage().obtain(Account.userGender) }
     private val dialog by lazy {
         LogoutDialog(requireActivity()) {
             Account.logout()
@@ -51,7 +54,7 @@ class MineFragment : AbstractFragment() {
                     .loadAvatar(it)
                     .target(binding.ivUserAvatar)
                     .build()
-            } else binding.ivUserAvatar.setImageResource(R.drawable.common_default_man)
+            } else binding.ivUserAvatar.setImageResource(defaultAvatar)
         }
         Account.userGenderFlow.asLiveData().observe(this) {
             binding.ivUserGender.updateGender(it)

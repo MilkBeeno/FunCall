@@ -5,10 +5,12 @@ import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.utils.MediaUtils
 import com.luck.picture.lib.utils.PictureFileUtils
+import com.milk.funcall.BuildConfig
 import com.milk.simple.log.Logger
 
 object MediaLogger {
     fun analyticalSelectResults(context: Context, result: ArrayList<LocalMedia>) {
+        if (!BuildConfig.DEBUG) return
         val tag = MediaLogger::class.java.name
         result.forEach { media ->
             if (media.width == 0 || media.height == 0) {

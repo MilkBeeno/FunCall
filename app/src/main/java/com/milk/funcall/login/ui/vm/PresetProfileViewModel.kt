@@ -14,8 +14,8 @@ class PresetProfileViewModel : ViewModel() {
     private val mediaUploadRepository by lazy { MediaUploadRepository() }
     val avatar = MutableStateFlow("")
     val name = MutableStateFlow("")
-    var localImagePath: String = ""
-    var uploadImageUrl: String = ""
+    var localAvatarPath: String = ""
+    var uploadAvatarUrl: String = ""
     val uploadImage = MutableSharedFlow<Boolean>()
     val presetProfile = MutableSharedFlow<Boolean>()
 
@@ -30,15 +30,15 @@ class PresetProfileViewModel : ViewModel() {
     }
 
     fun updateUserProfile(name: String) {
-        if (localImagePath.isNotBlank()) ioScope {
-            val apiResponse = mediaUploadRepository.uploadPicture(localImagePath)
-            uploadImageUrl = apiResponse.data.toString()
+        if (localAvatarPath.isNotBlank()) ioScope {
+            val apiResponse = mediaUploadRepository.uploadPicture(localAvatarPath)
+            uploadAvatarUrl = apiResponse.data.toString()
             uploadImage.emit(apiResponse.success)
         } else presetProfile(name)
     }
 
     fun presetProfile(name: String) {
-        val finalUrl = uploadImageUrl.ifBlank { avatar.value }
+        val finalUrl = uploadAvatarUrl.ifBlank { avatar.value }
         ioScope {
             val apiResponse = presetProfileRepository.updateUserProfile(name, finalUrl)
             if (apiResponse.success) AccountRepository.getAccountInfo(false)
