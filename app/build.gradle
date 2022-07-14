@@ -24,6 +24,11 @@ android {
         versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            //选择要添加的对应cpu类型的.so库。,打包编译只会加重一个arm64-v8a，so库
+            abiFilters "arm64-v8a"
+        }
     }
 
     buildTypes {
@@ -110,4 +115,6 @@ dependencies {
     implementation 'io.github.lucksiege:ucrop:v3.10.4'
     // 应用权限库
     implementation 'com.guolindev.permissionx:permissionx:1.6.4'
+    // 视频播放库
+    implementation 'xyz.doikki.android.dkplayer:dkplayer-java:3.3.6'
 }

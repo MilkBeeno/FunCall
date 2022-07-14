@@ -3,9 +3,11 @@ package com.milk.funcall.account.ui.act
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputFilter
 import android.view.MotionEvent
 import android.view.View
 import androidx.activity.viewModels
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.asLiveData
 import com.luck.picture.lib.basic.PictureSelector
 import com.luck.picture.lib.config.SelectMimeType
@@ -22,10 +24,10 @@ import com.milk.funcall.common.media.engine.SandboxFileEngine
 import com.milk.funcall.common.media.loader.ImageLoader
 import com.milk.funcall.common.permission.Permission
 import com.milk.funcall.common.ui.AbstractActivity
+import com.milk.funcall.common.ui.view.BanEnterInputFilter
 import com.milk.funcall.databinding.ActivityEditProfileBinding
 import com.milk.funcall.user.ui.config.AvatarImage
 import com.milk.funcall.user.ui.vm.EditProfileViewModel
-import com.milk.simple.keyboard.KeyBoardUtil
 import com.milk.simple.ktx.*
 
 class EditProfileActivity : AbstractActivity() {
@@ -63,11 +65,15 @@ class EditProfileActivity : AbstractActivity() {
         binding.root.navigationBarPadding()
         binding.headerToolbar.showArrowBack()
         binding.headerToolbar.setTitle(string(R.string.edit_profile_title))
-        binding.etName.setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus) KeyBoardUtil.hideKeyboard(this)
-        }
-        binding.etAboutMe.setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus) KeyBoardUtil.hideKeyboard(this)
+        binding.etName.filters =
+            arrayOf(InputFilter.LengthFilter(20), BanEnterInputFilter())
+        binding.etAboutMe.filters =
+            arrayOf(InputFilter.LengthFilter(150), BanEnterInputFilter())
+        val currentLength = binding.etAboutMe.text?.length ?: 0
+        binding.tvCount.text = currentLength.toString().plus("/150")
+        binding.etAboutMe.addTextChangedListener {
+            val changeLength = it?.length ?: 0
+            binding.tvCount.text = changeLength.toString().plus("/150")
         }
         binding.flEditAvatar.setOnClickListener(this)
     }

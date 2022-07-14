@@ -25,6 +25,7 @@ import com.milk.funcall.common.media.engine.SandboxFileEngine
 import com.milk.funcall.common.media.loader.ImageLoader
 import com.milk.funcall.common.permission.Permission
 import com.milk.funcall.common.ui.AbstractActivity
+import com.milk.funcall.common.ui.view.BanEnterInputFilter
 import com.milk.funcall.databinding.ActivityPresetProfileBinding
 import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.login.ui.vm.PresetProfileViewModel
@@ -55,7 +56,8 @@ class PresetProfileActivity : AbstractActivity() {
         binding.headerToolbar.setTitle(string(R.string.preset_profile_title))
         binding.ivUserGender.setImageResource(defaultGender)
         binding.ivUserAvatar.setImageResource(defaultAvatar)
-        binding.etUserName.filters = arrayOf(InputFilter.LengthFilter(20))
+        binding.etUserName.filters =
+            arrayOf(InputFilter.LengthFilter(20), BanEnterInputFilter())
         binding.ivUserAvatar.setOnClickListener(this)
         binding.tvStart.setOnClickListener(this)
         binding.etUserName.setOnFocusChangeListener { _, hasFocus ->
