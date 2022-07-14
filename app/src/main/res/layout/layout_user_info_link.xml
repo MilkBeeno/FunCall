@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/shape_user_info_link"
     android:gravity="center_vertical"
+    android:minHeight="65dp"
     android:visibility="gone"
     tools:visibility="visible">
 
