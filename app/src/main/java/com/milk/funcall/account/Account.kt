@@ -1,10 +1,10 @@
 package com.milk.funcall.account
 
 import com.milk.funcall.common.constrant.KvKey
+import com.milk.funcall.user.data.UserMediaModel
 import com.milk.funcall.user.data.UserTotalInfoModel
 import com.milk.funcall.user.type.Gender
 import com.milk.simple.ktx.ioScope
-import com.milk.simple.log.Logger
 import com.milk.simple.mdr.KvManger
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -117,11 +117,30 @@ object Account {
             return field
         }
 
-    /** 当前用户是否观看过他人个人资料页面图片 */
+    /** 当前用户图片集合存储 */
+    internal val userImageListFlow = MutableStateFlow(mutableListOf<String>())
+    private var userImageList: MutableList<String> = mutableListOf()
+        set(value) {
+            value.forEachIndexed { index, imageUrl ->
+                KvManger.put(KvKey.ACCOUNT_USER_IMAGE_LIST + index, imageUrl)
+            }
+            KvManger.put(KvKey.ACCOUNT_USER_IMAGE_LIST_SIZE, value.size)
+            field = value
+        }
+        get() {
+            val imageList = mutableListOf<String>()
+            val size = KvManger.getInt(KvKey.ACCOUNT_USER_IMAGE_LIST_SIZE)
+            for (index in 0 until size) {
+                imageList.add(KvManger.getString(KvKey.ACCOUNT_USER_IMAGE_LIST + index))
+            }
+            field = imageList
+            return field
+        }
+
+    /** - [本地数据不需要和服务器同步] 当前用户是否观看过他人个人资料页面图片 */
     internal val userViewOtherFlow = MutableStateFlow(false)
     var userViewOther: Boolean = false
         set(value) {
-            Logger.d("USERID=$userId", "hlc")
             KvManger.put(KvKey.USER_VIEW_OTHER.plus(userId), value)
             field = value
         }
@@ -142,6 +161,7 @@ object Account {
                 userFollowsFlow.emit(userFollows)
                 userBioFlow.emit(userBio)
                 userViewOtherFlow.emit(userViewOther)
+                userImageListFlow.emit(userImageList)
             }
         } else userGender = Gender.Man.value
     }
@@ -165,6 +185,8 @@ object Account {
             userBio = ""
             userBioFlow.emit("")
             userFollowsFlow.emit(0)
+            userImageList = mutableListOf()
+            userImageListFlow.emit(mutableListOf())
         }
     }
 
@@ -190,6 +212,14 @@ object Account {
             userFollowsFlow.emit(info.userFollows)
             userBio = info.userBio
             userBioFlow.emit(info.userBio)
+            userImageList = imageListConvert(info.userImageList)
         }
+    }
+
+    /** 当前用户图片信息、只保存大图图片地址 */
+    private fun imageListConvert(mediaList: MutableList<UserMediaModel>): MutableList<String> {
+        val imageList = mutableListOf<String>()
+        mediaList.forEach { imageList.add(it.thumbUrl) }
+        return imageList
     }
 }

@@ -28,9 +28,18 @@ object KvKey {
     /** 当前用户的个人简介 */
     const val ACCOUNT_USER_BIO = "ACCOUNT_USER_PROFILE"
 
+    /** 当前用户图片集合存储 */
+    const val ACCOUNT_USER_IMAGE_LIST = "ACCOUNT_USER_IMAGE_LIST"
+
+    /** 当前用户图片集合长度 */
+    const val ACCOUNT_USER_IMAGE_LIST_SIZE = "ACCOUNT_USER_IMAGE_LIST_SIZE"
+
     /** 当前用户是否观看过他人个人资料页面图片 */
     const val USER_VIEW_OTHER = "ACCOUNT_NEW_USER_VIEW_OTHER"
 
     /** 查看用户图片媒体列表 */
     const val DISPLAY_IMAGE_MEDIA_LIST = "DISPLAY_IMAGE_MEDIA_LIST"
+
+    /** 更新个人资料时、删除一张预览图片 */
+    const val EDIT_PROFILE_DELETE_IMAGE = "EDIT_PROFILE_DELETE_IMAGE"
 }

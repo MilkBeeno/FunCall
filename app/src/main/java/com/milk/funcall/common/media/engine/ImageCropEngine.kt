@@ -75,7 +75,7 @@ class ImageCropEngine : CropFileEngine {
         options.setSkipCropMimeType(*getNotSupportCrop())
         options.isForbidCropGifWebp(true)
         options.isForbidSkipMultipleCrop(false)
-        options.setMaxScaleMultiplier(100f)
+        options.setMaxScaleMultiplier(500f)
         options.isDarkStatusBarBlack(true)
         options.setStatusBarColor(context.color(R.color.FF393A3E))
         options.setToolbarColor(context.color(R.color.FF393A3E))

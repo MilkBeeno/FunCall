@@ -12,7 +12,6 @@ import com.milk.funcall.databinding.FragmentMineBinding
 import com.milk.funcall.login.ui.act.GenderActivity
 import com.milk.funcall.login.ui.act.LoginActivity
 import com.milk.funcall.user.ui.config.AvatarImage
-import com.milk.funcall.user.ui.config.GenderImage
 import com.milk.simple.ktx.gone
 import com.milk.simple.ktx.string
 import com.milk.simple.ktx.visible
@@ -20,12 +19,7 @@ import com.milk.simple.ktx.visible
 class MineFragment : AbstractFragment() {
     private val binding by lazy { FragmentMineBinding.inflate(layoutInflater) }
     private val defaultAvatar by lazy { AvatarImage().obtain(Account.userGender) }
-    private val dialog by lazy {
-        LogoutDialog(requireActivity()) {
-            Account.logout()
-            GenderActivity.create(requireActivity())
-        }
-    }
+    private val logoutDialog by lazy { LogoutDialog(requireActivity()) }
 
     override fun getRootView(): View = binding.root
 
@@ -42,6 +36,10 @@ class MineFragment : AbstractFragment() {
         binding.blackedList.setOption(R.drawable.mine_blacked_list, R.string.mine_blacked_list)
         binding.aboutUs.setOption(R.drawable.mine_about_us, R.string.mine_about_us)
         binding.signOut.setOption(R.drawable.mine_sign_out, R.string.mine_sign_out, false)
+        logoutDialog.setOnConfirmListener {
+            GenderActivity.create(requireActivity())
+            Account.logout()
+        }
     }
 
     override fun initializeObserver() {
@@ -79,7 +77,7 @@ class MineFragment : AbstractFragment() {
             binding.editProfile -> EditProfileActivity.create(requireContext())
             binding.blackedList -> BlackedListActivity.create(requireContext())
             binding.aboutUs -> AboutUsActivity.create(requireContext())
-            binding.signOut -> dialog.show()
+            binding.signOut -> logoutDialog.show()
             binding.tvLogin -> LoginActivity.create(requireContext())
         }
     }

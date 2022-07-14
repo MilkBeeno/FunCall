@@ -9,10 +9,24 @@
     android:orientation="vertical"
     tools:context=".user.ui.act.ImageMediaActivity">
 
-    <com.milk.funcall.common.ui.view.HeaderToolbar
-        android:id="@+id/headerToolbar"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="42dp" />
+        android:layout_height="42dp">
+
+        <com.milk.funcall.common.ui.view.HeaderToolbar
+            android:id="@+id/headerToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="42dp" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivCancel"
+            android:layout_width="49dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical|end"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:src="@drawable/common_image_cancel" />
+    </FrameLayout>
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -40,6 +54,7 @@
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/llMessage"
         android:layout_width="wrap_content"
         android:layout_height="44dp"
         android:layout_marginBottom="56dp"

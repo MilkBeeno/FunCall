@@ -15,6 +15,8 @@
     <string name="common_cancel" tools:ignore="ButtonCase">CANCEL</string>
     <string name="common_loading">Logging…</string>
     <string name="common_uploading">Uploading…</string>
+    <string name="common_video">Video</string>
+    <string name="common_picture">Photos</string>
     <!--启动页面翻译-->
     <string name="launch_bottom_tips"><![CDATA[Messaging & Chat App]]></string>
     <!--选择性别页面翻译-->
@@ -79,6 +81,8 @@
     <string name="edit_profile_about_me">About me</string>
     <string name="edit_profile_name_hint">Please enter your name</string>
     <string name="edit_profile_about_me_hint">Please introduce yourself</string>
+    <string name="edit_profile_delete_image_title">Whether to delete the content</string>
+    <string name="edit_profile_delete_image_confirm">confirm deletion</string>
     <!--个人粉丝页面翻译-->
     <string name="fans_list_empty">No fans yet</string>
     <string name="fans_list_to_publish">to publish content</string>
@@ -91,8 +95,6 @@
     <string name="user_info_copy">Copy</string>
     <string name="user_info_not_bio">No profile yet ~</string>
     <string name="user_info_not_link">Social platform homepage link has not been uploaded yet ~</string>
-    <string name="user_info_video">Video</string>
-    <string name="user_info_image">Photos</string>
     <string name="user_info_obtain_failed">Failed to get user information.</string>
     <string name="user_info_contact_details">How to contact me :</string>
     <string name="user_info_copy_success">Contact details copy successful.</string>

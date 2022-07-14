@@ -4,4 +4,5 @@ import androidx.lifecycle.ViewModel
 
 class EditProfileViewModel : ViewModel() {
     var localAvatarPath: String = ""
+    val localImageListPath = mutableListOf<String>()
 }

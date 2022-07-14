@@ -8,7 +8,7 @@ import com.milk.funcall.common.ui.dialog.SimpleDialog
 import com.milk.funcall.databinding.DialogDoubleConfirmBinding
 import com.milk.simple.ktx.string
 
-class LogoutDialog(activity: FragmentActivity) :
+class DeleteImageDialog(activity: FragmentActivity) :
     SimpleDialog<DialogDoubleConfirmBinding>(activity) {
     private var clickRequest: (() -> Unit)? = null
 
@@ -16,8 +16,8 @@ class LogoutDialog(activity: FragmentActivity) :
         setGravity(Gravity.BOTTOM)
         setWidthMatchParent(true)
         setWindowAnimations(R.style.BottomDialog_Animation)
-        binding.tvTitle.text = activity.string(R.string.mine_log_out_title)
-        binding.tvConfirm.text = activity.string(R.string.mine_log_out_confirm)
+        binding.tvTitle.text = activity.string(R.string.edit_profile_delete_image_title)
+        binding.tvConfirm.text = activity.string(R.string.edit_profile_delete_image_confirm)
         binding.tvLogoutCancel.setOnClickListener { dismiss() }
         binding.tvConfirm.setOnClickListener {
             clickRequest?.invoke()

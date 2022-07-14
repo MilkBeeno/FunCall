@@ -21,7 +21,6 @@ import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.ui.manager.NoScrollGridLayoutManager
 import com.milk.funcall.databinding.ActivityUserInfoBinding
 import com.milk.funcall.login.ui.dialog.LoadingDialog
-import com.milk.funcall.user.data.UserMediaModel
 import com.milk.funcall.user.data.UserTotalInfoModel
 import com.milk.funcall.user.ui.adapter.UserImageAdapter
 import com.milk.funcall.user.ui.vm.UserTotalInfoViewModel
@@ -126,16 +125,18 @@ class UserTotalInfoActivity : AbstractActivity() {
             binding.rvImage.visible()
             binding.rvImage.layoutManager = NoScrollGridLayoutManager(this, 2)
             binding.rvImage.addItemDecoration(SimpleGridDecoration(this))
-            binding.rvImage.adapter = UserImageAdapter(userInfo.userImageList) {
+            binding.rvImage.adapter = UserImageAdapter(userInfo.userImageList) { position ->
                 ImageMediaActivity.create(
                     context = this,
                     targetId = userInfo.userId,
                     targetName = userInfo.userName,
                     isBlacked = userInfo.isBlacked
                 )
+                val userImageList = mutableListOf<String>()
+                userInfo.userImageList.forEach { userImageList.add(it.thumbUrl) }
                 LiveEventBus
-                    .get<Pair<Int, MutableList<UserMediaModel>>>(KvKey.DISPLAY_IMAGE_MEDIA_LIST)
-                    .post(Pair(it, userInfo.userImageList))
+                    .get<Pair<Int, MutableList<String>>>(KvKey.DISPLAY_IMAGE_MEDIA_LIST)
+                    .post(Pair(position, userImageList))
             }
         }
         if (userInfo.userVideoList.isEmpty() && userInfo.userImageList.isEmpty())
