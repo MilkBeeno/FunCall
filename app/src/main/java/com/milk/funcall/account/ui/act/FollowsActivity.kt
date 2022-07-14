@@ -14,6 +14,8 @@ import com.milk.funcall.common.paging.SimpleGridDecoration
 import com.milk.funcall.common.paging.status.RefreshStatus
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityFollowsBinding
+import com.milk.funcall.login.ui.dialog.LoadingDialog
+import com.milk.funcall.user.ui.act.UserTotalInfoActivity
 import com.milk.simple.ktx.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -22,6 +24,7 @@ class FollowsActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityFollowsBinding>()
     private val followsViewModel by viewModels<FollowsViewModel>()
     private val followsAdapter by lazy { FansOrFollowsAdapter() }
+    private val loadingDialog by lazy { LoadingDialog(this, string(R.string.common_loading)) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,18 +35,24 @@ class FollowsActivity : AbstractActivity() {
 
     private fun initializeView() {
         immersiveStatusBar()
+        loadingDialog.show()
         binding.headerToolbar.statusBarPadding()
         binding.root.navigationBarPadding()
         binding.headerToolbar.showArrowBack()
-        binding.headerToolbar.setTitle(R.string.mine_fans)
+        binding.headerToolbar.setTitle(R.string.mine_follows)
         binding.rvFollows.layoutManager = GridLayoutManager(this, 2)
         binding.rvFollows.addItemDecoration(SimpleGridDecoration(this))
         binding.rvFollows.adapter = followsAdapter
         binding.tvAttention.setOnClickListener(this)
+        followsAdapter.setOnItemClickListener { adapter, _, position ->
+            UserTotalInfoActivity
+                .create(this, adapter.getNoNullItem(position).userId)
+        }
     }
 
     private fun initializeData() {
         followsAdapter.addRefreshedListener {
+            loadingDialog.dismiss()
             if (it == RefreshStatus.Success && followsAdapter.itemCount > 0)
                 binding.llFollowsEmpty.gone()
             else
