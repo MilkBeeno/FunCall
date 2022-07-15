@@ -1,4 +1,4 @@
-package com.milk.funcall.user.ui.vm
+package com.milk.funcall.account.ui.vm
 
 import androidx.lifecycle.ViewModel
 import com.milk.funcall.account.Account

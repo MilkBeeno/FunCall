@@ -34,7 +34,7 @@ import com.milk.funcall.common.ui.view.BanEnterInputFilter
 import com.milk.funcall.databinding.ActivityEditProfileBinding
 import com.milk.funcall.user.ui.act.ImageMediaActivity
 import com.milk.funcall.user.ui.config.AvatarImage
-import com.milk.funcall.user.ui.vm.EditProfileViewModel
+import com.milk.funcall.account.ui.vm.EditProfileViewModel
 import com.milk.simple.ktx.*
 
 class EditProfileActivity : AbstractActivity() {
