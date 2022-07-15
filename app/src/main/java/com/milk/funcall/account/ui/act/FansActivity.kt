@@ -15,6 +15,7 @@ import com.milk.funcall.common.paging.status.RefreshStatus
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityFansBinding
 import com.milk.funcall.login.ui.dialog.LoadingDialog
+import com.milk.funcall.user.ui.act.UserTotalInfoActivity
 import com.milk.simple.ktx.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -42,6 +43,10 @@ class FansActivity : AbstractActivity() {
         binding.rvFans.addItemDecoration(SimpleGridDecoration(this))
         binding.rvFans.adapter = fansAdapter
         binding.tvPublish.setOnClickListener(this)
+        fansAdapter.setOnItemClickListener { adapter, _, position ->
+            UserTotalInfoActivity
+                .create(this, adapter.getNoNullItem(position).userId)
+        }
     }
 
     private fun initializeData() {
