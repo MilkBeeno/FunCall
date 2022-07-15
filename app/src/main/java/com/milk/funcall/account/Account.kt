@@ -119,7 +119,7 @@ object Account {
 
     /** 当前用户图片集合存储 */
     internal val userImageListFlow = MutableStateFlow(mutableListOf<String>())
-    private var userImageList: MutableList<String> = mutableListOf()
+    var userImageList: MutableList<String> = mutableListOf()
         set(value) {
             value.forEachIndexed { index, imageUrl ->
                 KvManger.put(KvKey.ACCOUNT_USER_IMAGE_LIST + index, imageUrl)

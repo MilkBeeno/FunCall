@@ -7,6 +7,8 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 
 class MediaUploadRepository {
+
+    /** 图片上传、单图上传 */
     suspend fun uploadPicture(filePath: String) = retrofit {
         // 1.创建MultipartBody.Builder对象
         val builder = MultipartBody.Builder().setType(MultipartBody.FORM)
@@ -22,5 +24,19 @@ class MediaUploadRepository {
         val parts = builder.build().parts
         // 6.最后进行HTTP请求，传入parts
         ApiService.mediaUploadApiService.uploadSinglePicture(parts)
+    }
+
+    /** 图片上传、多图上传 */
+    suspend fun uploadMultiplePicture(filePathList: MutableList<String>) = retrofit {
+        val parts = mutableListOf<MultipartBody.Part>()
+        filePathList.forEach { filePath ->
+            val file = File(filePath)
+            val requestFile =
+                file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val body = MultipartBody.Part
+                .createFormData("fileList", file.name, requestFile)
+            parts.add(body)
+        }
+        ApiService.mediaUploadApiService.uploadMultiplePicture(parts)
     }
 }

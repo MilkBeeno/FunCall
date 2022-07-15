@@ -23,6 +23,7 @@ import com.milk.funcall.account.ui.decoration.EditProfileImageGridDecoration
 import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.common.media.MediaLogger
 import com.milk.funcall.common.media.engine.CoilEngine
+import com.milk.funcall.common.media.engine.ImageCompressEngine
 import com.milk.funcall.common.media.engine.ImageCropEngine
 import com.milk.funcall.common.media.engine.SandboxFileEngine
 import com.milk.funcall.common.media.loader.ImageLoader
@@ -103,6 +104,7 @@ class EditProfileActivity : AbstractActivity() {
             } else checkStoragePermission { toSelectImage() }
         }
         binding.flEditAvatar.setOnClickListener(this)
+        binding.tvSave.setOnClickListener(this)
     }
 
     override fun onMultipleClick(view: View) {
@@ -110,6 +112,11 @@ class EditProfileActivity : AbstractActivity() {
         when (view) {
             binding.flEditAvatar -> checkStoragePermission {
                 toSelectAvatarImage()
+            }
+            binding.tvSave -> {
+                val name = binding.etName.text.toString()
+                val bio = binding.etAboutMe.text.toString()
+                editProfileViewModel.uploadProfile(name, bio)
             }
         }
     }
@@ -166,6 +173,7 @@ class EditProfileActivity : AbstractActivity() {
             .setSelectionMode(SelectModeConfig.MULTIPLE)
             .setMaxSelectNum(num)
             .isCameraRotateImage(true)
+            .setCompressEngine(ImageCompressEngine())
             .setSandboxFileEngine(SandboxFileEngine())
             .forResult(object : OnResultCallbackListener<LocalMedia> {
                 override fun onCancel() = Unit
