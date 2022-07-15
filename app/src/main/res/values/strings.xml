@@ -17,6 +17,7 @@
     <string name="common_uploading">Uploading…</string>
     <string name="common_video">Video</string>
     <string name="common_picture">Photos</string>
+    <string name="common_success">Success</string>
     <!--启动页面翻译-->
     <string name="launch_bottom_tips"><![CDATA[Messaging & Chat App]]></string>
     <!--选择性别页面翻译-->

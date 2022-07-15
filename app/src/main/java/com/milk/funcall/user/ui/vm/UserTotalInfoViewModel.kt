@@ -1,10 +1,8 @@
 package com.milk.funcall.user.ui.vm
 
 import androidx.lifecycle.ViewModel
-import com.milk.funcall.user.data.UserMediaModel
 import com.milk.funcall.user.data.UserTotalInfoModel
 import com.milk.funcall.user.repo.UserTotalInfoRepository
-import com.milk.funcall.user.type.Material
 import com.milk.simple.ktx.ioScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 
@@ -12,7 +10,7 @@ class UserTotalInfoViewModel : ViewModel() {
     private val userTotalInfoRepository by lazy { UserTotalInfoRepository() }
     var userTotalInfo: UserTotalInfoModel? = null
     val userTotalInfoFlow = MutableSharedFlow<UserTotalInfoModel?>()
-    val userFollowedChangeFlow = MutableSharedFlow<Boolean>()
+    val userFollowedChangeFlow = MutableSharedFlow<Boolean?>()
 
     fun getUserTotalInfo(userId: Long) {
         ioScope {
@@ -38,7 +36,7 @@ class UserTotalInfoViewModel : ViewModel() {
             if (apiResponse.success) {
                 userTotalInfo?.isFollowed = !isFollow
                 userFollowedChangeFlow.emit(!isFollow)
-            }
+            } else userFollowedChangeFlow.emit(null)
         }
     }
 }

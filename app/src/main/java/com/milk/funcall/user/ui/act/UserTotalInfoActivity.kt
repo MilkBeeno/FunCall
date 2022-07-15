@@ -69,7 +69,10 @@ class UserTotalInfoActivity : AbstractActivity() {
         }
         userTotalInfoViewModel.userFollowedChangeFlow.asLiveData().observe(this) {
             loadingDialog.dismiss()
-            setUserFollow(it)
+            if (it != null) {
+                setUserFollow(it)
+                showToast(string(R.string.common_success))
+            }
         }
     }
 
