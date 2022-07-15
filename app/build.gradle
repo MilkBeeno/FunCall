@@ -118,5 +118,5 @@ dependencies {
     // 应用权限库
     implementation 'com.guolindev.permissionx:permissionx:1.6.4'
     // 视频播放库
-    implementation 'xyz.doikki.android.dkplayer:dkplayer-java:3.3.6'
+   // implementation 'xyz.doikki.android.dkplayer:dkplayer-java:3.3.6'
 }

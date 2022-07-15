@@ -53,18 +53,21 @@ class UserTotalInfoActivity : AbstractActivity() {
 
     private fun initializeObserver() {
         userTotalInfoViewModel.userTotalInfoFlow.asLiveData().observe(this) {
-            if (it != null) {
-                binding.lvLoading.gone()
-                binding.llUserNext.visible()
-                binding.basic.root.visible()
-                binding.link.root.visible()
-                binding.llMedia.visible()
-                setUserBasic(it)
-                setUserMedia(it)
-                setUserFollow(it.isFollowed)
-            } else {
-                showToast(string(R.string.user_info_obtain_failed))
-                finish()
+            when {
+                it != null && it.userId > 0 -> {
+                    binding.lvLoading.gone()
+                    binding.llUserNext.visible()
+                    binding.basic.root.visible()
+                    binding.link.root.visible()
+                    binding.llMedia.visible()
+                    setUserBasic(it)
+                    setUserMedia(it)
+                    setUserFollow(it.isFollowed)
+                }
+                it == null -> {
+                    showToast(string(R.string.user_info_obtain_failed))
+                    finish()
+                }
             }
         }
         userTotalInfoViewModel.userFollowedChangeFlow.asLiveData().observe(this) {
@@ -170,7 +173,7 @@ class UserTotalInfoActivity : AbstractActivity() {
                 finish()
             }
             binding.basic.llMessage -> {
-                userTotalInfoViewModel.userTotalInfo?.let {
+                userTotalInfoViewModel.userTotalInfoFlow.value?.let {
                     if (it.isBlacked) return
                     ChatMessageActivity.create(this, it.userId, it.userName)
                 }

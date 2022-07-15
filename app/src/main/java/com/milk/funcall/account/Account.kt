@@ -95,7 +95,7 @@ object Account {
 
     /** 当前用户登录的关注数量 */
     internal val userFollowsFlow = MutableStateFlow(0)
-    private var userFollows: Int = 0
+    internal var userFollows: Int = 0
         set(value) {
             KvManger.put(KvKey.ACCOUNT_USER_FOLLOWS_NUMBER, value)
             field = value

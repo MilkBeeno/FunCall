@@ -146,6 +146,22 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
+            <FrameLayout
+                android:layout_width="106dp"
+                android:layout_height="106dp"
+                android:layout_gravity="start"
+                android:layout_marginTop="10dp">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/ivVideo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/common_media_add"
+                    app:shapeAppearanceOverlay="@style/roundCornerStyle_10" />
+
+            </FrameLayout>
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
