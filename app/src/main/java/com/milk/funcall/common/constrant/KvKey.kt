@@ -28,6 +28,9 @@ object KvKey {
     /** 当前用户的个人简介 */
     const val ACCOUNT_USER_BIO = "ACCOUNT_USER_PROFILE"
 
+    /** 当前用户的个人联系方式 */
+    const val ACCOUNT_USER_LINK = "ACCOUNT_USER_LINK"
+
     /** 当前用户图片集合存储 */
     const val ACCOUNT_USER_IMAGE_LIST = "ACCOUNT_USER_IMAGE_LIST"
 

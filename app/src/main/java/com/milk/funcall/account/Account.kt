@@ -71,7 +71,7 @@ object Account {
 
     /** 当前用户登录的头像 */
     internal val userAvatarFlow = MutableStateFlow("")
-    private var userAvatar: String = ""
+    internal var userAvatar: String = ""
         set(value) {
             KvManger.put(KvKey.ACCOUNT_USER_AVATAR, value)
             field = value
@@ -117,9 +117,21 @@ object Account {
             return field
         }
 
+    /** 当前用户的个人联系方式 */
+    internal val userLinkFlow = MutableStateFlow("")
+    private var userLink: String = ""
+        set(value) {
+            KvManger.put(KvKey.ACCOUNT_USER_LINK, value)
+            field = value
+        }
+        get() {
+            field = KvManger.getString(KvKey.ACCOUNT_USER_LINK)
+            return field
+        }
+
     /** 当前用户图片集合存储 */
     internal val userImageListFlow = MutableStateFlow(mutableListOf<String>())
-    var userImageList: MutableList<String> = mutableListOf()
+    internal var userImageList: MutableList<String> = mutableListOf()
         set(value) {
             value.forEachIndexed { index, imageUrl ->
                 KvManger.put(KvKey.ACCOUNT_USER_IMAGE_LIST + index, imageUrl)
@@ -139,7 +151,7 @@ object Account {
 
     /** - [本地数据不需要和服务器同步] 当前用户是否观看过他人个人资料页面图片 */
     internal val userViewOtherFlow = MutableStateFlow(false)
-    var userViewOther: Boolean = false
+    internal var userViewOther: Boolean = false
         set(value) {
             KvManger.put(KvKey.USER_VIEW_OTHER.plus(userId), value)
             field = value
@@ -160,6 +172,7 @@ object Account {
                 userFansFlow.emit(userFans)
                 userFollowsFlow.emit(userFollows)
                 userBioFlow.emit(userBio)
+                userLinkFlow.emit(userLink)
                 userViewOtherFlow.emit(userViewOther)
                 userImageListFlow.emit(userImageList)
             }
@@ -184,19 +197,21 @@ object Account {
             userFollows = 0
             userBio = ""
             userBioFlow.emit("")
+            userLink = ""
+            userLinkFlow.emit("")
             userFollowsFlow.emit(0)
             userImageList = mutableListOf()
             userImageListFlow.emit(mutableListOf())
         }
     }
 
-    fun logged(token: String) {
+    internal fun logged(token: String) {
         userLogged = true
         userToken = token
         ioScope { userLoggedFlow.emit(true) }
     }
 
-    fun saveAccountInfo(info: UserTotalInfoModel, registered: Boolean = true) {
+    internal fun saveAccountInfo(info: UserTotalInfoModel, registered: Boolean = true) {
         ioScope {
             userId = info.userId
             userIdFlow.emit(info.userId)
@@ -212,6 +227,8 @@ object Account {
             userFollowsFlow.emit(info.userFollows)
             userBio = info.userBio
             userBioFlow.emit(info.userBio)
+            userLink = info.userLink
+            userLinkFlow.emit(info.userLink)
             val imageList = imageListConvert(info.userImageList)
             userImageList = imageList
             userImageListFlow.emit(imageList)

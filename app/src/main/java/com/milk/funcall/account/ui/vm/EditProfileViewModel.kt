@@ -10,8 +10,14 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 class EditProfileViewModel : ViewModel() {
     private val mediaUploadRepository by lazy { MediaUploadRepository() }
     private val editProfileRepository by lazy { EditProfileRepository() }
+
+    /** 本地相册或拍照选择的头像 */
     var localAvatarPath: String = ""
+
+    /** 本地相册或拍照选择的个人生活图片 */
     val localImageListPath = mutableListOf<String>()
+
+    /** 当前用户更新信息的状态 */
     var uploadResult = MutableSharedFlow<Boolean>()
 
     fun uploadProfile(name: String, bio: String, link: String) {
@@ -32,32 +38,37 @@ class EditProfileViewModel : ViewModel() {
     }
 
     private suspend fun uploadMediaProfile(): Pair<String, ArrayList<String>> {
-        val filePathList = mutableListOf<String>()
-        if (localAvatarPath.isNotBlank()) {
-            filePathList.add(localAvatarPath)
+        var avatarUrl = Account.userAvatar
+        val imageList = arrayListOf<String>()
+        // 已经上传过且没有删除图片集合
+        val alreadyExistsImage = mutableListOf<String>()
+        // 将要上传到服务器中图片的集合
+        val uploadImageList = mutableListOf<String>()
+        // 用户头像选择不为空、添加到上传集合中
+        if (localAvatarPath.isNotBlank())
+            uploadImageList.add(localAvatarPath)
+        // 遍历当前选择图片并把要上传的图片添加到集合中
+        localImageListPath.forEach { cache ->
+            if (Account.userImageList.contains(cache))
+                alreadyExistsImage.add(cache)
+            else
+                uploadImageList.add(cache)
         }
-        if (localImageListPath.isNotEmpty()) {
-            localImageListPath.forEach { cache ->
-                if (!Account.userImageList.contains(cache))
-                    filePathList.add(cache)
-            }
-        }
-        if (filePathList.isNotEmpty()) {
+        if (uploadImageList.isNotEmpty()) {
             val apiResponse =
-                mediaUploadRepository.uploadMultiplePicture(filePathList)
+                mediaUploadRepository.uploadMultiplePicture(uploadImageList)
             val apiResult = apiResponse.data
             if (apiResponse.success && apiResult != null) {
-                var avatarUrl = ""
-                val imageList = arrayListOf<String>()
                 apiResult.forEachIndexed { index, value ->
+                    // 已经上传头像、将返回的头像地址第一个元素赋值给头像
                     if (localAvatarPath.isNotBlank() && index == 0)
                         avatarUrl = value
                     else
                         imageList.add(value)
                 }
-                return Pair(avatarUrl, imageList)
+                imageList.addAll(alreadyExistsImage)
             }
         }
-        return Pair("", arrayListOf())
+        return Pair(avatarUrl, imageList)
     }
 }

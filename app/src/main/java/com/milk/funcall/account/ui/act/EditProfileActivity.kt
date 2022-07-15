@@ -20,6 +20,7 @@ import com.milk.funcall.R
 import com.milk.funcall.account.Account
 import com.milk.funcall.account.ui.adapter.EditProfileImageAdapter
 import com.milk.funcall.account.ui.decoration.EditProfileImageGridDecoration
+import com.milk.funcall.account.ui.vm.EditProfileViewModel
 import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.common.media.MediaLogger
 import com.milk.funcall.common.media.engine.CoilEngine
@@ -32,9 +33,9 @@ import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.ui.manager.NoScrollGridLayoutManager
 import com.milk.funcall.common.ui.view.BanEnterInputFilter
 import com.milk.funcall.databinding.ActivityEditProfileBinding
+import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.user.ui.act.ImageMediaActivity
 import com.milk.funcall.user.ui.config.AvatarImage
-import com.milk.funcall.account.ui.vm.EditProfileViewModel
 import com.milk.simple.ktx.*
 
 class EditProfileActivity : AbstractActivity() {
@@ -42,6 +43,8 @@ class EditProfileActivity : AbstractActivity() {
     private val editProfileViewModel by viewModels<EditProfileViewModel>()
     private val defaultAvatar by lazy { AvatarImage().obtain(Account.userGender) }
     private val imageAdapter by lazy { EditProfileImageAdapter() }
+    private val uploadDialog by lazy { LoadingDialog(this, string(R.string.common_uploading)) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -65,6 +68,9 @@ class EditProfileActivity : AbstractActivity() {
         Account.userBioFlow.asLiveData().observe(this) {
             if (it.isNotBlank()) binding.etAboutMe.setText(it)
         }
+        Account.userLinkFlow.asLiveData().observe(this) {
+            if (it.isNotBlank()) binding.etLink.setText(it)
+        }
         Account.userImageListFlow.asLiveData().observe(this) { images ->
             editProfileViewModel.localImageListPath.clear()
             images.forEach { editProfileViewModel.localImageListPath.add(it) }
@@ -73,6 +79,10 @@ class EditProfileActivity : AbstractActivity() {
         LiveEventBus.get<String>(KvKey.EDIT_PROFILE_DELETE_IMAGE).observe(this) {
             editProfileViewModel.localImageListPath.remove(it)
             imageAdapter.setNewData(editProfileViewModel.localImageListPath)
+        }
+        editProfileViewModel.uploadResult.asLiveData().observe(this) {
+            uploadDialog.dismiss()
+            if (it) showToast(string(R.string.edit_profile_success))
         }
     }
 
@@ -114,6 +124,7 @@ class EditProfileActivity : AbstractActivity() {
                 toSelectAvatarImage()
             }
             binding.tvSave -> {
+                uploadDialog.show()
                 val name = binding.etName.text.toString()
                 val bio = binding.etAboutMe.text.toString()
                 val link = binding.etLink.text.toString()
