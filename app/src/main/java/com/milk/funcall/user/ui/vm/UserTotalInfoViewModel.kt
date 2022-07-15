@@ -10,8 +10,6 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 
 class UserTotalInfoViewModel : ViewModel() {
     private val userTotalInfoRepository by lazy { UserTotalInfoRepository() }
-    private val userVideoList = mutableListOf<UserMediaModel>()
-    private val userImageList = mutableListOf<UserMediaModel>()
     var userTotalInfo: UserTotalInfoModel? = null
     val userTotalInfoFlow = MutableSharedFlow<UserTotalInfoModel?>()
     val userFollowedChangeFlow = MutableSharedFlow<Boolean>()
@@ -24,12 +22,7 @@ class UserTotalInfoViewModel : ViewModel() {
                 userTotalInfoRepository.getNextUserTotalInfo()
             val apiResult = apiResponse.data
             if (apiResponse.success && apiResult != null) {
-                apiResult.userMaterialList?.forEach {
-                    val isVideo = it.materialType == Material.Video.value
-                    if (isVideo) userVideoList.add(it) else userImageList.add(it)
-                }
-                apiResult.userVideoList = userVideoList
-                apiResult.userImageList = userImageList
+                apiResult.mediaConvert()
                 userTotalInfo = apiResult
                 userTotalInfoFlow.emit(apiResult)
             } else userTotalInfoFlow.emit(null)

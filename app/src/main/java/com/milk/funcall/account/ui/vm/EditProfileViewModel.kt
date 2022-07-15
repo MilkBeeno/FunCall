@@ -25,6 +25,7 @@ class EditProfileViewModel : ViewModel() {
             val apiResult = apiResponse.data
             if (apiResponse.success && apiResult != null) {
                 uploadResult.emit(true)
+                apiResult.mediaConvert()
                 Account.saveAccountInfo(apiResult)
             } else uploadResult.emit(false)
         }

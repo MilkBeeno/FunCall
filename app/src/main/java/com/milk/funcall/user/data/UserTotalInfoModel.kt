@@ -2,6 +2,7 @@ package com.milk.funcall.user.data
 
 import com.google.gson.annotations.SerializedName
 import com.milk.funcall.common.mdr.table.UserInfoEntity
+import com.milk.funcall.user.type.Material
 import java.io.Serializable
 
 data class UserTotalInfoModel(
@@ -33,4 +34,13 @@ data class UserTotalInfoModel(
     // 本地数据转换、将统一媒体数据分为 视频数据 和 图片数据
     var userImageList: MutableList<UserMediaModel> = mutableListOf(),
     var userVideoList: MutableList<UserMediaModel> = mutableListOf(),
-) : UserInfoEntity(), Serializable
+) : UserInfoEntity(), Serializable {
+    fun mediaConvert() {
+        userVideoList.clear()
+        userImageList.clear()
+        userMaterialList?.forEach {
+            val isVideo = it.materialType == Material.Video.value
+            if (isVideo) userVideoList.add(it) else userImageList.add(it)
+        }
+    }
+}

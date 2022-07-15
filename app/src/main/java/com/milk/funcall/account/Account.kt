@@ -212,7 +212,9 @@ object Account {
             userFollowsFlow.emit(info.userFollows)
             userBio = info.userBio
             userBioFlow.emit(info.userBio)
-            userImageList = imageListConvert(info.userImageList)
+            val imageList = imageListConvert(info.userImageList)
+            userImageList = imageList
+            userImageListFlow.emit(imageList)
         }
     }
 
