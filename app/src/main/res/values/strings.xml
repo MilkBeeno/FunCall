@@ -79,10 +79,12 @@
     <string name="edit_profile_save">Save</string>
     <string name="edit_profile_name">Name</string>
     <string name="edit_profile_about_me">About me</string>
+    <string name="edit_profile_about_link">Contact information</string>
     <string name="edit_profile_name_hint">Please enter your name</string>
     <string name="edit_profile_about_me_hint">Please introduce yourself</string>
     <string name="edit_profile_delete_image_title">Whether to delete the content</string>
     <string name="edit_profile_delete_image_confirm">confirm deletion</string>
+    <string name="edit_profile_link_hint">Please enter your third-party social platform link</string>
     <!--个人粉丝页面翻译-->
     <string name="fans_list_empty">No fans yet</string>
     <string name="fans_list_to_publish">to publish content</string>

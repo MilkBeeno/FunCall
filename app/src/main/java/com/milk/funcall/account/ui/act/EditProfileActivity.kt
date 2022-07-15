@@ -116,7 +116,8 @@ class EditProfileActivity : AbstractActivity() {
             binding.tvSave -> {
                 val name = binding.etName.text.toString()
                 val bio = binding.etAboutMe.text.toString()
-                editProfileViewModel.uploadProfile(name, bio)
+                val link = binding.etLink.text.toString()
+                editProfileViewModel.uploadProfile(name, bio, link)
             }
         }
     }

@@ -5,4 +5,6 @@ import com.milk.funcall.common.net.ApiClient
 object ApiService {
     val fansOrFollowsApiService: FansOrFollowsApiService =
         ApiClient.obtainRetrofit().create(FansOrFollowsApiService::class.java)
+    val editProfileApiService: EditProfileApiService =
+        ApiClient.obtainRetrofit().create(EditProfileApiService::class.java)
 }
