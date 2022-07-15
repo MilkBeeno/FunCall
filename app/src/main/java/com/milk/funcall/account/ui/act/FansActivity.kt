@@ -14,6 +14,7 @@ import com.milk.funcall.common.paging.SimpleGridDecoration
 import com.milk.funcall.common.paging.status.RefreshStatus
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityFansBinding
+import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.simple.ktx.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -22,6 +23,7 @@ class FansActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityFansBinding>()
     private val fansViewModel by viewModels<FansViewModel>()
     private val fansAdapter by lazy { FansOrFollowsAdapter() }
+    private val loadingDialog by lazy { LoadingDialog(this, string(R.string.common_loading)) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +45,9 @@ class FansActivity : AbstractActivity() {
     }
 
     private fun initializeData() {
+        loadingDialog.show()
         fansAdapter.addRefreshedListener {
+            loadingDialog.dismiss()
             if (it == RefreshStatus.Success && fansAdapter.itemCount > 0)
                 binding.llFanEmpty.gone()
             else
