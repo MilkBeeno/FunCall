@@ -18,7 +18,7 @@ class LoginViewModel : ViewModel() {
     fun login(authType: AuthType, accessToken: String) {
         ioScope {
             val apiResponse =
-                loginRepository.login(currentDeviceId, authType, accessToken + "4138743143")
+                loginRepository.login(currentDeviceId, authType, accessToken)
             val apiResult = apiResponse.data
             if (apiResponse.success && apiResult != null) {
                 Account.logged(apiResult.accessToken)
