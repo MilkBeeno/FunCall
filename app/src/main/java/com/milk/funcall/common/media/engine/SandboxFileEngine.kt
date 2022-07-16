@@ -17,4 +17,8 @@ internal class SandboxFileEngine : UriToFileTransformEngine {
             SandboxTransformUtils.copyPathToSandbox(context, srcPath, mineType)
         )
     }
+
+    companion object {
+        val current = SandboxFileEngine()
+    }
 }

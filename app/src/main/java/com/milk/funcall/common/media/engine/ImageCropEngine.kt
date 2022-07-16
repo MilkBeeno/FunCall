@@ -95,4 +95,8 @@ class ImageCropEngine : CropFileEngine {
     private fun getNotSupportCrop(): Array<String> {
         return arrayOf(PictureMimeType.ofGIF(), PictureMimeType.ofWEBP())
     }
+
+    companion object {
+        val current = ImageCropEngine()
+    }
 }

@@ -23,10 +23,7 @@ import com.milk.funcall.account.ui.decoration.EditProfileImageGridDecoration
 import com.milk.funcall.account.ui.vm.EditProfileViewModel
 import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.common.media.MediaLogger
-import com.milk.funcall.common.media.engine.CoilEngine
-import com.milk.funcall.common.media.engine.ImageCompressEngine
-import com.milk.funcall.common.media.engine.ImageCropEngine
-import com.milk.funcall.common.media.engine.SandboxFileEngine
+import com.milk.funcall.common.media.engine.*
 import com.milk.funcall.common.media.loader.ImageLoader
 import com.milk.funcall.common.permission.Permission
 import com.milk.funcall.common.ui.AbstractActivity
@@ -114,6 +111,7 @@ class EditProfileActivity : AbstractActivity() {
             } else checkStoragePermission { toSelectImage() }
         }
         binding.flEditAvatar.setOnClickListener(this)
+        binding.flVideo.setOnClickListener(this)
         binding.tvSave.setOnClickListener(this)
     }
 
@@ -122,6 +120,9 @@ class EditProfileActivity : AbstractActivity() {
         when (view) {
             binding.flEditAvatar -> checkStoragePermission {
                 toSelectAvatarImage()
+            }
+            binding.flVideo -> checkStoragePermission {
+                toSelectVideo()
             }
             binding.tvSave -> {
                 uploadDialog.show()
@@ -152,13 +153,13 @@ class EditProfileActivity : AbstractActivity() {
     private fun toSelectAvatarImage() {
         PictureSelector.create(this)
             .openGallery(SelectMimeType.ofImage())
-            .setImageEngine(CoilEngine())
+            .setImageEngine(CoilEngine.current)
             .setLanguage(LanguageConfig.ENGLISH)
             .setSelectionMode(SelectModeConfig.SINGLE)
             .isCameraRotateImage(true)
             .isDirectReturnSingle(true)
-            .setCropEngine(ImageCropEngine())
-            .setSandboxFileEngine(SandboxFileEngine())
+            .setCropEngine(ImageCropEngine.current)
+            .setSandboxFileEngine(SandboxFileEngine.current)
             .forResult(object : OnResultCallbackListener<LocalMedia> {
                 override fun onCancel() = Unit
                 override fun onResult(result: ArrayList<LocalMedia>?) {
@@ -175,18 +176,39 @@ class EditProfileActivity : AbstractActivity() {
             })
     }
 
+    private fun toSelectVideo() {
+        PictureSelector.create(this)
+            .openGallery(SelectMimeType.ofVideo())
+            .setLanguage(LanguageConfig.ENGLISH)
+            .setSelectionMode(SelectModeConfig.SINGLE)
+            .isDirectReturnSingle(true)
+            .setVideoPlayerEngine(IjkPlayerEngine.current)
+            .setImageEngine(CoilVideoEngine.current)
+            .setCompressEngine(ImageCompressEngine.current)
+            .setSandboxFileEngine(SandboxFileEngine.current)
+            .forResult(object : OnResultCallbackListener<LocalMedia> {
+                override fun onCancel() = Unit
+                override fun onResult(result: ArrayList<LocalMedia>?) {
+                    if (result != null) {
+                        MediaLogger
+                            .analyticalSelectResults(this@EditProfileActivity, result)
+                    }
+                }
+            })
+    }
+
     /** 最多可以选择六张图片 */
     private fun toSelectImage() {
         val num = 6 - editProfileViewModel.localImageListPath.size
         PictureSelector.create(this)
             .openGallery(SelectMimeType.ofImage())
-            .setImageEngine(CoilEngine())
+            .setImageEngine(CoilEngine.current)
             .setLanguage(LanguageConfig.ENGLISH)
             .setSelectionMode(SelectModeConfig.MULTIPLE)
             .setMaxSelectNum(num)
             .isCameraRotateImage(true)
-            .setCompressEngine(ImageCompressEngine())
-            .setSandboxFileEngine(SandboxFileEngine())
+            .setCompressEngine(ImageCompressEngine.current)
+            .setSandboxFileEngine(SandboxFileEngine.current)
             .forResult(object : OnResultCallbackListener<LocalMedia> {
                 override fun onCancel() = Unit
                 override fun onResult(result: ArrayList<LocalMedia>?) {

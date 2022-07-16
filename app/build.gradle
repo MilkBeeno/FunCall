@@ -7,14 +7,6 @@ plugins {
 
 android {
     compileSdk 32
-    signingConfigs {
-        myJsk {
-            storeFile file("../app/jks/fun_call.jks")
-            storePassword 'funcall123456'
-            keyAlias 'gam'
-            keyPassword 'funcall123456'
-        }
-    }
     defaultConfig {
         // 正式包名: com.milk.simplefuncall 测试包名:com.milk.funcall
         applicationId "com.milk.simplefuncall"
@@ -26,11 +18,19 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         ndk {
-            //选择要添加的对应cpu类型的.so库。,打包编译只会加重一个arm64-v8a，so库
+            //选择要添加的对应 cpu 类型的 .so 库:打包编译只会加重一个 arm64-v8a 的 so 库
             abiFilters "arm64-v8a"
         }
     }
-
+    // 加载打包时的 JKS 认证
+    signingConfigs {
+        myJsk {
+            storeFile file("../app/jks/fun_call.jks")
+            storePassword 'funcall123456'
+            keyAlias 'gam'
+            keyPassword 'funcall123456'
+        }
+    }
     buildTypes {
         debug {
             minifyEnabled false
@@ -41,6 +41,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.myJsk
+        }
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
         }
     }
     compileOptions {
@@ -118,5 +123,5 @@ dependencies {
     // 应用权限库
     implementation 'com.guolindev.permissionx:permissionx:1.6.4'
     // 视频播放库
-   // implementation 'xyz.doikki.android.dkplayer:dkplayer-java:3.3.6'
+    implementation "tv.danmaku.ijk.media:ijkplayer-java:0.8.8"
 }

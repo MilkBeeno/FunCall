@@ -136,13 +136,13 @@ class PresetProfileActivity : AbstractActivity() {
     private fun toSelectAvatarImage() {
         PictureSelector.create(this)
             .openGallery(SelectMimeType.ofImage())
-            .setImageEngine(CoilEngine())
+            .setImageEngine(CoilEngine.current)
             .setLanguage(LanguageConfig.ENGLISH)
             .setSelectionMode(SelectModeConfig.SINGLE)
             .isCameraRotateImage(true)
             .isDirectReturnSingle(true)
-            .setCropEngine(ImageCropEngine())
-            .setSandboxFileEngine(SandboxFileEngine())
+            .setCropEngine(ImageCropEngine.current)
+            .setSandboxFileEngine(SandboxFileEngine.current)
             .forResult(object : OnResultCallbackListener<LocalMedia> {
                 override fun onCancel() = Unit
                 override fun onResult(result: ArrayList<LocalMedia>?) {

@@ -74,4 +74,8 @@ class CoilEngine : ImageEngine {
     override fun pauseRequests(context: Context?) = Unit
 
     override fun resumeRequests(context: Context?) = Unit
+
+    companion object {
+        var current = CoilEngine()
+    }
 }

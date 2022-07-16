@@ -147,6 +147,7 @@
                 android:textStyle="bold" />
 
             <FrameLayout
+                android:id="@+id/flVideo"
                 android:layout_width="106dp"
                 android:layout_height="106dp"
                 android:layout_gravity="start"
@@ -159,6 +160,14 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/common_media_add"
                     app:shapeAppearanceOverlay="@style/roundCornerStyle_10" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivVideoMask"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/common_video_media" />
 
             </FrameLayout>
 

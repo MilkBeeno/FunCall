@@ -35,4 +35,8 @@ class ImageCompressEngine : CompressFileEngine {
                 }
             }).launch()
     }
+
+    companion object {
+        val current = ImageCompressEngine()
+    }
 }
