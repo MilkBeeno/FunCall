@@ -25,6 +25,7 @@ import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.common.media.MediaLogger
 import com.milk.funcall.common.media.engine.*
 import com.milk.funcall.common.media.loader.ImageLoader
+import com.milk.funcall.common.media.loader.VideoLoader
 import com.milk.funcall.common.permission.Permission
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.ui.manager.NoScrollGridLayoutManager
@@ -72,6 +73,14 @@ class EditProfileActivity : AbstractActivity() {
             editProfileViewModel.localImageListPath.clear()
             images.forEach { editProfileViewModel.localImageListPath.add(it) }
             imageAdapter.setNewData(editProfileViewModel.localImageListPath)
+        }
+        Account.userVideoFlow.asLiveData().observe(this) {
+            editProfileViewModel.localVideoPath = it
+            VideoLoader.Builder()
+                .target(binding.ivVideo)
+                .placeholder(R.drawable.common_default_media_image)
+                .request(editProfileViewModel.localVideoPath)
+                .build()
         }
         LiveEventBus.get<String>(KvKey.EDIT_PROFILE_DELETE_IMAGE).observe(this) {
             editProfileViewModel.localImageListPath.remove(it)
@@ -189,7 +198,12 @@ class EditProfileActivity : AbstractActivity() {
             .forResult(object : OnResultCallbackListener<LocalMedia> {
                 override fun onCancel() = Unit
                 override fun onResult(result: ArrayList<LocalMedia>?) {
-                    if (result != null) {
+                    if (result != null && result.size > 0) {
+                        VideoLoader.Builder()
+                            .target(binding.ivVideo)
+                            .placeholder(R.drawable.common_default_media_image)
+                            .request(result[0].availablePath)
+                            .build()
                         MediaLogger
                             .analyticalSelectResults(this@EditProfileActivity, result)
                     }

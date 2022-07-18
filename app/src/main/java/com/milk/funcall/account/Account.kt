@@ -149,6 +149,18 @@ object Account {
             return field
         }
 
+    /** 当前用户图片集合存储 */
+    internal val userVideoFlow = MutableStateFlow("")
+    internal var userVideo: String = ""
+        set(value) {
+            KvManger.put(KvKey.ACCOUNT_USER_VIDEO, value)
+            field = value
+        }
+        get() {
+            field = KvManger.getString(KvKey.ACCOUNT_USER_VIDEO)
+            return field
+        }
+
     /** - [本地数据不需要和服务器同步] 当前用户是否观看过他人个人资料页面图片 */
     internal val userViewOtherFlow = MutableStateFlow(false)
     internal var userViewOther: Boolean = false
@@ -175,6 +187,7 @@ object Account {
                 userLinkFlow.emit(userLink)
                 userViewOtherFlow.emit(userViewOther)
                 userImageListFlow.emit(userImageList)
+                userVideoFlow.emit(userVideo)
             }
         } else userGender = Gender.Man.value
     }
@@ -202,6 +215,8 @@ object Account {
             userFollowsFlow.emit(0)
             userImageList = mutableListOf()
             userImageListFlow.emit(mutableListOf())
+            userVideo = ""
+            userVideoFlow.emit("")
         }
     }
 
@@ -232,6 +247,9 @@ object Account {
             val imageList = imageListConvert(info.userImageList)
             userImageList = imageList
             userImageListFlow.emit(imageList)
+            val videoUrl = videoUrlConvert(info.userVideoList)
+            userVideo = videoUrl
+            userVideoFlow.emit(videoUrl)
         }
     }
 
@@ -240,5 +258,10 @@ object Account {
         val imageList = mutableListOf<String>()
         mediaList.forEach { imageList.add(it.thumbUrl) }
         return imageList
+    }
+
+    /** 当前用户视频信息、只保存大图图片地址 */
+    private fun videoUrlConvert(mediaList: MutableList<UserMediaModel>): String {
+        return if (mediaList.size > 0) mediaList[0].thumbUrl else ""
     }
 }

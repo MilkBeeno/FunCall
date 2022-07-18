@@ -34,6 +34,9 @@ object KvKey {
     /** 当前用户图片集合存储 */
     const val ACCOUNT_USER_IMAGE_LIST = "ACCOUNT_USER_IMAGE_LIST"
 
+    /** 当前用户视频存储 */
+    const val ACCOUNT_USER_VIDEO= "ACCOUNT_USER_VIDEO"
+
     /** 当前用户图片集合长度 */
     const val ACCOUNT_USER_IMAGE_LIST_SIZE = "ACCOUNT_USER_IMAGE_LIST_SIZE"
 
