@@ -40,14 +40,16 @@ class EditProfileViewModel : ViewModel() {
 
     /** 更新头像信息 */
     private suspend fun uploadAvatarProfile(): String {
-        return if (localAvatarPath.isNotBlank()) {
+        val avatar = Account.userAvatar
+        return if (localAvatarPath.isNotBlank() && localAvatarPath != avatar) {
             val apiResponse =
                 mediaUploadRepository.uploadPicture(localAvatarPath)
             val apiResult = apiResponse.data
             if (apiResponse.success && !apiResult.isNullOrEmpty()) {
+                localAvatarPath = apiResult
                 apiResult
-            } else Account.userAvatar
-        } else Account.userAvatar
+            } else avatar
+        } else avatar
     }
 
     /** 更新照片信息 */
