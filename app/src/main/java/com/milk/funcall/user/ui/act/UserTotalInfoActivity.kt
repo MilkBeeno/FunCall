@@ -15,6 +15,7 @@ import com.milk.funcall.R
 import com.milk.funcall.chat.ui.act.ChatMessageActivity
 import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.common.media.loader.ImageLoader
+import com.milk.funcall.common.media.loader.VideoLoader
 import com.milk.funcall.common.paging.SimpleGridDecoration
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.ui.manager.NoScrollGridLayoutManager
@@ -49,6 +50,7 @@ class UserTotalInfoActivity : AbstractActivity() {
         binding.ivUserNext.setOnClickListener(this)
         binding.basic.llMessage.setOnClickListener(this)
         binding.basic.llFollow.setOnClickListener(this)
+        binding.flVideo.setOnClickListener(this)
     }
 
     private fun initializeObserver() {
@@ -129,6 +131,10 @@ class UserTotalInfoActivity : AbstractActivity() {
         if (userVideoUrl.isNotEmpty()) {
             binding.tvVideo.visible()
             binding.flVideo.visible()
+            VideoLoader.Builder()
+                .request(userVideoUrl)
+                .target(binding.ivVideo)
+                .build()
         }
         // 设置 Image 信息
         val userImageList = userInfo.imageListConvert()
@@ -176,6 +182,17 @@ class UserTotalInfoActivity : AbstractActivity() {
             binding.ivUserNext -> {
                 create(this)
                 finish()
+            }
+            binding.flVideo -> {
+                userTotalInfoViewModel.userTotalInfoFlow.value?.let {
+                    VideoMediaActivity.create(
+                        context = this,
+                        videoUrl = it.videoConvert(),
+                        targetId = it.userId,
+                        targetName = it.userName,
+                        isBlacked = it.isBlacked
+                    )
+                }
             }
             binding.basic.llMessage -> {
                 userTotalInfoViewModel.userTotalInfoFlow.value?.let {

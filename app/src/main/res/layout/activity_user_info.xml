@@ -106,7 +106,21 @@
                     android:layout_marginTop="11dp"
                     android:layout_marginEnd="14dp"
                     android:visibility="gone"
-                    tools:visibility="visible" />
+                    tools:visibility="visible">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/ivVideo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:shapeAppearanceOverlay="@style/roundCornerStyle_10" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="51dp"
+                        android:layout_height="51dp"
+                        android:layout_gravity="center"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/common_video_media_medium" />
+                </FrameLayout>
 
                 <TextView
                     android:id="@+id/tvImage"
