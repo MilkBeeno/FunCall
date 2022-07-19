@@ -32,6 +32,7 @@ class MainActivity : AbstractActivity() {
     private val mineFragment = MineFragment.create()
     private lateinit var serviceIntent: Intent
     private lateinit var connection: ServiceConnection
+    private val timer by lazy { Timer() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,7 +85,7 @@ class MainActivity : AbstractActivity() {
                         )
                     }
                 }
-                Timer().schedule(timerTask, 0, 10000)
+                timer.schedule(timerTask, 0, 10000)
             }
 
             override fun onServiceDisconnected(p0: ComponentName?) {
@@ -134,6 +135,7 @@ class MainActivity : AbstractActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        timer.cancel()
         unbindService(connection)
     }
 
