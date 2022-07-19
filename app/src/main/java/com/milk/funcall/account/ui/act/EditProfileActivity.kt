@@ -71,7 +71,6 @@ class EditProfileActivity : AbstractActivity() {
     }
 
     private fun updateAvatar(avatar: String) {
-        editProfileViewModel.localAvatarPath = avatar
         if (avatar.isNotBlank()) {
             ImageLoader.Builder()
                 .loadAvatar(avatar)
@@ -198,7 +197,8 @@ class EditProfileActivity : AbstractActivity() {
                 override fun onCancel() = Unit
                 override fun onResult(result: ArrayList<LocalMedia>?) {
                     if (result != null && result.size > 0) {
-                        updateAvatar(result[0].availablePath)
+                        editProfileViewModel.localAvatarPath = result[0].availablePath
+                        updateAvatar(editProfileViewModel.localAvatarPath)
                         MediaLogger
                             .analyticalSelectResults(this@EditProfileActivity, result)
                     }
