@@ -62,7 +62,7 @@ android {
 
 dependencies {
     // 自定义组件库
-    implementation 'com.github.MilkBeeno:Library:1.2.1'
+    implementation 'com.github.MilkBeeno:Library:1.2.2'
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -79,10 +79,7 @@ dependencies {
     implementation "androidx.room:room-ktx:2.4.2"
     annotationProcessor "androidx.room:room-compiler:2.4.2"
     kapt "androidx.room:room-compiler:2.4.2"
-    // activity & fragment viewModel 初始化扩展包
-    implementation "androidx.activity:activity-ktx:1.6.0-alpha05"
-    implementation "androidx.fragment:fragment-ktx:1.5.0"
-    // Lottie 动画
+    // lottie 动画
     implementation "com.airbnb.android:lottie:5.2.0"
     // facebook 登录
     implementation "com.facebook.android:facebook-android-sdk:14.0.0"
@@ -100,7 +97,7 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
     implementation "com.google.code.gson:gson:2.8.8"
-    // Google 广告 ID 生成
+    // google 广告 ID 生成
     implementation 'androidx.ads:ads-identifier:1.0.0-alpha04'
     implementation 'com.google.guava:guava:28.0-android'
     // image 高斯模糊库
@@ -113,7 +110,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:20.2.0'
     // 滑动指示器库
     implementation 'me.relex:circleindicator:2.1.6'
-    // Glide 图片加载
+    // glide 图片加载
     implementation 'com.github.bumptech.glide:glide:4.13.2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
     // 图片选择库

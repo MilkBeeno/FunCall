@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
@@ -18,6 +17,7 @@ import com.milk.funcall.databinding.ActivityImageMediaBinding
 import com.milk.funcall.user.ui.adapter.ImageMediaAdapter
 import com.milk.funcall.user.ui.dialog.ImageMediaGuideDialog
 import com.milk.simple.ktx.*
+import kotlinx.coroutines.flow.collectLatest
 
 class ImageMediaActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityImageMediaBinding>()
@@ -61,13 +61,15 @@ class ImageMediaActivity : AbstractActivity() {
     }
 
     private fun initializeObserver() {
-        Account.userViewOtherFlow.asLiveData().observe(this) {
-            if (!it) {
-                guideDialog.show()
-                guideDialog.setOnDismissListener {
-                    ioScope {
-                        Account.userViewOther = true
-                        Account.userViewOtherFlow.emit(true)
+        launch {
+            Account.userViewOtherFlow.collectLatest {
+                if (!it) {
+                    guideDialog.show()
+                    guideDialog.setOnDismissListener {
+                        ioScope {
+                            Account.userViewOther = true
+                            Account.userViewOtherFlow.emit(true)
+                        }
                     }
                 }
             }

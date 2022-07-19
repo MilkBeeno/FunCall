@@ -8,7 +8,6 @@ import android.text.InputFilter
 import android.view.KeyEvent
 import android.view.View
 import androidx.activity.viewModels
-import androidx.lifecycle.asLiveData
 import com.luck.picture.lib.basic.PictureSelector
 import com.luck.picture.lib.config.SelectMimeType
 import com.luck.picture.lib.config.SelectModeConfig
@@ -33,6 +32,7 @@ import com.milk.funcall.user.ui.config.AvatarImage
 import com.milk.funcall.user.ui.config.GenderImage
 import com.milk.simple.keyboard.KeyBoardUtil
 import com.milk.simple.ktx.*
+import kotlinx.coroutines.flow.collectLatest
 
 class PresetProfileActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityPresetProfileBinding>()
@@ -66,27 +66,35 @@ class PresetProfileActivity : AbstractActivity() {
     }
 
     private fun initializeObserver() {
-        presetProfileViewModel.avatar.asLiveData().observe(this) {
-            if (it.isNotBlank()) ImageLoader.Builder()
-                .loadAvatar(it)
-                .target(binding.ivUserAvatar)
-                .build()
+        launch {
+            presetProfileViewModel.avatar.collectLatest {
+                if (it.isNotBlank()) ImageLoader.Builder()
+                    .loadAvatar(it)
+                    .target(binding.ivUserAvatar)
+                    .build()
+            }
         }
-        presetProfileViewModel.name.asLiveData().observe(this) {
-            if (it.isNotBlank()) binding.etUserName.setText(it)
+        launch {
+            presetProfileViewModel.name.collectLatest {
+                if (it.isNotBlank()) binding.etUserName.setText(it)
+            }
         }
-        presetProfileViewModel.uploadImage.asLiveData().observe(this) {
-            if (it) {
-                val name = binding.etUserName.text.toString()
-                presetProfileViewModel.presetProfile(name)
-            } else showToast(string(R.string.preset_profile_picture_upload_failed))
+        launch {
+            presetProfileViewModel.uploadImage.collectLatest {
+                if (it) {
+                    val name = binding.etUserName.text.toString()
+                    presetProfileViewModel.presetProfile(name)
+                } else showToast(string(R.string.preset_profile_picture_upload_failed))
+            }
         }
-        presetProfileViewModel.presetProfile.asLiveData().observe(this) {
-            uploadDialog.dismiss()
-            if (it) {
-                MainActivity.create(this)
-                finish()
-            } else showToast(string(R.string.preset_profile_profile_update_failed))
+        launch {
+            presetProfileViewModel.presetProfile.collectLatest {
+                uploadDialog.dismiss()
+                if (it) {
+                    MainActivity.create(this)
+                    finish()
+                } else showToast(string(R.string.preset_profile_profile_update_failed))
+            }
         }
     }
 

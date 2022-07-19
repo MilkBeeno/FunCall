@@ -10,7 +10,6 @@ import android.util.TypedValue
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.widget.LinearLayoutCompat
-import androidx.lifecycle.asLiveData
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
 import com.milk.funcall.chat.ui.act.ChatMessageActivity
@@ -25,6 +24,7 @@ import com.milk.funcall.user.data.UserTotalInfoModel
 import com.milk.funcall.user.ui.adapter.UserImageAdapter
 import com.milk.funcall.user.ui.vm.UserTotalInfoViewModel
 import com.milk.simple.ktx.*
+import kotlinx.coroutines.flow.collectLatest
 
 class UserTotalInfoActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityUserInfoBinding>()
@@ -52,29 +52,33 @@ class UserTotalInfoActivity : AbstractActivity() {
     }
 
     private fun initializeObserver() {
-        userTotalInfoViewModel.userTotalInfoFlow.asLiveData().observe(this) {
-            when {
-                it != null && it.userId > 0 -> {
-                    binding.lvLoading.gone()
-                    binding.llUserNext.visible()
-                    binding.basic.root.visible()
-                    binding.link.root.visible()
-                    binding.llMedia.visible()
-                    setUserBasic(it)
-                    setUserMedia(it)
-                    setUserFollow(it.isFollowed)
-                }
-                it == null -> {
-                    showToast(string(R.string.user_info_obtain_failed))
-                    finish()
+        launch {
+            userTotalInfoViewModel.userTotalInfoFlow.collectLatest {
+                when {
+                    it != null && it.userId > 0 -> {
+                        binding.lvLoading.gone()
+                        binding.llUserNext.visible()
+                        binding.basic.root.visible()
+                        binding.link.root.visible()
+                        binding.llMedia.visible()
+                        setUserBasic(it)
+                        setUserMedia(it)
+                        setUserFollow(it.isFollowed)
+                    }
+                    it == null -> {
+                        showToast(string(R.string.user_info_obtain_failed))
+                        finish()
+                    }
                 }
             }
         }
-        userTotalInfoViewModel.userFollowedChangeFlow.asLiveData().observe(this) {
-            loadingDialog.dismiss()
-            if (it != null) {
-                setUserFollow(it)
-                showToast(string(R.string.common_success))
+        launch {
+            userTotalInfoViewModel.userFollowedChangeFlow.collectLatest {
+                loadingDialog.dismiss()
+                if (it != null) {
+                    setUserFollow(it)
+                    showToast(string(R.string.common_success))
+                }
             }
         }
     }

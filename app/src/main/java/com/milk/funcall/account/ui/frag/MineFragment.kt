@@ -1,7 +1,6 @@
 package com.milk.funcall.account.ui.frag
 
 import android.view.View
-import androidx.lifecycle.asLiveData
 import com.milk.funcall.R
 import com.milk.funcall.account.Account
 import com.milk.funcall.account.ui.act.*
@@ -13,8 +12,10 @@ import com.milk.funcall.login.ui.act.GenderActivity
 import com.milk.funcall.login.ui.act.LoginActivity
 import com.milk.funcall.user.ui.config.AvatarImage
 import com.milk.simple.ktx.gone
+import com.milk.simple.ktx.launch
 import com.milk.simple.ktx.string
 import com.milk.simple.ktx.visible
+import kotlinx.coroutines.flow.collectLatest
 
 class MineFragment : AbstractFragment() {
     private val binding by lazy { FragmentMineBinding.inflate(layoutInflater) }
@@ -43,29 +44,41 @@ class MineFragment : AbstractFragment() {
     }
 
     override fun initializeObserver() {
-        Account.userLoggedFlow.asLiveData().observe(this) {
-            if (it) binding.flNotSigned.gone() else binding.flNotSigned.visible()
+        launch {
+            Account.userLoggedFlow.collectLatest {
+                if (it) binding.flNotSigned.gone() else binding.flNotSigned.visible()
+            }
         }
-        Account.userAvatarFlow.asLiveData().observe(this) {
-            if (it.isNotBlank()) {
-                ImageLoader.Builder()
-                    .loadAvatar(it)
-                    .target(binding.ivUserAvatar)
-                    .build()
-            } else binding.ivUserAvatar.setImageResource(defaultAvatar)
+        launch {
+            Account.userAvatarFlow.collectLatest {
+                if (it.isNotBlank()) {
+                    ImageLoader.Builder()
+                        .loadAvatar(it)
+                        .target(binding.ivUserAvatar)
+                        .build()
+                } else binding.ivUserAvatar.setImageResource(defaultAvatar)
+            }
         }
-        Account.userGenderFlow.asLiveData().observe(this) {
-            binding.ivUserGender.updateGender(it)
+        launch {
+            Account.userGenderFlow.collectLatest {
+                binding.ivUserGender.updateGender(it)
+            }
         }
-        Account.userNameFlow.asLiveData().observe(this) {
-            binding.tvUserName.text =
-                it.ifBlank { requireActivity().string(R.string.mine_default_user_name) }
+        launch {
+            Account.userNameFlow.collectLatest {
+                binding.tvUserName.text =
+                    it.ifBlank { requireActivity().string(R.string.mine_default_user_name) }
+            }
         }
-        Account.userFansFlow.asLiveData().observe(this) {
-            binding.tvFans.text = it.toString()
+        launch {
+            Account.userFansFlow.collectLatest {
+                binding.tvFans.text = it.toString()
+            }
         }
-        Account.userFollowsFlow.asLiveData().observe(this) {
-            binding.tvFollows.text = it.toString()
+        launch {
+            Account.userFollowsFlow.collectLatest {
+                binding.tvFollows.text = it.toString()
+            }
         }
     }
 

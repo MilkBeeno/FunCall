@@ -8,7 +8,6 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.activity.viewModels
 import androidx.core.widget.addTextChangedListener
-import androidx.lifecycle.asLiveData
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.luck.picture.lib.basic.PictureSelector
 import com.luck.picture.lib.config.SelectMimeType
@@ -36,6 +35,7 @@ import com.milk.funcall.user.ui.act.ImageMediaActivity
 import com.milk.funcall.user.ui.act.VideoMediaActivity
 import com.milk.funcall.user.ui.config.AvatarImage
 import com.milk.simple.ktx.*
+import kotlinx.coroutines.flow.collectLatest
 
 class EditProfileActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityEditProfileBinding>()
@@ -56,15 +56,17 @@ class EditProfileActivity : AbstractActivity() {
             .observe(this) { updateVideo("") }
         LiveEventBus.get<String>(KvKey.EDIT_PROFILE_DELETE_IMAGE)
             .observe(this) { updateImageList(removeImage = it) }
-        Account.userAvatarFlow.asLiveData().observe(this) { updateAvatar(it) }
-        Account.userNameFlow.asLiveData().observe(this) { binding.etName.setText(it) }
-        Account.userBioFlow.asLiveData().observe(this) { binding.etAboutMe.setText(it) }
-        Account.userLinkFlow.asLiveData().observe(this) { binding.etLink.setText(it) }
-        Account.userVideoFlow.asLiveData().observe(this) { updateVideo(it) }
-        Account.userImageListFlow.asLiveData().observe(this) { updateImageList(it) }
-        editProfileViewModel.uploadResult.asLiveData().observe(this) {
-            uploadDialog.dismiss()
-            if (it) showToast(string(R.string.edit_profile_success))
+        launch { Account.userAvatarFlow.collectLatest { updateAvatar(it) } }
+        launch { Account.userNameFlow.collectLatest { binding.etName.setText(it) } }
+        launch { Account.userBioFlow.collectLatest { binding.etAboutMe.setText(it) } }
+        launch { Account.userLinkFlow.collectLatest { binding.etLink.setText(it) } }
+        launch { Account.userVideoFlow.collectLatest { updateVideo(it) } }
+        launch { Account.userImageListFlow.collectLatest { updateImageList(it) } }
+        launch {
+            editProfileViewModel.uploadResult.collectLatest {
+                uploadDialog.dismiss()
+                if (it) showToast(string(R.string.edit_profile_success))
+            }
         }
     }
 
