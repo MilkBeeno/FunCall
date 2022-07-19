@@ -225,6 +225,7 @@ class EditProfileActivity : AbstractActivity() {
                 .isDirectReturnSingle(true)
                 .setVideoPlayerEngine(IjkPlayerEngine.current)
                 .setImageEngine(CoilVideoEngine.current)
+                .isFilterSizeDuration(true)
                 .setCompressEngine(ImageCompressEngine.current)
                 .setSandboxFileEngine(SandboxFileEngine.current)
                 .forResult(object : OnResultCallbackListener<LocalMedia> {

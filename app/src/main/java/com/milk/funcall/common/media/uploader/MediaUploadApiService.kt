@@ -10,7 +10,7 @@ interface MediaUploadApiService {
     /**
      *  上传单张图片功能
      * - [@Multipart] 这里用 Multipart,不添加的话会引起崩溃反应
-     * - [@Part] 参数注解类型为 List<MultipartBody.Part> 方便上传其它需要的参数或多张图片
+     * - [@Part] 参数注解类型为 List<MultipartBody.Part> 方便上传其它需要的参数
      */
     @Multipart
     @POST("/funcall/uploadCDNImg")
@@ -28,4 +28,15 @@ interface MediaUploadApiService {
     suspend fun uploadMultiplePicture(
         @Part partLis: List<MultipartBody.Part>
     ): ApiResponse<MutableList<String>>
+
+    /**
+     *  上传单个视频功能
+     * - [@Multipart] 这里用 Multipart,不添加的话会引起崩溃反应
+     * - [@Part] 参数注解类型为 List<MultipartBody.Part> 方便上传其它需要的参数
+     */
+    @Multipart
+    @POST("/funcall/uploadVideo")
+    suspend fun uploadSingleVideo(
+        @Part partLis: List<MultipartBody.Part>
+    ): ApiResponse<String>
 }

@@ -9,7 +9,7 @@ import java.io.File
 class MediaUploadRepository {
 
     /** 图片上传、单图上传 */
-    suspend fun uploadPicture(filePath: String) = retrofit {
+    suspend fun uploadSinglePicture(filePath: String) = retrofit {
         // 1.创建MultipartBody.Builder对象
         val builder = MultipartBody.Builder().setType(MultipartBody.FORM)
         // 2.获取图片，创建请求体
@@ -38,5 +38,15 @@ class MediaUploadRepository {
             parts.add(body)
         }
         ApiService.mediaUploadApiService.uploadMultiplePicture(parts)
+    }
+
+    /** 视频上传、单个上传 */
+    suspend fun uploadSingleVideo(filePath: String) = retrofit {
+        val builder = MultipartBody.Builder().setType(MultipartBody.FORM)
+        val file = File(filePath)
+        val body = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+        builder.addFormDataPart("file", file.name, body)
+        val parts = builder.build().parts
+        ApiService.mediaUploadApiService.uploadSingleVideo(parts)
     }
 }

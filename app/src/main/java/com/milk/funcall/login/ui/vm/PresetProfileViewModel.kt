@@ -31,7 +31,7 @@ class PresetProfileViewModel : ViewModel() {
 
     fun updateUserProfile(name: String) {
         if (localAvatarPath.isNotBlank()) ioScope {
-            val apiResponse = mediaUploadRepository.uploadPicture(localAvatarPath)
+            val apiResponse = mediaUploadRepository.uploadSinglePicture(localAvatarPath)
             uploadAvatarUrl = apiResponse.data.toString()
             uploadImage.emit(apiResponse.success)
         } else presetProfile(name)

@@ -20,16 +20,16 @@ class EditProfileViewModel : ViewModel() {
     /** 本地相册或拍照选择的个人图片 */
     val localImageListPath = mutableListOf<String>()
 
-    /** 当前用户更新信息的状态 */
+    /** 当前用户更新信息的状态、用户控制用户信息弹窗和请求结果提示 */
     var uploadResult = MutableSharedFlow<Boolean>()
 
     fun uploadProfile(name: String, bio: String, link: String) {
         ioScope {
             val avatarUrl = uploadAvatarProfile()
             val imageList = uploadImageListProfile()
-            var video = ""
+            val videoUrl = uploadVideoProfile()
             val apiResponse = editProfileRepository
-                .uploadProfile(avatarUrl, name, bio, link, video, imageList)
+                .uploadProfile(avatarUrl, name, bio, link, videoUrl, imageList)
             val apiResult = apiResponse.data
             if (apiResponse.success && apiResult != null) {
                 uploadResult.emit(true)
@@ -43,10 +43,23 @@ class EditProfileViewModel : ViewModel() {
         val avatar = Account.userAvatar
         return if (localAvatarPath.isNotBlank() && localAvatarPath != avatar) {
             val apiResponse =
-                mediaUploadRepository.uploadPicture(localAvatarPath)
+                mediaUploadRepository.uploadSinglePicture(localAvatarPath)
             val apiResult = apiResponse.data
             if (apiResponse.success && !apiResult.isNullOrEmpty()) {
                 localAvatarPath = apiResult
+                apiResult
+            } else avatar
+        } else avatar
+    }
+
+    private suspend fun uploadVideoProfile(): String {
+        val avatar = Account.userVideo
+        return if (localVideoPath.isNotBlank() && localVideoPath != avatar) {
+            val apiResponse =
+                mediaUploadRepository.uploadSingleVideo(localVideoPath)
+            val apiResult = apiResponse.data
+            if (apiResponse.success && !apiResult.isNullOrEmpty()) {
+                localVideoPath = apiResult
                 apiResult
             } else avatar
         } else avatar
