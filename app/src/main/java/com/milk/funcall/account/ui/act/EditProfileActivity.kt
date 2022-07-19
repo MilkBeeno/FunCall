@@ -33,6 +33,7 @@ import com.milk.funcall.common.ui.view.BanEnterInputFilter
 import com.milk.funcall.databinding.ActivityEditProfileBinding
 import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.user.ui.act.ImageMediaActivity
+import com.milk.funcall.user.ui.act.VideoMediaActivity
 import com.milk.funcall.user.ui.config.AvatarImage
 import com.milk.simple.ktx.*
 
@@ -51,45 +52,67 @@ class EditProfileActivity : AbstractActivity() {
     }
 
     private fun initializeObserver() {
-        Account.userAvatarFlow.asLiveData().observe(this) {
-            if (it.isNotBlank()) {
-                ImageLoader.Builder()
-                    .loadAvatar(it)
-                    .error(defaultAvatar)
-                    .target(binding.ivUserAvatar)
-                    .build()
-            } else binding.ivUserAvatar.setImageResource(defaultAvatar)
+        LiveEventBus.get<String>(KvKey.EDIT_PROFILE_DELETE_VIDEO)
+            .observe(this) { updateVideo("") }
+        LiveEventBus.get<String>(KvKey.EDIT_PROFILE_DELETE_IMAGE)
+            .observe(this) { updateImageList(removeImage = it) }
+        Account.userAvatarFlow.asLiveData().observe(this) { updateAvatar(it) }
+        Account.userNameFlow.asLiveData().observe(this) { binding.etName.setText(it) }
+        Account.userBioFlow.asLiveData().observe(this) { binding.etAboutMe.setText(it) }
+        Account.userLinkFlow.asLiveData().observe(this) { binding.etLink.setText(it) }
+        Account.userVideoFlow.asLiveData().observe(this) { updateVideo(it) }
+        Account.userImageListFlow.asLiveData().observe(this) { updateImageList(it) }
+        editProfileViewModel.uploadResult.asLiveData().observe(this) {
+            uploadDialog.dismiss()
+            if (it) showToast(string(R.string.edit_profile_success))
         }
-        Account.userNameFlow.asLiveData().observe(this) {
-            if (it.isNotBlank()) binding.etName.setText(it)
-        }
-        Account.userBioFlow.asLiveData().observe(this) {
-            if (it.isNotBlank()) binding.etAboutMe.setText(it)
-        }
-        Account.userLinkFlow.asLiveData().observe(this) {
-            if (it.isNotBlank()) binding.etLink.setText(it)
-        }
-        Account.userImageListFlow.asLiveData().observe(this) { images ->
-            editProfileViewModel.localImageListPath.clear()
-            images.forEach { editProfileViewModel.localImageListPath.add(it) }
-            imageAdapter.setNewData(editProfileViewModel.localImageListPath)
-        }
-        Account.userVideoFlow.asLiveData().observe(this) {
-            editProfileViewModel.localVideoPath = it
+    }
+
+    private fun updateAvatar(avatar: String) {
+        editProfileViewModel.localAvatarPath = avatar
+        if (avatar.isNotBlank()) {
+            ImageLoader.Builder()
+                .loadAvatar(avatar)
+                .error(defaultAvatar)
+                .target(binding.ivUserAvatar)
+                .build()
+        } else binding.ivUserAvatar.setImageResource(defaultAvatar)
+    }
+
+    private fun updateVideo(videoUrl: String) {
+        editProfileViewModel.localVideoPath = videoUrl
+        if (videoUrl.isNotBlank()) {
+            binding.ivVideoMask.visible()
             VideoLoader.Builder()
                 .target(binding.ivVideo)
                 .placeholder(R.drawable.common_default_media_image)
                 .request(editProfileViewModel.localVideoPath)
                 .build()
+        } else {
+            binding.ivVideoMask.gone()
+            binding.ivVideo.setImageResource(R.drawable.common_media_add)
         }
-        LiveEventBus.get<String>(KvKey.EDIT_PROFILE_DELETE_IMAGE).observe(this) {
-            editProfileViewModel.localImageListPath.remove(it)
-            imageAdapter.setNewData(editProfileViewModel.localImageListPath)
+    }
+
+    private fun updateImageList(
+        newImageList: MutableList<String> = arrayListOf(),
+        appendImageList: MutableList<LocalMedia> = arrayListOf(),
+        removeImage: String = "",
+    ) {
+        when {
+            newImageList.isNotEmpty() -> {
+                editProfileViewModel.localImageListPath.clear()
+                newImageList.forEach { editProfileViewModel.localImageListPath.add(it) }
+            }
+            appendImageList.isNotEmpty() -> {
+                appendImageList
+                    .forEach { editProfileViewModel.localImageListPath.add(it.availablePath) }
+            }
+            removeImage.isNotBlank() -> {
+                editProfileViewModel.localImageListPath.remove(removeImage)
+            }
         }
-        editProfileViewModel.uploadResult.asLiveData().observe(this) {
-            uploadDialog.dismiss()
-            if (it) showToast(string(R.string.edit_profile_success))
-        }
+        imageAdapter.setNewData(editProfileViewModel.localImageListPath)
     }
 
     private fun initializeView() {
@@ -172,12 +195,8 @@ class EditProfileActivity : AbstractActivity() {
             .forResult(object : OnResultCallbackListener<LocalMedia> {
                 override fun onCancel() = Unit
                 override fun onResult(result: ArrayList<LocalMedia>?) {
-                    if (result != null) {
-                        editProfileViewModel.localAvatarPath = result[0].availablePath
-                        ImageLoader.Builder()
-                            .request(result[0].availablePath)
-                            .target(binding.ivUserAvatar)
-                            .build()
+                    if (result != null && result.size > 0) {
+                        updateAvatar(result[0].availablePath)
                         MediaLogger
                             .analyticalSelectResults(this@EditProfileActivity, result)
                     }
@@ -185,30 +204,30 @@ class EditProfileActivity : AbstractActivity() {
             })
     }
 
+    /** 选择视频资源 */
     private fun toSelectVideo() {
-        PictureSelector.create(this)
-            .openGallery(SelectMimeType.ofVideo())
-            .setLanguage(LanguageConfig.ENGLISH)
-            .setSelectionMode(SelectModeConfig.SINGLE)
-            .isDirectReturnSingle(true)
-            .setVideoPlayerEngine(IjkPlayerEngine.current)
-            .setImageEngine(CoilVideoEngine.current)
-            .setCompressEngine(ImageCompressEngine.current)
-            .setSandboxFileEngine(SandboxFileEngine.current)
-            .forResult(object : OnResultCallbackListener<LocalMedia> {
-                override fun onCancel() = Unit
-                override fun onResult(result: ArrayList<LocalMedia>?) {
-                    if (result != null && result.size > 0) {
-                        VideoLoader.Builder()
-                            .target(binding.ivVideo)
-                            .placeholder(R.drawable.common_default_media_image)
-                            .request(result[0].availablePath)
-                            .build()
-                        MediaLogger
-                            .analyticalSelectResults(this@EditProfileActivity, result)
+        if (editProfileViewModel.localVideoPath.isBlank()) {
+            PictureSelector.create(this)
+                .openGallery(SelectMimeType.ofVideo())
+                .setLanguage(LanguageConfig.ENGLISH)
+                .setSelectionMode(SelectModeConfig.SINGLE)
+                .isCameraRotateImage(true)
+                .isDirectReturnSingle(true)
+                .setVideoPlayerEngine(IjkPlayerEngine.current)
+                .setImageEngine(CoilVideoEngine.current)
+                .setCompressEngine(ImageCompressEngine.current)
+                .setSandboxFileEngine(SandboxFileEngine.current)
+                .forResult(object : OnResultCallbackListener<LocalMedia> {
+                    override fun onCancel() = Unit
+                    override fun onResult(result: ArrayList<LocalMedia>?) {
+                        if (result != null && result.size > 0) {
+                            updateVideo(result[0].availablePath)
+                            MediaLogger
+                                .analyticalSelectResults(this@EditProfileActivity, result)
+                        }
                     }
-                }
-            })
+                })
+        } else VideoMediaActivity.create(this, editProfileViewModel.localVideoPath)
     }
 
     /** 最多可以选择六张图片 */
@@ -226,12 +245,8 @@ class EditProfileActivity : AbstractActivity() {
             .forResult(object : OnResultCallbackListener<LocalMedia> {
                 override fun onCancel() = Unit
                 override fun onResult(result: ArrayList<LocalMedia>?) {
-                    if (result != null) {
-                        result.forEach {
-                            editProfileViewModel
-                                .localImageListPath.add(it.availablePath)
-                        }
-                        imageAdapter.setNewData(editProfileViewModel.localImageListPath)
+                    if (result != null && result.size > 0) {
+                        updateImageList(appendImageList = result)
                         MediaLogger
                             .analyticalSelectResults(this@EditProfileActivity, result)
                     }

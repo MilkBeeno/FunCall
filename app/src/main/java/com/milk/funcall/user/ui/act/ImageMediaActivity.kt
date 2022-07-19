@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
 import com.milk.funcall.account.Account
-import com.milk.funcall.account.ui.dialog.DeleteImageDialog
+import com.milk.funcall.account.ui.dialog.DeleteMediaDialog
 import com.milk.funcall.chat.ui.act.ChatMessageActivity
 import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.common.ui.AbstractActivity
@@ -28,7 +28,7 @@ class ImageMediaActivity : AbstractActivity() {
     private val imageMediaAdapter by lazy { ImageMediaAdapter() }
     private val pagerSnapHelper by lazy { PagerSnapHelper() }
     private val layoutManager by lazy { HorizontalLinearLayoutManager(this) }
-    private val deleteDialog by lazy { DeleteImageDialog(this) }
+    private val deleteDialog by lazy { DeleteMediaDialog(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

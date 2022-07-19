@@ -158,8 +158,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/common_media_add"
-                    app:shapeAppearanceOverlay="@style/roundCornerStyle_10" />
+                    app:shapeAppearanceOverlay="@style/roundCornerStyle_10"
+                    tools:src="@drawable/common_media_add" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivVideoMask"
@@ -167,7 +167,9 @@
                     android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/common_video_media" />
+                    android:src="@drawable/common_video_media"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
             </FrameLayout>
 

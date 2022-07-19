@@ -8,7 +8,7 @@ import com.milk.funcall.common.ui.dialog.SimpleDialog
 import com.milk.funcall.databinding.DialogDoubleConfirmBinding
 import com.milk.simple.ktx.string
 
-class DeleteImageDialog(activity: FragmentActivity) :
+class DeleteMediaDialog(activity: FragmentActivity) :
     SimpleDialog<DialogDoubleConfirmBinding>(activity) {
     private var clickRequest: (() -> Unit)? = null
 

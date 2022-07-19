@@ -35,7 +35,7 @@ object KvKey {
     const val ACCOUNT_USER_IMAGE_LIST = "ACCOUNT_USER_IMAGE_LIST"
 
     /** 当前用户视频存储 */
-    const val ACCOUNT_USER_VIDEO= "ACCOUNT_USER_VIDEO"
+    const val ACCOUNT_USER_VIDEO = "ACCOUNT_USER_VIDEO"
 
     /** 当前用户图片集合长度 */
     const val ACCOUNT_USER_IMAGE_LIST_SIZE = "ACCOUNT_USER_IMAGE_LIST_SIZE"
@@ -48,4 +48,7 @@ object KvKey {
 
     /** 更新个人资料时、删除一张预览图片 */
     const val EDIT_PROFILE_DELETE_IMAGE = "EDIT_PROFILE_DELETE_IMAGE"
+
+    /** 更新个人资料时、删除一个视频 */
+    const val EDIT_PROFILE_DELETE_VIDEO = "EDIT_PROFILE_DELETE_VIDEO"
 }
