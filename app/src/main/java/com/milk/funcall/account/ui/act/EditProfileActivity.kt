@@ -70,35 +70,42 @@ class EditProfileActivity : AbstractActivity() {
         }
     }
 
-    private fun updateAvatar(avatar: String) {
-        if (avatar.isNotBlank()) {
-            ImageLoader.Builder()
-                .loadAvatar(avatar)
-                .error(defaultAvatar)
-                .target(binding.ivUserAvatar)
-                .build()
-        } else binding.ivUserAvatar.setImageResource(defaultAvatar)
+    private fun updateAvatar(avatar: String, localUpdate: Boolean = false) {
+        when {
+            avatar.isBlank() ->
+                binding.ivUserAvatar.setImageResource(defaultAvatar)
+            localUpdate ||
+                    editProfileViewModel.localAvatarPath.isBlank() -> {
+                ImageLoader.Builder()
+                    .loadAvatar(avatar)
+                    .target(binding.ivUserAvatar)
+                    .build()
+            }
+        }
     }
 
-    private fun updateVideo(videoUrl: String) {
-        editProfileViewModel.localVideoPath = videoUrl
-        if (videoUrl.isNotBlank()) {
-            binding.ivVideoMask.visible()
-            VideoLoader.Builder()
-                .target(binding.ivVideo)
-                .placeholder(R.drawable.common_default_media_image)
-                .request(editProfileViewModel.localVideoPath)
-                .build()
-        } else {
-            binding.ivVideoMask.gone()
-            binding.ivVideo.setImageResource(R.drawable.common_media_add)
+    private fun updateVideo(videoUrl: String, localUpdate: Boolean = false) {
+        when {
+            videoUrl.isBlank() -> {
+                binding.ivVideoMask.gone()
+                binding.ivVideo.setImageResource(R.drawable.common_media_add)
+            }
+            localUpdate ||
+                    editProfileViewModel.localVideoPath.isBlank() -> {
+                binding.ivVideoMask.visible()
+                VideoLoader.Builder()
+                    .target(binding.ivVideo)
+                    .placeholder(R.drawable.common_default_media_image)
+                    .request(editProfileViewModel.localVideoPath)
+                    .build()
+            }
         }
     }
 
     private fun updateImageList(
         newImageList: MutableList<String> = arrayListOf(),
         appendImageList: MutableList<LocalMedia> = arrayListOf(),
-        removeImage: String = "",
+        removeImage: String = ""
     ) {
         when {
             newImageList.isNotEmpty() -> {
@@ -197,8 +204,9 @@ class EditProfileActivity : AbstractActivity() {
                 override fun onCancel() = Unit
                 override fun onResult(result: ArrayList<LocalMedia>?) {
                     if (result != null && result.size > 0) {
-                        editProfileViewModel.localAvatarPath = result[0].availablePath
-                        updateAvatar(editProfileViewModel.localAvatarPath)
+                        val avatarPath = result[0].availablePath
+                        editProfileViewModel.localAvatarPath = avatarPath
+                        updateAvatar(avatarPath, true)
                         MediaLogger
                             .analyticalSelectResults(this@EditProfileActivity, result)
                     }
@@ -223,7 +231,9 @@ class EditProfileActivity : AbstractActivity() {
                     override fun onCancel() = Unit
                     override fun onResult(result: ArrayList<LocalMedia>?) {
                         if (result != null && result.size > 0) {
-                            updateVideo(result[0].availablePath)
+                            val videoPath = result[0].availablePath
+                            editProfileViewModel.localVideoPath = videoPath
+                            updateVideo(videoPath, true)
                             MediaLogger
                                 .analyticalSelectResults(this@EditProfileActivity, result)
                         }

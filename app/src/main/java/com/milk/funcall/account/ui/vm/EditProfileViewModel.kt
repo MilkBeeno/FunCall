@@ -25,9 +25,8 @@ class EditProfileViewModel : ViewModel() {
 
     fun uploadProfile(name: String, bio: String, link: String) {
         ioScope {
-            val mediaProfile = uploadMediaProfile()
-            val avatarUrl = mediaProfile.first
-            val imageList = mediaProfile.second
+            val avatarUrl = uploadAvatarProfile()
+            val imageList = uploadImageListProfile()
             var video = ""
             val apiResponse = editProfileRepository
                 .uploadProfile(avatarUrl, name, bio, link, video, imageList)
@@ -39,16 +38,23 @@ class EditProfileViewModel : ViewModel() {
         }
     }
 
-    private suspend fun uploadMediaProfile(): Pair<String, ArrayList<String>> {
-        var avatarUrl = Account.userAvatar
-        val imageList = arrayListOf<String>()
-        // 已经上传过且没有删除图片集合
+    /** 更新头像信息 */
+    private suspend fun uploadAvatarProfile(): String {
+        return if (localAvatarPath.isNotBlank()) {
+            val apiResponse =
+                mediaUploadRepository.uploadPicture(localAvatarPath)
+            val apiResult = apiResponse.data
+            if (apiResponse.success && !apiResult.isNullOrEmpty()) {
+                apiResult
+            } else Account.userAvatar
+        } else Account.userAvatar
+    }
+
+    /** 更新照片信息 */
+    private suspend fun uploadImageListProfile(): ArrayList<String> {
+        val resultImageList = arrayListOf<String>()
         val alreadyExistsImage = mutableListOf<String>()
-        // 将要上传到服务器中图片的集合
         val uploadImageList = mutableListOf<String>()
-        // 用户头像选择不为空、添加到上传集合中
-        if (localAvatarPath.isNotBlank())
-            uploadImageList.add(localAvatarPath)
         // 遍历当前选择图片并把要上传的图片添加到集合中
         localImageListPath.forEach { cache ->
             if (Account.userImageList.contains(cache))
@@ -56,21 +62,15 @@ class EditProfileViewModel : ViewModel() {
             else
                 uploadImageList.add(cache)
         }
+        resultImageList.addAll(alreadyExistsImage)
         if (uploadImageList.isNotEmpty()) {
             val apiResponse =
                 mediaUploadRepository.uploadMultiplePicture(uploadImageList)
             val apiResult = apiResponse.data
             if (apiResponse.success && apiResult != null) {
-                apiResult.forEachIndexed { index, value ->
-                    // 已经上传头像、将返回的头像地址第一个元素赋值给头像
-                    if (localAvatarPath.isNotBlank() && index == 0)
-                        avatarUrl = value
-                    else
-                        imageList.add(value)
-                }
-                imageList.addAll(alreadyExistsImage)
+                apiResult.forEach { resultImageList.add(it) }
             }
         }
-        return Pair(avatarUrl, imageList)
+        return resultImageList
     }
 }
