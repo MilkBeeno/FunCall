@@ -48,6 +48,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FunCall"
         tools:ignore="UnusedAttribute">
+        <service android:name=".app.MainService" />
         <!-- 屏幕适配方案 -->
         <meta-data
             android:name="design_width_in_dp"
