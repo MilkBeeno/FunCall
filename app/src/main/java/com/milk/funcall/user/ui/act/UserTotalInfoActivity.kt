@@ -125,32 +125,33 @@ class UserTotalInfoActivity : AbstractActivity() {
 
     private fun setUserMedia(userInfo: UserTotalInfoModel) {
         // 设置 Video 信息
-        if (userInfo.userVideoList.isNotEmpty()) {
+        val userVideoUrl = userInfo.videoConvert()
+        if (userVideoUrl.isNotEmpty()) {
             binding.tvVideo.visible()
             binding.flVideo.visible()
         }
         // 设置 Image 信息
-        if (userInfo.userImageList.isNotEmpty()) {
+        val userImageList = userInfo.imageListConvert()
+        if (userImageList.isNotEmpty()) {
             binding.tvImage.visible()
             binding.rvImage.visible()
             binding.rvImage.layoutManager = NoScrollGridLayoutManager(this, 2)
             binding.rvImage.addItemDecoration(SimpleGridDecoration(this))
-            binding.rvImage.adapter = UserImageAdapter(userInfo.userImageList) { position ->
+            binding.rvImage.adapter = UserImageAdapter(userImageList) { position ->
                 ImageMediaActivity.create(
                     context = this,
                     targetId = userInfo.userId,
                     targetName = userInfo.userName,
                     isBlacked = userInfo.isBlacked
                 )
-                val userImageList = mutableListOf<String>()
-                userInfo.userImageList.forEach { userImageList.add(it.thumbUrl) }
                 LiveEventBus
                     .get<Pair<Int, MutableList<String>>>(KvKey.DISPLAY_IMAGE_MEDIA_LIST)
                     .post(Pair(position, userImageList))
             }
         }
-        if (userInfo.userVideoList.isEmpty() && userInfo.userImageList.isEmpty())
+        if (userVideoUrl.isEmpty() && userImageList.isEmpty()) {
             binding.ivMediaEmpty.visible()
+        }
     }
 
     private fun loadUserInfo() {

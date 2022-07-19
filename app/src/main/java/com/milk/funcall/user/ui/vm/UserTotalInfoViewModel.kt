@@ -20,10 +20,10 @@ class UserTotalInfoViewModel : ViewModel() {
             else
                 userTotalInfoRepository.getNextUserTotalInfo()
             val apiResult = apiResponse.data
-            if (apiResponse.success && apiResult != null) {
-                apiResult.mediaConvert()
+            if (apiResponse.success && apiResult != null)
                 userTotalInfoFlow.emit(apiResult)
-            } else userTotalInfoFlow.emit(null)
+            else
+                userTotalInfoFlow.emit(null)
         }
     }
 

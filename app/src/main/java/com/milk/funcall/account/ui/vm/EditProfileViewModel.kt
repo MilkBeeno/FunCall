@@ -14,11 +14,11 @@ class EditProfileViewModel : ViewModel() {
     /** 本地相册或拍照选择的头像 */
     var localAvatarPath: String = ""
 
-    /** 本地相册或拍照选择的个人图片 */
-    val localImageListPath = mutableListOf<String>()
-
     /** 本地相册或录像选择的个人视频 */
     var localVideoPath = ""
+
+    /** 本地相册或拍照选择的个人图片 */
+    val localImageListPath = mutableListOf<String>()
 
     /** 当前用户更新信息的状态 */
     var uploadResult = MutableSharedFlow<Boolean>()
@@ -34,7 +34,6 @@ class EditProfileViewModel : ViewModel() {
             val apiResult = apiResponse.data
             if (apiResponse.success && apiResult != null) {
                 uploadResult.emit(true)
-                apiResult.mediaConvert()
                 Account.saveAccountInfo(apiResult)
             } else uploadResult.emit(false)
         }

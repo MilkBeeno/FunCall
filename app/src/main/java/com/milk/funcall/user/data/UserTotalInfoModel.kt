@@ -2,7 +2,6 @@ package com.milk.funcall.user.data
 
 import com.google.gson.annotations.SerializedName
 import com.milk.funcall.common.mdr.table.UserInfoEntity
-import com.milk.funcall.user.type.Material
 import java.io.Serializable
 
 data class UserTotalInfoModel(
@@ -30,17 +29,22 @@ data class UserTotalInfoModel(
     val userBio: String = "",
     @SerializedName("sortInfo")
     val userSortInfo: UserSortModel? = null,
-    val userMaterialList: MutableList<UserMediaModel>? = null,
-    // 本地数据转换、将统一媒体数据分为 视频数据 和 图片数据
-    var userImageList: MutableList<UserMediaModel> = mutableListOf(),
-    var userVideoList: MutableList<UserMediaModel> = mutableListOf(),
+    // 用户的视频地址
+    @SerializedName("videoMaterial")
+    val userVideoUrl: UserMediaModel? = null,
+    // 用户照片地址
+    @SerializedName("imageMaterialList")
+    var userImageList: MutableList<UserMediaModel>? = null
 ) : UserInfoEntity(), Serializable {
-    fun mediaConvert() {
-        userVideoList.clear()
-        userImageList.clear()
-        userMaterialList?.forEach {
-            val isVideo = it.materialType == Material.Video.value
-            if (isVideo) userVideoList.add(it) else userImageList.add(it)
-        }
+
+    fun imageListConvert(): MutableList<String> {
+        val imageUrlList = mutableListOf<String>()
+        userImageList?.forEach { imageUrlList.add(it.thumbUrl) }
+        return imageUrlList
+    }
+
+    fun videoConvert(): String {
+        return if (userVideoUrl == null || userVideoUrl.toString() == "null") ""
+        else userVideoUrl.toString()
     }
 }

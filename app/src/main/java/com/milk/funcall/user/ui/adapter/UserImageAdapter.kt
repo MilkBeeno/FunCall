@@ -7,10 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.imageview.ShapeableImageView
 import com.milk.funcall.R
 import com.milk.funcall.common.media.loader.ImageLoader
-import com.milk.funcall.user.data.UserMediaModel
 
 class UserImageAdapter(
-    private val imageList: MutableList<UserMediaModel>,
+    private val imageList: MutableList<String>,
     private val clickRequest: (Int) -> Unit = {}
 ) : RecyclerView.Adapter<UserImageAdapter.ImagesViewHolder>() {
 
@@ -24,7 +23,7 @@ class UserImageAdapter(
         val targetView =
             holder.itemView.findViewById<ShapeableImageView>(R.id.ivUserImage)
         ImageLoader.Builder()
-            .request(imageList[position].url)
+            .request(imageList[position])
             .target(targetView)
             .placeholder(R.drawable.common_list_default_medium)
             .build()

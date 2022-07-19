@@ -1,7 +1,6 @@
 package com.milk.funcall.account
 
 import com.milk.funcall.common.constrant.KvKey
-import com.milk.funcall.user.data.UserMediaModel
 import com.milk.funcall.user.data.UserTotalInfoModel
 import com.milk.funcall.user.type.Gender
 import com.milk.simple.ktx.ioScope
@@ -244,24 +243,12 @@ object Account {
             userBioFlow.emit(info.userBio)
             userLink = info.userLink
             userLinkFlow.emit(info.userLink)
-            val imageList = imageListConvert(info.userImageList)
+            val imageList = info.imageListConvert()
             userImageList = imageList
             userImageListFlow.emit(imageList)
-            val videoUrl = videoUrlConvert(info.userVideoList)
+            val videoUrl = info.videoConvert()
             userVideo = videoUrl
             userVideoFlow.emit(videoUrl)
         }
-    }
-
-    /** 当前用户图片信息、只保存大图图片地址 */
-    private fun imageListConvert(mediaList: MutableList<UserMediaModel>): MutableList<String> {
-        val imageList = mutableListOf<String>()
-        mediaList.forEach { imageList.add(it.thumbUrl) }
-        return imageList
-    }
-
-    /** 当前用户视频信息、只保存大图图片地址 */
-    private fun videoUrlConvert(mediaList: MutableList<UserMediaModel>): String {
-        return if (mediaList.size > 0) mediaList[0].thumbUrl else ""
     }
 }
