@@ -12,6 +12,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
+import com.milk.funcall.account.Account
 import com.milk.funcall.chat.ui.act.ChatMessageActivity
 import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.common.media.loader.ImageLoader
@@ -169,8 +170,10 @@ class UserTotalInfoActivity : AbstractActivity() {
         super.onMultipleClick(view)
         when (view) {
             binding.basic.llFollow -> {
-                loadingDialog.show()
-                userTotalInfoViewModel.changeFollowState()
+                if (Account.userLogged) {
+                    loadingDialog.show()
+                    userTotalInfoViewModel.changeFollowState()
+                } else showToast(string(R.string.common_place_to_login_first))
             }
             binding.link.tvCopy -> {
                 val label = string(R.string.app_name)
@@ -195,10 +198,12 @@ class UserTotalInfoActivity : AbstractActivity() {
                 }
             }
             binding.basic.llMessage -> {
-                userTotalInfoViewModel.userTotalInfoFlow.value?.let {
-                    if (it.isBlacked) return
-                    ChatMessageActivity.create(this, it.userId, it.userName)
-                }
+                if (Account.userLogged) {
+                    userTotalInfoViewModel.userTotalInfoFlow.value?.let {
+                        if (it.isBlacked) return
+                        ChatMessageActivity.create(this, it.userId, it.userName)
+                    }
+                } else showToast(string(R.string.common_place_to_login_first))
             }
         }
     }
