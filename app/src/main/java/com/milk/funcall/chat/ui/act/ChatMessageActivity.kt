@@ -59,6 +59,8 @@ class ChatMessageActivity : AbstractActivity() {
             updateSendState()
         }
         binding.tvSend.setOnClickListener(this)
+        binding.ivSayHiCancel.setOnClickListener(this)
+        binding.tvSayHiSend.setOnClickListener(this)
     }
 
     private fun updateSendState() {
@@ -83,6 +85,11 @@ class ChatMessageActivity : AbstractActivity() {
     override fun onMultipleClick(view: View) {
         super.onMultipleClick(view)
         when (view) {
+            binding.ivSayHiCancel -> binding.clSayHi.gone()
+            binding.tvSayHiSend -> {
+                val messageContent = binding.tvSayHiTitle.text.toString()
+                chatMessageViewModel.sendTextChatMessage(messageContent)
+            }
             binding.tvSend -> {
                 val messageContent = binding.etMessage.text.toString()
                 chatMessageViewModel.sendTextChatMessage(messageContent)
