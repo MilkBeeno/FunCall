@@ -10,7 +10,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.milk.funcall.R
 import com.milk.funcall.chat.ui.adapter.ChatMessageAdapter
-import com.milk.funcall.chat.vm.MessageViewModel
+import com.milk.funcall.chat.ui.vm.ChatMessageViewModel
 import com.milk.funcall.common.paging.status.RefreshStatus
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityMessageBinding
@@ -19,7 +19,7 @@ import com.milk.simple.ktx.*
 
 class ChatMessageActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityMessageBinding>()
-    private val chatMessageViewModel by viewModels<MessageViewModel>()
+    private val chatMessageViewModel by viewModels<ChatMessageViewModel>()
     private val chatMessageAdapter by lazy { ChatMessageAdapter() }
     private val targetId by lazy { intent.getLongExtra(TARGET_ID, 0) }
     private val targetName by lazy { intent.getStringExtra(TARGET_NAME).toString() }
@@ -61,10 +61,12 @@ class ChatMessageActivity : AbstractActivity() {
         }
         // 监听输入内容键盘焦点变化
         binding.etMessage.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
+            val itemCount = chatMessageAdapter.itemCount
+            if (hasFocus && itemCount > 0) {
                 val position = chatMessageAdapter.itemCount - 1
                 binding.rvMessage.smoothScrollToPosition(position)
-            } else KeyBoardUtil.hideKeyboard(this)
+            }
+            if (!hasFocus) KeyBoardUtil.hideKeyboard(this)
         }
         binding.tvSend.setOnClickListener(this)
         binding.ivSayHiCancel.setOnClickListener(this)
