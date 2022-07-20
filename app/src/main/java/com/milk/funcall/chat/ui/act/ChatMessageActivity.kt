@@ -1,5 +1,6 @@
 package com.milk.funcall.chat.ui.act
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -30,6 +31,7 @@ class ChatMessageActivity : AbstractActivity() {
         initializeData()
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun initializeView() {
         setStatusBarDark()
         setStatusBarColor(color(R.color.white))
@@ -37,6 +39,13 @@ class ChatMessageActivity : AbstractActivity() {
         binding.headerToolbar.setTitle(targetName)
         binding.rvMessage.adapter = chatMessageAdapter
         binding.rvMessage.layoutManager = LinearLayoutManager(this)
+        binding.etMessage.addTextChangedListener { updateSendState() }
+        // 滑动内容收起键盘逻辑、还需要修改
+        binding.rvMessage.setOnTouchListener { _, _ ->
+            binding.etMessage.clearFocus()
+            false
+        }
+        // 监听内容变化
         chatMessageAdapter.addRefreshedListener {
             when (it) {
                 RefreshStatus.Success -> {
@@ -47,16 +56,15 @@ class ChatMessageActivity : AbstractActivity() {
                 RefreshStatus.Empty -> {
                     binding.clSayHi.visible()
                 }
-                else -> {
-                    // 其他状态目前不需要
-                }
+                else -> Unit
             }
         }
+        // 监听输入内容键盘焦点变化
         binding.etMessage.setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus) KeyBoardUtil.hideKeyboard(this)
-        }
-        binding.etMessage.addTextChangedListener {
-            updateSendState()
+            if (hasFocus) {
+                val position = chatMessageAdapter.itemCount - 1
+                binding.rvMessage.smoothScrollToPosition(position)
+            } else KeyBoardUtil.hideKeyboard(this)
         }
         binding.tvSend.setOnClickListener(this)
         binding.ivSayHiCancel.setOnClickListener(this)
@@ -66,14 +74,10 @@ class ChatMessageActivity : AbstractActivity() {
     private fun updateSendState() {
         if (binding.etMessage.text.toString().isBlank()) {
             binding.tvSend.isClickable = false
-            binding.tvSend.setBackgroundResource(
-                R.drawable.shape_chat_message_send_un_available
-            )
+            binding.tvSend.setBackgroundResource(R.drawable.shape_chat_message_send_un_available)
         } else {
             binding.tvSend.isClickable = true
-            binding.tvSend.setBackgroundResource(
-                R.drawable.shape_chat_message_send_available
-            )
+            binding.tvSend.setBackgroundResource(R.drawable.shape_chat_message_send_available)
         }
     }
 
