@@ -1,4 +1,4 @@
-package com.milk.funcall.chat.ui
+package com.milk.funcall.chat.ui.type
 
 // 私聊消息类型枚举
 enum class ChatMessageType(val value: Int) {

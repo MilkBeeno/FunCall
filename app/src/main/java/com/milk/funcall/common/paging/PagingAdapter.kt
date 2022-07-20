@@ -39,6 +39,6 @@ interface PagingAdapter<T : Any> {
         listener: (adapter: AbstractPagingAdapter<T>, itemView: View, position: Int) -> Boolean
     )
 
-    fun obtainHeaderAdapter(): HeaderLoadStateAdapter?
-    fun obtainFooterAdapter(): FooterLoadStateAdapter?
+    fun createHeaderAdapter(): HeaderLoadStateAdapter?
+    fun createFooterAdapter(): FooterLoadStateAdapter?
 }

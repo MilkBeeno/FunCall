@@ -64,7 +64,7 @@ class HomeAdapter : AbstractPagingAdapter<UserSimpleInfoModel>(
         }
     }
 
-    override fun obtainFooterAdapter(): FooterLoadStateAdapter {
+    override fun createFooterAdapter(): FooterLoadStateAdapter {
         return FooterLoadStateAdapter(
             footLayoutId = R.layout.layout_paging_foot,
             pageSize = 8,

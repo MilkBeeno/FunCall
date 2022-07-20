@@ -70,25 +70,25 @@ abstract class AbstractPagingAdapter<T : Any>(
         }
     }
 
-    override fun obtainHeaderAdapter(): HeaderLoadStateAdapter? = null
+    override fun createHeaderAdapter(): HeaderLoadStateAdapter? = null
 
-    override fun obtainFooterAdapter(): FooterLoadStateAdapter? = null
+    override fun createFooterAdapter(): FooterLoadStateAdapter? = null
 
     override fun withLoadStateHeaderAdapter(): ConcatAdapter {
-        val headerAdapter = checkNotNull(obtainHeaderAdapter())
+        val headerAdapter = checkNotNull(createHeaderAdapter())
         pairHeaderAndFooter = Pair(first = true, second = false)
         return withLoadStateHeader(headerAdapter)
     }
 
     override fun withLoadStateFooterAdapter(): ConcatAdapter {
-        val footerAdapter = checkNotNull(obtainFooterAdapter())
+        val footerAdapter = checkNotNull(createFooterAdapter())
         pairHeaderAndFooter = Pair(first = false, second = true)
         return withLoadStateFooter(footerAdapter)
     }
 
     override fun withLoadStateHeaderAndFooterAdapter(): ConcatAdapter {
-        val headerAdapter = checkNotNull(obtainHeaderAdapter())
-        val footerAdapter = checkNotNull(obtainFooterAdapter())
+        val headerAdapter = checkNotNull(createHeaderAdapter())
+        val footerAdapter = checkNotNull(createFooterAdapter())
         return withLoadStateHeaderAndFooter(headerAdapter, footerAdapter)
     }
 

@@ -19,12 +19,6 @@ class ChatMessageEntity {
     @ColumnInfo(name = "chatTargetId")
     var targetId: Long = 0
 
-    @ColumnInfo(name = "chatTargetName")
-    var targetName: String = ""
-
-    @ColumnInfo(name = "chatTargetAvatar")
-    var targetAvatar: String = ""
-
     @ColumnInfo(name = "chatMsgType")
     var messageType: Int = 0
 
@@ -40,14 +34,13 @@ class ChatMessageEntity {
     @ColumnInfo(name = "chatIsReadMsg")
     var isReadMessage: Boolean = false
 
-    @ColumnInfo(name = "chatIsSendSuccess")
-    var isSendSuccess: Boolean = false
+    @ColumnInfo(name = "chatSendStatus")
+    var sendStatus: Int = 0
 
     override fun toString(): String {
         return "messageUniqueId=$messageUniqueId,userId=$userId,targetId=$targetId," +
-                "targetName=$targetName,targetAvatar=$targetAvatar,messageType=$messageType," +
-                "operationTime=$operationTime,messageContent=$messageContent," +
-                "isAcceptMessage=$isAcceptMessage,isReadMessage=$isReadMessage," +
-                "isSendSuccess=$isSendSuccess"
+                "messageType=$messageType,operationTime=$operationTime," +
+                "messageContent=$messageContent,isAcceptMessage=$isAcceptMessage," +
+                "isReadMessage=$isReadMessage,isSendSuccess=$sendStatus"
     }
 }

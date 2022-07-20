@@ -4,11 +4,11 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.DiffUtil
 import com.milk.funcall.R
+import com.milk.funcall.chat.ui.type.ChatMessageType
 import com.milk.funcall.common.mdr.table.ChatMessageEntity
 import com.milk.funcall.common.paging.AbstractPagingAdapter
 import com.milk.funcall.common.paging.MultiTypeDelegate
 import com.milk.funcall.common.paging.PagingViewHolder
-import com.milk.funcall.chat.ui.ChatMessageType
 
 class ChatMessageAdapter : AbstractPagingAdapter<ChatMessageEntity>(
     diffCallback = object : DiffUtil.ItemCallback<ChatMessageEntity>() {
@@ -25,8 +25,6 @@ class ChatMessageAdapter : AbstractPagingAdapter<ChatMessageEntity>(
         ): Boolean {
             return oldItem.userId == newItem.userId
                     && oldItem.targetId == newItem.targetId
-                    && oldItem.targetName == newItem.targetName
-                    && oldItem.targetAvatar == newItem.targetAvatar
                     && oldItem.operationTime == newItem.operationTime
                     && oldItem.isReadMessage == newItem.isReadMessage
         }

@@ -12,6 +12,7 @@ import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.account.ui.frag.MineFragment
 import com.milk.funcall.app.MainService
 import com.milk.funcall.app.ui.view.BottomNavigation
+import com.milk.funcall.chat.repo.ChatMessageRepository
 import com.milk.funcall.chat.ui.frag.ChatMessageFragment
 import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.ui.AbstractActivity
@@ -83,9 +84,10 @@ class MainActivity : AbstractActivity() {
                             "IM Okhttp 心跳包 当前时间=${System.currentTimeMillis()}",
                             "IM-Service"
                         )
+                        ChatMessageRepository.heartBeat()
                     }
                 }
-                timer.schedule(timerTask, 0, 10000)
+                timer.schedule(timerTask, 0, 5000)
             }
 
             override fun onServiceDisconnected(p0: ComponentName?) {

@@ -6,7 +6,6 @@ import com.milk.funcall.common.mdr.table.ChatMessageEntity
 import com.milk.funcall.common.paging.LocalPagingSource
 
 class MessageViewModel : ViewModel() {
-    private val chatMessageRepository by lazy { ChatMessageRepository() }
     var targetId: Long = 0
     val pagingSource: LocalPagingSource<Int, ChatMessageEntity>
         get() {
@@ -14,7 +13,7 @@ class MessageViewModel : ViewModel() {
                 pageSize = 20,
                 prefetchDistance = 5,
                 pagingSourceFactory = {
-                    chatMessageRepository.obtainMessages(targetId)
+                    ChatMessageRepository.getChatMessagesByDB(targetId)
                 }
             )
         }
