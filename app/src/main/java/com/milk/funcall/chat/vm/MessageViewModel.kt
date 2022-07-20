@@ -4,9 +4,10 @@ import androidx.lifecycle.ViewModel
 import com.milk.funcall.chat.repo.ChatMessageRepository
 import com.milk.funcall.common.mdr.table.ChatMessageEntity
 import com.milk.funcall.common.paging.LocalPagingSource
+import com.milk.simple.ktx.ioScope
 
 class MessageViewModel : ViewModel() {
-    var targetId: Long = 0
+    private var targetId: Long = 0
     val pagingSource: LocalPagingSource<Int, ChatMessageEntity>
         get() {
             return LocalPagingSource(
@@ -20,5 +21,9 @@ class MessageViewModel : ViewModel() {
 
     fun updateTargetUser(userId: Long) {
         targetId = userId
+    }
+
+    fun sendTextChatMessage(messageContent: String) {
+        ioScope { ChatMessageRepository.sendTextChatMessage(targetId, messageContent) }
     }
 }

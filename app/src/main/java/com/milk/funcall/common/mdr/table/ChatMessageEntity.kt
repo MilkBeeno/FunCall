@@ -6,12 +6,15 @@ import androidx.room.Index
 
 @Entity(
     tableName = "ChatMessageTable",
-    primaryKeys = ["chatUserId", "chatMsgUniqueId"],
-    indices = [Index(value = ["chatUserId", "chatMsgUniqueId"], unique = true)]
+    primaryKeys = ["chatUserId", "chatLocalMsgUniqueId"],
+    indices = [Index(value = ["chatUserId", "chatLocalMsgUniqueId"], unique = true)]
 )
 class ChatMessageEntity {
-    @ColumnInfo(name = "chatMsgUniqueId")
-    var messageUniqueId: String = ""
+    @ColumnInfo(name = "chatLocalMsgUniqueId")
+    var msgLocalUniqueId: String = ""
+
+    @ColumnInfo(name = "chatNetworkMsgUniqueId")
+    var msgNetworkUniqueId: String = ""
 
     @ColumnInfo(name = "chatUserId")
     var userId: Long = 0
@@ -38,9 +41,10 @@ class ChatMessageEntity {
     var sendStatus: Int = 0
 
     override fun toString(): String {
-        return "messageUniqueId=$messageUniqueId,userId=$userId,targetId=$targetId," +
-                "messageType=$messageType,operationTime=$operationTime," +
-                "messageContent=$messageContent,isAcceptMessage=$isAcceptMessage," +
-                "isReadMessage=$isReadMessage,isSendSuccess=$sendStatus"
+        return "messageUniqueId=$msgLocalUniqueId,msgNetworkUniqueId=$msgNetworkUniqueId," +
+                "userId=$userId,targetId=$targetId,messageType=$messageType," +
+                "operationTime=$operationTime,messageContent=$messageContent," +
+                "isAcceptMessage=$isAcceptMessage,isReadMessage=$isReadMessage," +
+                "isSendSuccess=$sendStatus"
     }
 }

@@ -43,13 +43,14 @@ object ChatMessageRepository {
             apiResult.forEach { chatMsgReceiveModel ->
                 chatMsgReceiveModel.chatMsgReceiveListModel
                     ?.forEach { chatMsgReceiveSingleModel ->
-                        saveTextChatMessage(
-                            chatMsgReceiveSingleModel.itemId,
-                            chatMsgReceiveModel.faceUserId,
-                            chatMsgReceiveSingleModel.content,
-                            chatMsgReceiveSingleModel.chatTime,
-                            isAcceptMessage = true
-                        )
+                        saveTextChatMessage(chatMsgReceiveSingleModel.content) {
+                            receiveChatMessageEntity(
+                                chatMsgReceiveSingleModel.itemId,
+                                chatMsgReceiveModel.faceUserId,
+                                ChatMessageType.TextReceived.value,
+                                chatMsgReceiveSingleModel.chatTime
+                            )
+                        }
                     }
             }
         }
@@ -57,50 +58,50 @@ object ChatMessageRepository {
 
     /** 发送文本私聊消息到服务器中 */
     suspend fun sendTextChatMessage(targetId: Long, messageContent: String) = retrofit {
-        saveTextChatMessage(
-            createMsgUniqueId(Account.userId, targetId),
-            targetId,
-            messageContent,
-            System.currentTimeMillis(),
-            isAcceptMessage = false
-        )
+        val messageUniqueId = createMsgLocalUniqueId(Account.userId, targetId)
+        saveTextChatMessage(messageContent) {
+            sendChatMessageEntity(
+                messageUniqueId,
+                targetId,
+                ChatMessageType.TextSend.value,
+                System.currentTimeMillis()
+            )
+        }
         val apiResponse =
             ApiService.chatApiService.sendTextChatMessage(targetId, messageContent)
         val apiResult = apiResponse.data
-        val sendSuccessful = apiResponse.success && apiResult != null
-        // 发送成功更改数据库中发送标志
+        // 消息发送状态更新、3.发送成功 2.发送失败
+        if (apiResponse.success && apiResult != null)
+            updateSendMessageStatus(messageUniqueId, true, apiResult.itemId)
+        else
+            updateSendMessageStatus(messageUniqueId, false)
         apiResponse
     }
 
-    /** 保存文本消息到数据库中 */
-    private fun saveTextChatMessage(
-        messageUniqueId: String,
-        targetId: Long,
-        messageContent: String,
-        operationTime: Long,
-        isAcceptMessage: Boolean
+    /** 本地数据发送状态更新 */
+    private fun updateSendMessageStatus(
+        msgLocalUniqueId: String,
+        sendSuccess: Boolean,
+        msgNetworkUniqueId: String = ""
     ) {
-        val textChatMessageEntity =
-            if (isAcceptMessage)
-                receiveChatMessageEntity(
-                    messageUniqueId,
-                    targetId,
-                    ChatMessageType.TextReceived.value,
-                    operationTime
-                )
-            else
-                sendChatMessageEntity(
-                    messageUniqueId,
-                    targetId,
-                    ChatMessageType.TextSend.value,
-                    operationTime
-                )
+        if (sendSuccess) {
+            DataBaseManager.DB.chatMessageTableDao()
+                .updateChatMsgSendStatus(msgLocalUniqueId, ChatMsgSendStatus.SendSuccess.value)
+            DataBaseManager.DB.chatMessageTableDao()
+                .updateChatMsgNetworkUniqueId(msgLocalUniqueId, msgNetworkUniqueId)
+        } else DataBaseManager.DB.chatMessageTableDao()
+            .updateChatMsgSendStatus(msgLocalUniqueId, ChatMsgSendStatus.SendFailed.value)
+    }
+
+    /** 保存文本消息到数据库中 */
+    private fun saveTextChatMessage(messageContent: String, action: () -> ChatMessageEntity) {
+        val textChatMessageEntity = action()
         textChatMessageEntity.messageContent = messageContent
-        insertMessage(textChatMessageEntity)
+        DataBaseManager.DB.chatMessageTableDao().insertMessage(textChatMessageEntity)
     }
 
     /** 获取消息唯一 ID */
-    private fun createMsgUniqueId(userId: Long, targetId: Long) =
+    private fun createMsgLocalUniqueId(userId: Long, targetId: Long) =
         System.currentTimeMillis().toString()
             .plus("-")
             .plus(userId)
@@ -109,12 +110,14 @@ object ChatMessageRepository {
 
     /** 网络请求结果私聊实体 */
     private fun receiveChatMessageEntity(
-        messageUniqueId: String,
+        msgNetworkUniqueId: String,
         targetId: Long,
         messageType: Int,
         operationTime: Long
     ) = ChatMessageEntity().apply {
-        this.messageUniqueId = messageUniqueId
+        this.msgLocalUniqueId =
+            createMsgLocalUniqueId(Account.userId, targetId)
+        this.msgNetworkUniqueId = msgNetworkUniqueId
         this.userId = Account.userId
         this.targetId = targetId
         this.messageType = messageType
@@ -126,12 +129,12 @@ object ChatMessageRepository {
 
     /** 网络请求发送私聊实体 */
     private fun sendChatMessageEntity(
-        messageUniqueId: String,
+        msgLocalUniqueId: String,
         targetId: Long,
         messageType: Int,
         operationTime: Long
     ) = ChatMessageEntity().apply {
-        this.messageUniqueId = messageUniqueId
+        this.msgLocalUniqueId = msgLocalUniqueId
         this.userId = Account.userId
         this.targetId = targetId
         this.messageType = messageType
@@ -139,11 +142,6 @@ object ChatMessageRepository {
         this.isReadMessage = true
         this.isAcceptMessage = false
         this.sendStatus = ChatMsgSendStatus.Sending.value
-    }
-
-    /** 向数据库中插入单条消息 */
-    private fun insertMessage(messageEntity: ChatMessageEntity) {
-        DataBaseManager.DB.chatMessageTableDao().insertMessage(messageEntity)
     }
 
     /** 获取数据库中存储的私聊消息 */

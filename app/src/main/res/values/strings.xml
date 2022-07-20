@@ -73,8 +73,12 @@
     <string name="about_us_user_agreement">User Agreement</string>
     <string name="about_us_user_privacy">Privacy policy</string>
     <!--聊天页面翻译-->
-    <string name="message_title">Message</string>
-    <string name="message_list_empty">No Message</string>
+    <string name="chat_message_title">Message</string>
+    <string name="chat_message_list_empty">No Message</string>
+    <string name="chat_message_send">Send</string>
+    <string name="chat_message_hint">Please enter a message</string>
+    <string name="chat_message_say_hi_title">Say Hi~</string>
+    <string name="chat_message_say_hi_desc">Send hello and make friends</string>
     <!--更改个人资料页面翻译-->
     <string name="edit_profile_title">Edit profile</string>
     <string name="edit_profile_save">Save</string>

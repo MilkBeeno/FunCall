@@ -16,7 +16,7 @@ class ChatMessageAdapter : AbstractPagingAdapter<ChatMessageEntity>(
             oldItem: ChatMessageEntity,
             newItem: ChatMessageEntity
         ): Boolean {
-            return oldItem.messageUniqueId == newItem.messageUniqueId
+            return oldItem.msgLocalUniqueId == newItem.msgLocalUniqueId
         }
 
         override fun areContentsTheSame(
@@ -27,6 +27,7 @@ class ChatMessageAdapter : AbstractPagingAdapter<ChatMessageEntity>(
                     && oldItem.targetId == newItem.targetId
                     && oldItem.operationTime == newItem.operationTime
                     && oldItem.isReadMessage == newItem.isReadMessage
+                    && oldItem.messageContent == newItem.messageContent
         }
     }) {
 

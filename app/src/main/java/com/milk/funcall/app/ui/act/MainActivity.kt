@@ -9,6 +9,7 @@ import android.os.IBinder
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.jeremyliao.liveeventbus.LiveEventBus
+import com.milk.funcall.account.Account
 import com.milk.funcall.account.ui.frag.MineFragment
 import com.milk.funcall.app.MainService
 import com.milk.funcall.app.ui.view.BottomNavigation
@@ -18,11 +19,9 @@ import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityMainBinding
 import com.milk.funcall.user.ui.frag.HomeFragment
-import com.milk.simple.ktx.immersiveStatusBar
-import com.milk.simple.ktx.navigationBarPadding
-import com.milk.simple.ktx.statusBarPadding
-import com.milk.simple.ktx.viewBinding
+import com.milk.simple.ktx.*
 import com.milk.simple.log.Logger
+import kotlinx.coroutines.flow.collectLatest
 import java.util.*
 
 class MainActivity : AbstractActivity() {
@@ -31,9 +30,9 @@ class MainActivity : AbstractActivity() {
     private val homeFragment = HomeFragment.create()
     private val messageFragment = ChatMessageFragment.create()
     private val mineFragment = MineFragment.create()
-    private lateinit var serviceIntent: Intent
-    private lateinit var connection: ServiceConnection
-    private val timer by lazy { Timer() }
+    private var serviceIntent: Intent? = null
+    private var connection: ServiceConnection? = null
+    private var timer: Timer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,31 +72,41 @@ class MainActivity : AbstractActivity() {
     }
 
     private fun initializeService() {
-        connection = object : ServiceConnection {
-            override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
-                // 和服务绑定成功后，服务会回调该方法
-                // 服务异常中断后重启，也会重新调用改方法
-                // Logger.d("服务初始化完成", "IM-Service")
-                val timerTask = object : TimerTask() {
-                    override fun run() {
-                        Logger.d(
-                            "IM Okhttp 心跳包 当前时间=${System.currentTimeMillis()}",
-                            "IM-Service"
-                        )
-                        ChatMessageRepository.heartBeat()
-                    }
-                }
-                timer.schedule(timerTask, 0, 5000)
-            }
+        launch {
+            Account.userLoggedFlow.collectLatest { isLogged ->
+                if (isLogged) {
+                    connection = object : ServiceConnection {
+                        override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
+                            // 和服务绑定成功后，服务会回调该方法
+                            // 服务异常中断后重启，也会重新调用改方法
+                            // Logger.d("服务初始化完成", "IM-Service")
+                            val timerTask = object : TimerTask() {
+                                override fun run() {
+                                    Logger.d(
+                                        "IM Okhttp 心跳包 当前时间=${System.currentTimeMillis()}",
+                                        "IM-Service"
+                                    )
+                                    ChatMessageRepository.heartBeat()
+                                }
+                            }
+                            timer = Timer()
+                            timer?.schedule(timerTask, 0, 5000)
+                        }
 
-            override fun onServiceDisconnected(p0: ComponentName?) {
-                // 当服务异常终止时会调用
-                // 注意，unbindService时不会调用
-                // Logger.d("服务异常终止了", "IM-Service")
+                        override fun onServiceDisconnected(p0: ComponentName?) {
+                            // 当服务异常终止时会调用
+                            // 注意，unbindService时不会调用
+                            // Logger.d("服务异常终止了", "IM-Service")
+                        }
+                    }
+                    serviceIntent = Intent(this, MainService::class.java)
+                    connection?.let { bindService(serviceIntent, it, BIND_AUTO_CREATE) }
+                } else {
+                    timer?.cancel()
+                    connection?.let { unbindService(it) }
+                }
             }
         }
-        serviceIntent = Intent(this, MainService::class.java)
-        bindService(serviceIntent, connection, BIND_AUTO_CREATE)
     }
 
     private fun setTabSelection(fragment: Fragment) {
@@ -137,8 +146,8 @@ class MainActivity : AbstractActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        timer.cancel()
-        unbindService(connection)
+        timer?.cancel()
+        connection?.let { unbindService(it) }
     }
 
     override fun onInterceptKeyDownEvent(): Boolean = true

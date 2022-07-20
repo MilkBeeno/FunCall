@@ -15,4 +15,10 @@ interface ChatMessageTableDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertMessage(chatMessageEntity: ChatMessageEntity)
+
+    @Query("UPDATE ChatMessageTable SET chatNetworkMsgUniqueId=:msgNetworkUniqueId WHERE chatLocalMsgUniqueId=:msgLocalUniqueId")
+    fun updateChatMsgNetworkUniqueId(msgLocalUniqueId: String, msgNetworkUniqueId: String)
+
+    @Query("UPDATE ChatMessageTable SET chatSendStatus=:sendStatus WHERE chatLocalMsgUniqueId=:msgLocalUniqueId")
+    fun updateChatMsgSendStatus(msgLocalUniqueId: String, sendStatus: Int)
 }
