@@ -5,9 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
 import com.milk.funcall.account.Account
 import com.milk.funcall.app.ui.act.MainActivity
+import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityGenderBinding
 import com.milk.funcall.user.type.Gender
@@ -55,12 +57,13 @@ class GenderActivity : AbstractActivity() {
             }
             binding.tvGenderNext -> {
                 Account.userGender = selectGender.value
+                LiveEventBus.get<Boolean>(EventKey.REFRESH_HOME_LIST)
+                    .post(false)
                 MainActivity.create(this)
                 finish()
             }
         }
     }
-
 
     private fun updateManStatus(select: Boolean) {
         binding.clMan.setBackgroundResource(

@@ -1,8 +1,10 @@
 package com.milk.funcall.account.ui.vm
 
 import androidx.lifecycle.ViewModel
+import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.account.Account
 import com.milk.funcall.account.repo.EditProfileRepository
+import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.media.uploader.MediaUploadRepository
 import com.milk.simple.ktx.ioScope
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -34,6 +36,8 @@ class EditProfileViewModel : ViewModel() {
             if (apiResponse.success && apiResult != null) {
                 uploadResult.emit(true)
                 Account.saveAccountInfo(apiResult)
+                LiveEventBus.get<Boolean>(EventKey.REFRESH_HOME_LIST)
+                    .post(true)
             } else uploadResult.emit(false)
         }
     }
