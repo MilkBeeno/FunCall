@@ -7,40 +7,43 @@ import com.google.gson.annotations.SerializedName
 
 @Entity(
     tableName = "UserInfoTable",
-    primaryKeys = ["UserId"],
-    indices = [Index(value = ["UserId"], unique = true)]
+    primaryKeys = ["userInfoUserId", "userInfoTargetId"],
+    indices = [Index(value = ["userInfoUserId", "userInfoTargetId"], unique = true)]
 )
 open class UserInfoEntity {
-    @SerializedName("id")
-    @ColumnInfo(name = "UserId")
+    @ColumnInfo(name = "userInfoUserId")
     var userId: Long = 0
 
+    @SerializedName("id")
+    @ColumnInfo(name = "userInfoTargetId")
+    var targetId: Long = 0
+
     @SerializedName("nickname")
-    @ColumnInfo(name = "UserName")
+    @ColumnInfo(name = "userInfoName")
     var userName: String = ""
 
     @SerializedName("avatarUrl")
-    @ColumnInfo(name = "UserAvatarUrl")
+    @ColumnInfo(name = "userInfoAvatarUrl")
     var userAvatar: String = ""
 
     @SerializedName("gender")
-    @ColumnInfo(name = "UserGender")
+    @ColumnInfo(name = "userInfoGender")
     var userGender: String = ""
 
     @SerializedName("imageUrl")
-    @ColumnInfo(name = "UserImageUrl")
+    @ColumnInfo(name = "userInfoImageUrl")
     var userImage: String = ""
 
     @SerializedName("videoUrl")
-    @ColumnInfo(name = "UserVideoUrl")
+    @ColumnInfo(name = "userInfoVideoUrl")
     var userVideo: String = ""
 
     @SerializedName("onlineState")
-    @ColumnInfo(name = "UserOnlineState")
+    @ColumnInfo(name = "userInfoOnlineState")
     var userOnline: String = ""
 
     override fun toString(): String {
-        return "userId=$userId,userAvatar=$userAvatar,userGender=$userGender,userImage=$userImage," +
-                "userName=$userName,userVideo=$userVideo,userOnline=$userOnline"
+        return "userId=$userId,targetId=$targetId,userAvatar=$userAvatar,userGender=$userGender," +
+                "userImage=$userImage,userName=$userName,userVideo=$userVideo,userOnline=$userOnline"
     }
 }
