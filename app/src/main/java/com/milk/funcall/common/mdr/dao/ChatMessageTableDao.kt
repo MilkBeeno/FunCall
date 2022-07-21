@@ -11,7 +11,7 @@ import com.milk.funcall.common.mdr.table.ChatMessageEntity
 interface ChatMessageTableDao {
 
     @Query("SELECT * FROM ChatMessageTable WHERE chatUserId=:userId AND chatTargetId=:targetId")
-    fun getChats(userId: Long, targetId: Long): PagingSource<Int, ChatMessageEntity>
+    fun getChatMessages(userId: Long, targetId: Long): PagingSource<Int, ChatMessageEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(chatMessageEntity: ChatMessageEntity)

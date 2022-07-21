@@ -19,8 +19,8 @@ class MessageRedDotView : FrameLayout {
 
     fun updateMessageCount(count: Int, maxCount: Int = 99) {
         when {
-            count in 0..maxCount -> {
-                val params = layoutParams as LayoutParams
+            count in 1..maxCount -> {
+                val params = layoutParams as ViewGroup.LayoutParams
                 params.width = params.height
                 layoutParams = params
                 binding.redDotRootView.text = count.toString()
@@ -28,7 +28,7 @@ class MessageRedDotView : FrameLayout {
                 visibility = VISIBLE
             }
             count > maxCount -> {
-                val params = layoutParams as LayoutParams
+                val params = layoutParams as ViewGroup.LayoutParams
                 params.width = ViewGroup.LayoutParams.WRAP_CONTENT
                 layoutParams = params
                 val childParams = binding.redDotRootView.layoutParams as LayoutParams

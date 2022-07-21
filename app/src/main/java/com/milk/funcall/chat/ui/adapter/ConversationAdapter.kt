@@ -3,6 +3,7 @@ package com.milk.funcall.chat.ui.adapter
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.DiffUtil
 import com.milk.funcall.R
+import com.milk.funcall.chat.ui.view.MessageRedDotView
 import com.milk.funcall.common.mdr.table.ConversationEntity
 import com.milk.funcall.common.paging.AbstractPagingAdapter
 import com.milk.funcall.common.paging.PagingViewHolder
@@ -32,5 +33,8 @@ class ConversationAdapter : AbstractPagingAdapter<ConversationEntity>(
             .setImageResource(R.drawable.common_default_man)
         holder.setText(R.id.tvUserName, item.targetId.toString())
         holder.setText(R.id.tvMessage, item.messageContent)
+        holder.setText(R.id.tvTime, item.operationTime.toString())
+        holder.getView<MessageRedDotView>(R.id.redDotRootView)
+            .updateMessageCount(item.unReadCount)
     }
 }

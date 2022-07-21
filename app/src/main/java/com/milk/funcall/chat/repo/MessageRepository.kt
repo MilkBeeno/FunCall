@@ -56,11 +56,12 @@ object MessageRepository {
                             )
                         }
                         conversationRepository.saveConversation(
-                            chatMsgReceiveModel.faceUserId,
-                            ChatMessageType.TextReceived.value,
-                            chatMsgReceiveSingleModel.chatTime,
+                            targetId = chatMsgReceiveModel.faceUserId,
+                            messageType = ChatMessageType.TextReceived.value,
+                            operationTime = chatMsgReceiveSingleModel.chatTime,
                             isAcceptMessage = true,
-                            ChatMsgSendStatus.SendSuccess.value
+                            sendStatus = ChatMsgSendStatus.SendSuccess.value,
+                            messageContent = chatMsgReceiveSingleModel.content
                         )
                     }
             }
@@ -81,11 +82,12 @@ object MessageRepository {
             )
         }
         conversationRepository.saveConversation(
-            targetId,
-            ChatMessageType.TextSend.value,
-            operationTime,
-            isAcceptMessage = true,
-            ChatMsgSendStatus.Sending.value
+            targetId = targetId,
+            messageType = ChatMessageType.TextSend.value,
+            operationTime = operationTime,
+            isAcceptMessage = false,
+            sendStatus = ChatMsgSendStatus.Sending.value,
+            messageContent = messageContent
         )
         val apiResponse =
             ApiService.chatApiService.sendTextChatMessage(targetId, messageContent)
@@ -106,12 +108,11 @@ object MessageRepository {
     /** 获取数据库中存储的私聊消息 */
     fun getChatMessagesByDB(targetId: Long): PagingSource<Int, ChatMessageEntity> {
         return DataBaseManager.DB.chatMessageTableDao()
-            .getChats(Account.userId, targetId)
+            .getChatMessages(Account.userId, targetId)
     }
 
     /** 获取数据库中存储的会话消息 */
-    fun getChatConversationByDB(targetId: Long): PagingSource<Int, ConversationEntity> {
-        return DataBaseManager.DB.conversationTableDao()
-            .getList(Account.userId, targetId)
+    fun getChatConversationByDB(): PagingSource<Int, ConversationEntity> {
+        return DataBaseManager.DB.conversationTableDao().getConversations(Account.userId)
     }
 }

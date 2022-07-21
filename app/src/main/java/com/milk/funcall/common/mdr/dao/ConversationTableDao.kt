@@ -11,13 +11,13 @@ import com.milk.funcall.common.mdr.table.ConversationEntity
 interface ConversationTableDao {
 
     @Query("SELECT * FROM ConversationTable WHERE conversationUserId=:userId AND conversationTargetId=:targetId")
-    fun query(userId: Long, targetId: Long): ConversationEntity
+    fun query(userId: Long, targetId: Long): ConversationEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(chatConversationEntity: ConversationEntity)
 
-    @Query("SELECT * FROM ConversationTable WHERE conversationUserId=:userId AND conversationTargetId=:targetId")
-    fun getList(userId: Long, targetId: Long): PagingSource<Int, ConversationEntity>
+    @Query("SELECT * FROM ConversationTable WHERE conversationUserId=:userId")
+    fun getConversations(userId: Long): PagingSource<Int, ConversationEntity>
 
     @Query("UPDATE ConversationTable SET conversationSendStatus=:sendStatus WHERE conversationUserId=:userId AND conversationTargetId=:targetId ")
     fun updateSendStatus(userId: Long, targetId: Long, sendStatus: Int)

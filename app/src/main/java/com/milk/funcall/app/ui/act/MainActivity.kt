@@ -14,7 +14,7 @@ import com.milk.funcall.account.ui.frag.MineFragment
 import com.milk.funcall.app.MainService
 import com.milk.funcall.app.ui.view.BottomNavigation
 import com.milk.funcall.chat.repo.MessageRepository
-import com.milk.funcall.chat.ui.frag.ChatMessageFragment
+import com.milk.funcall.chat.ui.frag.ConversationFragment
 import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityMainBinding
@@ -28,7 +28,7 @@ class MainActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityMainBinding>()
     private val fragments = mutableListOf<Fragment>()
     private val homeFragment = HomeFragment.create()
-    private val messageFragment = ChatMessageFragment.create()
+    private val messageFragment = ConversationFragment.create()
     private val mineFragment = MineFragment.create()
     private var serviceIntent: Intent? = null
     private var connection: ServiceConnection? = null
@@ -120,7 +120,7 @@ class MainActivity : AbstractActivity() {
                 }
                 transaction.show(homeFragment)
             }
-            is ChatMessageFragment -> {
+            is ConversationFragment -> {
                 if (!fragments.contains(messageFragment)) {
                     fragments.add(messageFragment)
                     transaction.add(binding.flContent.id, messageFragment)

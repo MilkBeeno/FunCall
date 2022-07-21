@@ -14,22 +14,24 @@ class ConversationRepository {
         messageType: Int,
         operationTime: Long,
         isAcceptMessage: Boolean,
-        sendStatus: Int
+        sendStatus: Int,
+        messageContent: String = ""
     ) {
         val unReadCount = if (isAcceptMessage) {
-            val oldChatConversation = DataBaseManager.DB.conversationTableDao()
-                .query(Account.userId, targetId)
-            oldChatConversation.unReadCount + 1
+            val oldChatConversation =
+                DataBaseManager.DB.conversationTableDao().query(Account.userId, targetId)
+            oldChatConversation?.unReadCount ?: 0 + 1
         } else 0
-        val chatConversation = ConversationEntity()
-        chatConversation.userId = Account.userId
-        chatConversation.targetId = targetId
-        chatConversation.messageType = messageType
-        chatConversation.operationTime = operationTime
-        chatConversation.unReadCount = unReadCount
-        chatConversation.isAcceptMessage = isAcceptMessage
-        chatConversation.sendStatus = sendStatus
-        DataBaseManager.DB.conversationTableDao().insert(chatConversation)
+        val conversation = ConversationEntity()
+        conversation.userId = Account.userId
+        conversation.targetId = targetId
+        conversation.messageContent = messageContent
+        conversation.messageType = messageType
+        conversation.operationTime = operationTime
+        conversation.unReadCount = unReadCount
+        conversation.isAcceptMessage = isAcceptMessage
+        conversation.sendStatus = sendStatus
+        DataBaseManager.DB.conversationTableDao().insert(conversation)
     }
 
     /** 本地数据发送状态更新 */
