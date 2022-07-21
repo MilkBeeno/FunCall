@@ -3,7 +3,7 @@ package com.milk.funcall.chat.repo
 import androidx.paging.PagingSource
 import com.milk.funcall.account.Account
 import com.milk.funcall.chat.api.ApiService
-import com.milk.funcall.chat.data.ConversationWithUserInfo
+import com.milk.funcall.chat.data.ConversationWithUserInfoModel
 import com.milk.funcall.chat.ui.type.ChatMessageType
 import com.milk.funcall.chat.ui.type.ChatMsgSendStatus
 import com.milk.funcall.common.mdr.DataBaseManager
@@ -125,7 +125,7 @@ object MessageRepository {
     }
 
     /** 获取数据库中存储的会话消息 */
-    fun getChatConversationByDB(): PagingSource<Int, ConversationWithUserInfo> {
+    fun getChatConversationByDB(): PagingSource<Int, ConversationWithUserInfoModel> {
         return DataBaseManager.DB.conversationTableDao().getConversations(Account.userId)
     }
 

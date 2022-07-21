@@ -4,7 +4,7 @@ import androidx.room.Embedded
 import com.milk.funcall.common.mdr.table.ConversationEntity
 import com.milk.funcall.common.mdr.table.UserInfoEntity
 
-data class ConversationWithUserInfo(
+data class ConversationWithUserInfoModel(
     @Embedded
     var conversation: ConversationEntity,
     @Embedded

@@ -2,26 +2,28 @@ package com.milk.funcall.chat.ui.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.milk.funcall.R
-import com.milk.funcall.chat.data.ConversationWithUserInfo
+import com.milk.funcall.account.Account
+import com.milk.funcall.chat.data.ConversationWithUserInfoModel
 import com.milk.funcall.chat.ui.view.MessageRedDotView
 import com.milk.funcall.common.media.loader.ImageLoader
 import com.milk.funcall.common.paging.AbstractPagingAdapter
 import com.milk.funcall.common.paging.PagingViewHolder
+import com.milk.funcall.user.type.Gender
 
-class ConversationAdapter : AbstractPagingAdapter<ConversationWithUserInfo>(
+class ConversationAdapter : AbstractPagingAdapter<ConversationWithUserInfoModel>(
     layoutId = R.layout.item_chat_converstaion,
-    diffCallback = object : DiffUtil.ItemCallback<ConversationWithUserInfo>() {
+    diffCallback = object : DiffUtil.ItemCallback<ConversationWithUserInfoModel>() {
         override fun areItemsTheSame(
-            oldItem: ConversationWithUserInfo,
-            newItem: ConversationWithUserInfo
+            oldItem: ConversationWithUserInfoModel,
+            newItem: ConversationWithUserInfoModel
         ): Boolean {
             return oldItem.conversation.accountId == newItem.conversation.accountId
                     && oldItem.conversation.targetId == newItem.conversation.targetId
         }
 
         override fun areContentsTheSame(
-            oldItem: ConversationWithUserInfo,
-            newItem: ConversationWithUserInfo
+            oldItem: ConversationWithUserInfoModel,
+            newItem: ConversationWithUserInfoModel
         ): Boolean {
             return oldItem.conversation.operationTime == newItem.conversation.operationTime
                     && oldItem.conversation.unReadCount == newItem.conversation.unReadCount
@@ -35,9 +37,9 @@ class ConversationAdapter : AbstractPagingAdapter<ConversationWithUserInfo>(
         addChildClickViewIds(R.id.ivUserAvatar)
     }
 
-    override fun convert(holder: PagingViewHolder, item: ConversationWithUserInfo) {
+    override fun convert(holder: PagingViewHolder, item: ConversationWithUserInfoModel) {
         ImageLoader.Builder()
-            .loadAvatar(getTargetAvatar(item))
+            .loadAvatar(getTargetAvatar(item), getTargetGender(item))
             .target(holder.getView(R.id.ivUserAvatar))
             .build()
         holder.setText(R.id.tvUserName, getTargetName(item))
@@ -47,15 +49,24 @@ class ConversationAdapter : AbstractPagingAdapter<ConversationWithUserInfo>(
             .updateMessageCount(item.conversation.unReadCount)
     }
 
-    fun getTargetName(conversationWithUserInfo: ConversationWithUserInfo): String {
-        val userInfo = conversationWithUserInfo.userInfo
-        val conversation = conversationWithUserInfo.conversation
+    private fun getTargetGender(conversationWithUserInfoModel: ConversationWithUserInfoModel): String {
+        val userInfo = conversationWithUserInfoModel.userInfo
+        return when {
+            userInfo != null -> userInfo.targetGender
+            Account.userGender == Gender.Woman.value -> Gender.Man.value
+            else -> Gender.Woman.value
+        }
+    }
+
+    fun getTargetName(conversationWithUserInfoModel: ConversationWithUserInfoModel): String {
+        val userInfo = conversationWithUserInfoModel.userInfo
+        val conversation = conversationWithUserInfoModel.conversation
         return userInfo?.targetName ?: conversation.targetName
     }
 
-    fun getTargetAvatar(conversationWithUserInfo: ConversationWithUserInfo): String {
-        val userInfo = conversationWithUserInfo.userInfo
-        val conversation = conversationWithUserInfo.conversation
+    fun getTargetAvatar(conversationWithUserInfoModel: ConversationWithUserInfoModel): String {
+        val userInfo = conversationWithUserInfoModel.userInfo
+        val conversation = conversationWithUserInfoModel.conversation
         return userInfo?.targetAvatar ?: conversation.targetAvatar
     }
 }
