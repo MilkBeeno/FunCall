@@ -19,6 +19,8 @@ class ChatMessageRepository {
     internal fun receiveChatMessageEntity(
         msgNetworkUniqueId: String,
         targetId: Long,
+        targetName: String,
+        targetAvatar: String,
         messageType: Int,
         operationTime: Long
     ) = ChatMessageEntity().apply {
@@ -27,6 +29,8 @@ class ChatMessageRepository {
         this.msgNetworkUniqueId = msgNetworkUniqueId
         this.accountId = Account.userId
         this.targetId = targetId
+        this.targetName = targetName
+        this.targetAvatar = targetAvatar
         this.messageType = messageType
         this.operationTime = operationTime
         this.isReadMessage = false
@@ -38,12 +42,16 @@ class ChatMessageRepository {
     internal fun sendChatMessageEntity(
         msgLocalUniqueId: String,
         targetId: Long,
+        targetName: String,
+        targetAvatar: String,
         messageType: Int,
         operationTime: Long
     ) = ChatMessageEntity().apply {
         this.msgLocalUniqueId = msgLocalUniqueId
         this.accountId = Account.userId
         this.targetId = targetId
+        this.targetName = targetName
+        this.targetAvatar = targetAvatar
         this.messageType = messageType
         this.operationTime = operationTime
         this.isReadMessage = true

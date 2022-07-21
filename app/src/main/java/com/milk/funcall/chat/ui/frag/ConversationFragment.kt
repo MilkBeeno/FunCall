@@ -43,16 +43,18 @@ class ConversationFragment : AbstractFragment() {
             }
         }
         conversationAdapter.setOnItemClickListener { adapter, _, position ->
-            val targetId = adapter.getNoNullItem(position).targetId
-            ChatMessageActivity.create(requireContext(), targetId)
+            val targetId = adapter.getNoNullItem(position).conversation.targetId
+            val targetName = conversationAdapter.getTargetName(adapter.getNoNullItem(position))
+            val targetAvatar = conversationAdapter.getTargetAvatar(adapter.getNoNullItem(position))
+            ChatMessageActivity.create(requireContext(), targetId, targetName, targetAvatar)
         }
         conversationAdapter.setOnItemLongClickListener { adapter, _, position ->
-            val targetId = adapter.getNoNullItem(position).targetId
+            val targetId = adapter.getNoNullItem(position).conversation.targetId
             requireActivity().showToast("长按提示哦")
             true
         }
         conversationAdapter.setOnItemChildClickListener { adapter, _, position ->
-            val targetId = adapter.getNoNullItem(position).targetId
+            val targetId = adapter.getNoNullItem(position).conversation.targetId
             UserTotalInfoActivity.create(requireContext(), targetId)
         }
     }

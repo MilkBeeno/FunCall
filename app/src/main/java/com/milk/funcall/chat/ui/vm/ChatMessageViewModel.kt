@@ -8,6 +8,8 @@ import com.milk.simple.ktx.ioScope
 
 class ChatMessageViewModel : ViewModel() {
     private var targetId: Long = 0
+    private var targetName: String = ""
+    private var targetAvatar: String = ""
     val pagingSource: LocalPagingSource<Int, ChatMessageEntity>
         get() {
             return LocalPagingSource(
@@ -19,12 +21,21 @@ class ChatMessageViewModel : ViewModel() {
             )
         }
 
-    fun updateTargetUser(userId: Long) {
-        targetId = userId
+    fun updateTargetUser(targetId: Long, targetName: String, targetAvatar: String) {
+        this.targetId = targetId
+        this.targetName = targetName
+        this.targetAvatar = targetAvatar
     }
 
     fun sendTextChatMessage(messageContent: String) {
-        ioScope { MessageRepository.sendTextChatMessage(targetId, messageContent) }
+        ioScope {
+            MessageRepository.sendTextChatMessage(
+                targetId = targetId,
+                targetName = targetName,
+                targetAvatar = targetAvatar,
+                messageContent = messageContent
+            )
+        }
     }
 
     fun updateUnReadCount() {

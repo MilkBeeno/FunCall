@@ -11,6 +11,8 @@ class ConversationRepository {
     /** 会话列表数据表 */
     internal fun saveConversation(
         targetId: Long,
+        targetName: String,
+        targetAvatar: String,
         messageType: Int,
         operationTime: Long,
         isAcceptMessage: Boolean,
@@ -25,6 +27,8 @@ class ConversationRepository {
         val conversation = ConversationEntity()
         conversation.accountId = Account.userId
         conversation.targetId = targetId
+        conversation.targetName = targetName
+        conversation.targetAvatar = targetAvatar
         conversation.messageContent = messageContent
         conversation.messageType = messageType
         conversation.operationTime = operationTime

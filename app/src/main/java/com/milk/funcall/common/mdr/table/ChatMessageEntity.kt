@@ -24,6 +24,14 @@ class ChatMessageEntity {
     @ColumnInfo(name = "chatTargetId")
     var targetId: Long = 0
 
+    /** 接受私聊消息时、从服务端拉取的昵称、不更改不同步昵称 */
+    @ColumnInfo(name = "chatTargetName")
+    var targetName: String = ""
+
+    /** 接受私聊消息时、从服务端拉取的昵称、不更改不同步头像 */
+    @ColumnInfo(name = "chatTargetAvatar")
+    var targetAvatar: String = ""
+
     @ColumnInfo(name = "chatMsgType")
     var messageType: Int = 0
 

@@ -149,6 +149,7 @@ class UserTotalInfoActivity : AbstractActivity() {
                     context = this,
                     targetId = userInfo.targetId,
                     targetName = userInfo.targetName,
+                    targetAvatar = userInfo.targetAvatar,
                     isBlacked = userInfo.isBlacked
                 )
                 LiveEventBus
@@ -193,6 +194,7 @@ class UserTotalInfoActivity : AbstractActivity() {
                         videoUrl = it.videoConvert(),
                         targetId = it.targetId,
                         targetName = it.targetName,
+                        targetAvatar = it.targetAvatar,
                         isBlacked = it.isBlacked
                     )
                 }
@@ -201,7 +203,8 @@ class UserTotalInfoActivity : AbstractActivity() {
                 if (Account.userLogged) {
                     userTotalInfoViewModel.userTotalInfoFlow.value?.let {
                         if (it.isBlacked) return
-                        ChatMessageActivity.create(this, it.targetId, it.targetName)
+                        ChatMessageActivity
+                            .create(this, it.targetId, it.targetName, it.targetAvatar)
                     }
                 } else showToast(string(R.string.common_place_to_login_first))
             }

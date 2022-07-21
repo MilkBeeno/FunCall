@@ -8,16 +8,22 @@ import com.milk.funcall.user.api.ApiService
 import com.milk.funcall.user.data.UserTotalInfoModel
 
 class UserTotalInfoRepository {
+
     suspend fun getUserTotalInfo(userId: Long) = retrofit {
-        ApiService.userTotalInfApiService.getUserTotalInfo(userId)
+        val apiResponse =
+            ApiService.userTotalInfApiService.getUserTotalInfo(userId)
+        val apiResult = apiResponse.data
+        if (apiResponse.success && apiResult != null && Account.userLogged)
+            saveUserToDB(apiResult)
+        apiResponse
     }
 
     suspend fun getNextUserTotalInfo() = retrofit {
         val apiResponse =
             ApiService.userTotalInfApiService.getNextUserTotalInfo(Account.userGender)
         val apiResult = apiResponse.data
-//        if (apiResponse.success && apiResult != null && Account.userLogged)
-//            saveUserToDB(apiResult)
+        if (apiResponse.success && apiResult != null && Account.userLogged)
+            saveUserToDB(apiResult)
         apiResponse
     }
 

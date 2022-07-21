@@ -17,6 +17,14 @@ class ConversationEntity {
     @ColumnInfo(name = "conversationTargetId")
     var targetId: Long = 0
 
+    /** 接受私聊消息时、从服务端拉取的昵称、不更改不同步昵称 */
+    @ColumnInfo(name = "conversationTargetName")
+    var targetName: String = ""
+
+    /** 接受私聊消息时、从服务端拉取的昵称、不更改不同步头像 */
+    @ColumnInfo(name = "conversationTargetAvatar")
+    var targetAvatar: String = ""
+
     @ColumnInfo(name = "conversationMsgType")
     var messageType: Int = 0
 

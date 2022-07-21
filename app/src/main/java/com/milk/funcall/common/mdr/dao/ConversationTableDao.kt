@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.milk.funcall.chat.data.ConversationWithUserInfo
 import com.milk.funcall.common.mdr.table.ConversationEntity
 
 @Dao
@@ -16,8 +17,8 @@ interface ConversationTableDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(chatConversationEntity: ConversationEntity)
 
-    @Query("SELECT * FROM ConversationTable WHERE conversationAccountId=:accountId")
-    fun getConversations(accountId: Long): PagingSource<Int, ConversationEntity>
+    @Query("SELECT * FROM ConversationTable LEFT JOIN UserInfoTable ON UserInfoTable.userInfoTargetId = ConversationTable.conversationTargetId WHERE ConversationTable.conversationAccountId = :accountId ORDER BY ConversationTable.conversationOperationTime DESC")
+    fun getConversations(accountId: Long): PagingSource<Int, ConversationWithUserInfo>
 
     @Query("UPDATE ConversationTable SET conversationSendStatus=:sendStatus WHERE conversationAccountId=:accountId AND conversationTargetId=:targetId ")
     fun updateSendStatus(accountId: Long, targetId: Long, sendStatus: Int)

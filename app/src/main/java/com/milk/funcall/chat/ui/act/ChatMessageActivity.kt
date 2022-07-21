@@ -23,6 +23,7 @@ class ChatMessageActivity : AbstractActivity() {
     private val chatMessageAdapter by lazy { ChatMessageAdapter() }
     private val targetId by lazy { intent.getLongExtra(TARGET_ID, 0) }
     private val targetName by lazy { intent.getStringExtra(TARGET_NAME).toString() }
+    private val targetAvatar by lazy { intent.getStringExtra(TARGET_AVATAR).toString() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,7 +85,7 @@ class ChatMessageActivity : AbstractActivity() {
     }
 
     private fun initializeData() {
-        chatMessageViewModel.updateTargetUser(targetId)
+        chatMessageViewModel.updateTargetUser(targetId, targetName, targetAvatar)
         chatMessageAdapter.setPagerSource(chatMessageViewModel.pagingSource.pager)
     }
 
@@ -112,10 +113,17 @@ class ChatMessageActivity : AbstractActivity() {
     companion object {
         private const val TARGET_ID = "TARGET_ID"
         private const val TARGET_NAME = "TARGET_NAME"
-        fun create(context: Context, targetId: Long, targetName: String = "") {
+        private const val TARGET_AVATAR = "TARGET_AVATAR"
+        fun create(
+            context: Context,
+            targetId: Long,
+            targetName: String,
+            targetAvatar: String
+        ) {
             val intent = Intent(context, ChatMessageActivity::class.java)
             intent.putExtra(TARGET_ID, targetId)
             intent.putExtra(TARGET_NAME, targetName)
+            intent.putExtra(TARGET_AVATAR, targetAvatar)
             context.startActivity(intent)
         }
     }

@@ -24,6 +24,7 @@ class ImageMediaActivity : AbstractActivity() {
     private val guideDialog by lazy { ImageMediaGuideDialog(this) }
     private val targetId by lazy { intent.getLongExtra(TARGET_ID, 0) }
     private val targetName by lazy { intent.getStringExtra(TARGET_NAME).toString() }
+    private val targetAvatar by lazy { intent.getStringExtra(TARGET_AVATAR).toString() }
     private val isBlacked by lazy { intent.getBooleanExtra(IS_BLACKED, false) }
     private val imageMediaAdapter by lazy { ImageMediaAdapter() }
     private val pagerSnapHelper by lazy { PagerSnapHelper() }
@@ -98,24 +99,28 @@ class ImageMediaActivity : AbstractActivity() {
             }
             binding.llMessage -> {
                 if (isBlacked) return
-                ChatMessageActivity.create(this, targetId, targetName)
+                ChatMessageActivity
+                    .create(this, targetId, targetName, targetAvatar)
             }
         }
     }
 
     companion object {
-        private const val IS_BLACKED = "IS_BLACKED"
         private const val TARGET_ID = "TARGET_ID"
         private const val TARGET_NAME = "TARGET_NAME"
+        private const val TARGET_AVATAR = "TARGET_AVATAR"
+        private const val IS_BLACKED = "IS_BLACKED"
         fun create(
             context: Context,
             targetId: Long = 0,
             targetName: String = "",
+            targetAvatar: String = "",
             isBlacked: Boolean = false
         ) {
             val intent = Intent(context, ImageMediaActivity::class.java)
             intent.putExtra(TARGET_ID, targetId)
             intent.putExtra(TARGET_NAME, targetName)
+            intent.putExtra(TARGET_AVATAR, targetAvatar)
             intent.putExtra(IS_BLACKED, isBlacked)
             context.startActivity(intent)
         }

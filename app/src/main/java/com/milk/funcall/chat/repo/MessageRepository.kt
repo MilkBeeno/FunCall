@@ -3,11 +3,11 @@ package com.milk.funcall.chat.repo
 import androidx.paging.PagingSource
 import com.milk.funcall.account.Account
 import com.milk.funcall.chat.api.ApiService
+import com.milk.funcall.chat.data.ConversationWithUserInfo
 import com.milk.funcall.chat.ui.type.ChatMessageType
 import com.milk.funcall.chat.ui.type.ChatMsgSendStatus
 import com.milk.funcall.common.mdr.DataBaseManager
 import com.milk.funcall.common.mdr.table.ChatMessageEntity
-import com.milk.funcall.common.mdr.table.ConversationEntity
 import com.milk.funcall.common.net.retrofit
 import com.milk.simple.ktx.ioScope
 import com.milk.simple.log.Logger
@@ -49,14 +49,18 @@ object MessageRepository {
                     ?.forEach { chatMsgReceiveSingleModel ->
                         chatMessageRepository.saveTextMessage(chatMsgReceiveSingleModel.content) {
                             chatMessageRepository.receiveChatMessageEntity(
-                                chatMsgReceiveSingleModel.itemId,
-                                chatMsgReceiveModel.faceUserId,
-                                ChatMessageType.TextReceived.value,
-                                chatMsgReceiveSingleModel.chatTime
+                                msgNetworkUniqueId = chatMsgReceiveSingleModel.itemId,
+                                targetId = chatMsgReceiveModel.faceUserId,
+                                targetName = chatMsgReceiveModel.faceNickname,
+                                targetAvatar = chatMsgReceiveModel.faceAvatarUrl,
+                                messageType = ChatMessageType.TextReceived.value,
+                                operationTime = chatMsgReceiveSingleModel.chatTime
                             )
                         }
                         conversationRepository.saveConversation(
                             targetId = chatMsgReceiveModel.faceUserId,
+                            targetName = chatMsgReceiveModel.faceNickname,
+                            targetAvatar = chatMsgReceiveModel.faceAvatarUrl,
                             messageType = ChatMessageType.TextReceived.value,
                             operationTime = chatMsgReceiveSingleModel.chatTime,
                             isAcceptMessage = true,
@@ -69,20 +73,29 @@ object MessageRepository {
     }
 
     /** 发送文本私聊消息到服务器中 */
-    suspend fun sendTextChatMessage(targetId: Long, messageContent: String) = retrofit {
+    suspend fun sendTextChatMessage(
+        targetId: Long,
+        targetName: String,
+        targetAvatar: String,
+        messageContent: String
+    ) = retrofit {
         val messageUniqueId =
             chatMessageRepository.createMsgLocalUniqueId(Account.userId, targetId)
         val operationTime = System.currentTimeMillis()
         chatMessageRepository.saveTextMessage(messageContent) {
             chatMessageRepository.sendChatMessageEntity(
-                messageUniqueId,
-                targetId,
-                ChatMessageType.TextSend.value,
-                operationTime
+                msgLocalUniqueId = messageUniqueId,
+                targetId = targetId,
+                targetName = targetName,
+                targetAvatar = targetAvatar,
+                messageType = ChatMessageType.TextSend.value,
+                operationTime = operationTime
             )
         }
         conversationRepository.saveConversation(
             targetId = targetId,
+            targetName = targetName,
+            targetAvatar = targetAvatar,
             messageType = ChatMessageType.TextSend.value,
             operationTime = operationTime,
             isAcceptMessage = false,
@@ -112,7 +125,7 @@ object MessageRepository {
     }
 
     /** 获取数据库中存储的会话消息 */
-    fun getChatConversationByDB(): PagingSource<Int, ConversationEntity> {
+    fun getChatConversationByDB(): PagingSource<Int, ConversationWithUserInfo> {
         return DataBaseManager.DB.conversationTableDao().getConversations(Account.userId)
     }
 
