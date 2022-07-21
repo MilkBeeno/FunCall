@@ -5,6 +5,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.DiffUtil
 import com.milk.funcall.R
 import com.milk.funcall.account.Account
+import com.milk.funcall.chat.ui.time.convertMessageTime
 import com.milk.funcall.chat.ui.type.ChatMessageType
 import com.milk.funcall.common.mdr.table.ChatMessageEntity
 import com.milk.funcall.common.mdr.table.UserInfoEntity
@@ -12,6 +13,8 @@ import com.milk.funcall.common.media.loader.ImageLoader
 import com.milk.funcall.common.paging.AbstractPagingAdapter
 import com.milk.funcall.common.paging.MultiTypeDelegate
 import com.milk.funcall.common.paging.PagingViewHolder
+import com.milk.simple.ktx.gone
+import com.milk.simple.ktx.visible
 
 class ChatMessageAdapter : AbstractPagingAdapter<ChatMessageEntity>(
     diffCallback = object : DiffUtil.ItemCallback<ChatMessageEntity>() {
@@ -59,7 +62,22 @@ class ChatMessageAdapter : AbstractPagingAdapter<ChatMessageEntity>(
 
     private fun updateMessageTime(holder: PagingViewHolder, item: ChatMessageEntity) {
         val tvOperationTime = holder.getView<AppCompatTextView>(R.id.tvOperationTime)
-        tvOperationTime.text = item.operationTime.toString()
+        when (holder.layoutPosition) {
+            0 -> {
+                tvOperationTime.visible()
+                tvOperationTime.text = item.operationTime.convertMessageTime()
+            }
+            else -> {
+                val lastItem = getNoNullItem(holder.layoutPosition - 1)
+                if (item.operationTime - lastItem.operationTime > 4 * 60 * 1000) {
+                    tvOperationTime.visible()
+                    tvOperationTime.text = item.operationTime.convertMessageTime()
+                } else {
+                    tvOperationTime.gone()
+                    tvOperationTime.text = item.operationTime.convertMessageTime()
+                }
+            }
+        }
     }
 
     private fun updatePeopleAvatar(holder: PagingViewHolder, item: ChatMessageEntity) {

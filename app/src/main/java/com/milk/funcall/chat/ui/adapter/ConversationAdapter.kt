@@ -3,8 +3,9 @@ package com.milk.funcall.chat.ui.adapter
 import androidx.recyclerview.widget.DiffUtil
 import com.milk.funcall.R
 import com.milk.funcall.account.Account
-import com.milk.funcall.common.mdr.table.ConversationWithUserInfoEntity
+import com.milk.funcall.chat.ui.time.convertMessageTime
 import com.milk.funcall.chat.ui.view.MessageRedDotView
+import com.milk.funcall.common.mdr.table.ConversationWithUserInfoEntity
 import com.milk.funcall.common.media.loader.ImageLoader
 import com.milk.funcall.common.paging.AbstractPagingAdapter
 import com.milk.funcall.common.paging.PagingViewHolder
@@ -44,7 +45,7 @@ class ConversationAdapter : AbstractPagingAdapter<ConversationWithUserInfoEntity
             .build()
         holder.setText(R.id.tvUserName, getTargetName(item))
         holder.setText(R.id.tvMessage, item.conversation.messageContent)
-        holder.setText(R.id.tvTime, item.conversation.operationTime.toString())
+        holder.setText(R.id.tvTime, item.conversation.operationTime.convertMessageTime())
         holder.getView<MessageRedDotView>(R.id.redDotRootView)
             .updateMessageCount(item.conversation.unReadCount)
     }

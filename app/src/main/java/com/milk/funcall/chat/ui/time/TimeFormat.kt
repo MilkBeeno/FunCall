@@ -27,7 +27,7 @@ fun Long.timeCalibration(
 
 // 将时间转为 IM 通用消息、
 fun Long.convertMessageTime(localTime: Long = System.currentTimeMillis()): String {
-    var finalTime: String = ""
+    var finalTime = ""
     val operateCompleteTime = autoCompleteTime(this)
     val localCompleteTime = autoCompleteTime(localTime)
     val calendar = Calendar.getInstance()
