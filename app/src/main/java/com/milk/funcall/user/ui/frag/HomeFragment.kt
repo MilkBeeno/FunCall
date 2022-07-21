@@ -74,7 +74,7 @@ class HomeFragment : AbstractFragment() {
         binding.refresh.setOnRefreshListener { adapter.refresh() }
         adapter.setOnItemClickListener { adapter, _, position ->
             val user = adapter.getNoNullItem(position)
-            UserTotalInfoActivity.create(requireContext(), user.userId)
+            UserTotalInfoActivity.create(requireContext(), user.targetId)
         }
     }
 

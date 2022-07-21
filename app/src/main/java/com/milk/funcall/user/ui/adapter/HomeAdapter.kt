@@ -22,7 +22,7 @@ class HomeAdapter : AbstractPagingAdapter<UserSimpleInfoModel>(
             oldItem: UserSimpleInfoModel,
             newItem: UserSimpleInfoModel
         ): Boolean {
-            return oldItem.userId == newItem.userId
+            return oldItem.targetId == newItem.targetId
         }
 
         override fun areContentsTheSame(
@@ -32,14 +32,14 @@ class HomeAdapter : AbstractPagingAdapter<UserSimpleInfoModel>(
     }
 ) {
     override fun convert(holder: PagingViewHolder, item: UserSimpleInfoModel) {
-        val isOnline = item.userOnline == OnlineState.Online.value
-        holder.setText(R.id.tvUserName, item.userName)
+        val isOnline = item.targetOnline == OnlineState.Online.value
+        holder.setText(R.id.tvUserName, item.targetName)
         holder.getView<AppCompatImageView>(R.id.ivUserImage).apply {
             val params = layoutParams
             params.height = dpToPx(context, if (item.isMediumImage) 125f else 223f).toInt()
             layoutParams = params
             ImageLoader.Builder()
-                .request(item.userImage)
+                .request(item.targetImage)
                 .placeholder(
                     if (item.isMediumImage)
                         R.drawable.common_list_default_small
@@ -50,7 +50,7 @@ class HomeAdapter : AbstractPagingAdapter<UserSimpleInfoModel>(
                 .build()
         }
         ImageLoader.Builder()
-            .loadAvatar(item.userAvatar, item.userGender)
+            .loadAvatar(item.targetAvatar, item.targetGender)
             .target(holder.getView(R.id.ivUserAvatar))
             .build()
         holder.getView<View>(R.id.vState).setBackgroundResource(

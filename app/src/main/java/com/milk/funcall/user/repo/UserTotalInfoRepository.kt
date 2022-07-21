@@ -9,20 +9,15 @@ import com.milk.funcall.user.data.UserTotalInfoModel
 
 class UserTotalInfoRepository {
     suspend fun getUserTotalInfo(userId: Long) = retrofit {
-        val apiResponse =
-            ApiService.userTotalInfApiService.getUserTotalInfo(userId)
-        val apiResult = apiResponse.data
-        if (apiResponse.success && apiResult != null && Account.userLogged)
-            saveUserToDB(apiResult)
-        apiResponse
+        ApiService.userTotalInfApiService.getUserTotalInfo(userId)
     }
 
     suspend fun getNextUserTotalInfo() = retrofit {
         val apiResponse =
             ApiService.userTotalInfApiService.getNextUserTotalInfo(Account.userGender)
         val apiResult = apiResponse.data
-        if (apiResponse.success && apiResult != null && Account.userLogged)
-            saveUserToDB(apiResult)
+//        if (apiResponse.success && apiResult != null && Account.userLogged)
+//            saveUserToDB(apiResult)
         apiResponse
     }
 
@@ -32,14 +27,14 @@ class UserTotalInfoRepository {
 
     private fun saveUserToDB(userInfo: UserTotalInfoModel) {
         val userInfoEntity = UserInfoEntity()
-        userInfoEntity.userId = Account.userId
+        userInfoEntity.accountId = Account.userId
         userInfoEntity.targetId = userInfo.targetId
-        userInfoEntity.userName = userInfo.userName
-        userInfoEntity.userAvatar = userInfo.userAvatar
-        userInfoEntity.userGender = userInfo.userGender
-        userInfoEntity.userImage = userInfo.userImage
-        userInfoEntity.userVideo = userInfo.userVideo
-        userInfoEntity.userOnline = userInfo.userOnline
+        userInfoEntity.targetName = userInfo.targetName
+        userInfoEntity.targetAvatar = userInfo.targetAvatar
+        userInfoEntity.targetGender = userInfo.targetGender
+        userInfoEntity.targetImage = userInfo.targetImage
+        userInfoEntity.targetVideo = userInfo.targetVideo
+        userInfoEntity.targetOnline = userInfo.targetOnline
         DataBaseManager.DB.userInfoTableDao().insert(userInfoEntity)
     }
 }

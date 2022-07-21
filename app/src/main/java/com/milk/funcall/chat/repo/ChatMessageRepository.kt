@@ -25,7 +25,7 @@ class ChatMessageRepository {
         this.msgLocalUniqueId =
             createMsgLocalUniqueId(Account.userId, targetId)
         this.msgNetworkUniqueId = msgNetworkUniqueId
-        this.userId = Account.userId
+        this.accountId = Account.userId
         this.targetId = targetId
         this.messageType = messageType
         this.operationTime = operationTime
@@ -42,7 +42,7 @@ class ChatMessageRepository {
         operationTime: Long
     ) = ChatMessageEntity().apply {
         this.msgLocalUniqueId = msgLocalUniqueId
-        this.userId = Account.userId
+        this.accountId = Account.userId
         this.targetId = targetId
         this.messageType = messageType
         this.operationTime = operationTime

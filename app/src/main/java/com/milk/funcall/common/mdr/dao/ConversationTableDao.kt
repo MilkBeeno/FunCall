@@ -10,18 +10,18 @@ import com.milk.funcall.common.mdr.table.ConversationEntity
 @Dao
 interface ConversationTableDao {
 
-    @Query("SELECT * FROM ConversationTable WHERE conversationUserId=:userId AND conversationTargetId=:targetId")
-    fun query(userId: Long, targetId: Long): ConversationEntity?
+    @Query("SELECT * FROM ConversationTable WHERE conversationAccountId=:accountId AND conversationTargetId=:targetId")
+    fun query(accountId: Long, targetId: Long): ConversationEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(chatConversationEntity: ConversationEntity)
 
-    @Query("SELECT * FROM ConversationTable WHERE conversationUserId=:userId")
-    fun getConversations(userId: Long): PagingSource<Int, ConversationEntity>
+    @Query("SELECT * FROM ConversationTable WHERE conversationAccountId=:accountId")
+    fun getConversations(accountId: Long): PagingSource<Int, ConversationEntity>
 
-    @Query("UPDATE ConversationTable SET conversationSendStatus=:sendStatus WHERE conversationUserId=:userId AND conversationTargetId=:targetId ")
-    fun updateSendStatus(userId: Long, targetId: Long, sendStatus: Int)
+    @Query("UPDATE ConversationTable SET conversationSendStatus=:sendStatus WHERE conversationAccountId=:accountId AND conversationTargetId=:targetId ")
+    fun updateSendStatus(accountId: Long, targetId: Long, sendStatus: Int)
 
-    @Query("UPDATE ConversationTable SET conversationUnReadCount=:unReadCount WHERE conversationUserId=:userId AND conversationTargetId=:targetId ")
-    fun updateUnReadCount(userId: Long, targetId: Long, unReadCount: Int = 0)
+    @Query("UPDATE ConversationTable SET conversationUnReadCount=:unReadCount WHERE conversationAccountId=:accountId AND conversationTargetId=:targetId ")
+    fun updateUnReadCount(accountId: Long, targetId: Long, unReadCount: Int = 0)
 }

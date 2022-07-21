@@ -6,7 +6,7 @@ import java.io.Serializable
 
 data class UserTotalInfoModel(
     @SerializedName("fansNum")
-    val userFans: Int = 0,
+    val targetFans: Int = 0,
     @SerializedName("blackFlag")
     val isBlacked: Boolean = false,
     @SerializedName("followFlag")
@@ -15,36 +15,36 @@ data class UserTotalInfoModel(
     val userFollows: Int = 0,
     // 展示给用户的 ID
     @SerializedName("uid")
-    val userIdx: String = "",
+    val targetIdx: String = "",
     @SerializedName("link")
-    val userLink: String = "",
+    val targetLink: String = "",
     // 登录的 accessToken
     @SerializedName("openid")
     val openId: String = "",
     // 源头像地址未压缩
     @SerializedName("originalAvatarUrl")
-    val UserOriginalAvatar: String = "",
+    val targetOriginalAvatar: String = "",
     // 自我介绍说明
     @SerializedName("selfIntroduction")
-    val userBio: String = "",
+    val targetBio: String = "",
     @SerializedName("sortInfo")
-    val userSortInfo: UserSortModel? = null,
+    val targetSortInfo: UserSortModel? = null,
     // 用户的视频地址
     @SerializedName("videoMaterial")
-    val userVideoUrl: UserMediaModel? = null,
+    val targetVideoUrl: UserMediaModel? = null,
     // 用户照片地址
     @SerializedName("imageMaterialList")
-    var userImageList: MutableList<UserMediaModel>? = null
+    var targetImageList: MutableList<UserMediaModel>? = null
 ) : UserInfoEntity(), Serializable {
 
     fun imageListConvert(): MutableList<String> {
         val imageUrlList = mutableListOf<String>()
-        userImageList?.forEach { imageUrlList.add(it.thumbUrl) }
+        targetImageList?.forEach { imageUrlList.add(it.thumbUrl) }
         return imageUrlList
     }
 
     fun videoConvert(): String {
-        return if (userVideoUrl == null || userVideoUrl.toString() == "null") ""
-        else userVideoUrl.toString()
+        return if (targetVideoUrl == null || targetVideoUrl.toString() == "null") ""
+        else targetVideoUrl.toString()
     }
 }

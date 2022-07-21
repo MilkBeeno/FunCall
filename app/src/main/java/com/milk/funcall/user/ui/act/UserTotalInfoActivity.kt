@@ -58,7 +58,7 @@ class UserTotalInfoActivity : AbstractActivity() {
         launch {
             userTotalInfoViewModel.userTotalInfoFlow.collectLatest {
                 when {
-                    it != null && it.userId > 0 -> {
+                    it != null && it.targetId > 0 -> {
                         binding.lvLoading.gone()
                         binding.llUserNext.visible()
                         binding.basic.root.visible()
@@ -109,17 +109,17 @@ class UserTotalInfoActivity : AbstractActivity() {
     @SuppressLint("SetTextI18n")
     private fun setUserBasic(userInfo: UserTotalInfoModel) {
         ImageLoader.Builder()
-            .loadAvatar(userInfo.userAvatar, userInfo.userGender)
+            .loadAvatar(userInfo.targetAvatar, userInfo.targetGender)
             .target(binding.basic.ivUserAvatar)
             .build()
-        binding.basic.ivUserGender.updateGender(userInfo.userGender)
-        binding.tvUserName.text = userInfo.userName
-        binding.tvUserId.text = "ID : ".plus(userInfo.userIdx)
-        binding.tvUserBio.text = userInfo.userBio
-        if (userInfo.userLink.isNotBlank()) {
+        binding.basic.ivUserGender.updateGender(userInfo.targetGender)
+        binding.tvUserName.text = userInfo.targetName
+        binding.tvUserId.text = "ID : ".plus(userInfo.targetIdx)
+        binding.tvUserBio.text = userInfo.targetBio
+        if (userInfo.targetLink.isNotBlank()) {
             binding.link.clLink.visible()
             binding.link.tvNotLink.gone()
-            binding.link.tvContact.text = userInfo.userLink
+            binding.link.tvContact.text = userInfo.targetLink
         } else {
             binding.link.clLink.gone()
             binding.link.tvNotLink.visible()
@@ -147,8 +147,8 @@ class UserTotalInfoActivity : AbstractActivity() {
             binding.rvImage.adapter = UserImageAdapter(userImageList) { position ->
                 ImageMediaActivity.create(
                     context = this,
-                    targetId = userInfo.userId,
-                    targetName = userInfo.userName,
+                    targetId = userInfo.targetId,
+                    targetName = userInfo.targetName,
                     isBlacked = userInfo.isBlacked
                 )
                 LiveEventBus
@@ -191,8 +191,8 @@ class UserTotalInfoActivity : AbstractActivity() {
                     VideoMediaActivity.create(
                         context = this,
                         videoUrl = it.videoConvert(),
-                        targetId = it.userId,
-                        targetName = it.userName,
+                        targetId = it.targetId,
+                        targetName = it.targetName,
                         isBlacked = it.isBlacked
                     )
                 }
@@ -201,7 +201,7 @@ class UserTotalInfoActivity : AbstractActivity() {
                 if (Account.userLogged) {
                     userTotalInfoViewModel.userTotalInfoFlow.value?.let {
                         if (it.isBlacked) return
-                        ChatMessageActivity.create(this, it.userId, it.userName)
+                        ChatMessageActivity.create(this, it.targetId, it.targetName)
                     }
                 } else showToast(string(R.string.common_place_to_login_first))
             }

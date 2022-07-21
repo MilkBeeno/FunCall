@@ -45,7 +45,7 @@ class FansActivity : AbstractActivity() {
         binding.tvPublish.setOnClickListener(this)
         fansAdapter.setOnItemClickListener { adapter, _, position ->
             UserTotalInfoActivity
-                .create(this, adapter.getNoNullItem(position).userId)
+                .create(this, adapter.getNoNullItem(position).targetId)
         }
     }
 

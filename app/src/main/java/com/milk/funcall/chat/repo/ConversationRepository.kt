@@ -23,7 +23,7 @@ class ConversationRepository {
             oldChatConversation?.unReadCount ?: 0 + 1
         } else 0
         val conversation = ConversationEntity()
-        conversation.userId = Account.userId
+        conversation.accountId = Account.userId
         conversation.targetId = targetId
         conversation.messageContent = messageContent
         conversation.messageType = messageType

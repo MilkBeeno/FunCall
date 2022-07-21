@@ -15,28 +15,28 @@ class FansOrFollowsAdapter : AbstractPagingAdapter<UserInfoEntity>(
     layoutId = R.layout.item_fans_or_follows,
     diffCallback = object : DiffUtil.ItemCallback<UserInfoEntity>() {
         override fun areItemsTheSame(oldItem: UserInfoEntity, newItem: UserInfoEntity): Boolean {
-            return oldItem.userId == newItem.userId
+            return oldItem.targetId == newItem.targetId
         }
 
         override fun areContentsTheSame(oldItem: UserInfoEntity, newItem: UserInfoEntity): Boolean {
-            return oldItem.userAvatar == newItem.userAvatar
-                    && oldItem.userName == newItem.userName
-                    && oldItem.userOnline == newItem.userOnline
-                    && oldItem.userImage == newItem.userImage
-                    && oldItem.userVideo == newItem.userVideo
+            return oldItem.targetAvatar == newItem.targetAvatar
+                    && oldItem.targetName == newItem.targetName
+                    && oldItem.targetOnline == newItem.targetOnline
+                    && oldItem.targetImage == newItem.targetImage
+                    && oldItem.targetVideo == newItem.targetVideo
         }
     }
 ) {
     override fun convert(holder: PagingViewHolder, item: UserInfoEntity) {
-        val isOnline = item.userOnline == OnlineState.Online.value
-        holder.setText(R.id.tvUserName, item.userName)
+        val isOnline = item.targetOnline == OnlineState.Online.value
+        holder.setText(R.id.tvUserName, item.targetName)
         ImageLoader.Builder()
-            .request(item.userImage)
+            .request(item.targetImage)
             .placeholder(R.drawable.common_list_default_big)
             .target(holder.getView(R.id.ivUserImage))
             .build()
         ImageLoader.Builder()
-            .loadAvatar(item.userAvatar, item.userGender)
+            .loadAvatar(item.targetAvatar, item.targetGender)
             .target(holder.getView(R.id.ivUserAvatar))
             .build()
         holder.getView<View>(R.id.vState).setBackgroundResource(

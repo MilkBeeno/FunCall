@@ -7,43 +7,45 @@ import com.google.gson.annotations.SerializedName
 
 @Entity(
     tableName = "UserInfoTable",
-    primaryKeys = ["userInfoUserId", "userInfoTargetId"],
-    indices = [Index(value = ["userInfoUserId", "userInfoTargetId"], unique = true)]
+    primaryKeys = ["userInfoAccountId", "userInfoTargetId"],
+    indices = [Index(value = ["userInfoAccountId", "userInfoTargetId"], unique = true)]
 )
 open class UserInfoEntity {
-    @ColumnInfo(name = "userInfoUserId")
-    var userId: Long = 0
+    @ColumnInfo(name = "userInfoAccountId")
+    var accountId: Long = 0
 
+    /** 1.登录时 TargetId 是当前登录用户的 ID 2. 查看用户信息时是他人的用户 ID */
     @SerializedName("id")
     @ColumnInfo(name = "userInfoTargetId")
     var targetId: Long = 0
 
     @SerializedName("nickname")
     @ColumnInfo(name = "userInfoName")
-    var userName: String = ""
+    var targetName: String = ""
 
     @SerializedName("avatarUrl")
     @ColumnInfo(name = "userInfoAvatarUrl")
-    var userAvatar: String = ""
+    var targetAvatar: String = ""
 
     @SerializedName("gender")
     @ColumnInfo(name = "userInfoGender")
-    var userGender: String = ""
+    var targetGender: String = ""
 
     @SerializedName("imageUrl")
     @ColumnInfo(name = "userInfoImageUrl")
-    var userImage: String = ""
+    var targetImage: String = ""
 
     @SerializedName("videoUrl")
     @ColumnInfo(name = "userInfoVideoUrl")
-    var userVideo: String = ""
+    var targetVideo: String = ""
 
     @SerializedName("onlineState")
     @ColumnInfo(name = "userInfoOnlineState")
-    var userOnline: String = ""
+    var targetOnline: String = ""
 
     override fun toString(): String {
-        return "userId=$userId,targetId=$targetId,userAvatar=$userAvatar,userGender=$userGender," +
-                "userImage=$userImage,userName=$userName,userVideo=$userVideo,userOnline=$userOnline"
+        return "userId=$accountId,targetId=$targetId,targetAvatar=$targetAvatar," +
+                "targetGender=$targetGender,targetImage=$targetImage,targetName=$targetName," +
+                "targetVideo=$targetVideo,targetOnline=$targetOnline"
     }
 }

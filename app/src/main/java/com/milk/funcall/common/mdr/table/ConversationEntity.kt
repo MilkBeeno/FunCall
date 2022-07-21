@@ -6,13 +6,13 @@ import androidx.room.Index
 
 @Entity(
     tableName = "ConversationTable",
-    primaryKeys = ["conversationUserId", "conversationTargetId"],
-    indices = [Index(value = ["conversationUserId", "conversationTargetId"], unique = true)]
+    primaryKeys = ["conversationAccountId", "conversationTargetId"],
+    indices = [Index(value = ["conversationAccountId", "conversationTargetId"], unique = true)]
 )
 class ConversationEntity {
 
-    @ColumnInfo(name = "conversationUserId")
-    var userId: Long = 0
+    @ColumnInfo(name = "conversationAccountId")
+    var accountId: Long = 0
 
     @ColumnInfo(name = "conversationTargetId")
     var targetId: Long = 0
@@ -36,7 +36,7 @@ class ConversationEntity {
     var sendStatus: Int = 0
 
     override fun toString(): String {
-        return "userId=$userId,targetId=$targetId,messageType=$messageType," +
+        return "userId=$accountId,targetId=$targetId,messageType=$messageType," +
                 "operationTime=$operationTime,messageContent=$messageContent," +
                 "isAcceptMessage=$isAcceptMessage,unReadCount=$unReadCount," +
                 "sendStatus=$sendStatus"

@@ -15,7 +15,7 @@ class ConversationAdapter : AbstractPagingAdapter<ConversationEntity>(
             oldItem: ConversationEntity,
             newItem: ConversationEntity
         ): Boolean {
-            return oldItem.userId == newItem.userId && oldItem.targetId == newItem.targetId
+            return oldItem.accountId == newItem.accountId && oldItem.targetId == newItem.targetId
         }
 
         override fun areContentsTheSame(

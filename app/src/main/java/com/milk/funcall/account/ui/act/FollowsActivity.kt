@@ -46,7 +46,7 @@ class FollowsActivity : AbstractActivity() {
         binding.tvAttention.setOnClickListener(this)
         followsAdapter.setOnItemClickListener { adapter, _, position ->
             UserTotalInfoActivity
-                .create(this, adapter.getNoNullItem(position).userId)
+                .create(this, adapter.getNoNullItem(position).targetId)
         }
     }
 

@@ -227,22 +227,22 @@ object Account {
 
     internal fun saveAccountInfo(info: UserTotalInfoModel, registered: Boolean = true) {
         ioScope {
-            userId = info.userId
-            userIdFlow.emit(info.userId)
-            userName = info.userName
-            userNameFlow.emit(info.userName)
-            if (registered) userGender = info.userGender
-            userGenderFlow.emit(info.userGender)
-            userAvatar = info.userAvatar
-            userAvatarFlow.emit(info.userAvatar)
-            userFans = info.userFans
-            userFansFlow.emit(info.userFans)
+            userId = info.targetId
+            userIdFlow.emit(info.targetId)
+            userName = info.targetName
+            userNameFlow.emit(info.targetName)
+            if (registered) userGender = info.targetGender
+            userGenderFlow.emit(info.targetGender)
+            userAvatar = info.targetAvatar
+            userAvatarFlow.emit(info.targetAvatar)
+            userFans = info.targetFans
+            userFansFlow.emit(info.targetFans)
             userFollows = info.userFollows
             userFollowsFlow.emit(info.userFollows)
-            userBio = info.userBio
-            userBioFlow.emit(info.userBio)
-            userLink = info.userLink
-            userLinkFlow.emit(info.userLink)
+            userBio = info.targetBio
+            userBioFlow.emit(info.targetBio)
+            userLink = info.targetLink
+            userLinkFlow.emit(info.targetLink)
             val imageList = info.imageListConvert()
             userImageList = imageList
             userImageListFlow.emit(imageList)

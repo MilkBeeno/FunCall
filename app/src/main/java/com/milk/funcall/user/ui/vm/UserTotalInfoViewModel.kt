@@ -29,7 +29,7 @@ class UserTotalInfoViewModel : ViewModel() {
 
     fun changeFollowState() {
         ioScope {
-            val targetId = userTotalInfoFlow.value?.userId ?: 0
+            val targetId = userTotalInfoFlow.value?.targetId ?: 0
             val isFollow = !(userTotalInfoFlow.value?.isFollowed ?: false)
             val apiResponse =
                 userTotalInfoRepository.changeFollowState(targetId, isFollow)
