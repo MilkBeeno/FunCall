@@ -92,13 +92,13 @@ class LoginActivity : AbstractActivity() {
                     loginViewModel.currentDeviceId = it
                 }
             }
-            binding.llDevice ->
+            binding.llDevice -> checkIsAllowedToLoginAuth {
                 if (isNotAuthorizing) {
                     isNotAuthorizing = false
-                    loginViewModel.currentDeviceId = "asdfsdaffasdf"
-                    authLoginManager.success?.invoke(AuthType.Device, "asdfsdaffasdf")
-
+                    loginViewModel.currentDeviceId = it
+                    authLoginManager.success?.invoke(AuthType.Device, it)
                 }
+            }
             binding.ivPrivacyCheck -> {
                 loginViewModel.agreementPrivacy = !loginViewModel.agreementPrivacy
                 binding.ivPrivacyCheck.setImageResource(
