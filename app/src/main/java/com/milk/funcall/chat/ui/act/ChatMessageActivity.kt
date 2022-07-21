@@ -104,10 +104,15 @@ class ChatMessageActivity : AbstractActivity() {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        chatMessageViewModel.updateUnReadCount()
+    }
+
     companion object {
         private const val TARGET_ID = "TARGET_ID"
         private const val TARGET_NAME = "TARGET_NAME"
-        fun create(context: Context, targetId: Long, targetName: String) {
+        fun create(context: Context, targetId: Long, targetName: String = "") {
             val intent = Intent(context, ChatMessageActivity::class.java)
             intent.putExtra(TARGET_ID, targetId)
             intent.putExtra(TARGET_NAME, targetName)

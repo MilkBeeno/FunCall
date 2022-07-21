@@ -28,6 +28,10 @@ class ConversationAdapter : AbstractPagingAdapter<ConversationEntity>(
         }
     }
 ) {
+    init {
+        addChildClickViewIds(R.id.ivUserAvatar)
+    }
+
     override fun convert(holder: PagingViewHolder, item: ConversationEntity) {
         holder.getView<AppCompatImageView>(R.id.ivUserAvatar)
             .setImageResource(R.drawable.common_default_man)

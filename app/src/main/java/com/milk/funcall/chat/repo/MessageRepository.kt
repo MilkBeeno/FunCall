@@ -17,7 +17,7 @@ object MessageRepository {
     private val conversationRepository by lazy { ConversationRepository() }
 
     /** 心跳包数据验证、检测是否有新的消息 */
-    fun heartBeat() {
+    internal fun heartBeat() {
         ioScope {
             val apiResponse = retrofit {
                 ApiService.chatApiService.heartBeat()
@@ -106,7 +106,7 @@ object MessageRepository {
     }
 
     /** 获取数据库中存储的私聊消息 */
-    fun getChatMessagesByDB(targetId: Long): PagingSource<Int, ChatMessageEntity> {
+    internal fun getChatMessagesByDB(targetId: Long): PagingSource<Int, ChatMessageEntity> {
         return DataBaseManager.DB.chatMessageTableDao()
             .getChatMessages(Account.userId, targetId)
     }
@@ -114,5 +114,10 @@ object MessageRepository {
     /** 获取数据库中存储的会话消息 */
     fun getChatConversationByDB(): PagingSource<Int, ConversationEntity> {
         return DataBaseManager.DB.conversationTableDao().getConversations(Account.userId)
+    }
+
+    /** 更改数据库中存储的会话消息未读数量 */
+    internal fun updateUnReadCount(targetId: Long) {
+        DataBaseManager.DB.conversationTableDao().updateUnReadCount(Account.userId, targetId)
     }
 }

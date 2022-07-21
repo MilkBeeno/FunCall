@@ -4,12 +4,15 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.milk.funcall.R
+import com.milk.funcall.chat.ui.act.ChatMessageActivity
 import com.milk.funcall.chat.ui.adapter.ConversationAdapter
 import com.milk.funcall.chat.ui.vm.ConversationViewModel
 import com.milk.funcall.common.paging.status.RefreshStatus
 import com.milk.funcall.common.ui.AbstractFragment
 import com.milk.funcall.databinding.FragmentChatMessageBinding
+import com.milk.funcall.user.ui.act.UserTotalInfoActivity
 import com.milk.simple.ktx.gone
+import com.milk.simple.ktx.showToast
 import com.milk.simple.ktx.visible
 
 class ConversationFragment : AbstractFragment() {
@@ -38,6 +41,19 @@ class ConversationFragment : AbstractFragment() {
                 }
                 else -> Unit
             }
+        }
+        conversationAdapter.setOnItemClickListener { adapter, _, position ->
+            val targetId = adapter.getNoNullItem(position).targetId
+            ChatMessageActivity.create(requireContext(), targetId)
+        }
+        conversationAdapter.setOnItemLongClickListener { adapter, _, position ->
+            val targetId = adapter.getNoNullItem(position).targetId
+            requireActivity().showToast("长按提示哦")
+            true
+        }
+        conversationAdapter.setOnItemChildClickListener { adapter, _, position ->
+            val targetId = adapter.getNoNullItem(position).targetId
+            UserTotalInfoActivity.create(requireContext(), targetId)
         }
     }
 

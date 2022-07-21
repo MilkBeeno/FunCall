@@ -26,4 +26,8 @@ class ChatMessageViewModel : ViewModel() {
     fun sendTextChatMessage(messageContent: String) {
         ioScope { MessageRepository.sendTextChatMessage(targetId, messageContent) }
     }
+
+    fun updateUnReadCount() {
+        ioScope { MessageRepository.updateUnReadCount(targetId) }
+    }
 }
