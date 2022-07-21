@@ -16,6 +16,7 @@ import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityMessageBinding
 import com.milk.simple.keyboard.KeyBoardUtil
 import com.milk.simple.ktx.*
+import kotlinx.coroutines.flow.collectLatest
 
 class ChatMessageActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityMessageBinding>()
@@ -85,8 +86,20 @@ class ChatMessageActivity : AbstractActivity() {
     }
 
     private fun initializeData() {
-        chatMessageViewModel.updateTargetUser(targetId, targetName, targetAvatar)
-        chatMessageAdapter.setPagerSource(chatMessageViewModel.pagingSource.pager)
+        launch {
+            chatMessageViewModel.getTargetInfoByDB(targetId)
+                .collectLatest {
+                    if (it != null) {
+                        binding.headerToolbar.setTitle(it.targetName)
+                        chatMessageViewModel
+                            .updateTargetUser(it.targetId, it.targetName, it.targetAvatar)
+                        chatMessageAdapter.setUserInfoEntity(it)
+                    } else chatMessageViewModel
+                        .updateTargetUser(targetId, targetName, targetAvatar)
+                    chatMessageAdapter
+                        .setPagerSource(chatMessageViewModel.pagingSource.pager)
+                }
+        }
     }
 
     override fun onMultipleClick(view: View) {

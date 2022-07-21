@@ -7,6 +7,7 @@ import com.milk.funcall.R
 import com.milk.funcall.account.Account
 import com.milk.funcall.chat.ui.type.ChatMessageType
 import com.milk.funcall.common.mdr.table.ChatMessageEntity
+import com.milk.funcall.common.mdr.table.UserInfoEntity
 import com.milk.funcall.common.media.loader.ImageLoader
 import com.milk.funcall.common.paging.AbstractPagingAdapter
 import com.milk.funcall.common.paging.MultiTypeDelegate
@@ -33,8 +34,14 @@ class ChatMessageAdapter : AbstractPagingAdapter<ChatMessageEntity>(
         }
     }) {
 
+    private var userInfoEntity: UserInfoEntity? = null
+
     init {
         setMultiTypeDelegate(ChatMessageTypeDelegate())
+    }
+
+    internal fun setUserInfoEntity(userInfoEntity: UserInfoEntity) {
+        this.userInfoEntity = userInfoEntity
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -58,7 +65,8 @@ class ChatMessageAdapter : AbstractPagingAdapter<ChatMessageEntity>(
     private fun updatePeopleAvatar(holder: PagingViewHolder, item: ChatMessageEntity) {
         val ivPeopleAvatar = holder.getView<AppCompatImageView>(R.id.ivPeopleAvatar)
         val userAvatar = if (item.isAcceptMessage) {
-            ""
+            val userInfoAvatar = userInfoEntity?.targetAvatar
+            userInfoAvatar ?: item.targetAvatar
         } else Account.userAvatar
         ImageLoader.Builder()
             .loadAvatar(userAvatar)

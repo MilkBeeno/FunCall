@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.milk.funcall.chat.repo.MessageRepository
 import com.milk.funcall.common.mdr.table.ChatMessageEntity
 import com.milk.funcall.common.paging.LocalPagingSource
+import com.milk.funcall.user.repo.UserInfoRepository
 import com.milk.simple.ktx.ioScope
 
 class ChatMessageViewModel : ViewModel() {
@@ -20,6 +21,8 @@ class ChatMessageViewModel : ViewModel() {
                 }
             )
         }
+
+    internal fun getTargetInfoByDB(targetId: Long) = UserInfoRepository.getUserInfoByDB(targetId)
 
     internal fun updateTargetUser(targetId: Long, targetName: String, targetAvatar: String) {
         this.targetId = targetId
