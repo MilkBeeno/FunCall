@@ -4,8 +4,10 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.DiffUtil
 import com.milk.funcall.R
+import com.milk.funcall.account.Account
 import com.milk.funcall.chat.ui.type.ChatMessageType
 import com.milk.funcall.common.mdr.table.ChatMessageEntity
+import com.milk.funcall.common.media.loader.ImageLoader
 import com.milk.funcall.common.paging.AbstractPagingAdapter
 import com.milk.funcall.common.paging.MultiTypeDelegate
 import com.milk.funcall.common.paging.PagingViewHolder
@@ -55,7 +57,13 @@ class ChatMessageAdapter : AbstractPagingAdapter<ChatMessageEntity>(
 
     private fun updatePeopleAvatar(holder: PagingViewHolder, item: ChatMessageEntity) {
         val ivPeopleAvatar = holder.getView<AppCompatImageView>(R.id.ivPeopleAvatar)
-        ivPeopleAvatar.setImageResource(R.drawable.common_default_man)
+        val userAvatar = if (item.isAcceptMessage) {
+            ""
+        } else Account.userAvatar
+        ImageLoader.Builder()
+            .loadAvatar(userAvatar)
+            .target(ivPeopleAvatar)
+            .build()
     }
 
     private fun updateSendTextMessage(holder: PagingViewHolder, item: ChatMessageEntity) {
