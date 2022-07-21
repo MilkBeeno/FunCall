@@ -11,14 +11,14 @@ import com.milk.funcall.common.mdr.table.ChatMessageEntity
 interface ChatMessageTableDao {
 
     @Query("SELECT * FROM ChatMessageTable WHERE chatUserId=:userId AND chatTargetId=:targetId")
-    fun getChatMessages(userId: Long, targetId: Long): PagingSource<Int, ChatMessageEntity>
+    fun getChats(userId: Long, targetId: Long): PagingSource<Int, ChatMessageEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertMessage(chatMessageEntity: ChatMessageEntity)
+    fun insert(chatMessageEntity: ChatMessageEntity)
 
     @Query("UPDATE ChatMessageTable SET chatNetworkMsgUniqueId=:msgNetworkUniqueId WHERE chatLocalMsgUniqueId=:msgLocalUniqueId")
-    fun updateChatMsgNetworkUniqueId(msgLocalUniqueId: String, msgNetworkUniqueId: String)
+    fun updateNetworkUniqueId(msgLocalUniqueId: String, msgNetworkUniqueId: String)
 
     @Query("UPDATE ChatMessageTable SET chatSendStatus=:sendStatus WHERE chatLocalMsgUniqueId=:msgLocalUniqueId")
-    fun updateChatMsgSendStatus(msgLocalUniqueId: String, sendStatus: Int)
+    fun updateSendStatus(msgLocalUniqueId: String, sendStatus: Int)
 }

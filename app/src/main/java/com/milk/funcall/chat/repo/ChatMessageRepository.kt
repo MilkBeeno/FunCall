@@ -9,10 +9,10 @@ import com.milk.funcall.common.mdr.table.ChatMessageEntity
 class ChatMessageRepository {
 
     /** 保存文本消息到数据库中 */
-    internal fun saveTextChatMessage(messageContent: String, action: () -> ChatMessageEntity) {
+    internal fun saveTextMessage(messageContent: String, action: () -> ChatMessageEntity) {
         val textChatMessageEntity = action()
         textChatMessageEntity.messageContent = messageContent
-        DataBaseManager.DB.chatMessageTableDao().insertMessage(textChatMessageEntity)
+        DataBaseManager.DB.chatMessageTableDao().insert(textChatMessageEntity)
     }
 
     /** 网络请求结果私聊实体 */
@@ -60,17 +60,17 @@ class ChatMessageRepository {
             .plus(targetId)
 
     /** 本地数据发送状态更新 */
-    internal fun updateSendMessageStatus(
+    internal fun updateSendStatus(
         msgLocalUniqueId: String,
         sendSuccess: Boolean,
         msgNetworkUniqueId: String = ""
     ) {
         if (sendSuccess) {
             DataBaseManager.DB.chatMessageTableDao()
-                .updateChatMsgSendStatus(msgLocalUniqueId, ChatMsgSendStatus.SendSuccess.value)
+                .updateSendStatus(msgLocalUniqueId, ChatMsgSendStatus.SendSuccess.value)
             DataBaseManager.DB.chatMessageTableDao()
-                .updateChatMsgNetworkUniqueId(msgLocalUniqueId, msgNetworkUniqueId)
+                .updateNetworkUniqueId(msgLocalUniqueId, msgNetworkUniqueId)
         } else DataBaseManager.DB.chatMessageTableDao()
-            .updateChatMsgSendStatus(msgLocalUniqueId, ChatMsgSendStatus.SendFailed.value)
+            .updateSendStatus(msgLocalUniqueId, ChatMsgSendStatus.SendFailed.value)
     }
 }

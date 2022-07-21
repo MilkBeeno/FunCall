@@ -4,14 +4,17 @@ import androidx.paging.PagingSource
 import com.milk.funcall.account.Account
 import com.milk.funcall.chat.api.ApiService
 import com.milk.funcall.chat.ui.type.ChatMessageType
+import com.milk.funcall.chat.ui.type.ChatMsgSendStatus
 import com.milk.funcall.common.mdr.DataBaseManager
 import com.milk.funcall.common.mdr.table.ChatMessageEntity
+import com.milk.funcall.common.mdr.table.ConversationEntity
 import com.milk.funcall.common.net.retrofit
 import com.milk.simple.ktx.ioScope
 import com.milk.simple.log.Logger
 
 object MessageRepository {
     private val chatMessageRepository by lazy { ChatMessageRepository() }
+    private val conversationRepository by lazy { ConversationRepository() }
 
     /** 心跳包数据验证、检测是否有新的消息 */
     fun heartBeat() {
@@ -44,7 +47,7 @@ object MessageRepository {
             apiResult.forEach { chatMsgReceiveModel ->
                 chatMsgReceiveModel.chatMsgReceiveListModel
                     ?.forEach { chatMsgReceiveSingleModel ->
-                        chatMessageRepository.saveTextChatMessage(chatMsgReceiveSingleModel.content) {
+                        chatMessageRepository.saveTextMessage(chatMsgReceiveSingleModel.content) {
                             chatMessageRepository.receiveChatMessageEntity(
                                 chatMsgReceiveSingleModel.itemId,
                                 chatMsgReceiveModel.faceUserId,
@@ -52,6 +55,13 @@ object MessageRepository {
                                 chatMsgReceiveSingleModel.chatTime
                             )
                         }
+                        conversationRepository.saveConversation(
+                            chatMsgReceiveModel.faceUserId,
+                            ChatMessageType.TextReceived.value,
+                            chatMsgReceiveSingleModel.chatTime,
+                            isAcceptMessage = true,
+                            ChatMsgSendStatus.SendSuccess.value
+                        )
                     }
             }
         }
@@ -61,29 +71,47 @@ object MessageRepository {
     suspend fun sendTextChatMessage(targetId: Long, messageContent: String) = retrofit {
         val messageUniqueId =
             chatMessageRepository.createMsgLocalUniqueId(Account.userId, targetId)
-        chatMessageRepository.saveTextChatMessage(messageContent) {
+        val operationTime = System.currentTimeMillis()
+        chatMessageRepository.saveTextMessage(messageContent) {
             chatMessageRepository.sendChatMessageEntity(
                 messageUniqueId,
                 targetId,
                 ChatMessageType.TextSend.value,
-                System.currentTimeMillis()
+                operationTime
             )
         }
+        conversationRepository.saveConversation(
+            targetId,
+            ChatMessageType.TextSend.value,
+            operationTime,
+            isAcceptMessage = true,
+            ChatMsgSendStatus.Sending.value
+        )
         val apiResponse =
             ApiService.chatApiService.sendTextChatMessage(targetId, messageContent)
         val apiResult = apiResponse.data
         // 消息发送状态更新、3.发送成功 2.发送失败
-        if (apiResponse.success && apiResult != null)
+        if (apiResponse.success && apiResult != null) {
             chatMessageRepository
-                .updateSendMessageStatus(messageUniqueId, true, apiResult.itemId)
-        else
+                .updateSendStatus(messageUniqueId, true, apiResult.itemId)
+            conversationRepository.updateSendStatus(targetId, true)
+        } else {
             chatMessageRepository
-                .updateSendMessageStatus(messageUniqueId, false)
+                .updateSendStatus(messageUniqueId, false)
+            conversationRepository.updateSendStatus(targetId, false)
+        }
         apiResponse
     }
 
     /** 获取数据库中存储的私聊消息 */
     fun getChatMessagesByDB(targetId: Long): PagingSource<Int, ChatMessageEntity> {
-        return DataBaseManager.DB.chatMessageTableDao().getChatMessages(Account.userId, targetId)
+        return DataBaseManager.DB.chatMessageTableDao()
+            .getChats(Account.userId, targetId)
+    }
+
+    /** 获取数据库中存储的会话消息 */
+    fun getChatConversationByDB(targetId: Long): PagingSource<Int, ConversationEntity> {
+        return DataBaseManager.DB.conversationTableDao()
+            .getList(Account.userId, targetId)
     }
 }
