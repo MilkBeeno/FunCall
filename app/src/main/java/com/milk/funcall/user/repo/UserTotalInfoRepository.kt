@@ -33,7 +33,6 @@ class UserTotalInfoRepository {
 
     private fun saveUserToDB(userInfo: UserTotalInfoModel) {
         val userInfoEntity = UserInfoEntity()
-        userInfoEntity.accountId = Account.userId
         userInfoEntity.targetId = userInfo.targetId
         userInfoEntity.targetName = userInfo.targetName
         userInfoEntity.targetAvatar = userInfo.targetAvatar

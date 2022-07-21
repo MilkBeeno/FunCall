@@ -7,4 +7,6 @@ object ApiService {
         ApiClient.obtainRetrofit().create(FansOrFollowsApiService::class.java)
     val editProfileApiService: EditProfileApiService =
         ApiClient.obtainRetrofit().create(EditProfileApiService::class.java)
+    val accountApiService: AccountApiService =
+        ApiClient.obtainRetrofit().create(AccountApiService::class.java)
 }

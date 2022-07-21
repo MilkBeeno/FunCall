@@ -21,13 +21,13 @@ class ChatMessageViewModel : ViewModel() {
             )
         }
 
-    fun updateTargetUser(targetId: Long, targetName: String, targetAvatar: String) {
+    internal fun updateTargetUser(targetId: Long, targetName: String, targetAvatar: String) {
         this.targetId = targetId
         this.targetName = targetName
         this.targetAvatar = targetAvatar
     }
 
-    fun sendTextChatMessage(messageContent: String) {
+    internal fun sendTextChatMessage(messageContent: String) {
         ioScope {
             MessageRepository.sendTextChatMessage(
                 targetId = targetId,
@@ -38,7 +38,7 @@ class ChatMessageViewModel : ViewModel() {
         }
     }
 
-    fun updateUnReadCount() {
+    internal fun updateUnReadCount() {
         ioScope { MessageRepository.updateUnReadCount(targetId) }
     }
 }

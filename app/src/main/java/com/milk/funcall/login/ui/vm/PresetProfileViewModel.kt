@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.milk.funcall.account.Account
 import com.milk.funcall.common.media.uploader.MediaUploadRepository
 import com.milk.funcall.login.repo.PresetProfileRepository
-import com.milk.funcall.user.repo.AccountRepository
+import com.milk.funcall.account.repo.AccountRepository
 import com.milk.simple.ktx.ioScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
