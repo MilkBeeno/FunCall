@@ -73,7 +73,7 @@ object MessageRepository {
     }
 
     /** 发送文本私聊消息到服务器中 */
-    suspend fun sendTextChatMessage(
+    internal suspend fun sendTextChatMessage(
         targetId: Long,
         targetName: String,
         targetAvatar: String,
@@ -125,12 +125,18 @@ object MessageRepository {
     }
 
     /** 获取数据库中存储的会话消息 */
-    fun getChatConversationByDB(): PagingSource<Int, ConversationWithUserInfoEntity> {
+    internal fun getChatConversationByDB(): PagingSource<Int, ConversationWithUserInfoEntity> {
         return DataBaseManager.DB.conversationTableDao().getConversations(Account.userId)
     }
 
     /** 更改数据库中存储的会话消息未读数量 */
     internal fun updateUnReadCount(targetId: Long) {
         DataBaseManager.DB.conversationTableDao().updateUnReadCount(Account.userId, targetId)
+    }
+
+    /** 删除某条消息 */
+    internal fun deleteChatMessage(targetId: Long) {
+        DataBaseManager.DB.conversationTableDao().deleteConversation(Account.userId, targetId)
+        DataBaseManager.DB.chatMessageTableDao().deleteChatMessage(Account.userId, targetId)
     }
 }

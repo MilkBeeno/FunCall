@@ -25,4 +25,7 @@ interface ConversationTableDao {
 
     @Query("UPDATE ConversationTable SET conversationUnReadCount=:unReadCount WHERE conversationAccountId=:accountId AND conversationTargetId=:targetId ")
     fun updateUnReadCount(accountId: Long, targetId: Long, unReadCount: Int = 0)
+
+    @Query("DELETE FROM ConversationTable WHERE conversationAccountId=:accountId AND conversationTargetId=:targetId")
+    fun deleteConversation(accountId: Long, targetId: Long)
 }

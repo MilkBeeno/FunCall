@@ -21,4 +21,7 @@ interface ChatMessageTableDao {
 
     @Query("UPDATE ChatMessageTable SET chatSendStatus=:sendStatus WHERE chatLocalMsgUniqueId=:msgLocalUniqueId")
     fun updateSendStatus(msgLocalUniqueId: String, sendStatus: Int)
+
+    @Query("DELETE FROM ChatMessageTable WHERE chatAccountId=:accountId AND chatTargetId=:targetId")
+    fun deleteChatMessage(accountId: Long, targetId: Long)
 }
