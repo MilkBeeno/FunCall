@@ -4,10 +4,7 @@ import com.milk.funcall.chat.data.ChatMsgReceiveModel
 import com.milk.funcall.chat.data.ChatMsgSentTextModel
 import com.milk.funcall.chat.data.HeartBeatModel
 import com.milk.funcall.common.data.ApiResponse
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface ChatApiService {
     @GET("/funcall/heartBeat")
@@ -17,6 +14,7 @@ interface ChatApiService {
     suspend fun getMessagesFromNetwork(): ApiResponse<MutableList<ChatMsgReceiveModel>>
 
     @FormUrlEncoded
+    @Headers("Encoded:false")
     @POST("/funcall/sendMsg")
     suspend fun sendTextChatMessage(
         @Field("faceUserId") targetId: Long,
