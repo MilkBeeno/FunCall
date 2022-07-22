@@ -4,6 +4,7 @@ import com.milk.funcall.account.Account
 import com.milk.funcall.chat.ui.type.ChatMsgSendStatus
 import com.milk.funcall.common.mdr.DataBaseManager
 import com.milk.funcall.common.mdr.table.ConversationEntity
+import com.milk.simple.ktx.safeToLong
 
 /** MessageFragment 页面会话列表数据 */
 class ConversationRepository {
@@ -19,11 +20,10 @@ class ConversationRepository {
         sendStatus: Int,
         messageContent: String = ""
     ) {
-        val unReadCount = if (isAcceptMessage) {
-            val oldChatConversation =
-                DataBaseManager.DB.conversationTableDao().query(Account.userId, targetId)
-            oldChatConversation?.unReadCount ?: 0 + 1
-        } else 0
+        val oldChatConversation =
+            DataBaseManager.DB.conversationTableDao().query(Account.userId, targetId)
+        val unReadCount = if (isAcceptMessage) oldChatConversation?.unReadCount ?: 0 + 1 else 0
+        val putTopTime = oldChatConversation?.putTopTime.safeToLong()
         val conversation = ConversationEntity()
         conversation.accountId = Account.userId
         conversation.targetId = targetId
@@ -32,6 +32,7 @@ class ConversationRepository {
         conversation.messageContent = messageContent
         conversation.messageType = messageType
         conversation.operationTime = operationTime
+        conversation.putTopTime = putTopTime
         conversation.unReadCount = unReadCount
         conversation.isAcceptMessage = isAcceptMessage
         conversation.sendStatus = sendStatus

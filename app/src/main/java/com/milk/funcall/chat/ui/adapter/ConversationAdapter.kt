@@ -10,7 +10,6 @@ import com.milk.funcall.common.media.loader.ImageLoader
 import com.milk.funcall.common.paging.AbstractPagingAdapter
 import com.milk.funcall.common.paging.PagingViewHolder
 import com.milk.funcall.user.type.Gender
-import com.milk.simple.log.Logger
 
 class ConversationAdapter : AbstractPagingAdapter<ConversationWithUserInfoEntity>(
     layoutId = R.layout.item_chat_converstaion,
@@ -41,7 +40,6 @@ class ConversationAdapter : AbstractPagingAdapter<ConversationWithUserInfoEntity
     }
 
     override fun convert(holder: PagingViewHolder, item: ConversationWithUserInfoEntity) {
-        Logger.d("置顶时间是：${item.conversation.putTopTime}", "hlc")
         ImageLoader.Builder()
             .loadAvatar(getTargetAvatar(item), getTargetGender(item))
             .target(holder.getView(R.id.ivUserAvatar))
