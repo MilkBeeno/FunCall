@@ -54,7 +54,7 @@ object MessageRepository {
                                 targetName = chatMsgReceiveModel.faceNickname,
                                 targetAvatar = chatMsgReceiveModel.faceAvatarUrl,
                                 messageType = ChatMessageType.TextReceived.value,
-                                operationTime = chatMsgReceiveSingleModel.chatTime
+                                operationTime = chatMsgReceiveSingleModel.chatTimeStamp
                             )
                         }
                         conversationRepository.saveConversation(
@@ -62,7 +62,7 @@ object MessageRepository {
                             targetName = chatMsgReceiveModel.faceNickname,
                             targetAvatar = chatMsgReceiveModel.faceAvatarUrl,
                             messageType = ChatMessageType.TextReceived.value,
-                            operationTime = chatMsgReceiveSingleModel.chatTime,
+                            operationTime = chatMsgReceiveSingleModel.chatTimeStamp,
                             isAcceptMessage = true,
                             sendStatus = ChatMsgSendStatus.SendSuccess.value,
                             messageContent = chatMsgReceiveSingleModel.content
