@@ -145,4 +145,10 @@ object MessageRepository {
         DataBaseManager.DB.conversationTableDao()
             .updatePutTopTime(Account.userId, targetId, System.currentTimeMillis())
     }
+
+    /** 将某条消息取消置顶 */
+    internal fun unPinChatMessage(targetId: Long) {
+        DataBaseManager.DB.conversationTableDao()
+            .updatePutTopTime(Account.userId, targetId, 0)
+    }
 }

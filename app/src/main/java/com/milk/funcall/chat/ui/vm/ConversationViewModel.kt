@@ -18,11 +18,15 @@ class ConversationViewModel : ViewModel() {
             )
         }
 
-    fun deleteChatMessage(targetId: Long) {
-        ioScope { MessageRepository.deleteChatMessage(targetId) }
-    }
-
     fun putTopChatMessage(targetId: Long) {
         ioScope { MessageRepository.putTopChatMessage(targetId) }
+    }
+
+    fun unPinChatMessage(targetId: Long) {
+        ioScope { MessageRepository.unPinChatMessage(targetId) }
+    }
+
+    fun deleteChatMessage(targetId: Long) {
+        ioScope { MessageRepository.deleteChatMessage(targetId) }
     }
 }

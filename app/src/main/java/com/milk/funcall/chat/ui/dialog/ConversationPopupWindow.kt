@@ -1,4 +1,4 @@
-package com.milk.funcall.common.ui.dialog
+package com.milk.funcall.chat.ui.dialog
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -8,13 +8,15 @@ import android.view.ViewGroup
 import android.widget.PopupWindow
 import androidx.appcompat.widget.AppCompatTextView
 import com.milk.funcall.R
+import com.milk.simple.ktx.string
 
-class SimplePopupWindow(
+class ConversationPopupWindow(
     private val context: Context,
     private val applyView: View,
     private val gravity: Int,
     private val offsetX: Int,
     private val offsetY: Int,
+    private val isPutTopped: Boolean,
     private var putTopRequest: (() -> Unit)? = null,
     private var deleteRequest: (() -> Unit)? = null
 ) {
@@ -40,11 +42,15 @@ class SimplePopupWindow(
             popupWindow?.contentView = null
             popupWindow = null
         }
-        targetLayout.findViewById<AppCompatTextView>(R.id.tvPutTop)
-            .setOnClickListener {
-                popupWindow?.dismiss()
-                putTopRequest?.invoke()
-            }
+        val tvPutTop = targetLayout.findViewById<AppCompatTextView>(R.id.tvPutTop)
+        tvPutTop.text = if (isPutTopped)
+            context.string(R.string.chat_message_to_down_top)
+        else
+            context.string(R.string.chat_message_to_up_top)
+        tvPutTop.setOnClickListener {
+            popupWindow?.dismiss()
+            putTopRequest?.invoke()
+        }
         targetLayout.findViewById<AppCompatTextView>(R.id.tvDelete)
             .setOnClickListener {
                 popupWindow?.dismiss()
@@ -57,6 +63,7 @@ class SimplePopupWindow(
         private var gravity: Int = 0
         private var offsetX: Int = 0
         private var offsetY: Int = 0
+        private var isPutTopped: Boolean = false
         private var putTopRequest: (() -> Unit)? = null
         private var deleteRequest: (() -> Unit)? = null
 
@@ -76,7 +83,8 @@ class SimplePopupWindow(
             this.offsetY = offsetY
         }
 
-        fun setPutTopRequest(putTopRequest: () -> Unit) = apply {
+        fun setPutTopRequest(isPutTopped: Boolean, putTopRequest: () -> Unit) = apply {
+            this.isPutTopped = isPutTopped
             this.putTopRequest = putTopRequest
         }
 
@@ -84,13 +92,14 @@ class SimplePopupWindow(
             this.deleteRequest = deleteRequest
         }
 
-        fun builder(): SimplePopupWindow {
-            return SimplePopupWindow(
+        fun builder(): ConversationPopupWindow {
+            return ConversationPopupWindow(
                 context = context,
                 applyView = checkNotNull(applyView),
                 gravity = gravity,
                 offsetX = offsetX,
                 offsetY = offsetY,
+                isPutTopped = isPutTopped,
                 putTopRequest = putTopRequest,
                 deleteRequest = deleteRequest
             )

@@ -8,10 +8,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.milk.funcall.R
 import com.milk.funcall.chat.ui.act.ChatMessageActivity
 import com.milk.funcall.chat.ui.adapter.ConversationAdapter
+import com.milk.funcall.chat.ui.dialog.ConversationPopupWindow
 import com.milk.funcall.chat.ui.vm.ConversationViewModel
 import com.milk.funcall.common.paging.status.RefreshStatus
 import com.milk.funcall.common.ui.AbstractFragment
-import com.milk.funcall.common.ui.dialog.SimplePopupWindow
 import com.milk.funcall.databinding.FragmentChatMessageBinding
 import com.milk.funcall.user.ui.act.UserTotalInfoActivity
 import com.milk.simple.ktx.gone
@@ -53,21 +53,25 @@ class ConversationFragment : AbstractFragment() {
             ChatMessageActivity.create(requireContext(), targetId, targetName, targetAvatar)
         }
         conversationAdapter.setOnItemLongClickListener { adapter, itemView, position ->
-            val targetId = adapter.getNoNullItem(position).conversation.targetId
+            val conversation = adapter.getNoNullItem(position).conversation
+            val isPutTopped = conversation.putTopTime > 0
             val local = intArrayOf(0, 0)
             itemView.getLocationInWindow(local)
             val offsetY =
                 if (local[1] > splitHeight) -dpToPx(94.5f) - itemView.measuredHeight else 0
-            SimplePopupWindow.Builder(requireActivity())
+            ConversationPopupWindow.Builder(requireActivity())
                 .applyView(itemView)
                 .setOffsetX(-dpToPx(200f))
                 .setOffsetY(offsetY)
                 .setGravity(Gravity.END)
-                .setPutTopRequest {
-                    conversationViewModel.putTopChatMessage(targetId)
+                .setPutTopRequest(isPutTopped) {
+                    if (isPutTopped)
+                        conversationViewModel.unPinChatMessage(conversation.targetId)
+                    else
+                        conversationViewModel.putTopChatMessage(conversation.targetId)
                 }
                 .setDeleteRequest {
-                    conversationViewModel.deleteChatMessage(targetId)
+                    conversationViewModel.deleteChatMessage(conversation.targetId)
                 }
                 .builder()
             true
