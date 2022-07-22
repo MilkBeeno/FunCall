@@ -64,7 +64,7 @@ class ConversationFragment : AbstractFragment() {
                 .setOffsetY(offsetY)
                 .setGravity(Gravity.END)
                 .setPutTopRequest {
-
+                    conversationViewModel.putTopChatMessage(targetId)
                 }
                 .setDeleteRequest {
                     conversationViewModel.deleteChatMessage(targetId)

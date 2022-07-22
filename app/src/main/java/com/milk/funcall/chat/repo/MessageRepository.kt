@@ -139,4 +139,10 @@ object MessageRepository {
         DataBaseManager.DB.conversationTableDao().deleteConversation(Account.userId, targetId)
         DataBaseManager.DB.chatMessageTableDao().deleteChatMessage(Account.userId, targetId)
     }
+
+    /** 将某条消息置顶 */
+    internal fun putTopChatMessage(targetId: Long) {
+        DataBaseManager.DB.conversationTableDao()
+            .updatePutTopTime(Account.userId, targetId, System.currentTimeMillis())
+    }
 }

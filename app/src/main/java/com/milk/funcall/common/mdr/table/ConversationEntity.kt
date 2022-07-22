@@ -43,10 +43,13 @@ class ConversationEntity {
     @ColumnInfo(name = "conversationSendStatus")
     var sendStatus: Int = 0
 
+    @ColumnInfo(name = "conversationPutTopTime")
+    var putTopTime: Long = 0
+
     override fun toString(): String {
         return "userId=$accountId,targetId=$targetId,messageType=$messageType," +
                 "operationTime=$operationTime,messageContent=$messageContent," +
                 "isAcceptMessage=$isAcceptMessage,unReadCount=$unReadCount," +
-                "sendStatus=$sendStatus"
+                "sendStatus=$sendStatus,putTopTime=$putTopTime"
     }
 }

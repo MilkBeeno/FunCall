@@ -5,8 +5,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.milk.funcall.common.mdr.table.ConversationWithUserInfoEntity
 import com.milk.funcall.common.mdr.table.ConversationEntity
+import com.milk.funcall.common.mdr.table.ConversationWithUserInfoEntity
 
 @Dao
 interface ConversationTableDao {
@@ -17,7 +17,7 @@ interface ConversationTableDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(chatConversationEntity: ConversationEntity)
 
-    @Query("SELECT * FROM ConversationTable LEFT JOIN UserInfoTable ON UserInfoTable.userInfoTargetId = ConversationTable.conversationTargetId WHERE ConversationTable.conversationAccountId = :accountId ORDER BY ConversationTable.conversationOperationTime DESC")
+    @Query("SELECT * FROM ConversationTable LEFT JOIN UserInfoTable ON UserInfoTable.userInfoTargetId = ConversationTable.conversationTargetId WHERE ConversationTable.conversationAccountId = :accountId ORDER BY ConversationTable.conversationPutTopTime DESC,ConversationTable.conversationOperationTime DESC")
     fun getConversations(accountId: Long): PagingSource<Int, ConversationWithUserInfoEntity>
 
     @Query("UPDATE ConversationTable SET conversationSendStatus=:sendStatus WHERE conversationAccountId=:accountId AND conversationTargetId=:targetId ")
@@ -28,4 +28,7 @@ interface ConversationTableDao {
 
     @Query("DELETE FROM ConversationTable WHERE conversationAccountId=:accountId AND conversationTargetId=:targetId")
     fun deleteConversation(accountId: Long, targetId: Long)
+
+    @Query("UPDATE ConversationTable SET conversationPutTopTime=:putTopTime WHERE conversationAccountId=:accountId AND conversationTargetId=:targetId")
+    fun updatePutTopTime(accountId: Long, targetId: Long, putTopTime: Long)
 }
