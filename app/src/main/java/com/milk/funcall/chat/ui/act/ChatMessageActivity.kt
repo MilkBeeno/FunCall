@@ -4,12 +4,14 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import androidx.activity.viewModels
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.milk.funcall.R
 import com.milk.funcall.chat.ui.adapter.ChatMessageAdapter
+import com.milk.funcall.chat.ui.dialog.ChatMessagePopupWindow
 import com.milk.funcall.chat.ui.vm.ChatMessageViewModel
 import com.milk.funcall.common.paging.status.RefreshStatus
 import com.milk.funcall.common.ui.AbstractActivity
@@ -73,6 +75,7 @@ class ChatMessageActivity : AbstractActivity() {
         binding.tvSend.setOnClickListener(this)
         binding.ivSayHiCancel.setOnClickListener(this)
         binding.tvSayHiSend.setOnClickListener(this)
+        binding.ivMore.setOnClickListener(this)
     }
 
     private fun updateSendState() {
@@ -105,6 +108,7 @@ class ChatMessageActivity : AbstractActivity() {
     override fun onMultipleClick(view: View) {
         super.onMultipleClick(view)
         when (view) {
+            binding.ivMore -> showPopupWindow()
             binding.ivSayHiCancel -> binding.clSayHi.gone()
             binding.tvSayHiSend -> {
                 val messageContent = binding.tvSayHiTitle.text.toString()
@@ -116,6 +120,27 @@ class ChatMessageActivity : AbstractActivity() {
                 binding.etMessage.text?.clear()
             }
         }
+    }
+
+    private fun showPopupWindow() {
+        ChatMessagePopupWindow.Builder(this)
+            .applyView(binding.ivMore)
+            .setOffsetX(-dp2px(150f).toInt())
+            .setOffsetY(dp2px(10f).toInt())
+            .setGravity(Gravity.END)
+            .setPutTopRequest(false) {
+                //  if (false)
+                //conversationViewModel.unPinChatMessage(conversation.targetId)
+                // else
+                //.putTopChatMessage(conversation.targetId)
+            }
+            .setFollowRequest(false) {
+
+            }
+            .setBlackRequest {
+                // 直接拉黑
+            }
+            .builder()
     }
 
     override fun onPause() {

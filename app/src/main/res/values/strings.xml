@@ -19,6 +19,11 @@
     <string name="common_picture">Photos</string>
     <string name="common_success">Success</string>
     <string name="common_place_to_login_first">Please log in to operate.</string>
+    <string name="common_follow">Follow</string>
+    <string name="common_un_follow">UnFollow</string>
+    <string name="common_up_top">Put on top</string>
+    <string name="common_un_pin">Up pin</string>
+    <string name="common_black">Pull black</string>
     <!--启动页面翻译-->
     <string name="launch_bottom_tips"><![CDATA[Messaging & Chat App]]></string>
     <!--选择性别页面翻译-->
@@ -80,8 +85,6 @@
     <string name="chat_message_hint">Please enter a message</string>
     <string name="chat_message_say_hi_title">Say Hi~</string>
     <string name="chat_message_say_hi_desc">Send hello and make friends</string>
-    <string name="chat_message_to_up_top">Put on top</string>
-    <string name="chat_message_to_down_top">Up Pin</string>
     <string name="chat_message_delete">Delete</string>
     <!--更改个人资料页面翻译-->
     <string name="edit_profile_title">Edit profile</string>
@@ -103,7 +106,6 @@
     <string name="follows_list_to_attention">to pay attention</string>
     <!--用户信息展示页面翻译-->
     <string name="user_info_message">Message</string>
-    <string name="user_info_follow">Follow</string>
     <string name="user_info_copy">Copy</string>
     <string name="user_info_not_bio">No profile yet ~</string>
     <string name="user_info_not_link">Social platform homepage link has not been uploaded yet ~</string>

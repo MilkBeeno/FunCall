@@ -1,7 +1,5 @@
 package com.milk.funcall.user.ui.adapter
 
-import android.content.Context
-import android.util.TypedValue
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
@@ -36,7 +34,7 @@ class HomeAdapter : AbstractPagingAdapter<UserSimpleInfoModel>(
         holder.setText(R.id.tvUserName, item.targetName)
         holder.getView<AppCompatImageView>(R.id.ivUserImage).apply {
             val params = layoutParams
-            params.height = dpToPx(context, if (item.isMediumImage) 125f else 223f).toInt()
+            params.height = context.dp2px(if (item.isMediumImage) 125f else 223f).toInt()
             layoutParams = params
             ImageLoader.Builder()
                 .request(item.targetImage)
@@ -88,13 +86,5 @@ class HomeAdapter : AbstractPagingAdapter<UserSimpleInfoModel>(
                 }
             }
         }
-    }
-
-    private fun dpToPx(context: Context, value: Float): Float {
-        return TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP,
-            value,
-            context.resources.displayMetrics
-        )
     }
 }

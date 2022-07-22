@@ -6,7 +6,6 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.widget.LinearLayoutCompat
@@ -93,14 +92,14 @@ class UserTotalInfoActivity : AbstractActivity() {
             binding.basic.tvFollow.gone()
             binding.basic.ivFollow.setImageResource(R.drawable.user_info_followed)
             binding.basic.llFollow.setBackgroundResource(R.drawable.shape_user_info_followed)
-            params.marginStart = dp2px(8f)
-            params.marginEnd = dp2px(8f)
+            params.marginStart = dp2px(8f).toInt()
+            params.marginEnd = dp2px(8f).toInt()
             binding.basic.ivFollow.layoutParams = params
         } else {
             binding.basic.tvFollow.visible()
             binding.basic.ivFollow.setImageResource(R.drawable.user_info_un_follow)
             binding.basic.llFollow.setBackgroundResource(R.drawable.shape_user_info_un_follow)
-            params.marginStart = dp2px(10f)
+            params.marginStart = dp2px(10f).toInt()
             params.marginEnd = 0
             binding.basic.ivFollow.layoutParams = params
         }
@@ -209,14 +208,6 @@ class UserTotalInfoActivity : AbstractActivity() {
                 } else showToast(string(R.string.common_place_to_login_first))
             }
         }
-    }
-
-    private fun Context.dp2px(float: Float): Int {
-        return TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP,
-            float,
-            resources.displayMetrics
-        ).toInt()
     }
 
     companion object {

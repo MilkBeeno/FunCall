@@ -10,15 +10,17 @@ import androidx.appcompat.widget.AppCompatTextView
 import com.milk.funcall.R
 import com.milk.simple.ktx.string
 
-class ConversationPopupWindow(
+class ChatMessagePopupWindow(
     private val context: Context,
     private val applyView: View,
     private val gravity: Int,
     private val offsetX: Int,
     private val offsetY: Int,
     private val isPutTopped: Boolean,
+    private val isFollowed: Boolean,
     private var putTopRequest: (() -> Unit)? = null,
-    private var deleteRequest: (() -> Unit)? = null
+    private var followRequest: (() -> Unit)? = null,
+    private var blackRequest: (() -> Unit)? = null
 ) {
     private var popupWindow: PopupWindow? = null
 
@@ -29,7 +31,7 @@ class ConversationPopupWindow(
     @SuppressLint("InflateParams")
     private fun initializeView() {
         val targetLayout = LayoutInflater.from(context)
-            .inflate(R.layout.popup_conversation, null, false)
+            .inflate(R.layout.popup_message, null, false)
         popupWindow = PopupWindow(context)
         popupWindow?.contentView = targetLayout
         popupWindow?.width = ViewGroup.LayoutParams.WRAP_CONTENT
@@ -51,10 +53,19 @@ class ConversationPopupWindow(
             popupWindow?.dismiss()
             putTopRequest?.invoke()
         }
-        targetLayout.findViewById<AppCompatTextView>(R.id.tvDelete)
+        val tvFollow = targetLayout.findViewById<AppCompatTextView>(R.id.tvFollow)
+        tvFollow.text = if (isFollowed)
+            context.string(R.string.common_un_follow)
+        else
+            context.string(R.string.common_follow)
+        tvFollow.setOnClickListener {
+            popupWindow?.dismiss()
+            followRequest?.invoke()
+        }
+        targetLayout.findViewById<AppCompatTextView>(R.id.tvBlack)
             .setOnClickListener {
                 popupWindow?.dismiss()
-                deleteRequest?.invoke()
+                blackRequest?.invoke()
             }
     }
 
@@ -64,8 +75,10 @@ class ConversationPopupWindow(
         private var offsetX: Int = 0
         private var offsetY: Int = 0
         private var isPutTopped: Boolean = false
+        private var isFollowed: Boolean = false
         private var putTopRequest: (() -> Unit)? = null
-        private var deleteRequest: (() -> Unit)? = null
+        private var followRequest: (() -> Unit)? = null
+        private var blackRequest: (() -> Unit)? = null
 
         fun applyView(applyView: View) = apply {
             this.applyView = applyView
@@ -88,20 +101,27 @@ class ConversationPopupWindow(
             this.putTopRequest = putTopRequest
         }
 
-        fun setDeleteRequest(deleteRequest: () -> Unit) = apply {
-            this.deleteRequest = deleteRequest
+        fun setFollowRequest(isFollowed: Boolean, followRequest: () -> Unit) = apply {
+            this.isFollowed = isFollowed
+            this.followRequest = followRequest
         }
 
-        fun builder(): ConversationPopupWindow {
-            return ConversationPopupWindow(
+        fun setBlackRequest(blackRequest: () -> Unit) = apply {
+            this.blackRequest = blackRequest
+        }
+
+        fun builder(): ChatMessagePopupWindow {
+            return ChatMessagePopupWindow(
                 context = context,
                 applyView = checkNotNull(applyView),
                 gravity = gravity,
                 offsetX = offsetX,
                 offsetY = offsetY,
                 isPutTopped = isPutTopped,
+                isFollowed = isFollowed,
                 putTopRequest = putTopRequest,
-                deleteRequest = deleteRequest
+                followRequest = followRequest,
+                blackRequest = blackRequest
             )
         }
     }

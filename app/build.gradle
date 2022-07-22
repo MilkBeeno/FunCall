@@ -62,7 +62,7 @@ android {
 
 dependencies {
     // 自定义组件库
-    implementation 'com.github.MilkBeeno:Library:1.2.2'
+    implementation 'com.github.MilkBeeno:Library:1.2.3'
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'

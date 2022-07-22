@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/popup_message_to_top"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvPutTop"
+        android:layout_width="wrap_content"
+        android:layout_height="46dp"
+        android:gravity="center"
+        android:minWidth="142dp"
+        android:paddingStart="19dp"
+        android:paddingEnd="19dp"
+        android:textColor="@color/FF8E58FB"
+        android:textSize="14sp"
+        tools:text="@string/common_up_top" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="14dp"
+        android:background="@color/black_05" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvFollow"
+        android:layout_width="wrap_content"
+        android:layout_height="46dp"
+        android:gravity="center"
+        android:minWidth="142dp"
+        android:paddingStart="19dp"
+        android:paddingEnd="19dp"
+        android:textColor="@color/FF8E58FB"
+        android:textSize="14sp"
+        tools:text="@string/common_follow" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="14dp"
+        android:background="@color/black_05" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvBlack"
+        android:layout_width="wrap_content"
+        android:layout_height="46dp"
+        android:gravity="center"
+        android:minWidth="142dp"
+        android:paddingStart="19dp"
+        android:paddingEnd="19dp"
+        android:text="@string/common_black"
+        android:textColor="@color/FF8E58FB"
+        android:textSize="14sp" />
+</androidx.appcompat.widget.LinearLayoutCompat>

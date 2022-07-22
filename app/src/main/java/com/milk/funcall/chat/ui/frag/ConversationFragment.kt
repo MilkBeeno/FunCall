@@ -1,6 +1,5 @@
 package com.milk.funcall.chat.ui.frag
 
-import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -14,6 +13,7 @@ import com.milk.funcall.common.paging.status.RefreshStatus
 import com.milk.funcall.common.ui.AbstractFragment
 import com.milk.funcall.databinding.FragmentChatMessageBinding
 import com.milk.funcall.user.ui.act.UserTotalInfoActivity
+import com.milk.simple.ktx.dp2px
 import com.milk.simple.ktx.gone
 import com.milk.simple.ktx.obtainScreenHeight
 import com.milk.simple.ktx.visible
@@ -23,6 +23,8 @@ class ConversationFragment : AbstractFragment() {
     private val conversationViewModel by viewModels<ConversationViewModel>()
     private val conversationAdapter by lazy { ConversationAdapter() }
     private val splitHeight by lazy { requireActivity().obtainScreenHeight() / 2 }
+    private val popupOffsetX by lazy { -requireContext().dp2px(190f).toInt() }
+    private val popupOffsetY by lazy { requireActivity().dp2px(94.5f).toInt() }
 
     override fun getRootView(): View = binding.root
 
@@ -58,10 +60,10 @@ class ConversationFragment : AbstractFragment() {
             val local = intArrayOf(0, 0)
             itemView.getLocationInWindow(local)
             val offsetY =
-                if (local[1] > splitHeight) -dpToPx(94.5f) - itemView.measuredHeight else 0
+                if (local[1] > splitHeight) popupOffsetY - itemView.measuredHeight else 0
             ConversationPopupWindow.Builder(requireActivity())
                 .applyView(itemView)
-                .setOffsetX(-dpToPx(200f))
+                .setOffsetX(popupOffsetX)
                 .setOffsetY(offsetY)
                 .setGravity(Gravity.END)
                 .setPutTopRequest(isPutTopped) {
@@ -80,14 +82,6 @@ class ConversationFragment : AbstractFragment() {
             val targetId = adapter.getNoNullItem(position).conversation.targetId
             UserTotalInfoActivity.create(requireContext(), targetId)
         }
-    }
-
-    private fun dpToPx(value: Float): Int {
-        return TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP,
-            value,
-            requireActivity().resources.displayMetrics
-        ).toInt()
     }
 
     companion object {

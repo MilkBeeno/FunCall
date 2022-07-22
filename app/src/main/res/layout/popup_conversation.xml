@@ -14,7 +14,7 @@
         android:minWidth="142dp"
         android:paddingStart="19dp"
         android:paddingEnd="19dp"
-        android:text="@string/chat_message_to_up_top"
+        android:text="@string/common_up_top"
         android:textColor="@color/white"
         android:textSize="14sp" />
 

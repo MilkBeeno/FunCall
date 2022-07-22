@@ -2,19 +2,13 @@ package com.milk.funcall.common.paging
 
 import android.content.Context
 import android.graphics.Rect
-import android.util.TypedValue
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import com.milk.simple.ktx.dp2px
 
 class SimpleGridDecoration(context: Context) : RecyclerView.ItemDecoration() {
-    private val ten =
-        TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP, 10f, context.resources.displayMetrics
-        )
-    private val four =
-        TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP, 4f, context.resources.displayMetrics
-        )
+    private val ten = context.dp2px(10f).toInt()
+    private val four = context.dp2px(4f).toInt()
 
     override fun getItemOffsets(
         outRect: Rect,
@@ -22,13 +16,13 @@ class SimpleGridDecoration(context: Context) : RecyclerView.ItemDecoration() {
         parent: RecyclerView,
         state: RecyclerView.State
     ) {
-        outRect.top = ten.toInt()
+        outRect.top = ten
         if (parent.getChildAdapterPosition(view) % 2 == 0) {
-            outRect.left = ten.toInt()
-            outRect.right = four.toInt()
+            outRect.left = ten
+            outRect.right = four
         } else {
-            outRect.left = four.toInt()
-            outRect.right = ten.toInt()
+            outRect.left = four
+            outRect.right = ten
         }
     }
 }
