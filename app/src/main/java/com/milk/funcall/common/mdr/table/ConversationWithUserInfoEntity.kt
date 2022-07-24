@@ -1,12 +1,10 @@
 package com.milk.funcall.common.mdr.table
 
 import androidx.room.Embedded
-import com.milk.funcall.common.mdr.table.ConversationEntity
-import com.milk.funcall.common.mdr.table.UserInfoEntity
 
 data class ConversationWithUserInfoEntity(
     @Embedded
-    var conversation: ConversationEntity,
+    var conversation: ConversationEntity? = null,
     @Embedded
-    var userInfo: UserInfoEntity?
+    var userInfo: UserInfoEntity? = null
 )

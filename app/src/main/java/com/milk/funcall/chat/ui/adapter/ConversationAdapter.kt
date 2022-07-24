@@ -10,6 +10,7 @@ import com.milk.funcall.common.media.loader.ImageLoader
 import com.milk.funcall.common.paging.AbstractPagingAdapter
 import com.milk.funcall.common.paging.PagingViewHolder
 import com.milk.funcall.user.type.Gender
+import com.milk.simple.ktx.safeToInt
 
 class ConversationAdapter : AbstractPagingAdapter<ConversationWithUserInfoEntity>(
     layoutId = R.layout.item_chat_converstaion,
@@ -18,18 +19,18 @@ class ConversationAdapter : AbstractPagingAdapter<ConversationWithUserInfoEntity
             oldItem: ConversationWithUserInfoEntity,
             newItem: ConversationWithUserInfoEntity
         ): Boolean {
-            return oldItem.conversation.accountId == newItem.conversation.accountId
-                    && oldItem.conversation.targetId == newItem.conversation.targetId
+            return oldItem.conversation?.accountId == newItem.conversation?.accountId
+                    && oldItem.conversation?.targetId == newItem.conversation?.targetId
         }
 
         override fun areContentsTheSame(
             oldItem: ConversationWithUserInfoEntity,
             newItem: ConversationWithUserInfoEntity
         ): Boolean {
-            return oldItem.conversation.operationTime == newItem.conversation.operationTime
-                    && oldItem.conversation.unReadCount == newItem.conversation.unReadCount
-                    && oldItem.conversation.messageContent == newItem.conversation.messageContent
-                    && oldItem.conversation.putTopTime == newItem.conversation.putTopTime
+            return oldItem.conversation?.operationTime == newItem.conversation?.operationTime
+                    && oldItem.conversation?.unReadCount == newItem.conversation?.unReadCount
+                    && oldItem.conversation?.messageContent == newItem.conversation?.messageContent
+                    && oldItem.conversation?.putTopTime == newItem.conversation?.putTopTime
                     && oldItem.userInfo?.targetName == newItem.userInfo?.targetName
                     && oldItem.userInfo?.targetAvatar == newItem.userInfo?.targetAvatar
         }
@@ -45,10 +46,10 @@ class ConversationAdapter : AbstractPagingAdapter<ConversationWithUserInfoEntity
             .target(holder.getView(R.id.ivUserAvatar))
             .build()
         holder.setText(R.id.tvUserName, getTargetName(item))
-        holder.setText(R.id.tvMessage, item.conversation.messageContent)
-        holder.setText(R.id.tvTime, item.conversation.operationTime.convertMessageTime())
+        holder.setText(R.id.tvMessage, item.conversation?.messageContent)
+        holder.setText(R.id.tvTime, item.conversation?.operationTime?.convertMessageTime())
         holder.getView<MessageRedDotView>(R.id.redDotRootView)
-            .updateMessageCount(item.conversation.unReadCount)
+            .updateMessageCount(item.conversation?.unReadCount.safeToInt())
     }
 
     private fun getTargetGender(conversationWithUserInfoEntity: ConversationWithUserInfoEntity): String {
@@ -63,12 +64,12 @@ class ConversationAdapter : AbstractPagingAdapter<ConversationWithUserInfoEntity
     fun getTargetName(conversationWithUserInfoEntity: ConversationWithUserInfoEntity): String {
         val userInfo = conversationWithUserInfoEntity.userInfo
         val conversation = conversationWithUserInfoEntity.conversation
-        return userInfo?.targetName ?: conversation.targetName
+        return userInfo?.targetName ?: conversation?.targetName.toString()
     }
 
     fun getTargetAvatar(conversationWithUserInfoEntity: ConversationWithUserInfoEntity): String {
         val userInfo = conversationWithUserInfoEntity.userInfo
         val conversation = conversationWithUserInfoEntity.conversation
-        return userInfo?.targetAvatar ?: conversation.targetAvatar
+        return userInfo?.targetAvatar ?: conversation?.targetAvatar.toString()
     }
 }
