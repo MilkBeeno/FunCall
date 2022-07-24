@@ -4,7 +4,7 @@ import androidx.room.Embedded
 
 data class ConversationWithUserInfoEntity(
     @Embedded
-    var conversation: ConversationEntity? = null,
+    var conversation: ConversationEntity,
     @Embedded
-    var userInfo: UserInfoEntity? = null
+    var userInfo: UserInfoEntity?
 )
