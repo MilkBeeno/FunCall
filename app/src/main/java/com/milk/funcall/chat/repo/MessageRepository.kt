@@ -151,4 +151,9 @@ object MessageRepository {
         DataBaseManager.DB.conversationTableDao()
             .updatePutTopTime(Account.userId, targetId, 0)
     }
+
+    /** 获取当前用户的置顶状态 */
+    internal fun getConversationPutTopTime(targetId: Long) =
+        DataBaseManager.DB.conversationTableDao()
+            .getConversationPutTopTime(Account.userId, targetId)
 }

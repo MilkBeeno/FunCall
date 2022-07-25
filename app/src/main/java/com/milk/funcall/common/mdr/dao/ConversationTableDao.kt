@@ -31,4 +31,7 @@ interface ConversationTableDao {
 
     @Query("UPDATE ConversationTable SET conversationPutTopTime=:putTopTime WHERE conversationAccountId=:accountId AND conversationTargetId=:targetId")
     fun updatePutTopTime(accountId: Long, targetId: Long, putTopTime: Long)
+
+    @Query("SELECT ConversationTable.conversationPutTopTime FROM ConversationTable WHERE conversationAccountId=:accountId AND conversationTargetId=:targetId LIMIT 1")
+    fun getConversationPutTopTime(accountId: Long, targetId: Long): Long?
 }

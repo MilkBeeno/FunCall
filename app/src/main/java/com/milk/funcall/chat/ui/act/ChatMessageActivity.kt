@@ -131,6 +131,7 @@ class ChatMessageActivity : AbstractActivity() {
     }
 
     private fun showPopupWindow() {
+        val isPutTopped = chatMessageViewModel.userPutTopStatus
         val isFollowed =
             chatMessageViewModel.userInfoEntity?.targetIsFollowed ?: false
         ChatMessagePopupWindow.Builder(this)
@@ -138,11 +139,11 @@ class ChatMessageActivity : AbstractActivity() {
             .setOffsetX(-dp2px(150f).toInt())
             .setOffsetY(dp2px(10f).toInt())
             .setGravity(Gravity.END)
-            .setPutTopRequest(false) {
-                //  if (false)
-                //conversationViewModel.unPinChatMessage(conversation.targetId)
-                // else
-                //.putTopChatMessage(conversation.targetId)
+            .setPutTopRequest(isPutTopped) {
+                if (isPutTopped)
+                    chatMessageViewModel.unPinChatMessage()
+                else
+                    chatMessageViewModel.putTopChatMessage()
             }
             .setFollowRequest(isFollowed) {
                 loadingDialog.show()

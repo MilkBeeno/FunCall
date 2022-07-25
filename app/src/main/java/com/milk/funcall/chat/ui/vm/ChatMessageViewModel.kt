@@ -14,8 +14,11 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 
 class ChatMessageViewModel : ViewModel() {
     var userInfoEntity: UserInfoEntity? = null
+    var userPutTopStatus: Boolean = false
     val followedStatusFlow = MutableSharedFlow<Any?>()
     val blackUserFlow = MutableSharedFlow<Boolean>()
+
+    /** 私聊列表数据 */
     val pagingSource: LocalPagingSource<Int, ChatMessageEntity>
         get() {
             return LocalPagingSource(20, 5) {
@@ -23,17 +26,22 @@ class ChatMessageViewModel : ViewModel() {
             }
         }
 
+    /** 数据库中拉取数据 */
     internal fun getTargetInfoByDB(targetId: Long) = UserInfoRepository.getUserInfoByDB(targetId)
 
+    /** 数据库中不存在数据、从网络上拉取数据 */
     internal fun getTargetInfoByNetwork(targetId: Long) {
         ioScope {
             val apiResponse = UserInfoRepository.getUserInfoByNetwork(targetId)
             val apiResult = apiResponse.data
-            if (apiResponse.success && apiResult != null)
+            if (apiResponse.success && apiResult != null) {
                 setUserInfoEntity(apiResult)
+                getConversationPutTopTime()
+            }
         }
     }
 
+    /** 将数据保存在内存中 */
     private fun setUserInfoEntity(userInfo: UserInfoModel) {
         userInfoEntity = UserInfoEntity()
         userInfoEntity?.accountId = Account.userId
@@ -48,10 +56,22 @@ class ChatMessageViewModel : ViewModel() {
         userInfoEntity?.targetIsBlacked = userInfo.targetIsBlacked
     }
 
+    /** 更新用户当前最新信息 */
     internal fun updateUserInfoEntity(userInfoEntity: UserInfoEntity) {
         this.userInfoEntity = userInfoEntity
+        getConversationPutTopTime()
     }
 
+    /** 获取当前信息的置顶状态 1.置顶时间大于 0 表示已经置顶 2.时间等于 0 表示消息未置顶 */
+    private fun getConversationPutTopTime() {
+        ioScope {
+            val result = MessageRepository
+                .getConversationPutTopTime(userInfoEntity?.targetId.safeToLong())
+            userPutTopStatus = result != null && result > 0
+        }
+    }
+
+    /** 发送文本消息 */
     internal fun sendTextChatMessage(messageContent: String) {
         ioScope {
             MessageRepository.sendTextChatMessage(
@@ -63,10 +83,12 @@ class ChatMessageViewModel : ViewModel() {
         }
     }
 
+    /** 更新消息未读数量 */
     internal fun updateUnReadCount() {
         ioScope { MessageRepository.updateUnReadCount(userInfoEntity?.targetId.safeToLong()) }
     }
 
+    /** 更新对于当前用户的关注状态 */
     internal fun changeFollowedStatus() {
         ioScope {
             val targetId = userInfoEntity?.targetId.safeToLong()
@@ -78,6 +100,7 @@ class ChatMessageViewModel : ViewModel() {
         }
     }
 
+    /** 拉黑当前用户 */
     internal fun blackUser() {
         ioScope {
             val targetId = userInfoEntity?.targetId.safeToLong()
@@ -85,5 +108,15 @@ class ChatMessageViewModel : ViewModel() {
             if (apiResponse.success) MessageRepository.deleteChatMessage(targetId)
             blackUserFlow.emit(apiResponse.success)
         }
+    }
+
+    /** 消息置顶 */
+    fun putTopChatMessage() {
+        ioScope { MessageRepository.putTopChatMessage(userInfoEntity?.targetId.safeToLong()) }
+    }
+
+    /** 取消消息置顶 */
+    fun unPinChatMessage() {
+        ioScope { MessageRepository.unPinChatMessage(userInfoEntity?.targetId.safeToLong()) }
     }
 }
