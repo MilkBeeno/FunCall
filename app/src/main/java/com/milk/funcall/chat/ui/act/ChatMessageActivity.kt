@@ -155,8 +155,8 @@ class ChatMessageActivity : AbstractActivity() {
         fun create(
             context: Context,
             targetId: Long,
-            targetName: String,
-            targetAvatar: String
+            targetName: String = "",
+            targetAvatar: String = ""
         ) {
             val intent = Intent(context, ChatMessageActivity::class.java)
             intent.putExtra(TARGET_ID, targetId)

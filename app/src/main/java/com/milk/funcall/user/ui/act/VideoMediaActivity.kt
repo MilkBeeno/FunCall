@@ -18,8 +18,6 @@ import tv.danmaku.ijk.media.player.IMediaPlayer
 class VideoMediaActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityVideoMediaBinding>()
     private val targetId by lazy { intent.getLongExtra(TARGET_ID, 0) }
-    private val targetName by lazy { intent.getStringExtra(TARGET_NAME).toString() }
-    private val targetAvatar by lazy { intent.getStringExtra(TARGET_AVATAR).toString() }
     private val isBlacked by lazy { intent.getBooleanExtra(IS_BLACKED, false) }
     private val videoUrl by lazy { intent.getStringExtra(VIDEO_URL).toString() }
     private val deleteDialog by lazy { DeleteMediaDialog(this) }
@@ -69,8 +67,7 @@ class VideoMediaActivity : AbstractActivity() {
             }
             binding.llMessage -> {
                 if (isBlacked) return
-                ChatMessageActivity
-                    .create(this, targetId, targetName, targetAvatar)
+                ChatMessageActivity.create(this, targetId)
             }
         }
     }
@@ -88,22 +85,16 @@ class VideoMediaActivity : AbstractActivity() {
     companion object {
         private const val VIDEO_URL = "VIDEO_URL"
         private const val TARGET_ID = "TARGET_ID"
-        private const val TARGET_NAME = "TARGET_NAME"
-        private const val TARGET_AVATAR = "TARGET_AVATAR"
         private const val IS_BLACKED = "IS_BLACKED"
         fun create(
             context: Context,
             videoUrl: String,
             targetId: Long = 0,
-            targetName: String = "",
-            targetAvatar: String = "",
             isBlacked: Boolean = false
         ) {
             val intent = Intent(context, VideoMediaActivity::class.java)
             intent.putExtra(VIDEO_URL, videoUrl)
             intent.putExtra(TARGET_ID, targetId)
-            intent.putExtra(TARGET_NAME, targetName)
-            intent.putExtra(TARGET_AVATAR, targetAvatar)
             intent.putExtra(IS_BLACKED, isBlacked)
             context.startActivity(intent)
         }

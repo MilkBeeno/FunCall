@@ -144,13 +144,7 @@ class UserTotalInfoActivity : AbstractActivity() {
             binding.rvImage.layoutManager = NoScrollGridLayoutManager(this, 2)
             binding.rvImage.addItemDecoration(SimpleGridDecoration(this))
             binding.rvImage.adapter = UserImageAdapter(userImageList) { position ->
-                ImageMediaActivity.create(
-                    context = this,
-                    targetId = userInfo.targetId,
-                    targetName = userInfo.targetName,
-                    targetAvatar = userInfo.targetAvatar,
-                    isBlacked = userInfo.isBlacked
-                )
+                ImageMediaActivity.create(this, userInfo.targetId, userInfo.isBlacked)
                 LiveEventBus
                     .get<Pair<Int, MutableList<String>>>(KvKey.DISPLAY_IMAGE_MEDIA_LIST)
                     .post(Pair(position, userImageList))
@@ -192,8 +186,6 @@ class UserTotalInfoActivity : AbstractActivity() {
                         context = this,
                         videoUrl = it.videoConvert(),
                         targetId = it.targetId,
-                        targetName = it.targetName,
-                        targetAvatar = it.targetAvatar,
                         isBlacked = it.isBlacked
                     )
                 }
@@ -202,8 +194,7 @@ class UserTotalInfoActivity : AbstractActivity() {
                 if (Account.userLogged) {
                     userTotalInfoViewModel.userTotalInfoFlow.value?.let {
                         if (it.isBlacked) return
-                        ChatMessageActivity
-                            .create(this, it.targetId, it.targetName, it.targetAvatar)
+                        ChatMessageActivity.create(this, it.targetId)
                     }
                 } else showToast(string(R.string.common_place_to_login_first))
             }
