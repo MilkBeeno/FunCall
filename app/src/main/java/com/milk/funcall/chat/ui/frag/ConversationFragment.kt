@@ -49,9 +49,7 @@ class ConversationFragment : AbstractFragment() {
         }
         conversationAdapter.setOnItemClickListener { adapter, _, position ->
             val targetId = adapter.getNoNullItem(position).conversation.targetId
-            val targetName = conversationAdapter.getTargetName(adapter.getNoNullItem(position))
-            val targetAvatar = conversationAdapter.getTargetAvatar(adapter.getNoNullItem(position))
-            ChatMessageActivity.create(requireContext(), targetId, targetName, targetAvatar)
+            ChatMessageActivity.create(requireContext(), targetId)
         }
         conversationAdapter.setOnItemLongClickListener { adapter, itemView, position ->
             val conversation = adapter.getNoNullItem(position).conversation

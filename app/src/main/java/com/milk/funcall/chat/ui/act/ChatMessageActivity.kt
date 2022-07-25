@@ -16,6 +16,7 @@ import com.milk.funcall.chat.ui.vm.ChatMessageViewModel
 import com.milk.funcall.common.paging.status.RefreshStatus
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityMessageBinding
+import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.simple.keyboard.KeyBoardUtil
 import com.milk.simple.ktx.*
 import kotlinx.coroutines.flow.collectLatest
@@ -25,8 +26,7 @@ class ChatMessageActivity : AbstractActivity() {
     private val chatMessageViewModel by viewModels<ChatMessageViewModel>()
     private val chatMessageAdapter by lazy { ChatMessageAdapter() }
     private val targetId by lazy { intent.getLongExtra(TARGET_ID, 0) }
-    private val targetName by lazy { intent.getStringExtra(TARGET_NAME).toString() }
-    private val targetAvatar by lazy { intent.getStringExtra(TARGET_AVATAR).toString() }
+    private val loadingDialog by lazy { LoadingDialog(this, string(R.string.common_loading)) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +40,6 @@ class ChatMessageActivity : AbstractActivity() {
         setStatusBarDark()
         setStatusBarColor(color(R.color.white))
         binding.headerToolbar.showArrowBack()
-        binding.headerToolbar.setTitle(targetName)
         binding.rvMessage.adapter = chatMessageAdapter
         binding.rvMessage.layoutManager = LinearLayoutManager(this)
         binding.etMessage.addTextChangedListener { updateSendState() }
@@ -94,17 +93,17 @@ class ChatMessageActivity : AbstractActivity() {
                 .collectLatest {
                     if (it != null) {
                         binding.headerToolbar.setTitle(it.targetName)
-                        chatMessageViewModel
-                            .updateTargetUser(it.targetId, it.targetName, it.targetAvatar)
+                        chatMessageViewModel.updateUserInfoEntity(it)
                         chatMessageAdapter.setUserInfoEntity(it)
-                    } else {
-                        chatMessageViewModel
-                            .updateTargetUser(targetId, targetName, targetAvatar)
-                        chatMessageViewModel.getTargetInfoByNetwork(targetId)
-                    }
-                    chatMessageAdapter
-                        .setPagerSource(chatMessageViewModel.pagingSource.pager)
+                        chatMessageAdapter
+                            .setPagerSource(chatMessageViewModel.pagingSource.pager)
+                    } else chatMessageViewModel.getTargetInfoByNetwork(targetId)
                 }
+        }
+        launch {
+            chatMessageViewModel.networkRequestStatusFlow.collectLatest {
+                loadingDialog.dismiss()
+            }
         }
     }
 
@@ -126,6 +125,8 @@ class ChatMessageActivity : AbstractActivity() {
     }
 
     private fun showPopupWindow() {
+        val isFollowed =
+            chatMessageViewModel.userInfoEntity?.targetIsFollowed ?: false
         ChatMessagePopupWindow.Builder(this)
             .applyView(binding.ivMore)
             .setOffsetX(-dp2px(150f).toInt())
@@ -137,8 +138,9 @@ class ChatMessageActivity : AbstractActivity() {
                 // else
                 //.putTopChatMessage(conversation.targetId)
             }
-            .setFollowRequest(false) {
-
+            .setFollowRequest(isFollowed) {
+                loadingDialog.show()
+                chatMessageViewModel.changeFollowedStatus()
             }
             .setBlackRequest {
                 // 直接拉黑
@@ -153,18 +155,9 @@ class ChatMessageActivity : AbstractActivity() {
 
     companion object {
         private const val TARGET_ID = "TARGET_ID"
-        private const val TARGET_NAME = "TARGET_NAME"
-        private const val TARGET_AVATAR = "TARGET_AVATAR"
-        fun create(
-            context: Context,
-            targetId: Long,
-            targetName: String = "",
-            targetAvatar: String = ""
-        ) {
+        fun create(context: Context, targetId: Long) {
             val intent = Intent(context, ChatMessageActivity::class.java)
             intent.putExtra(TARGET_ID, targetId)
-            intent.putExtra(TARGET_NAME, targetName)
-            intent.putExtra(TARGET_AVATAR, targetAvatar)
             context.startActivity(intent)
         }
     }

@@ -65,7 +65,7 @@ class UserInfoActivity : AbstractActivity() {
                         binding.llMedia.visible()
                         setUserBasic(it)
                         setUserMedia(it)
-                        setUserFollow(it.isFollowed)
+                        setUserFollow(it.targetIsFollowed)
                     }
                     it == null -> {
                         showToast(string(R.string.user_info_obtain_failed))
@@ -144,7 +144,7 @@ class UserInfoActivity : AbstractActivity() {
             binding.rvImage.layoutManager = NoScrollGridLayoutManager(this, 2)
             binding.rvImage.addItemDecoration(SimpleGridDecoration(this))
             binding.rvImage.adapter = UserImageAdapter(userImageList) { position ->
-                ImageMediaActivity.create(this, userInfo.targetId, userInfo.isBlacked)
+                ImageMediaActivity.create(this, userInfo.targetId, userInfo.targetIsBlacked)
                 LiveEventBus
                     .get<Pair<Int, MutableList<String>>>(KvKey.DISPLAY_IMAGE_MEDIA_LIST)
                     .post(Pair(position, userImageList))
@@ -182,18 +182,14 @@ class UserInfoActivity : AbstractActivity() {
             }
             binding.flVideo -> {
                 userInfoViewModel.userInfoFlow.value?.let {
-                    VideoMediaActivity.create(
-                        context = this,
-                        videoUrl = it.videoConvert(),
-                        targetId = it.targetId,
-                        isBlacked = it.isBlacked
-                    )
+                    VideoMediaActivity
+                        .create(this, it.videoConvert(), it.targetId, it.targetIsBlacked)
                 }
             }
             binding.basic.llMessage -> {
                 if (Account.userLogged) {
                     userInfoViewModel.userInfoFlow.value?.let {
-                        if (it.isBlacked) return
+                        if (it.targetIsBlacked) return
                         ChatMessageActivity.create(this, it.targetId)
                     }
                 } else showToast(string(R.string.common_place_to_login_first))

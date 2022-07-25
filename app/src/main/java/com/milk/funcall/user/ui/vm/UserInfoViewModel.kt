@@ -1,7 +1,6 @@
 package com.milk.funcall.user.ui.vm
 
 import androidx.lifecycle.ViewModel
-import com.milk.funcall.account.Account
 import com.milk.funcall.user.data.UserInfoModel
 import com.milk.funcall.user.repo.UserInfoRepository
 import com.milk.simple.ktx.ioScope
@@ -29,17 +28,12 @@ class UserInfoViewModel : ViewModel() {
     fun changeFollowedStatus() {
         ioScope {
             val targetId = userInfoFlow.value?.targetId ?: 0
-            val isFollow = !(userInfoFlow.value?.isFollowed ?: false)
+            val isFollowed = !(userInfoFlow.value?.targetIsFollowed ?: false)
             val apiResponse =
-                UserInfoRepository.changeFollowedStatus(targetId, isFollow)
+                UserInfoRepository.changeFollowedStatus(targetId, isFollowed)
             if (apiResponse.success) {
-                userInfoFlow.value?.isFollowed = isFollow
-                userFollowedStatusFlow.emit(isFollow)
-                // 更新本地粉丝数量
-                val lastFollows = Account.userFollows
-                Account.userFollows =
-                    if (isFollow) lastFollows + 1 else lastFollows - 1
-                Account.userFollowsFlow.emit(Account.userFollows)
+                userInfoFlow.value?.targetIsFollowed = isFollowed
+                userFollowedStatusFlow.emit(isFollowed)
             } else userFollowedStatusFlow.emit(null)
         }
     }

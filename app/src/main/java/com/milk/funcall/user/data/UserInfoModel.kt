@@ -7,10 +7,6 @@ import java.io.Serializable
 data class UserInfoModel(
     @SerializedName("fansNum")
     val targetFans: Int = 0,
-    @SerializedName("blackFlag")
-    val isBlacked: Boolean = false,
-    @SerializedName("followFlag")
-    var isFollowed: Boolean = false,
     @SerializedName("followNum")
     val userFollows: Int = 0,
     // 展示给用户的 ID

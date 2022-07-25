@@ -34,6 +34,7 @@ object UserInfoRepository {
 
     private fun saveUserInfoToDB(userInfo: UserInfoModel) {
         val userInfoEntity = UserInfoEntity()
+        userInfoEntity.accountId = Account.userId
         userInfoEntity.targetId = userInfo.targetId
         userInfoEntity.targetName = userInfo.targetName
         userInfoEntity.targetAvatar = userInfo.targetAvatar
@@ -41,10 +42,24 @@ object UserInfoRepository {
         userInfoEntity.targetImage = userInfo.targetImage
         userInfoEntity.targetVideo = userInfo.targetVideo
         userInfoEntity.targetOnline = userInfo.targetOnline
+        userInfoEntity.targetIsFollowed = userInfo.targetIsFollowed
+        userInfoEntity.targetIsBlacked = userInfo.targetIsBlacked
         DataBaseManager.DB.userInfoTableDao().insert(userInfoEntity)
     }
 
-    suspend fun changeFollowedStatus(targetId: Long, isFollow: Boolean) = retrofit {
-        ApiService.userTotalInfApiService.changeFollowedStatus(targetId, isFollow)
+    suspend fun changeFollowedStatus(targetId: Long, isFollowed: Boolean) = retrofit {
+        val apiResponse =
+            ApiService.userTotalInfApiService.changeFollowedStatus(targetId, isFollowed)
+        if (apiResponse.success) {
+            // 更新本地关注数量
+            val lastFollows = Account.userFollows
+            Account.userFollows =
+                if (isFollowed) lastFollows + 1 else lastFollows - 1
+            Account.userFollowsFlow.emit(Account.userFollows)
+            // 更新数据库中对当前用户的状态
+            DataBaseManager.DB.userInfoTableDao()
+                .updateFollowedStatus(Account.userId, targetId, isFollowed)
+        }
+        apiResponse
     }
 }

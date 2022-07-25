@@ -14,4 +14,7 @@ interface UserInfoTableDao {
 
     @Query("SELECT * FROM UserInfoTable WHERE userInfoTargetId=:targetId LIMIT 1 ")
     fun query(targetId: Long): Flow<UserInfoEntity?>
+
+    @Query("UPDATE UserInfoTable SET userInfoIsFollowed=:isFollowed WHERE userInfoAccountId=:accountId AND userInfoTargetId=:targetId")
+    fun updateFollowedStatus(accountId: Long, targetId: Long, isFollowed: Boolean)
 }
