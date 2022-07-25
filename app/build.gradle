@@ -9,7 +9,7 @@ android {
     compileSdk 32
     defaultConfig {
         // 正式包名: com.milk.simplefuncall 测试包名:com.milk.funcall
-        applicationId "com.milk.simplefuncall"
+        applicationId "com.milk.funcall"
         minSdk 21
         targetSdk 32
         versionCode 100
@@ -18,7 +18,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         ndk {
-            //选择要添加的对应 cpu 类型的 .so 库:打包编译只会加重一个 arm64-v8a 的 so 库
+            // 选择要添加的对应 cpu 类型的 .so 库:打包编译只会加重一个 arm64-v8a 的 so 库
             abiFilters "arm64-v8a"
         }
     }
@@ -35,11 +35,19 @@ android {
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            // 测试服的广告ID
+            buildConfigField 'String', 'AD_APP_ID', "${AD_APP_ID_DEBUG}"
+            buildConfigField 'String', 'AD_APP_VERSION', "${AD_APP_VERSION_DEBUG}"
+            buildConfigField 'String', 'AD_APP_CHANNEL', "${AD_APP_CHANNEL}"
             signingConfig signingConfigs.myJsk
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            // 正试服的广告ID
+            buildConfigField 'String', 'AD_APP_ID', "${AD_APP_ID_RELEASE}"
+            buildConfigField 'String', 'AD_APP_VERSION', "${AD_APP_VERSION_RELEASE}"
+            buildConfigField 'String', 'AD_APP_CHANNEL', "${AD_APP_CHANNEL}"
             signingConfig signingConfigs.myJsk
         }
     }
@@ -102,6 +110,8 @@ dependencies {
     implementation 'com.google.guava:guava:28.0-android'
     // image 高斯模糊库
     implementation 'com.github.centerzx:ShapeBlurView:1.0.1'
+    // 谷歌广告依赖库
+    implementation("com.google.android.gms:play-services-ads:21.0.0")
     // firebase 统计功能
     implementation platform('com.google.firebase:firebase-bom:30.1.0')
     implementation("com.google.firebase:firebase-analytics:21.0.0")

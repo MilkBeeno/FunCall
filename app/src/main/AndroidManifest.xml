@@ -49,19 +49,26 @@
         android:theme="@style/Theme.FunCall"
         tools:ignore="UnusedAttribute">
         <service android:name=".app.MainService" />
+        <!-- Google 广告ID 正式服 ID=“ ca-app-pub-7285192424671907~9647412199 ”-->
+        <!-- Google 广告ID 测试服 ID=“ ca-app-pub-3940256099942544~3347511713 “-->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713" />
         <!-- 屏幕适配方案 -->
         <meta-data
             android:name="design_width_in_dp"
             android:value="360" />
         <meta-data
             android:name="design_height_in_dp"
-            android:value="640" /> <!-- Facebook 登录 -->
+            android:value="640" />
+        <!-- Facebook 登录 -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
         <meta-data
             android:name="com.facebook.sdk.ClientToken"
-            android:value="@string/facebook_client_token" /> <!-- Facebook 登录的 Activity -->
+            android:value="@string/facebook_client_token" />
+        <!-- Facebook 登录的 Activity -->
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -78,7 +85,8 @@
 
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
-        </activity> <!-- 本地 Activity -->
+        </activity>
+        <!-- 本地 Activity -->
         <activity
             android:name=".login.ui.act.LaunchActivity"
             android:exported="true"

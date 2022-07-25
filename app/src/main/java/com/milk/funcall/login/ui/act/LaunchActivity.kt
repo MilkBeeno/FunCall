@@ -3,6 +3,7 @@ package com.milk.funcall.login.ui.act
 import android.animation.Animator
 import android.os.Bundle
 import com.milk.funcall.account.Account
+import com.milk.funcall.ad.AdConfig
 import com.milk.funcall.app.ui.act.MainActivity
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityLaunchBinding
@@ -16,6 +17,7 @@ class LaunchActivity : AbstractActivity() {
         setContentView(binding.root)
         initializeView()
         Account.initialize()
+        AdConfig.obtain()
     }
 
     private fun initializeView() {
