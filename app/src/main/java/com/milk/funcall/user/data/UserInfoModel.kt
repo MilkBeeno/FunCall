@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import com.milk.funcall.common.mdr.table.UserInfoEntity
 import java.io.Serializable
 
-data class UserTotalInfoModel(
+data class UserInfoModel(
     @SerializedName("fansNum")
     val targetFans: Int = 0,
     @SerializedName("blackFlag")

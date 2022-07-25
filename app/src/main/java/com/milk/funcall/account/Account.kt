@@ -1,7 +1,7 @@
 package com.milk.funcall.account
 
 import com.milk.funcall.common.constrant.KvKey
-import com.milk.funcall.user.data.UserTotalInfoModel
+import com.milk.funcall.user.data.UserInfoModel
 import com.milk.funcall.user.type.Gender
 import com.milk.simple.ktx.ioScope
 import com.milk.simple.mdr.KvManger
@@ -225,7 +225,7 @@ object Account {
         ioScope { userLoggedFlow.emit(true) }
     }
 
-    internal fun saveAccountInfo(info: UserTotalInfoModel, registered: Boolean = true) {
+    internal fun saveAccountInfo(info: UserInfoModel, registered: Boolean = true) {
         ioScope {
             userId = info.targetId
             userIdFlow.emit(info.targetId)

@@ -21,15 +21,15 @@ import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.ui.manager.NoScrollGridLayoutManager
 import com.milk.funcall.databinding.ActivityUserInfoBinding
 import com.milk.funcall.login.ui.dialog.LoadingDialog
-import com.milk.funcall.user.data.UserTotalInfoModel
+import com.milk.funcall.user.data.UserInfoModel
 import com.milk.funcall.user.ui.adapter.UserImageAdapter
-import com.milk.funcall.user.ui.vm.UserTotalInfoViewModel
+import com.milk.funcall.user.ui.vm.UserInfoViewModel
 import com.milk.simple.ktx.*
 import kotlinx.coroutines.flow.collectLatest
 
-class UserTotalInfoActivity : AbstractActivity() {
+class UserInfoActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityUserInfoBinding>()
-    private val userTotalInfoViewModel by viewModels<UserTotalInfoViewModel>()
+    private val userInfoViewModel by viewModels<UserInfoViewModel>()
     private val userId by lazy { intent.getLongExtra(USER_ID, 0) }
     private val loadingDialog by lazy { LoadingDialog(this, string(R.string.common_loading)) }
 
@@ -55,7 +55,7 @@ class UserTotalInfoActivity : AbstractActivity() {
 
     private fun initializeObserver() {
         launch {
-            userTotalInfoViewModel.userTotalInfoFlow.collectLatest {
+            userInfoViewModel.userInfoFlow.collectLatest {
                 when {
                     it != null && it.targetId > 0 -> {
                         binding.lvLoading.gone()
@@ -75,7 +75,7 @@ class UserTotalInfoActivity : AbstractActivity() {
             }
         }
         launch {
-            userTotalInfoViewModel.userFollowedChangeFlow.collectLatest {
+            userInfoViewModel.userFollowedStatusFlow.collectLatest {
                 loadingDialog.dismiss()
                 if (it != null) {
                     setUserFollow(it)
@@ -106,7 +106,7 @@ class UserTotalInfoActivity : AbstractActivity() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun setUserBasic(userInfo: UserTotalInfoModel) {
+    private fun setUserBasic(userInfo: UserInfoModel) {
         ImageLoader.Builder()
             .loadAvatar(userInfo.targetAvatar, userInfo.targetGender)
             .target(binding.basic.ivUserAvatar)
@@ -125,7 +125,7 @@ class UserTotalInfoActivity : AbstractActivity() {
         }
     }
 
-    private fun setUserMedia(userInfo: UserTotalInfoModel) {
+    private fun setUserMedia(userInfo: UserInfoModel) {
         // 设置 Video 信息
         val userVideoUrl = userInfo.videoConvert()
         if (userVideoUrl.isNotEmpty()) {
@@ -157,7 +157,7 @@ class UserTotalInfoActivity : AbstractActivity() {
 
     private fun loadUserInfo() {
         binding.lvLoading.visible()
-        userTotalInfoViewModel.getUserTotalInfo(userId)
+        userInfoViewModel.getUserTotalInfo(userId)
     }
 
     override fun onMultipleClick(view: View) {
@@ -166,7 +166,7 @@ class UserTotalInfoActivity : AbstractActivity() {
             binding.basic.llFollow -> {
                 if (Account.userLogged) {
                     loadingDialog.show()
-                    userTotalInfoViewModel.changeFollowState()
+                    userInfoViewModel.changeFollowedStatus()
                 } else showToast(string(R.string.common_place_to_login_first))
             }
             binding.link.tvCopy -> {
@@ -181,7 +181,7 @@ class UserTotalInfoActivity : AbstractActivity() {
                 finish()
             }
             binding.flVideo -> {
-                userTotalInfoViewModel.userTotalInfoFlow.value?.let {
+                userInfoViewModel.userInfoFlow.value?.let {
                     VideoMediaActivity.create(
                         context = this,
                         videoUrl = it.videoConvert(),
@@ -192,7 +192,7 @@ class UserTotalInfoActivity : AbstractActivity() {
             }
             binding.basic.llMessage -> {
                 if (Account.userLogged) {
-                    userTotalInfoViewModel.userTotalInfoFlow.value?.let {
+                    userInfoViewModel.userInfoFlow.value?.let {
                         if (it.isBlacked) return
                         ChatMessageActivity.create(this, it.targetId)
                     }
@@ -204,7 +204,7 @@ class UserTotalInfoActivity : AbstractActivity() {
     companion object {
         private const val USER_ID = "USER_ID"
         fun create(context: Context, userId: Long = 0) {
-            val intent = Intent(context, UserTotalInfoActivity::class.java)
+            val intent = Intent(context, UserInfoActivity::class.java)
             intent.putExtra(USER_ID, userId)
             context.startActivity(intent)
         }

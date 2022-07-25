@@ -1,23 +1,23 @@
 package com.milk.funcall.user.api
 
 import com.milk.funcall.common.data.ApiResponse
-import com.milk.funcall.user.data.UserTotalInfoModel
+import com.milk.funcall.user.data.UserInfoModel
 import retrofit2.http.*
 
 interface UserTotalInfoApiService {
     @GET("/funcall/getUser")
-    suspend fun getUserTotalInfo(
+    suspend fun getUserInfoByNetwork(
         @Query("userId") userId: Long
-    ): ApiResponse<UserTotalInfoModel>
+    ): ApiResponse<UserInfoModel>
 
     @GET("/funcall/randomGetUser")
-    suspend fun getNextUserTotalInfo(
+    suspend fun getNextUserInfoByNetwork(
         @Query("gender") gender: String
-    ): ApiResponse<UserTotalInfoModel>
+    ): ApiResponse<UserInfoModel>
 
     @FormUrlEncoded
     @POST("/funcall/follow")
-    suspend fun changeFollowState(
+    suspend fun changeFollowedStatus(
         @Field("faceUserId") targetId: Long,
         @Field("followFlag") isFollow: Boolean
     ): ApiResponse<Any>

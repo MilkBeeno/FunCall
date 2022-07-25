@@ -1,10 +1,10 @@
 package com.milk.funcall.account.api
 
 import com.milk.funcall.common.data.ApiResponse
-import com.milk.funcall.user.data.UserTotalInfoModel
+import com.milk.funcall.user.data.UserInfoModel
 import retrofit2.http.GET
 
 interface AccountApiService {
     @GET("/funcall/currentUserInfo")
-    suspend fun getUserInfo(): ApiResponse<UserTotalInfoModel>
+    suspend fun getUserInfo(): ApiResponse<UserInfoModel>
 }

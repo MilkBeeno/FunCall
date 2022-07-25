@@ -11,7 +11,7 @@ import com.milk.funcall.common.paging.StaggeredGridDecoration
 import com.milk.funcall.common.paging.status.RefreshStatus
 import com.milk.funcall.common.ui.AbstractFragment
 import com.milk.funcall.databinding.FragmentHomeBinding
-import com.milk.funcall.user.ui.act.UserTotalInfoActivity
+import com.milk.funcall.user.ui.act.UserInfoActivity
 import com.milk.funcall.user.ui.adapter.HomeAdapter
 import com.milk.funcall.user.ui.vm.HomeViewModel
 import com.milk.simple.ktx.gone
@@ -74,7 +74,7 @@ class HomeFragment : AbstractFragment() {
         binding.refresh.setOnRefreshListener { adapter.refresh() }
         adapter.setOnItemClickListener { adapter, _, position ->
             val user = adapter.getNoNullItem(position)
-            UserTotalInfoActivity.create(requireContext(), user.targetId)
+            UserInfoActivity.create(requireContext(), user.targetId)
         }
     }
 

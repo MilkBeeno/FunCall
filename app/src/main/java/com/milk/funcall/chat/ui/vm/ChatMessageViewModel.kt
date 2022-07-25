@@ -13,13 +13,9 @@ class ChatMessageViewModel : ViewModel() {
     private var targetAvatar: String = ""
     val pagingSource: LocalPagingSource<Int, ChatMessageEntity>
         get() {
-            return LocalPagingSource(
-                pageSize = 20,
-                prefetchDistance = 5,
-                pagingSourceFactory = {
-                    MessageRepository.getChatMessagesByDB(targetId)
-                }
-            )
+            return LocalPagingSource(20, 5) {
+                MessageRepository.getChatMessagesByDB(targetId)
+            }
         }
 
     internal fun getTargetInfoByDB(targetId: Long) = UserInfoRepository.getUserInfoByDB(targetId)
