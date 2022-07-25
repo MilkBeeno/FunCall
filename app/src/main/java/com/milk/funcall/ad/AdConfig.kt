@@ -1,6 +1,7 @@
 package com.milk.funcall.ad
 
 import android.content.Context
+import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.BaseApplication
 import com.milk.funcall.BuildConfig
 import com.milk.funcall.R
@@ -9,6 +10,7 @@ import com.milk.funcall.ad.data.AdModel
 import com.milk.funcall.ad.data.AdPositionModel
 import com.milk.funcall.ad.data.AdResponseModel
 import com.milk.funcall.ad.repo.AdRepository
+import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.net.json.JsonConvert
 import com.milk.simple.ktx.ioScope
 import com.milk.simple.mdr.KvManger
@@ -44,8 +46,10 @@ object AdConfig {
         positionMap.clear()
         result.forEach {
             when (it.code) {
-                AdCodeKey.VIEW_USER_LINK ->
+                AdCodeKey.VIEW_USER_LINK -> {
                     savePositionId(AdCodeKey.VIEW_USER_LINK, it.positionList)
+                    LiveEventBus.get<Any?>(EventKey.UPDATE_START_AD_UNIT_ID).post(null)
+                }
                 AdCodeKey.APP_START ->
                     savePositionId(AdCodeKey.APP_START, it.positionList)
                 AdCodeKey.HOME_LIST ->
@@ -78,5 +82,11 @@ object AdConfig {
             KvManger.put(AD_CONFIG, defaultConfig)
             defaultConfig
         }
+    }
+
+    /** 获取广告 ID */
+    fun getAdvertiseUnitId(key: String): String {
+        val position = positionMap[key]
+        return if (position?.isNotEmpty() == true) return position else ""
     }
 }
