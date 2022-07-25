@@ -12,7 +12,6 @@ import com.milk.funcall.chat.ui.vm.ConversationViewModel
 import com.milk.funcall.common.paging.status.RefreshStatus
 import com.milk.funcall.common.ui.AbstractFragment
 import com.milk.funcall.databinding.FragmentChatMessageBinding
-import com.milk.funcall.user.ui.act.UserTotalInfoActivity
 import com.milk.simple.ktx.dp2px
 import com.milk.simple.ktx.gone
 import com.milk.simple.ktx.obtainScreenHeight
@@ -77,10 +76,6 @@ class ConversationFragment : AbstractFragment() {
                 }
                 .builder()
             true
-        }
-        conversationAdapter.setOnItemChildClickListener { adapter, _, position ->
-            val targetId = adapter.getNoNullItem(position).conversation.targetId
-            UserTotalInfoActivity.create(requireContext(), targetId)
         }
     }
 

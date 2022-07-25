@@ -35,9 +35,6 @@ class ConversationAdapter : AbstractPagingAdapter<ConversationWithUserInfoEntity
         }
     }
 ) {
-    init {
-        addChildClickViewIds(R.id.ivUserAvatar)
-    }
 
     override fun convert(holder: PagingViewHolder, item: ConversationWithUserInfoEntity) {
         ImageLoader.Builder()
