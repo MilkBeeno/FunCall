@@ -7,6 +7,6 @@
     <style name="Theme.FunCall.AdActivity" parent="android:Theme.Material.Light.NoActionBar">
         <item name="windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
-        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:statusBarColor">@color/black_50</item>
     </style>
 </resources>
