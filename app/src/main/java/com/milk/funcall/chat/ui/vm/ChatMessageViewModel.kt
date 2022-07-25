@@ -24,6 +24,10 @@ class ChatMessageViewModel : ViewModel() {
 
     internal fun getTargetInfoByDB(targetId: Long) = UserInfoRepository.getUserInfoByDB(targetId)
 
+    internal fun getTargetInfoByNetwork(targetId: Long) {
+        ioScope { UserInfoRepository.getUserInfoByNetwork(targetId) }
+    }
+
     internal fun updateTargetUser(targetId: Long, targetName: String, targetAvatar: String) {
         this.targetId = targetId
         this.targetName = targetName

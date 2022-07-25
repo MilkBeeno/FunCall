@@ -97,8 +97,11 @@ class ChatMessageActivity : AbstractActivity() {
                         chatMessageViewModel
                             .updateTargetUser(it.targetId, it.targetName, it.targetAvatar)
                         chatMessageAdapter.setUserInfoEntity(it)
-                    } else chatMessageViewModel
-                        .updateTargetUser(targetId, targetName, targetAvatar)
+                    } else {
+                        chatMessageViewModel
+                            .updateTargetUser(targetId, targetName, targetAvatar)
+                        chatMessageViewModel.getTargetInfoByNetwork(targetId)
+                    }
                     chatMessageAdapter
                         .setPagerSource(chatMessageViewModel.pagingSource.pager)
                 }
