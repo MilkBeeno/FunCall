@@ -20,9 +20,11 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvBlackList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:overScrollMode="never" />
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivEmpty"
             android:layout_width="195dp"
             android:layout_height="232dp"
             android:layout_gravity="center_horizontal"
