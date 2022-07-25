@@ -101,8 +101,14 @@ class ChatMessageActivity : AbstractActivity() {
                 }
         }
         launch {
-            chatMessageViewModel.networkRequestStatusFlow.collectLatest {
+            chatMessageViewModel.followedStatusFlow.collectLatest {
                 loadingDialog.dismiss()
+            }
+        }
+        launch {
+            chatMessageViewModel.blackUserFlow.collectLatest {
+                loadingDialog.dismiss()
+                if (it) finish()
             }
         }
     }
@@ -143,7 +149,8 @@ class ChatMessageActivity : AbstractActivity() {
                 chatMessageViewModel.changeFollowedStatus()
             }
             .setBlackRequest {
-                // 直接拉黑
+                loadingDialog.show()
+                chatMessageViewModel.blackUser()
             }
             .builder()
     }

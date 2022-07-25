@@ -21,4 +21,9 @@ interface UserTotalInfoApiService {
         @Field("faceUserId") targetId: Long,
         @Field("followFlag") isFollow: Boolean
     ): ApiResponse<Any>
+
+    @GET("/funcall/blackUser")
+    suspend fun blackUser(
+        @Query("blackedUserId") targetId: Long
+    ): ApiResponse<Any>
 }

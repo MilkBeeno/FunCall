@@ -14,7 +14,8 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 
 class ChatMessageViewModel : ViewModel() {
     var userInfoEntity: UserInfoEntity? = null
-    val networkRequestStatusFlow = MutableSharedFlow<Any?>()
+    val followedStatusFlow = MutableSharedFlow<Any?>()
+    val blackUserFlow = MutableSharedFlow<Boolean>()
     val pagingSource: LocalPagingSource<Int, ChatMessageEntity>
         get() {
             return LocalPagingSource(20, 5) {
@@ -73,7 +74,16 @@ class ChatMessageViewModel : ViewModel() {
             val apiResponse =
                 UserInfoRepository.changeFollowedStatus(targetId, isFollowed)
             if (apiResponse.success) userInfoEntity?.targetIsFollowed = isFollowed
-            networkRequestStatusFlow.emit(null)
+            followedStatusFlow.emit(null)
+        }
+    }
+
+    internal fun blackUser() {
+        ioScope {
+            val targetId = userInfoEntity?.targetId.safeToLong()
+            val apiResponse = UserInfoRepository.blackUser(targetId)
+            if (apiResponse.success) MessageRepository.deleteChatMessage(targetId)
+            blackUserFlow.emit(apiResponse.success)
         }
     }
 }
