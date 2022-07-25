@@ -1,5 +1,6 @@
 package com.milk.funcall.chat.ui.adapter
 
+import android.annotation.SuppressLint
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.DiffUtil
@@ -13,6 +14,7 @@ import com.milk.funcall.common.media.loader.ImageLoader
 import com.milk.funcall.common.paging.AbstractPagingAdapter
 import com.milk.funcall.common.paging.MultiTypeDelegate
 import com.milk.funcall.common.paging.PagingViewHolder
+import com.milk.funcall.user.type.Gender
 import com.milk.simple.ktx.gone
 import com.milk.simple.ktx.visible
 
@@ -41,10 +43,13 @@ class ChatMessageAdapter : AbstractPagingAdapter<ChatMessageEntity>(
 
     init {
         setMultiTypeDelegate(ChatMessageTypeDelegate())
+        addChildClickViewIds(R.id.ivPeopleAvatar)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     internal fun setUserInfoEntity(userInfoEntity: UserInfoEntity) {
         this.userInfoEntity = userInfoEntity
+        notifyDataSetChanged()
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -82,12 +87,13 @@ class ChatMessageAdapter : AbstractPagingAdapter<ChatMessageEntity>(
 
     private fun updatePeopleAvatar(holder: PagingViewHolder, item: ChatMessageEntity) {
         val ivPeopleAvatar = holder.getView<AppCompatImageView>(R.id.ivPeopleAvatar)
+        val gender = userInfoEntity?.targetGender ?: Gender.Man.value
         val userAvatar = if (item.isAcceptMessage) {
             val userInfoAvatar = userInfoEntity?.targetAvatar
             userInfoAvatar ?: item.targetAvatar
         } else Account.userAvatar
         ImageLoader.Builder()
-            .loadAvatar(userAvatar)
+            .loadAvatar(userAvatar, gender)
             .target(ivPeopleAvatar)
             .build()
     }

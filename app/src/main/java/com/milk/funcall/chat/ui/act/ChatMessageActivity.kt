@@ -17,6 +17,7 @@ import com.milk.funcall.common.paging.status.RefreshStatus
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityMessageBinding
 import com.milk.funcall.login.ui.dialog.LoadingDialog
+import com.milk.funcall.user.ui.act.UserInfoActivity
 import com.milk.simple.keyboard.KeyBoardUtil
 import com.milk.simple.ktx.*
 import kotlinx.coroutines.flow.collectLatest
@@ -61,6 +62,10 @@ class ChatMessageActivity : AbstractActivity() {
                 }
                 else -> Unit
             }
+        }
+        chatMessageAdapter.setOnItemChildClickListener { adapter, _, position ->
+            val targetId = adapter.getNoNullItem(position).targetId
+            UserInfoActivity.create(this, targetId)
         }
         // 监听输入内容键盘焦点变化
         binding.etMessage.setOnFocusChangeListener { _, hasFocus ->
