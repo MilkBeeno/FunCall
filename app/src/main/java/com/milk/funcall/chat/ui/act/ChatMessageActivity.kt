@@ -108,6 +108,7 @@ class ChatMessageActivity : AbstractActivity() {
         launch {
             chatMessageViewModel.followedStatusFlow.collectLatest {
                 loadingDialog.dismiss()
+                if (it == true) showToast(string(R.string.common_success))
             }
         }
         launch {

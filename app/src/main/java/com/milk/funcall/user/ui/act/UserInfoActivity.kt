@@ -19,6 +19,7 @@ import com.milk.funcall.account.Account
 import com.milk.funcall.ad.AdConfig
 import com.milk.funcall.ad.constant.AdCodeKey
 import com.milk.funcall.chat.ui.act.ChatMessageActivity
+import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.common.media.loader.ImageLoader
 import com.milk.funcall.common.media.loader.VideoLoader
@@ -99,6 +100,13 @@ class UserInfoActivity : AbstractActivity() {
                 }
             }
         }
+        LiveEventBus.get<Pair<Boolean, Long>>(EventKey.USER_FOLLOWED_STATUS_CHANGED)
+            .observe(this) {
+                if (it.second == userId) {
+                    setUserFollow(it.first)
+                    userInfoViewModel.userInfoFlow.value?.targetIsFollowed = it.first
+                }
+            }
     }
 
     private fun setUserFollow(isFollowed: Boolean) {

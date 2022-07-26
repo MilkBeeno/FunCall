@@ -1,8 +1,10 @@
 package com.milk.funcall.chat.ui.vm
 
 import androidx.lifecycle.ViewModel
+import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.account.Account
 import com.milk.funcall.chat.repo.MessageRepository
+import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.mdr.table.ChatMessageEntity
 import com.milk.funcall.common.mdr.table.UserInfoEntity
 import com.milk.funcall.common.paging.LocalPagingSource
@@ -95,8 +97,13 @@ class ChatMessageViewModel : ViewModel() {
             val isFollowed = !(userInfoEntity?.targetIsFollowed ?: false)
             val apiResponse =
                 UserInfoRepository.changeFollowedStatus(targetId, isFollowed)
-            if (apiResponse.success) userInfoEntity?.targetIsFollowed = isFollowed
-            followedStatusFlow.emit(null)
+            if (apiResponse.success) {
+                userInfoEntity?.targetIsFollowed = isFollowed
+                LiveEventBus
+                    .get<Pair<Boolean, Long>>(EventKey.USER_FOLLOWED_STATUS_CHANGED)
+                    .post(Pair(isFollowed, userInfoEntity?.targetId.safeToLong()))
+                followedStatusFlow.emit(true)
+            } else followedStatusFlow.emit(null)
         }
     }
 
