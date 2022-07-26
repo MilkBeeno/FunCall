@@ -8,9 +8,14 @@ import android.os.Bundle
 import android.os.IBinder
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.account.Account
 import com.milk.funcall.account.ui.frag.MineFragment
+import com.milk.funcall.ad.AdConfig
+import com.milk.funcall.ad.constant.AdCodeKey
 import com.milk.funcall.app.MainService
 import com.milk.funcall.app.ui.view.BottomNavigation
 import com.milk.funcall.chat.repo.MessageRepository
@@ -37,8 +42,22 @@ class MainActivity : AbstractActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        initializeAdView()
         initializeView()
         initializeService()
+    }
+
+    private fun initializeAdView() {
+        try {
+            val adView = AdView(this)
+            adView.adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.MAIN_HOME_BOTTOM)
+            adView.setAdSize(AdSize.BANNER)
+            val adRequest = AdRequest.Builder().build()
+            adView.loadAd(adRequest)
+            binding.root.addView(adView)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     override fun onNewIntent(intent: Intent?) {
