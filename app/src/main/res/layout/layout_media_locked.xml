@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="14dp"
+    android:layout_marginEnd="14dp"
+    android:background="@drawable/shape_user_info_media_locked_background"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="59dp"
+        android:layout_height="59dp"
+        android:src="@drawable/user_info_media_locked" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/user_info_media_locked"
+        android:textColor="@color/FF5B5D66"
+        android:textSize="12sp" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/llViewNow"
+        android:layout_width="wrap_content"
+        android:layout_height="38dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/shape_user_info_media_locked"
+        android:gravity="center_vertical"
+        android:paddingStart="17dp"
+        android:paddingEnd="17dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="29dp"
+            android:layout_height="29dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/user_info_media_locked_view" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="@string/user_info_media_locked_view"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.appcompat.widget.LinearLayoutCompat>

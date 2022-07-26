@@ -112,4 +112,6 @@
     <string name="user_info_obtain_failed">Failed to get user information.</string>
     <string name="user_info_contact_details">How to contact me :</string>
     <string name="user_info_copy_success">Contact details copy successful.</string>
+    <string name="user_info_media_locked">Information is locked</string>
+    <string name="user_info_media_locked_view">View Now</string>
 </resources>
