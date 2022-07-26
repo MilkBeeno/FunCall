@@ -33,6 +33,7 @@ class HomeViewModel : ViewModel() {
         if (index == 1) apiResult?.forEachIndexed { position, homDetailModel ->
             if (position == 1) homDetailModel.isMediumImage = true
         }
+        if (index == 1) hasAddNativeAd = false
         if (nativeAd != null && !hasAddNativeAd) {
             val userSimpleInfoModel = UserSimpleInfoModel(nativeAd = nativeAd)
             if (apiResult?.size ?: 0 > 4)
