@@ -35,7 +35,7 @@ class FacebookAuth(private val activity: FragmentActivity) : Auth {
                 }
 
                 override fun onSuccess(result: LoginResult) {
-                    successRequest?.invoke(result.accessToken.token)
+                    successRequest?.invoke(result.accessToken.userId)
                 }
             })
         activity.lifecycle.addObserver(object : DefaultLifecycleObserver {
