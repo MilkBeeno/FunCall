@@ -5,16 +5,17 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.DiffUtil
 import com.milk.funcall.R
+import com.milk.funcall.ad.ui.HomeAdLayout
 import com.milk.funcall.common.media.loader.ImageLoader
 import com.milk.funcall.common.paging.AbstractPagingAdapter
 import com.milk.funcall.common.paging.FooterLoadStateAdapter
+import com.milk.funcall.common.paging.MultiTypeDelegate
 import com.milk.funcall.common.paging.PagingViewHolder
 import com.milk.funcall.user.data.UserSimpleInfoModel
 import com.milk.funcall.user.type.OnlineState
 import com.milk.simple.ktx.*
 
 class HomeAdapter : AbstractPagingAdapter<UserSimpleInfoModel>(
-    layoutId = R.layout.item_hone,
     diffCallback = object : DiffUtil.ItemCallback<UserSimpleInfoModel>() {
         override fun areItemsTheSame(
             oldItem: UserSimpleInfoModel,
@@ -29,7 +30,31 @@ class HomeAdapter : AbstractPagingAdapter<UserSimpleInfoModel>(
         ) = false
     }
 ) {
+    init {
+        setMultiTypeDelegate(object : MultiTypeDelegate {
+            override fun getItemViewId(viewType: Int): Int {
+                return when (viewType) {
+                    LayoutType.Ad.value -> R.layout.item_hone_ad
+                    else -> R.layout.item_hone
+                }
+            }
+        })
+    }
+
     override fun convert(holder: PagingViewHolder, item: UserSimpleInfoModel) {
+        when {
+            item.nativeAd != null -> setAd(holder, item)
+            else -> setContent(holder, item)
+        }
+    }
+
+    private fun setAd(holder: PagingViewHolder, item: UserSimpleInfoModel) {
+        item.nativeAd?.let {
+            holder.getView<HomeAdLayout>(R.id.homeAdLayout).setNativeAd(it)
+        }
+    }
+
+    private fun setContent(holder: PagingViewHolder, item: UserSimpleInfoModel) {
         val isOnline = item.targetOnline == OnlineState.Online.value
         holder.setText(R.id.tvUserName, item.targetName)
         holder.getView<AppCompatImageView>(R.id.ivUserImage).apply {
@@ -87,4 +112,11 @@ class HomeAdapter : AbstractPagingAdapter<UserSimpleInfoModel>(
             }
         }
     }
+
+    override fun getItemViewType(position: Int): Int {
+        val item = getNoNullItem(position)
+        return if (item.nativeAd != null) LayoutType.Ad.value else LayoutType.Content.value
+    }
+
+    enum class LayoutType(val value: Int) { Content(1), Ad(2) }
 }

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
+import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.gms.ads.AdRequest
@@ -17,6 +18,7 @@ import com.milk.funcall.account.ui.frag.MineFragment
 import com.milk.funcall.ad.AdConfig
 import com.milk.funcall.ad.constant.AdCodeKey
 import com.milk.funcall.app.MainService
+import com.milk.funcall.app.ui.MainViewModel
 import com.milk.funcall.app.ui.view.BottomNavigation
 import com.milk.funcall.chat.repo.MessageRepository
 import com.milk.funcall.chat.ui.frag.ConversationFragment
@@ -31,6 +33,7 @@ import java.util.*
 
 class MainActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityMainBinding>()
+    private val mainViewModel by viewModels<MainViewModel>()
     private val fragments = mutableListOf<Fragment>()
     private val homeFragment = HomeFragment.create()
     private val messageFragment = ConversationFragment.create()
@@ -49,6 +52,7 @@ class MainActivity : AbstractActivity() {
 
     private fun initializeAdView() {
         try {
+            mainViewModel.loadNativeAd(this)
             val adView = AdView(this)
             adView.adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.MAIN_HOME_BOTTOM)
             adView.setAdSize(AdSize.BANNER)
