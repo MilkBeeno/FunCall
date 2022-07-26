@@ -96,10 +96,37 @@
         app:layout_constraintStart_toEndOf="@+id/ivLink"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <net.center.blurview.ShapeBlurView
-        android:id="@+id/ivGaussianBlur"
+    <FrameLayout
+        android:id="@+id/flLinkLocked"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        app:blur_radius="5dp" />
+        android:layout_height="0dp"
+        android:background="@drawable/user_info_link_locked_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/llViewLink"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_user_info_media_locked"
+            android:gravity="center_vertical"
+            android:paddingStart="17dp"
+            android:paddingEnd="17dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="29dp"
+                android:layout_height="29dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/user_info_media_locked_view" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="@string/user_info_media_locked_view"
+                android:textColor="@color/white"
+                android:textSize="13sp" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

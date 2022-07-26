@@ -9,9 +9,15 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.widget.LinearLayoutCompat
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.rewarded.RewardedAd
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
 import com.milk.funcall.account.Account
+import com.milk.funcall.ad.AdConfig
+import com.milk.funcall.ad.constant.AdCodeKey
 import com.milk.funcall.chat.ui.act.ChatMessageActivity
 import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.common.media.loader.ImageLoader
@@ -52,6 +58,8 @@ class UserInfoActivity : AbstractActivity() {
         binding.basic.llFollow.setOnClickListener(this)
         binding.flVideo.setOnClickListener(this)
         binding.mlImage.setOnClickListener(this)
+        binding.link.flLinkLocked.setOnClickListener(this)
+        binding.link.llViewLink.setOnClickListener(this)
         binding.mlImage.setOnClickRequest {
             loadingDialog.show()
             userInfoViewModel.loadImageAd(this) {
@@ -124,12 +132,17 @@ class UserInfoActivity : AbstractActivity() {
         binding.tvUserId.text = "ID : ".plus(userInfo.targetIdx)
         binding.tvUserBio.text = userInfo.targetBio
         if (userInfo.targetLink.isNotBlank()) {
+            if (userInfoViewModel.hasViewedLink)
+                binding.link.flLinkLocked.gone()
+            else
+                binding.link.flLinkLocked.visible()
             binding.link.clLink.visible()
             binding.link.tvNotLink.gone()
             binding.link.tvContact.text = userInfo.targetLink
         } else {
             binding.link.clLink.gone()
             binding.link.tvNotLink.visible()
+            binding.link.flLinkLocked.gone()
         }
     }
 
@@ -206,6 +219,40 @@ class UserInfoActivity : AbstractActivity() {
                     }
                 } else showToast(string(R.string.common_place_to_login_first))
             }
+            binding.link.llViewLink -> {
+                if (userInfoViewModel.hasViewedVideo || userInfoViewModel.hasViewedImage) {
+                    loadLinkAd()
+                } else showToast(string(R.string.user_info_please_view_video_or_image))
+            }
+        }
+    }
+
+    /** 加载获取联系方式激励视频广告 */
+    private fun loadLinkAd() {
+        try {
+            val unitId = AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_LINK)
+            if (unitId.isNotBlank()) {
+                loadingDialog.show()
+                val adRequest = AdRequest.Builder().build()
+                RewardedAd.load(this, unitId, adRequest,
+                    object : RewardedAdLoadCallback() {
+                        override fun onAdFailedToLoad(p0: LoadAdError) {
+                            super.onAdFailedToLoad(p0)
+                            loadingDialog.dismiss()
+                        }
+
+                        override fun onAdLoaded(p0: RewardedAd) {
+                            super.onAdLoaded(p0)
+                            p0.show(this@UserInfoActivity) {
+                                loadingDialog.dismiss()
+                                binding.link.flLinkLocked.gone()
+                                userInfoViewModel.hasViewedLink = true
+                            }
+                        }
+                    })
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 

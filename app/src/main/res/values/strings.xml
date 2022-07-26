@@ -114,4 +114,5 @@
     <string name="user_info_copy_success">Contact details copy successful.</string>
     <string name="user_info_media_locked">Information is locked</string>
     <string name="user_info_media_locked_view">View Now</string>
+    <string name="user_info_please_view_video_or_image">Please watch the video or picture first.</string>
 </resources>
