@@ -21,7 +21,7 @@ class MediaLockedLayout : FrameLayout {
             .setOnClickListener { clickRequest?.invoke() }
     }
 
-    fun setOnClickListener(clickListener: () -> Unit) {
-        this.clickRequest = clickListener
+    fun setOnClickRequest(clickRequest: () -> Unit) {
+        this.clickRequest = clickRequest
     }
 }

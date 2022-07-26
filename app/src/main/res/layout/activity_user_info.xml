@@ -153,8 +153,10 @@
                         tools:visibility="visible" />
 
                     <com.milk.funcall.user.ui.view.MediaLockedLayout
+                        android:id="@+id/mlImage"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:visibility="gone" />
                 </FrameLayout>
 
                 <androidx.appcompat.widget.AppCompatImageView

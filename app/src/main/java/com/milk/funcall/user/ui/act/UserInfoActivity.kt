@@ -51,6 +51,14 @@ class UserInfoActivity : AbstractActivity() {
         binding.basic.llMessage.setOnClickListener(this)
         binding.basic.llFollow.setOnClickListener(this)
         binding.flVideo.setOnClickListener(this)
+        binding.mlImage.setOnClickListener(this)
+        binding.mlImage.setOnClickRequest {
+            loadingDialog.show()
+            userInfoViewModel.loadImageAd(this) {
+                loadingDialog.dismiss()
+                binding.mlImage.gone()
+            }
+        }
     }
 
     private fun initializeObserver() {
@@ -141,6 +149,10 @@ class UserInfoActivity : AbstractActivity() {
         if (userImageList.isNotEmpty()) {
             binding.tvImage.visible()
             binding.rvImage.visible()
+            if (userInfoViewModel.hasViewedImage)
+                binding.mlImage.gone()
+            else
+                binding.mlImage.visible()
             binding.rvImage.layoutManager = NoScrollGridLayoutManager(this, 2)
             binding.rvImage.addItemDecoration(SimpleGridDecoration(this))
             binding.rvImage.adapter = UserImageAdapter(userImageList) { position ->
@@ -149,7 +161,7 @@ class UserInfoActivity : AbstractActivity() {
                     .get<Pair<Int, MutableList<String>>>(KvKey.DISPLAY_IMAGE_MEDIA_LIST)
                     .post(Pair(position, userImageList))
             }
-        }
+        } else binding.mlImage.gone()
         if (userVideoUrl.isEmpty() && userImageList.isEmpty()) {
             binding.ivMediaEmpty.visible()
         }

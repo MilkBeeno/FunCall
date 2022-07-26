@@ -51,4 +51,13 @@ object KvKey {
 
     /** 更新个人资料时、删除一个视频 */
     const val EDIT_PROFILE_DELETE_VIDEO = "EDIT_PROFILE_DELETE_VIDEO"
+
+    /** 看过他人联系方式激励视频广告 */
+    const val VIEW_OTHER_LINK = "VIEW_OTHER_LINK"
+
+    /** 看过他人视频激励视频广告 */
+    const val VIEW_OTHER_VIDEO = "VIEW_OTHER_VIDEO"
+
+    /** 看过他人照片插页广告 */
+    const val VIEW_OTHER_IMAGE = "VIEW_OTHER_IMAGE"
 }
