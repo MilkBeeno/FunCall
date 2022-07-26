@@ -22,7 +22,7 @@ class ConversationRepository {
     ) {
         val oldChatConversation =
             DataBaseManager.DB.conversationTableDao().query(Account.userId, targetId)
-        val unReadCount = if (isAcceptMessage) oldChatConversation?.unReadCount ?: 0 + 1 else 0
+        val unReadCount = if (isAcceptMessage) (oldChatConversation?.unReadCount ?: 0) + 1 else 0
         val putTopTime = oldChatConversation?.putTopTime.safeToLong()
         val conversation = ConversationEntity()
         conversation.accountId = Account.userId
