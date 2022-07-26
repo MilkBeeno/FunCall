@@ -47,6 +47,7 @@ class MainActivity : AbstractActivity() {
         setContentView(binding.root)
         initializeAdView()
         initializeView()
+        initializeObserver()
         initializeService()
     }
 
@@ -90,6 +91,16 @@ class MainActivity : AbstractActivity() {
                 BottomNavigation.Type.Mine -> {
                     setTabSelection(mineFragment)
                 }
+            }
+        }
+    }
+
+    private fun initializeObserver() {
+        launch {
+            mainViewModel.getConversationCount().collectLatest { countList ->
+                var count = 0
+                countList?.forEach { count += it }
+                binding.navigation.updateUnReadCount(count)
             }
         }
     }

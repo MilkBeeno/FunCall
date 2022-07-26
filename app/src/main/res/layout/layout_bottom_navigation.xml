@@ -2,7 +2,7 @@
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@color/FFFBFBFB"
     android:orientation="horizontal">
 
@@ -72,7 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="18dp"
             android:layout_marginStart="11dp"
-            android:layout_marginBottom="13dp"
+            android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/ivMessage"
             app:layout_constraintStart_toStartOf="@+id/ivMessage" />
     </androidx.constraintlayout.widget.ConstraintLayout>

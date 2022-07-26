@@ -140,5 +140,9 @@ class BottomNavigation : FrameLayout {
             resources.getColor(resId)
     }
 
+    fun updateUnReadCount(count: Int) {
+        binding.messageRedDotView.updateMessageCount(count)
+    }
+
     enum class Type { Home, Message, Mine }
 }

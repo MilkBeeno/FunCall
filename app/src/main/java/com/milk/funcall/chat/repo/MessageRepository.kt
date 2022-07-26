@@ -156,4 +156,9 @@ object MessageRepository {
     internal fun getConversationPutTopTime(targetId: Long) =
         DataBaseManager.DB.conversationTableDao()
             .getConversationPutTopTime(Account.userId, targetId)
+
+    /** 获取当前用户未读消息数量 */
+    internal fun getConversationCount() =
+        DataBaseManager.DB.conversationTableDao()
+            .getConversationCount(Account.userId)
 }

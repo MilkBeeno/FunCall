@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.milk.funcall.common.mdr.table.ConversationEntity
 import com.milk.funcall.common.mdr.table.ConversationWithUserInfoEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ConversationTableDao {
@@ -34,4 +35,7 @@ interface ConversationTableDao {
 
     @Query("SELECT ConversationTable.conversationPutTopTime FROM ConversationTable WHERE conversationAccountId=:accountId AND conversationTargetId=:targetId LIMIT 1")
     fun getConversationPutTopTime(accountId: Long, targetId: Long): Long?
+
+    @Query("SELECT ConversationTable.conversationUnReadCount FROM ConversationTable WHERE conversationAccountId=:accountId")
+    fun getConversationCount(accountId: Long): Flow<MutableList<Int>?>
 }
