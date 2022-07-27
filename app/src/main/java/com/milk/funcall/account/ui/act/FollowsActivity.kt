@@ -7,9 +7,11 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
 import com.milk.funcall.account.ui.adapter.FansOrFollowsAdapter
 import com.milk.funcall.account.ui.vm.FollowsViewModel
+import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.paging.SimpleGridDecoration
 import com.milk.funcall.common.paging.status.RefreshStatus
 import com.milk.funcall.common.ui.AbstractActivity
@@ -67,7 +69,9 @@ class FollowsActivity : AbstractActivity() {
         super.onMultipleClick(view)
         when (view) {
             binding.tvAttention -> {
-
+                finish()
+                LiveEventBus.get<Any?>(EventKey.JUMP_TO_THE_HOME_PAGE)
+                    .post(null)
             }
         }
     }

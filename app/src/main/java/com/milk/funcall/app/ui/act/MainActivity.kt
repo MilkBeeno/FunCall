@@ -96,11 +96,6 @@ class MainActivity : AbstractActivity() {
     }
 
     private fun initializeObserver() {
-        LiveEventBus.get<Any?>(EventKey.JUMP_TO_THE_HOME_PAGE)
-            .observe(this) {
-                setTabSelection(homeFragment)
-                binding.navigation.updateSelectNav(BottomNavigation.Type.Home)
-            }
         launch {
             mainViewModel.getConversationCount().collectLatest { countList ->
                 var count = 0
@@ -108,6 +103,11 @@ class MainActivity : AbstractActivity() {
                 binding.navigation.updateUnReadCount(count)
             }
         }
+        LiveEventBus.get<Any?>(EventKey.JUMP_TO_THE_HOME_PAGE)
+            .observe(this) {
+                setTabSelection(homeFragment)
+                binding.navigation.updateSelectNav(BottomNavigation.Type.Home)
+            }
     }
 
     private fun initializeService() {
@@ -174,7 +174,7 @@ class MainActivity : AbstractActivity() {
                 transaction.show(mineFragment)
             }
         }
-        transaction.commit()
+        transaction.commitAllowingStateLoss()
     }
 
     private fun hideFragments(transaction: FragmentTransaction) {
