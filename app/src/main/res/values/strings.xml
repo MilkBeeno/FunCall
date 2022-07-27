@@ -83,7 +83,7 @@
     <string name="chat_message_list_empty">No Message</string>
     <string name="chat_message_send">Send</string>
     <string name="chat_message_hint">Please enter a message</string>
-    <string name="chat_message_say_hi_title">Say Hi~</string>
+    <string name="chat_message_say_hi_title">Hi~</string>
     <string name="chat_message_say_hi_desc">Send hello and make friends</string>
     <string name="chat_message_delete">Delete</string>
     <string name="chat_message_list_with_other">Chat with other</string>
