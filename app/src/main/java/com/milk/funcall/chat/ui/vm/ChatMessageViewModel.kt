@@ -15,13 +15,13 @@ import com.milk.simple.ktx.safeToLong
 import kotlinx.coroutines.flow.MutableSharedFlow
 
 class ChatMessageViewModel : ViewModel() {
-    var userInfoEntity: UserInfoEntity? = null
-    var userPutTopStatus: Boolean = false
-    val followedStatusFlow = MutableSharedFlow<Any?>()
-    val blackUserFlow = MutableSharedFlow<Boolean>()
+    internal var userInfoEntity: UserInfoEntity? = null
+    internal var userPutTopStatus: Boolean = false
+    internal val followedStatusFlow = MutableSharedFlow<Any?>()
+    internal val blackUserFlow = MutableSharedFlow<Boolean>()
 
     /** 私聊列表数据 */
-    val pagingSource: LocalPagingSource<Int, ChatMessageEntity>
+    internal val pagingSource: LocalPagingSource<Int, ChatMessageEntity>
         get() {
             return LocalPagingSource(20, 5) {
                 MessageRepository.getChatMessagesByDB(userInfoEntity?.targetId.safeToLong())
@@ -61,16 +61,14 @@ class ChatMessageViewModel : ViewModel() {
     /** 更新用户当前最新信息 */
     internal fun updateUserInfoEntity(userInfoEntity: UserInfoEntity) {
         this.userInfoEntity = userInfoEntity
-        getConversationPutTopTime()
+        ioScope { getConversationPutTopTime() }
     }
 
     /** 获取当前信息的置顶状态 1.置顶时间大于 0 表示已经置顶 2.时间等于 0 表示消息未置顶 */
     private fun getConversationPutTopTime() {
-        ioScope {
-            val result = MessageRepository
-                .getConversationPutTopTime(userInfoEntity?.targetId.safeToLong())
-            userPutTopStatus = result != null && result > 0
-        }
+        val result = MessageRepository
+            .getConversationPutTopTime(userInfoEntity?.targetId.safeToLong())
+        userPutTopStatus = result != null && result > 0
     }
 
     /** 发送文本消息 */
@@ -118,12 +116,18 @@ class ChatMessageViewModel : ViewModel() {
     }
 
     /** 消息置顶 */
-    fun putTopChatMessage() {
-        ioScope { MessageRepository.putTopChatMessage(userInfoEntity?.targetId.safeToLong()) }
+    internal fun putTopChatMessage() {
+        ioScope {
+            MessageRepository.putTopChatMessage(userInfoEntity?.targetId.safeToLong())
+            getConversationPutTopTime()
+        }
     }
 
     /** 取消消息置顶 */
-    fun unPinChatMessage() {
-        ioScope { MessageRepository.unPinChatMessage(userInfoEntity?.targetId.safeToLong()) }
+    internal fun unPinChatMessage() {
+        ioScope {
+            MessageRepository.unPinChatMessage(userInfoEntity?.targetId.safeToLong())
+            getConversationPutTopTime()
+        }
     }
 }
