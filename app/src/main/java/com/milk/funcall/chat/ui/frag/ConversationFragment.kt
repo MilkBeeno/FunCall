@@ -4,11 +4,13 @@ import android.view.Gravity
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
 import com.milk.funcall.chat.ui.act.ChatMessageActivity
 import com.milk.funcall.chat.ui.adapter.ConversationAdapter
 import com.milk.funcall.chat.ui.dialog.ConversationPopupWindow
 import com.milk.funcall.chat.ui.vm.ConversationViewModel
+import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.paging.status.RefreshStatus
 import com.milk.funcall.common.ui.AbstractFragment
 import com.milk.funcall.databinding.FragmentChatMessageBinding
@@ -75,6 +77,12 @@ class ConversationFragment : AbstractFragment() {
                 .builder()
             true
         }
+        binding.tvChatWithOther.setOnClickListener(this)
+    }
+
+    override fun onMultipleClick(view: View) {
+        super.onMultipleClick(view)
+        LiveEventBus.get<Any?>(EventKey.JUMP_TO_THE_HOME_PAGE).post(null)
     }
 
     companion object {

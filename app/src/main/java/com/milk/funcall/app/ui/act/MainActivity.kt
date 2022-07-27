@@ -96,6 +96,11 @@ class MainActivity : AbstractActivity() {
     }
 
     private fun initializeObserver() {
+        LiveEventBus.get<Any?>(EventKey.JUMP_TO_THE_HOME_PAGE)
+            .observe(this) {
+                setTabSelection(homeFragment)
+                binding.navigation.updateSelectNav(BottomNavigation.Type.Home)
+            }
         launch {
             mainViewModel.getConversationCount().collectLatest { countList ->
                 var count = 0

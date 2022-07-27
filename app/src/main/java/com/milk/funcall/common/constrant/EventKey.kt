@@ -9,4 +9,7 @@ object EventKey {
 
     /** 用户关注取消关注状态更改 */
     const val USER_FOLLOWED_STATUS_CHANGED = "USER_FOLLOWED_STATUS_CHANGED"
+
+    /** 跳转到首页监听事件 */
+    const val JUMP_TO_THE_HOME_PAGE = "JUMP_TO_THE_HOME_PAGE"
 }

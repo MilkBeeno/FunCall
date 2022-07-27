@@ -86,6 +86,7 @@
     <string name="chat_message_say_hi_title">Say Hi~</string>
     <string name="chat_message_say_hi_desc">Send hello and make friends</string>
     <string name="chat_message_delete">Delete</string>
+    <string name="chat_message_list_with_other">Chat with other</string>
     <!--更改个人资料页面翻译-->
     <string name="edit_profile_title">Edit profile</string>
     <string name="edit_profile_save">Save</string>
