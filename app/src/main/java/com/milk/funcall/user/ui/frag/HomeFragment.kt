@@ -34,13 +34,13 @@ class HomeFragment : AbstractFragment() {
         super.initializeData()
         loadingDialog.show()
         adapter.addRefreshedListener {
+            loadingDialog.dismiss()
             binding.refresh.finishRefresh(1500)
             if (adapter.itemCount > 0)
                 binding.rvHome.scrollToPosition(0)
             when (it) {
                 RefreshStatus.Success -> {
                     binding.homeNothing.root.gone()
-                    loadingDialog.dismiss()
                 }
                 else -> {
                     if (adapter.itemCount > 0) {
