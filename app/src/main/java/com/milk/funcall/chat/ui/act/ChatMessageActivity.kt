@@ -83,13 +83,14 @@ class ChatMessageActivity : AbstractActivity() {
     }
 
     private fun updateSendState() {
-        if (binding.etMessage.text.toString().isBlank()) {
-            binding.tvSend.isClickable = false
-            binding.tvSend.setBackgroundResource(R.drawable.shape_chat_message_send_un_available)
-        } else {
-            binding.tvSend.isClickable = true
-            binding.tvSend.setBackgroundResource(R.drawable.shape_chat_message_send_available)
-        }
+        if (binding.etMessage.text.toString().isBlank())
+            binding.tvSend.setBackgroundResource(
+                R.drawable.shape_chat_message_send_un_available
+            )
+        else
+            binding.tvSend.setBackgroundResource(
+                R.drawable.shape_chat_message_send_available
+            )
     }
 
     private fun initializeData() {
@@ -130,7 +131,8 @@ class ChatMessageActivity : AbstractActivity() {
             }
             binding.tvSend -> {
                 val messageContent = binding.etMessage.text.toString()
-                chatMessageViewModel.sendTextChatMessage(messageContent)
+                if (messageContent.isNotBlank())
+                    chatMessageViewModel.sendTextChatMessage(messageContent)
                 binding.etMessage.text?.clear()
             }
         }
