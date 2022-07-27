@@ -9,7 +9,10 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:ellipsize="end"
         android:includeFontPadding="false"
+        android:lines="1"
+        android:maxWidth="280dp"
         android:textColor="@color/FF1E1E21"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -17,7 +20,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Message" />
+        tools:text="MessageMessageMessageMessageMessageMessageMessage" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivBack"
@@ -30,5 +33,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="gone" />
+        tools:visibility="visible" />
 </androidx.constraintlayout.widget.ConstraintLayout>
