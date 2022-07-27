@@ -1,5 +1,6 @@
 package com.milk.funcall.chat.ui.adapter
 
+import android.graphics.Color
 import androidx.recyclerview.widget.DiffUtil
 import com.milk.funcall.R
 import com.milk.funcall.account.Account
@@ -10,6 +11,7 @@ import com.milk.funcall.common.media.loader.ImageLoader
 import com.milk.funcall.common.paging.AbstractPagingAdapter
 import com.milk.funcall.common.paging.PagingViewHolder
 import com.milk.funcall.user.type.Gender
+import com.milk.simple.ktx.color
 
 class ConversationAdapter : AbstractPagingAdapter<ConversationWithUserInfoEntity>(
     layoutId = R.layout.item_chat_converstaion,
@@ -37,6 +39,12 @@ class ConversationAdapter : AbstractPagingAdapter<ConversationWithUserInfoEntity
 ) {
 
     override fun convert(holder: PagingViewHolder, item: ConversationWithUserInfoEntity) {
+        holder.itemView.setBackgroundColor(
+            if (item.conversation.putTopTime > 0)
+                holder.itemView.context.color(R.color.FFF1EEF5)
+            else
+                Color.TRANSPARENT
+        )
         ImageLoader.Builder()
             .loadAvatar(getTargetAvatar(item), getTargetGender(item))
             .target(holder.getView(R.id.ivUserAvatar))
