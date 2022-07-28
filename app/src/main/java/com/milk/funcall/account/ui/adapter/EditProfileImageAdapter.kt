@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
+import coil.util.CoilUtils
 import com.milk.funcall.R
 import com.milk.funcall.common.media.loader.ImageLoader
 
@@ -36,6 +37,10 @@ class EditProfileImageAdapter :
         imageView.setOnClickListener {
             clickListener?.invoke(position, imageUrl)
         }
+    }
+
+    override fun onViewRecycled(holder: EditProfileImageViewHolder) {
+        CoilUtils.dispose(holder.itemView)
     }
 
     override fun getItemCount(): Int {
