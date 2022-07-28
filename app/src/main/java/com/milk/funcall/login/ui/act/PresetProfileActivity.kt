@@ -128,7 +128,7 @@ class PresetProfileActivity : AbstractActivity() {
                 scope.showForwardToSettingsDialog(
                     deniedList,
                     string(R.string.common_media_permission_title),
-                    string(R.string.common_confirm).uppercase(),
+                    string(R.string.common_ok).uppercase(),
                     string(R.string.common_cancel).uppercase()
                 )
             },

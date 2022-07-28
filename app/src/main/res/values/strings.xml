@@ -11,7 +11,8 @@
     <string name="common_list_load_more_error">failed to load more please try again later.</string>
     <string name="common_refuse">You have denied access to albums and media.</string>
     <string name="common_media_permission_title">Get photo and media permissions</string>
-    <string name="common_confirm">OK</string>
+    <string name="common_ok">OK</string>
+    <string name="common_confirm">CONFIRM</string>
     <string name="common_cancel" tools:ignore="ButtonCase">CANCEL</string>
     <string name="common_loading">Logging…</string>
     <string name="common_uploading">Uploading…</string>
@@ -116,4 +117,5 @@
     <string name="user_info_media_locked">Information is locked</string>
     <string name="user_info_media_locked_view">View Now</string>
     <string name="user_info_please_view_video_or_image">Please watch the video or picture first.</string>
+    <string name="user_info_view_ad">Rewarded video coming soon</string>
 </resources>

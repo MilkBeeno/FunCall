@@ -30,6 +30,7 @@ import com.milk.funcall.databinding.ActivityUserInfoBinding
 import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.user.data.UserInfoModel
 import com.milk.funcall.user.ui.adapter.UserImageAdapter
+import com.milk.funcall.user.ui.dialog.ViewAdDialog
 import com.milk.funcall.user.ui.vm.UserInfoViewModel
 import com.milk.simple.ktx.*
 import kotlinx.coroutines.flow.collectLatest
@@ -39,6 +40,7 @@ class UserInfoActivity : AbstractActivity() {
     private val userInfoViewModel by viewModels<UserInfoViewModel>()
     private val userId by lazy { intent.getLongExtra(USER_ID, 0) }
     private val loadingDialog by lazy { LoadingDialog(this, string(R.string.common_loading)) }
+    private val viewAdDialog by lazy { ViewAdDialog(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -229,7 +231,10 @@ class UserInfoActivity : AbstractActivity() {
             }
             binding.link.llViewLink -> {
                 if (userInfoViewModel.hasViewedVideo || userInfoViewModel.hasViewedImage) {
-                    loadLinkAd()
+                    viewAdDialog.show()
+                    viewAdDialog.setOnConfirmRequest {
+                        loadLinkAd()
+                    }
                 } else showToast(string(R.string.user_info_please_view_video_or_image))
             }
         }
