@@ -12,6 +12,7 @@ import com.milk.funcall.common.author.AuthType
 import com.milk.funcall.common.author.DeviceNumber
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.web.WebActivity
+import com.milk.funcall.common.web.WebType
 import com.milk.funcall.databinding.ActivityLoginBinding
 import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.login.ui.vm.LoginViewModel
@@ -43,12 +44,20 @@ class LoginActivity : AbstractActivity() {
             Pair(
                 string(R.string.login_user_agreement),
                 colorClickableSpan(color(R.color.FF8E58FB)) {
-                    WebActivity.create(this)
+                    WebActivity.create(
+                        this,
+                        WebType.UserAgreement.value,
+                        "http://funcallnow.com/terms.html"
+                    )
                 }),
             Pair(
                 string(R.string.login_user_privacy),
                 colorClickableSpan(color(R.color.FF8E58FB)) {
-                    WebActivity.create(this)
+                    WebActivity.create(
+                        this,
+                        WebType.PrivacyService.value,
+                        "http://funcallnow.com/privacy.html"
+                    )
                 })
         )
     }
