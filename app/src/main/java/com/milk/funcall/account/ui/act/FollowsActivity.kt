@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
@@ -19,8 +18,6 @@ import com.milk.funcall.databinding.ActivityFollowsBinding
 import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.user.ui.act.UserInfoActivity
 import com.milk.simple.ktx.*
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 class FollowsActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityFollowsBinding>()
@@ -60,9 +57,8 @@ class FollowsActivity : AbstractActivity() {
             else
                 binding.llFollowsEmpty.visible()
         }
-        lifecycleScope.launch {
-            followsViewModel.pagingSource.flow.collectLatest { followsAdapter.submitData(it) }
-        }
+        followsViewModel.pagingSource.flow
+            .collectLatest(this) { followsAdapter.submitData(it) }
     }
 
     override fun onMultipleClick(view: View) {

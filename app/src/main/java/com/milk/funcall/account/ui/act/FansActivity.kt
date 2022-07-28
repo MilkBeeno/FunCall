@@ -60,9 +60,8 @@ class FansActivity : AbstractActivity() {
             else
                 binding.llFanEmpty.visible()
         }
-        lifecycleScope.launch {
-            fansViewModel.pagingSource.flow.collectLatest { fansAdapter.submitData(it) }
-        }
+        fansViewModel.pagingSource.flow
+            .collectLatest(this) { fansAdapter.submitData(it) }
     }
 
     override fun onMultipleClick(view: View) {

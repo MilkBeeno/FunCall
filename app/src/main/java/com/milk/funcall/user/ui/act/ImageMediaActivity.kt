@@ -17,7 +17,6 @@ import com.milk.funcall.databinding.ActivityImageMediaBinding
 import com.milk.funcall.user.ui.adapter.ImageMediaAdapter
 import com.milk.funcall.user.ui.dialog.ImageMediaGuideDialog
 import com.milk.simple.ktx.*
-import kotlinx.coroutines.flow.collectLatest
 
 class ImageMediaActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityImageMediaBinding>()
@@ -60,15 +59,13 @@ class ImageMediaActivity : AbstractActivity() {
     }
 
     private fun initializeObserver() {
-        launch {
-            Account.userViewOtherFlow.collectLatest {
-                if (!it) {
-                    guideDialog.show()
-                    guideDialog.setOnDismissListener {
-                        ioScope {
-                            Account.userViewOther = true
-                            Account.userViewOtherFlow.emit(true)
-                        }
+        Account.userViewOtherFlow.collectLatest(this) {
+            if (!it) {
+                guideDialog.show()
+                guideDialog.setOnDismissListener {
+                    ioScope {
+                        Account.userViewOther = true
+                        Account.userViewOtherFlow.emit(true)
                     }
                 }
             }

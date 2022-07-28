@@ -73,33 +73,29 @@ class UserInfoActivity : AbstractActivity() {
     }
 
     private fun initializeObserver() {
-        launch {
-            userInfoViewModel.userInfoFlow.collectLatest {
-                when {
-                    it != null && it.targetId > 0 -> {
-                        binding.lvLoading.gone()
-                        binding.llUserNext.visible()
-                        binding.basic.root.visible()
-                        binding.link.root.visible()
-                        binding.llMedia.visible()
-                        setUserBasic(it)
-                        setUserMedia(it)
-                        setUserFollow(it.targetIsFollowed)
-                    }
-                    it == null -> {
-                        showToast(string(R.string.user_info_obtain_failed))
-                        finish()
-                    }
+        userInfoViewModel.userInfoFlow.collectLatest(this) {
+            when {
+                it != null && it.targetId > 0 -> {
+                    binding.lvLoading.gone()
+                    binding.llUserNext.visible()
+                    binding.basic.root.visible()
+                    binding.link.root.visible()
+                    binding.llMedia.visible()
+                    setUserBasic(it)
+                    setUserMedia(it)
+                    setUserFollow(it.targetIsFollowed)
+                }
+                it == null -> {
+                    showToast(string(R.string.user_info_obtain_failed))
+                    finish()
                 }
             }
         }
-        launch {
-            userInfoViewModel.userFollowedStatusFlow.collectLatest {
-                loadingDialog.dismiss()
-                if (it != null) {
-                    setUserFollow(it)
-                    showToast(string(R.string.common_success))
-                }
+        userInfoViewModel.userFollowedStatusFlow.collectLatest(this) {
+            loadingDialog.dismiss()
+            if (it != null) {
+                setUserFollow(it)
+                showToast(string(R.string.common_success))
             }
         }
         LiveEventBus.get<Pair<Boolean, Long>>(EventKey.USER_FOLLOWED_STATUS_CHANGED)

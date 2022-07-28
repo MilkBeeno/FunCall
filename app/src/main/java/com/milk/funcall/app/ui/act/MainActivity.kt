@@ -28,7 +28,6 @@ import com.milk.funcall.databinding.ActivityMainBinding
 import com.milk.funcall.user.ui.frag.HomeFragment
 import com.milk.simple.ktx.*
 import com.milk.simple.log.Logger
-import kotlinx.coroutines.flow.collectLatest
 import java.util.*
 
 class MainActivity : AbstractActivity() {
@@ -96,12 +95,10 @@ class MainActivity : AbstractActivity() {
     }
 
     private fun initializeObserver() {
-        launch {
-            mainViewModel.getConversationCount().collectLatest { countList ->
-                var count = 0
-                countList?.forEach { count += it }
-                binding.navigation.updateUnReadCount(count)
-            }
+        mainViewModel.getConversationCount().collectLatest(this) { countList ->
+            var count = 0
+            countList?.forEach { count += it }
+            binding.navigation.updateUnReadCount(count)
         }
         LiveEventBus.get<Any?>(EventKey.JUMP_TO_THE_HOME_PAGE)
             .observe(this) {
@@ -111,39 +108,37 @@ class MainActivity : AbstractActivity() {
     }
 
     private fun initializeService() {
-        launch {
-            Account.userLoggedFlow.collectLatest { isLogged ->
-                if (isLogged) {
-                    connection = object : ServiceConnection {
-                        override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
-                            // 和服务绑定成功后，服务会回调该方法
-                            // 服务异常中断后重启，也会重新调用改方法
-                            // Logger.d("服务初始化完成", "IM-Service")
-                            val timerTask = object : TimerTask() {
-                                override fun run() {
-                                    Logger.d(
-                                        "IM Okhttp 心跳包 当前时间=${System.currentTimeMillis()}",
-                                        "IM-Service"
-                                    )
-                                    MessageRepository.heartBeat()
-                                }
+        Account.userLoggedFlow.collectLatest(this) { isLogged ->
+            if (isLogged) {
+                connection = object : ServiceConnection {
+                    override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
+                        // 和服务绑定成功后，服务会回调该方法
+                        // 服务异常中断后重启，也会重新调用改方法
+                        // Logger.d("服务初始化完成", "IM-Service")
+                        val timerTask = object : TimerTask() {
+                            override fun run() {
+                                Logger.d(
+                                    "IM Okhttp 心跳包 当前时间=${System.currentTimeMillis()}",
+                                    "IM-Service"
+                                )
+                                MessageRepository.heartBeat()
                             }
-                            timer = Timer()
-                            timer?.schedule(timerTask, 0, 5000)
                         }
-
-                        override fun onServiceDisconnected(p0: ComponentName?) {
-                            // 当服务异常终止时会调用
-                            // 注意，unbindService时不会调用
-                            // Logger.d("服务异常终止了", "IM-Service")
-                        }
+                        timer = Timer()
+                        timer?.schedule(timerTask, 0, 5000)
                     }
-                    serviceIntent = Intent(this, MainService::class.java)
-                    connection?.let { bindService(serviceIntent, it, BIND_AUTO_CREATE) }
-                } else {
-                    timer?.cancel()
-                    connection?.let { unbindService(it) }
+
+                    override fun onServiceDisconnected(p0: ComponentName?) {
+                        // 当服务异常终止时会调用
+                        // 注意，unbindService时不会调用
+                        // Logger.d("服务异常终止了", "IM-Service")
+                    }
                 }
+                serviceIntent = Intent(this, MainService::class.java)
+                connection?.let { bindService(serviceIntent, it, BIND_AUTO_CREATE) }
+            } else {
+                timer?.cancel()
+                connection?.let { unbindService(it) }
             }
         }
     }

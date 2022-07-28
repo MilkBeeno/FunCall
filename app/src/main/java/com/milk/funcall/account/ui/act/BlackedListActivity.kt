@@ -14,7 +14,6 @@ import com.milk.funcall.databinding.ActivityBlackedListBinding
 import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.user.ui.act.UserInfoActivity
 import com.milk.simple.ktx.*
-import kotlinx.coroutines.flow.collectLatest
 
 class BlackedListActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityBlackedListBinding>()
@@ -52,12 +51,10 @@ class BlackedListActivity : AbstractActivity() {
             else
                 binding.ivEmpty.visible()
         }
-        launch {
-            blackedViewModel.pagingSource.flow
-                .collectLatest {
-                    blackedListAdapter.submitData(it)
-                }
-        }
+        blackedViewModel.pagingSource.flow
+            .collectLatest(this) {
+                blackedListAdapter.submitData(it)
+            }
     }
 
     companion object {

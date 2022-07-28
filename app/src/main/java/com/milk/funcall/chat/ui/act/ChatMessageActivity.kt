@@ -20,7 +20,6 @@ import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.user.ui.act.UserInfoActivity
 import com.milk.simple.keyboard.KeyBoardUtil
 import com.milk.simple.ktx.*
-import kotlinx.coroutines.flow.collectLatest
 
 class ChatMessageActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityMessageBinding>()
@@ -94,30 +93,26 @@ class ChatMessageActivity : AbstractActivity() {
     }
 
     private fun initializeData() {
-        launch {
-            chatMessageViewModel.getTargetInfoByDB(targetId)
-                .collectLatest {
-                    if (it != null) {
-                        binding.headerToolbar.setTitle(it.targetName)
-                        chatMessageViewModel.updateUserInfoEntity(it)
-                        chatMessageAdapter.setUserInfoEntity(it)
-                        chatMessageAdapter
-                            .setPagerSource(chatMessageViewModel.pagingSource.pager)
-                    } else chatMessageViewModel.getTargetInfoByNetwork(targetId)
-                }
-        }
-        launch {
-            chatMessageViewModel.followedStatusFlow.collectLatest {
+        chatMessageViewModel.getTargetInfoByDB(targetId)
+            .collectLatest(this) {
+                if (it != null) {
+                    binding.headerToolbar.setTitle(it.targetName)
+                    chatMessageViewModel.updateUserInfoEntity(it)
+                    chatMessageAdapter.setUserInfoEntity(it)
+                    chatMessageAdapter
+                        .setPagerSource(chatMessageViewModel.pagingSource.pager)
+                } else chatMessageViewModel.getTargetInfoByNetwork(targetId)
+            }
+        chatMessageViewModel.followedStatusFlow
+            .collectLatest(this) {
                 loadingDialog.dismiss()
                 if (it == true) showToast(string(R.string.common_success))
             }
-        }
-        launch {
-            chatMessageViewModel.blackUserFlow.collectLatest {
+        chatMessageViewModel.blackUserFlow
+            .collectLatest(this) {
                 loadingDialog.dismiss()
                 if (it) finish()
             }
-        }
     }
 
     override fun onMultipleClick(view: View) {

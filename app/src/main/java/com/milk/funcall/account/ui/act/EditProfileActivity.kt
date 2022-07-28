@@ -56,17 +56,15 @@ class EditProfileActivity : AbstractActivity() {
             .observe(this) { updateVideo("") }
         LiveEventBus.get<String>(KvKey.EDIT_PROFILE_DELETE_IMAGE)
             .observe(this) { updateImageList(removeImage = it) }
-        launch { Account.userAvatarFlow.collectLatest { updateAvatar(it) } }
-        launch { Account.userNameFlow.collectLatest { binding.etName.setText(it) } }
-        launch { Account.userBioFlow.collectLatest { binding.etAboutMe.setText(it) } }
-        launch { Account.userLinkFlow.collectLatest { binding.etLink.setText(it) } }
-        launch { Account.userVideoFlow.collectLatest { updateVideo(it) } }
-        launch { Account.userImageListFlow.collectLatest { updateImageList(it) } }
-        launch {
-            editProfileViewModel.uploadResult.collectLatest {
-                uploadDialog.dismiss()
-                if (it) showToast(string(R.string.edit_profile_success))
-            }
+        Account.userAvatarFlow.collectLatest(this) { updateAvatar(it) }
+        Account.userNameFlow.collectLatest(this) { binding.etName.setText(it) }
+        Account.userBioFlow.collectLatest(this) { binding.etAboutMe.setText(it) }
+        Account.userLinkFlow.collectLatest(this) { binding.etLink.setText(it) }
+        Account.userVideoFlow.collectLatest(this) { updateVideo(it) }
+        Account.userImageListFlow.collectLatest(this) { updateImageList(it) }
+        editProfileViewModel.uploadResult.collectLatest(this) {
+            uploadDialog.dismiss()
+            if (it) showToast(string(R.string.edit_profile_success))
         }
     }
 
