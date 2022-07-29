@@ -188,7 +188,7 @@ object Account {
                 userImageListFlow.emit(userImageList)
                 userVideoFlow.emit(userVideo)
             }
-        } else userGender = Gender.Man.value
+        }
     }
 
     internal fun logout() {

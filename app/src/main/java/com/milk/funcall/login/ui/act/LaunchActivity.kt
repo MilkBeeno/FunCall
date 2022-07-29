@@ -46,7 +46,7 @@ class LaunchActivity : AbstractActivity() {
             override fun onAnimationRepeat(p0: Animator?) = Unit
             override fun onAnimationEnd(p0: Animator?) {
                 AdManager.showInterstitial(this@LaunchActivity) {
-                    if (Account.userLogged)
+                    if (Account.userLogged || Account.userGender.isNotBlank())
                         MainActivity.create(this@LaunchActivity)
                     else
                         GenderActivity.create(this@LaunchActivity)

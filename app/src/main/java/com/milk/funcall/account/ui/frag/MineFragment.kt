@@ -37,8 +37,8 @@ class MineFragment : AbstractFragment() {
         binding.aboutUs.setOption(R.drawable.mine_about_us, R.string.mine_about_us)
         binding.signOut.setOption(R.drawable.mine_sign_out, R.string.mine_sign_out, false)
         logoutDialog.setOnConfirmListener {
-            GenderActivity.create(requireActivity())
             Account.logout()
+            GenderActivity.create(requireActivity())
         }
     }
 
