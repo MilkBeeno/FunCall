@@ -27,13 +27,13 @@ import com.milk.funcall.common.paging.SimpleGridDecoration
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.ui.manager.NoScrollGridLayoutManager
 import com.milk.funcall.databinding.ActivityUserInfoBinding
+import com.milk.funcall.login.ui.act.LoginActivity
 import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.user.data.UserInfoModel
 import com.milk.funcall.user.ui.adapter.UserImageAdapter
 import com.milk.funcall.user.ui.dialog.ViewAdDialog
 import com.milk.funcall.user.ui.vm.UserInfoViewModel
 import com.milk.simple.ktx.*
-import kotlinx.coroutines.flow.collectLatest
 
 class UserInfoActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityUserInfoBinding>()
@@ -198,7 +198,10 @@ class UserInfoActivity : AbstractActivity() {
                 if (Account.userLogged) {
                     loadingDialog.show()
                     userInfoViewModel.changeFollowedStatus()
-                } else showToast(string(R.string.common_place_to_login_first))
+                } else {
+                    showToast(string(R.string.common_place_to_login_first))
+                    LoginActivity.create(this)
+                }
             }
             binding.link.tvCopy -> {
                 val label = string(R.string.app_name)
@@ -223,7 +226,10 @@ class UserInfoActivity : AbstractActivity() {
                         if (it.targetIsBlacked) return
                         ChatMessageActivity.create(this, it.targetId)
                     }
-                } else showToast(string(R.string.common_place_to_login_first))
+                } else {
+                    showToast(string(R.string.common_place_to_login_first))
+                    LoginActivity.create(this)
+                }
             }
             binding.link.llViewLink -> {
                 if (userInfoViewModel.hasViewedVideo || userInfoViewModel.hasViewedImage) {
