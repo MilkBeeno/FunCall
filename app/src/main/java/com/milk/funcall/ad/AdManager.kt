@@ -46,17 +46,28 @@ object AdManager {
                 }
             })
     }
+
     /** 显示插页广告 */
-    fun showInterstitial(activity: Activity, dismissRequest: () -> Unit) {
-        if (interstitialAd == null) dismissRequest()
-        else {
+    fun showInterstitial(
+        activity: Activity,
+        onFailedRequest: () -> Unit = {},
+        onSuccessRequest: () -> Unit = {},
+        dismissRequest: () -> Unit = {}
+    ) {
+        if (interstitialAd == null) {
+            onFailedRequest()
+            dismissRequest()
+        } else {
             interstitialAd?.show(activity)
             interstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
-
-                override fun onAdDismissedFullScreenContent() = dismissRequest()
+                override fun onAdDismissedFullScreenContent() {
+                    onSuccessRequest()
+                    dismissRequest()
+                }
 
                 override fun onAdFailedToShowFullScreenContent(p0: AdError) {
                     super.onAdFailedToShowFullScreenContent(p0)
+                    onFailedRequest()
                     dismissRequest()
                 }
 

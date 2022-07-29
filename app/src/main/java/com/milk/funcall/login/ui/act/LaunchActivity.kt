@@ -20,7 +20,6 @@ class LaunchActivity : AbstractActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         initializeView()
-        initializeObserver()
         AdConfig.obtain()
         Account.initialize()
     }
@@ -30,16 +29,18 @@ class LaunchActivity : AbstractActivity() {
         binding.root.navigationBarPadding()
         binding.firstLottieView.setAnimation("launch_first.json")
         binding.secondLottieView.setAnimation("launch_second.json")
-        binding.firstLottieView.addAnimatorListener(object : Animator.AnimatorListener {
-            override fun onAnimationCancel(p0: Animator?) = Unit
-            override fun onAnimationRepeat(p0: Animator?) = Unit
-            override fun onAnimationStart(p0: Animator?) = binding.firstLottieView.visible()
-            override fun onAnimationEnd(p0: Animator?) {
-                binding.ivFunCall.visible()
-                binding.secondLottieView.visible()
-                binding.firstLottieView.gone()
-            }
-        })
+        binding.firstLottieView.addAnimatorListener(
+            object : Animator.AnimatorListener {
+                override fun onAnimationCancel(p0: Animator?) = Unit
+                override fun onAnimationRepeat(p0: Animator?) = Unit
+                override fun onAnimationStart(p0: Animator?) {
+                    binding.firstLottieView.visible()
+                }
+
+                override fun onAnimationEnd(p0: Animator?) {
+                    initializeObserver()
+                }
+            })
         binding.secondLottieView.addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(p0: Animator?) = Unit
             override fun onAnimationCancel(p0: Animator?) = Unit
@@ -58,11 +59,34 @@ class LaunchActivity : AbstractActivity() {
 
     private fun initializeObserver() {
         LiveEventBus.get<Any?>(EventKey.UPDATE_START_AD_UNIT_ID)
-            .observe(this) {
-                val interstitial = AdConfig.getAdvertiseUnitId(AdCodeKey.APP_START)
-                if (interstitial.isNotBlank())
-                    AdManager.loadInterstitial(this, interstitial)
+            .observeSticky(this) {
+                val interstitial =
+                    AdConfig.getAdvertiseUnitId(AdCodeKey.APP_START)
+                if (interstitial.isNotBlank()) {
+                    AdManager.loadInterstitial(
+                        context = this,
+                        adUnitId = interstitial,
+                        failedRequest = { adFailedDisplay() },
+                        successRequest = {
+                            AdManager.showInterstitial(
+                                activity = this,
+                                onFailedRequest = { adFailedDisplay() },
+                                onSuccessRequest = {
+                                    if (Account.userLogged || Account.userGender.isNotBlank())
+                                        MainActivity.create(this)
+                                    else
+                                        GenderActivity.create(this)
+                                    finish()
+                                })
+                        })
+                } else adFailedDisplay()
             }
+    }
+
+    private fun adFailedDisplay() {
+        binding.ivFunCall.visible()
+        binding.secondLottieView.visible()
+        binding.firstLottieView.gone()
     }
 
     override fun onInterceptKeyDownEvent(): Boolean = true
