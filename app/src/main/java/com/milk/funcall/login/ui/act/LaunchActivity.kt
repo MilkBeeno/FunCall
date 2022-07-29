@@ -16,10 +16,14 @@ import com.milk.simple.ktx.*
 class LaunchActivity : AbstractActivity() {
     private val binding by viewBinding<ActivityLaunchBinding>()
 
+    // 是否已经达到可以显示广告的条件
+    private var isDisplayTheAd: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         initializeView()
+        initializeObserver()
         AdConfig.obtain()
         Account.initialize()
     }
@@ -38,7 +42,14 @@ class LaunchActivity : AbstractActivity() {
                 }
 
                 override fun onAnimationEnd(p0: Animator?) {
-                    initializeObserver()
+                    if (isDisplayTheAd) {
+                        // 1.广告加载完成、达到播放条件播放动画
+                        showInterstitial()
+                    } else {
+                        // 2. 广告加载未完成、当广告加载完成时、达到播放广告条件
+                        adFailedDisplay()
+                        isDisplayTheAd = true
+                    }
                 }
             })
         binding.secondLottieView.addAnimatorListener(object : Animator.AnimatorListener {
@@ -57,30 +68,35 @@ class LaunchActivity : AbstractActivity() {
         })
     }
 
+    /** 运用启动开始加载广告、若加载成功且达到展示条件、则展示广告 */
     private fun initializeObserver() {
         LiveEventBus.get<Any?>(EventKey.UPDATE_START_AD_UNIT_ID)
-            .observeSticky(this) {
+            .observe(this) {
                 val interstitial =
                     AdConfig.getAdvertiseUnitId(AdCodeKey.APP_START)
-                if (interstitial.isNotBlank()) {
-                    AdManager.loadInterstitial(
-                        context = this,
-                        adUnitId = interstitial,
-                        failedRequest = { adFailedDisplay() },
-                        successRequest = {
-                            AdManager.showInterstitial(
-                                activity = this,
-                                onFailedRequest = { adFailedDisplay() },
-                                onSuccessRequest = {
-                                    if (Account.userLogged || Account.userGender.isNotBlank())
-                                        MainActivity.create(this)
-                                    else
-                                        GenderActivity.create(this)
-                                    finish()
-                                })
-                        })
-                } else adFailedDisplay()
+                AdManager.loadInterstitial(
+                    context = this,
+                    adUnitId = interstitial,
+                    successRequest = {
+                        if (isDisplayTheAd) {
+                            // 1.第一个动画播放完成、可以直接展示广告
+                            showInterstitial()
+                        } else {
+                            // 2.第一个动画未完成、第一个动画结束达到播放动画的条件
+                            isDisplayTheAd = true
+                        }
+                    })
             }
+    }
+
+    private fun showInterstitial() {
+        AdManager.showInterstitial(this) {
+            if (Account.userLogged || Account.userGender.isNotBlank())
+                MainActivity.create(this)
+            else
+                GenderActivity.create(this)
+        }
+        finish()
     }
 
     private fun adFailedDisplay() {
