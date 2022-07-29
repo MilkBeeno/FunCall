@@ -33,10 +33,10 @@
         android:layout_height="wrap_content"
         android:layout_weight="1">
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.milk.funcall.chat.ui.view.ChatRecyclerView
             android:id="@+id/rvMessage"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clSayHi"

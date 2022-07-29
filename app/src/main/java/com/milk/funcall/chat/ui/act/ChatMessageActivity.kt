@@ -43,6 +43,14 @@ class ChatMessageActivity : AbstractActivity() {
         binding.rvMessage.adapter = chatMessageAdapter
         binding.rvMessage.layoutManager = LinearLayoutManager(this)
         binding.etMessage.addTextChangedListener { updateSendState() }
+        binding.rvMessage.addOnLayoutChangeListener { _, _, _, _, bottom, _, _, _, oldBottom ->
+            if (oldBottom != -1 && oldBottom > bottom && chatMessageAdapter.itemCount > 0) {
+                binding.rvMessage.requestLayout()
+                binding.rvMessage.post {
+                    binding.rvMessage.scrollToPosition(chatMessageAdapter.itemCount - 1)
+                }
+            }
+        }
         // 滑动内容收起键盘逻辑、还需要修改
         binding.rvMessage.setOnTouchListener { _, _ ->
             binding.etMessage.clearFocus()
