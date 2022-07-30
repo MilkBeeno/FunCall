@@ -16,10 +16,9 @@ import com.milk.funcall.user.type.Gender
 import com.milk.simple.ktx.color
 import com.milk.simple.ktx.immersiveStatusBar
 import com.milk.simple.ktx.navigationBarPadding
-import com.milk.simple.ktx.viewBinding
 
 class GenderActivity : AbstractActivity() {
-    private val binding by viewBinding<ActivityGenderBinding>()
+    private val binding by lazy { ActivityGenderBinding.inflate(layoutInflater) }
     private var selectGender = Gender.Man
 
     override fun onCreate(savedInstanceState: Bundle?) {

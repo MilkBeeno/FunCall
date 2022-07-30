@@ -26,12 +26,15 @@ import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityMainBinding
 import com.milk.funcall.user.ui.frag.HomeFragment
-import com.milk.simple.ktx.*
+import com.milk.simple.ktx.collectLatest
+import com.milk.simple.ktx.immersiveStatusBar
+import com.milk.simple.ktx.navigationBarPadding
+import com.milk.simple.ktx.statusBarPadding
 import com.milk.simple.log.Logger
 import java.util.*
 
 class MainActivity : AbstractActivity() {
-    private val binding by viewBinding<ActivityMainBinding>()
+    private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private val mainViewModel by viewModels<MainViewModel>()
     private val fragments = mutableListOf<Fragment>()
     private val homeFragment = HomeFragment.create()

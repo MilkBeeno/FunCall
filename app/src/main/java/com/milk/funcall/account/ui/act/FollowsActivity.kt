@@ -20,7 +20,7 @@ import com.milk.funcall.user.ui.act.UserInfoActivity
 import com.milk.simple.ktx.*
 
 class FollowsActivity : AbstractActivity() {
-    private val binding by viewBinding<ActivityFollowsBinding>()
+    private val binding by lazy { ActivityFollowsBinding.inflate(layoutInflater) }
     private val followsViewModel by viewModels<FollowsViewModel>()
     private val followsAdapter by lazy { FansOrFollowsAdapter() }
     private val loadingDialog by lazy { LoadingDialog(this, string(R.string.common_loading)) }

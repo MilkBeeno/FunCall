@@ -16,7 +16,7 @@ import com.milk.simple.ktx.*
 import tv.danmaku.ijk.media.player.IMediaPlayer
 
 class VideoMediaActivity : AbstractActivity() {
-    private val binding by viewBinding<ActivityVideoMediaBinding>()
+    private val binding by lazy { ActivityVideoMediaBinding.inflate(layoutInflater) }
     private val targetId by lazy { intent.getLongExtra(TARGET_ID, 0) }
     private val isBlacked by lazy { intent.getBooleanExtra(IS_BLACKED, false) }
     private val videoUrl by lazy { intent.getStringExtra(VIDEO_URL).toString() }

@@ -13,10 +13,9 @@ import com.milk.funcall.databinding.ActivityAboutUsBinding
 import com.milk.simple.ktx.immersiveStatusBar
 import com.milk.simple.ktx.navigationBarPadding
 import com.milk.simple.ktx.statusBarPadding
-import com.milk.simple.ktx.viewBinding
 
 class AboutUsActivity : AbstractActivity() {
-    private val binding by viewBinding<ActivityAboutUsBinding>()
+    private val binding by lazy { ActivityAboutUsBinding.inflate(layoutInflater) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)

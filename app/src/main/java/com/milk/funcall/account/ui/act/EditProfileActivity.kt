@@ -35,10 +35,9 @@ import com.milk.funcall.user.ui.act.ImageMediaActivity
 import com.milk.funcall.user.ui.act.VideoMediaActivity
 import com.milk.funcall.user.ui.config.AvatarImage
 import com.milk.simple.ktx.*
-import kotlinx.coroutines.flow.collectLatest
 
 class EditProfileActivity : AbstractActivity() {
-    private val binding by viewBinding<ActivityEditProfileBinding>()
+    private val binding by lazy { ActivityEditProfileBinding.inflate(layoutInflater) }
     private val editProfileViewModel by viewModels<EditProfileViewModel>()
     private val defaultAvatar by lazy { AvatarImage().obtain(Account.userGender) }
     private val imageAdapter by lazy { EditProfileImageAdapter() }

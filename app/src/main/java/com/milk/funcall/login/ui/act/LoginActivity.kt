@@ -19,7 +19,7 @@ import com.milk.funcall.login.ui.vm.LoginViewModel
 import com.milk.simple.ktx.*
 
 class LoginActivity : AbstractActivity() {
-    private val binding by viewBinding<ActivityLoginBinding>()
+    private val binding by lazy { ActivityLoginBinding.inflate(layoutInflater) }
     private val loginViewModel by viewModels<LoginViewModel>()
     private val authLoginManager by lazy { AuthLoginManager(this) }
     private val loadingDialog by lazy { LoadingDialog(this, string(R.string.common_loading)) }

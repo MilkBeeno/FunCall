@@ -42,7 +42,8 @@ android {
             signingConfig signingConfigs.myJsk
         }
         release {
-            minifyEnabled false
+            minifyEnabled true
+            zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             // 正试服的广告ID
             buildConfigField 'String', 'AD_APP_ID', "${AD_APP_ID_RELEASE}"
@@ -70,7 +71,7 @@ android {
 
 dependencies {
     // 自定义组件库
-    implementation 'com.github.MilkBeeno:Library:1.2.5'
+    implementation 'com.github.MilkBeeno:Library:1.2.7'
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.appcompat:appcompat:1.4.2'

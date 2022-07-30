@@ -16,7 +16,7 @@ import com.milk.funcall.user.ui.act.UserInfoActivity
 import com.milk.simple.ktx.*
 
 class BlackedListActivity : AbstractActivity() {
-    private val binding by viewBinding<ActivityBlackedListBinding>()
+    private val binding by lazy { ActivityBlackedListBinding.inflate(layoutInflater) }
     private val blackedViewModel by viewModels<BlackedViewModel>()
     private val blackedListAdapter by lazy { BlackedListAdapter() }
     private val loadingDialog by lazy { LoadingDialog(this, string(R.string.common_loading)) }

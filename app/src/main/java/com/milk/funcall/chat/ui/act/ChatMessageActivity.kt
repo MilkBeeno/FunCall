@@ -22,7 +22,7 @@ import com.milk.simple.keyboard.KeyBoardUtil
 import com.milk.simple.ktx.*
 
 class ChatMessageActivity : AbstractActivity() {
-    private val binding by viewBinding<ActivityMessageBinding>()
+    private val binding by lazy { ActivityMessageBinding.inflate(layoutInflater) }
     private val chatMessageViewModel by viewModels<ChatMessageViewModel>()
     private val chatMessageAdapter by lazy { ChatMessageAdapter() }
     private val targetId by lazy { intent.getLongExtra(TARGET_ID, 0) }

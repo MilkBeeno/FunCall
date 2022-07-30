@@ -36,7 +36,7 @@ import com.milk.funcall.user.ui.vm.UserInfoViewModel
 import com.milk.simple.ktx.*
 
 class UserInfoActivity : AbstractActivity() {
-    private val binding by viewBinding<ActivityUserInfoBinding>()
+    private val binding by lazy { ActivityUserInfoBinding.inflate(layoutInflater) }
     private val userInfoViewModel by viewModels<UserInfoViewModel>()
     private val userId by lazy { intent.getLongExtra(USER_ID, 0) }
     private val loadingDialog by lazy { LoadingDialog(this, string(R.string.common_loading)) }

@@ -34,7 +34,7 @@ import com.milk.simple.keyboard.KeyBoardUtil
 import com.milk.simple.ktx.*
 
 class PresetProfileActivity : AbstractActivity() {
-    private val binding by viewBinding<ActivityPresetProfileBinding>()
+    private val binding by lazy { ActivityPresetProfileBinding.inflate(layoutInflater) }
     private val presetProfileViewModel by viewModels<PresetProfileViewModel>()
     private val defaultGender by lazy { GenderImage().obtain(Account.userGender) }
     private val defaultAvatar by lazy { AvatarImage().obtain(Account.userGender) }

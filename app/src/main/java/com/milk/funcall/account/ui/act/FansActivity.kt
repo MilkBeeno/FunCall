@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
@@ -19,11 +18,9 @@ import com.milk.funcall.databinding.ActivityFansBinding
 import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.user.ui.act.UserInfoActivity
 import com.milk.simple.ktx.*
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 class FansActivity : AbstractActivity() {
-    private val binding by viewBinding<ActivityFansBinding>()
+    private val binding by lazy { ActivityFansBinding.inflate(layoutInflater) }
     private val fansViewModel by viewModels<FansViewModel>()
     private val fansAdapter by lazy { FansOrFollowsAdapter() }
     private val loadingDialog by lazy { LoadingDialog(this, string(R.string.common_loading)) }

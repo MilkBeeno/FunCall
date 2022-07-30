@@ -11,10 +11,13 @@ import com.milk.funcall.app.ui.act.MainActivity
 import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityLaunchBinding
-import com.milk.simple.ktx.*
+import com.milk.simple.ktx.gone
+import com.milk.simple.ktx.immersiveStatusBar
+import com.milk.simple.ktx.navigationBarPadding
+import com.milk.simple.ktx.visible
 
 class LaunchActivity : AbstractActivity() {
-    private val binding by viewBinding<ActivityLaunchBinding>()
+    private val binding by lazy { ActivityLaunchBinding.inflate(layoutInflater) }
 
     // 是否已经达到可以显示广告的条件
     private var isDisplayTheAd: Boolean = false

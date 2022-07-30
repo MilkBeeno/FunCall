@@ -19,7 +19,7 @@ import com.milk.funcall.user.ui.dialog.ImageMediaGuideDialog
 import com.milk.simple.ktx.*
 
 class ImageMediaActivity : AbstractActivity() {
-    private val binding by viewBinding<ActivityImageMediaBinding>()
+    private val binding by lazy { ActivityImageMediaBinding.inflate(layoutInflater) }
     private val guideDialog by lazy { ImageMediaGuideDialog(this) }
     private val targetId by lazy { intent.getLongExtra(TARGET_ID, 0) }
     private val isBlacked by lazy { intent.getBooleanExtra(IS_BLACKED, false) }
