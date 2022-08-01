@@ -17,14 +17,13 @@ import com.milk.simple.mdr.KvManger
 
 object AdConfig {
     private const val AD_CONFIG = "AD_CONFIG"
-    private val adRepository by lazy { AdRepository() }
     private val positionMap = mutableMapOf<String, String>()
 
     /** 获取网络中最新的广告信息 */
     fun obtain() {
         if (positionMap.isNotEmpty()) return
         ioScope {
-            val apiResult = adRepository.getAdConfig(
+            val apiResult = AdRepository().getAdConfig(
                 BuildConfig.AD_APP_ID,
                 BuildConfig.AD_APP_VERSION,
                 BuildConfig.AD_APP_CHANNEL

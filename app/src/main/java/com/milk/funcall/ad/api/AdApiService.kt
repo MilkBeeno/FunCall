@@ -8,6 +8,14 @@ import retrofit2.http.POST
 
 interface AdApiService {
     @FormUrlEncoded
+    @POST("/funcall/getMobileConf")
+    suspend fun getAdSwitch(
+        @Field("appId") appId: String,
+        @Field("versionCode") versionCode: String,
+        @Field("channelCode") channelCode: String
+    ): ApiResponse<MutableMap<String, String>>
+
+    @FormUrlEncoded
     @POST("/funcall/listAdPositionInfo")
     suspend fun getAdConfig(
         @Field("appId") appId: String,

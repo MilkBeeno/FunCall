@@ -6,6 +6,7 @@ import androidx.activity.viewModels
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.account.Account
 import com.milk.funcall.ad.AdConfig
+import com.milk.funcall.ad.AdSwitch
 import com.milk.funcall.app.ui.act.MainActivity
 import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.ui.AbstractActivity
@@ -25,6 +26,7 @@ class LaunchActivity : AbstractActivity() {
         setContentView(binding.root)
         initializeView()
         initializeObserver()
+        AdSwitch.obtain()
         AdConfig.obtain()
         Account.initialize()
     }
