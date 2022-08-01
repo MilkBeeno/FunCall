@@ -1,4 +1,5 @@
- {
+{
+         "success": true,
          "message": "",
          "code": 200,
          "result": [
@@ -83,14 +84,30 @@
                ]
             },
             {
-               "code": "87654326",
+               "code": "87654327",
                "positionList": [
                   {
                      "adv": "google",
-                     "posId": "ca-app-pub-3940256099942544/6300978111",
+                     "posId": "ca-app-pub-3940256099942544/2247696110",
                      "unitId": "",
                      "ratio": 1,
-                     "adType": 2,
+                     "adType": 5,
+                     "typeRatio": 1,
+                     "limitShowCount": 3,
+                     "limitClickCount": 2,
+                     "order": 0
+                  }
+               ]
+            },
+            {
+               "code": "87654328",
+               "positionList": [
+                  {
+                     "adv": "google",
+                     "posId": "ca-app-pub-3940256099942544/2247696110",
+                     "unitId": "",
+                     "ratio": 1,
+                     "adType": 5,
                      "typeRatio": 1,
                      "limitShowCount": 3,
                      "limitClickCount": 2,
@@ -98,5 +115,6 @@
                   }
                ]
             }
-         ]
+         ],
+         "timestamp": 1659337024916
       }

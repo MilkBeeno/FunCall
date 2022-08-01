@@ -48,12 +48,17 @@ object AdConfig {
             when (it.code) {
                 AdCodeKey.VIEW_USER_LINK -> {
                     savePositionId(AdCodeKey.VIEW_USER_LINK, it.positionList)
-                    LiveEventBus.get<Any?>(EventKey.UPDATE_START_AD_UNIT_ID).post(null)
+                    LiveEventBus.get<Any?>(EventKey.UPDATE_START_AD_UNIT_ID)
+                        .post(null)
                 }
                 AdCodeKey.APP_START ->
                     savePositionId(AdCodeKey.APP_START, it.positionList)
-                AdCodeKey.HOME_LIST ->
-                    savePositionId(AdCodeKey.HOME_LIST, it.positionList)
+                AdCodeKey.HOME_LIST_FIRST ->
+                    savePositionId(AdCodeKey.HOME_LIST_FIRST, it.positionList)
+                AdCodeKey.HOME_LIST_SECOND ->
+                    savePositionId(AdCodeKey.HOME_LIST_SECOND, it.positionList)
+                AdCodeKey.HOME_LIST_THIRD ->
+                    savePositionId(AdCodeKey.HOME_LIST_THIRD, it.positionList)
                 AdCodeKey.VIEW_USER_VIDEO ->
                     savePositionId(AdCodeKey.VIEW_USER_VIDEO, it.positionList)
                 AdCodeKey.VIEW_USER_IMAGE ->
