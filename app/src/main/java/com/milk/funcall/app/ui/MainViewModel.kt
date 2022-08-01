@@ -15,8 +15,9 @@ class MainViewModel : ViewModel() {
 
     internal fun loadNativeAd(context: Context) {
         ioScope {
-            val smallNativeAd = AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST)
-            if (smallNativeAd.isNotBlank()) AdManager.loadNativeAds(context, smallNativeAd,
+            val adUnitId =
+                AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST)
+            AdManager.loadNativeAds(context, adUnitId,
                 failedRequest = {
                     ioScope { mainAd.emit(null) }
                 },

@@ -29,20 +29,20 @@ object AdManager {
     fun loadInterstitial(
         context: Context,
         adUnitId: String,
-        failedRequest: () -> Unit = {},
-        successRequest: () -> Unit = {}
+        onFailedRequest: () -> Unit = {},
+        onSuccessRequest: () -> Unit = {}
     ) {
         val adRequest = AdRequest.Builder().build()
         InterstitialAd.load(context, adUnitId, adRequest,
             object : InterstitialAdLoadCallback() {
                 override fun onAdFailedToLoad(adError: LoadAdError) {
                     interstitialAd = null
-                    failedRequest()
+                    onFailedRequest()
                 }
 
                 override fun onAdLoaded(interstitialAd: InterstitialAd) {
                     AdManager.interstitialAd = interstitialAd
-                    successRequest()
+                    onSuccessRequest()
                 }
             })
     }
@@ -52,23 +52,23 @@ object AdManager {
         activity: Activity,
         onFailedRequest: () -> Unit = {},
         onSuccessRequest: () -> Unit = {},
-        dismissRequest: () -> Unit = {}
+        onFinishedRequest: () -> Unit = {}
     ) {
         if (interstitialAd == null) {
             onFailedRequest()
-            dismissRequest()
+            onFinishedRequest()
         } else {
             interstitialAd?.show(activity)
             interstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
                 override fun onAdDismissedFullScreenContent() {
                     onSuccessRequest()
-                    dismissRequest()
+                    onFinishedRequest()
                 }
 
                 override fun onAdFailedToShowFullScreenContent(p0: AdError) {
                     super.onAdFailedToShowFullScreenContent(p0)
                     onFailedRequest()
-                    dismissRequest()
+                    onFinishedRequest()
                 }
 
                 override fun onAdShowedFullScreenContent() {

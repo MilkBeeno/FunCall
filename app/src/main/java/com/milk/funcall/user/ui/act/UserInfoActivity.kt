@@ -65,10 +65,13 @@ class UserInfoActivity : AbstractActivity() {
         binding.link.llViewLink.setOnClickListener(this)
         binding.mlImage.setOnClickRequest {
             loadingDialog.show()
-            userInfoViewModel.loadImageAd(this) {
-                loadingDialog.dismiss()
-                binding.mlImage.gone()
-            }
+            userInfoViewModel.loadImageAd(
+                activity = this,
+                failure = { loadingDialog.dismiss() },
+                success = {
+                    loadingDialog.dismiss()
+                    binding.mlImage.gone()
+                })
         }
     }
 
@@ -175,7 +178,8 @@ class UserInfoActivity : AbstractActivity() {
             binding.rvImage.layoutManager = NoScrollGridLayoutManager(this, 2)
             binding.rvImage.addItemDecoration(SimpleGridDecoration(this))
             binding.rvImage.adapter = UserImageAdapter(userImageList) { position ->
-                ImageMediaActivity.create(this, userInfo.targetId, userInfo.targetIsBlacked)
+                ImageMediaActivity
+                    .create(this, userInfo.targetId, userInfo.targetIsBlacked)
                 LiveEventBus
                     .get<Pair<Int, MutableList<String>>>(KvKey.DISPLAY_IMAGE_MEDIA_LIST)
                     .post(Pair(position, userImageList))
@@ -234,9 +238,7 @@ class UserInfoActivity : AbstractActivity() {
             binding.link.llViewLink -> {
                 if (userInfoViewModel.hasViewedVideo || userInfoViewModel.hasViewedImage) {
                     viewAdDialog.show()
-                    viewAdDialog.setOnConfirmRequest {
-                        loadLinkAd()
-                    }
+                    viewAdDialog.setOnConfirmRequest { loadLinkAd() }
                 } else showToast(string(R.string.user_info_please_view_video_or_image))
             }
         }
@@ -245,27 +247,26 @@ class UserInfoActivity : AbstractActivity() {
     /** 加载获取联系方式激励视频广告 */
     private fun loadLinkAd() {
         try {
-            val unitId = AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_LINK)
-            if (unitId.isNotBlank()) {
-                loadingDialog.show()
-                val adRequest = AdRequest.Builder().build()
-                RewardedAd.load(this, unitId, adRequest,
-                    object : RewardedAdLoadCallback() {
-                        override fun onAdFailedToLoad(p0: LoadAdError) {
-                            super.onAdFailedToLoad(p0)
-                            loadingDialog.dismiss()
-                        }
+            val unitId =
+                AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_LINK)
+            loadingDialog.show()
+            val adRequest = AdRequest.Builder().build()
+            RewardedAd.load(this, unitId, adRequest,
+                object : RewardedAdLoadCallback() {
+                    override fun onAdFailedToLoad(p0: LoadAdError) {
+                        super.onAdFailedToLoad(p0)
+                        loadingDialog.dismiss()
+                    }
 
-                        override fun onAdLoaded(p0: RewardedAd) {
-                            super.onAdLoaded(p0)
-                            p0.show(this@UserInfoActivity) {
-                                loadingDialog.dismiss()
-                                binding.link.flLinkLocked.gone()
-                                userInfoViewModel.hasViewedLink = true
-                            }
+                    override fun onAdLoaded(p0: RewardedAd) {
+                        super.onAdLoaded(p0)
+                        p0.show(this@UserInfoActivity) {
+                            loadingDialog.dismiss()
+                            binding.link.flLinkLocked.gone()
+                            userInfoViewModel.hasViewedLink = true
                         }
-                    })
-            }
+                    }
+                })
         } catch (e: Exception) {
             e.printStackTrace()
         }

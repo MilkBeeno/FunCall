@@ -57,7 +57,8 @@ class MainActivity : AbstractActivity() {
         try {
             mainViewModel.loadNativeAd(this)
             val adView = AdView(this)
-            adView.adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.MAIN_HOME_BOTTOM)
+            adView.adUnitId =
+                AdConfig.getAdvertiseUnitId(AdCodeKey.MAIN_HOME_BOTTOM)
             adView.setAdSize(AdSize.BANNER)
             val adRequest = AdRequest.Builder().build()
             adView.loadAd(adRequest)

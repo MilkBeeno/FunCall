@@ -83,22 +83,30 @@ class UserInfoViewModel : ViewModel() {
         }
     }
 
-    internal fun loadImageAd(activity: UserInfoActivity, success: () -> Unit) {
+    internal fun loadImageAd(
+        activity: UserInfoActivity,
+        failure: () -> Unit,
+        success: () -> Unit
+    ) {
         if (adIsLoading) return
         adIsLoading = true
-        val interstitial = AdConfig.getAdvertiseUnitId(AdCodeKey.APP_START)
-        if (interstitial.isNotBlank())
-            AdManager.loadInterstitial(activity, interstitial,
-                failedRequest = {
+        val adUnitId =
+            AdConfig.getAdvertiseUnitId(AdCodeKey.APP_START)
+        if (adUnitId.isNotBlank())
+            AdManager.loadInterstitial(
+                context = activity,
+                adUnitId = adUnitId,
+                onFailedRequest = {
+                    failure()
                     adIsLoading = false
                 },
-                successRequest = {
+                onSuccessRequest = {
                     AdManager.showInterstitial(activity) {
                         success()
                         adIsLoading = false
                         hasViewedImage = true
                     }
                 })
-        else adIsLoading = false
+        else failure()
     }
 }
