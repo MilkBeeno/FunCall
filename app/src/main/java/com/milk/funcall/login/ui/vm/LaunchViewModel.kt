@@ -1,11 +1,16 @@
 package com.milk.funcall.login.ui.vm
 
+import android.annotation.SuppressLint
+import android.content.pm.PackageManager
+import android.util.Base64
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import com.milk.funcall.ad.AdConfig
 import com.milk.funcall.ad.AdManager
 import com.milk.funcall.ad.constant.AdCodeKey
 import com.milk.funcall.ad.ui.AdLoadType
+import com.milk.simple.log.Logger
+import java.security.MessageDigest
 
 class LaunchViewModel : ViewModel() {
     /** 广告加载的状态 */
@@ -61,6 +66,25 @@ class LaunchViewModel : ViewModel() {
                     onFailedRequest = { failure() },
                     onSuccessRequest = { success() })
             }
+        }
+    }
+
+    @SuppressLint("PackageManagerGetSignatures")
+    internal fun getHasKey(activity: FragmentActivity) {
+        try {
+            val info = activity.packageManager
+                .getPackageInfo(activity.packageName, PackageManager.GET_SIGNATURES)
+            for (signature in info.signatures) {
+                val md: MessageDigest = MessageDigest.getInstance("SHA")
+                md.update(signature.toByteArray())
+                Logger.d(
+                    "包名是" + activity.packageName +
+                            "密钥是：" + Base64.encodeToString(md.digest(), Base64.DEFAULT),
+                    "KeyHash"
+                )
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 }

@@ -74,6 +74,7 @@ class LaunchActivity : AbstractActivity() {
 
     /** 运用启动开始加载广告、若加载成功且达到展示条件、则展示广告 */
     private fun initializeObserver() {
+        // launchViewModel.getHasKey(this)
         LiveEventBus.get<Any?>(EventKey.UPDATE_START_AD_UNIT_ID)
             .observe(this) {
                 if (AdSwitch.appLaunch)
