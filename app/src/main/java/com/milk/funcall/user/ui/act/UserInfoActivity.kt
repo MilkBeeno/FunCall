@@ -17,6 +17,7 @@ import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
 import com.milk.funcall.account.Account
 import com.milk.funcall.ad.AdConfig
+import com.milk.funcall.ad.AdSwitch
 import com.milk.funcall.ad.constant.AdCodeKey
 import com.milk.funcall.chat.ui.act.ChatMessageActivity
 import com.milk.funcall.common.constrant.EventKey
@@ -141,7 +142,7 @@ class UserInfoActivity : AbstractActivity() {
         binding.tvUserId.text = "ID : ".plus(userInfo.targetIdx)
         binding.tvUserBio.text = userInfo.targetBio
         if (userInfo.targetLink.isNotBlank()) {
-            if (userInfoViewModel.hasViewedLink)
+            if (userInfoViewModel.hasViewedLink || !AdSwitch.viewUserLink)
                 binding.link.flLinkLocked.gone()
             else
                 binding.link.flLinkLocked.visible()
@@ -171,7 +172,7 @@ class UserInfoActivity : AbstractActivity() {
         if (userImageList.isNotEmpty()) {
             binding.tvImage.visible()
             binding.rvImage.visible()
-            if (userInfoViewModel.hasViewedImage)
+            if (userInfoViewModel.hasViewedImage || !AdSwitch.viewUserImage)
                 binding.mlImage.gone()
             else
                 binding.mlImage.visible()
