@@ -45,12 +45,14 @@ class LaunchActivity : AbstractActivity() {
                 }
 
                 override fun onAnimationEnd(p0: Animator?) {
-                    launchViewModel.showLaunchAd(
-                        activity = this@LaunchActivity,
-                        loading = { showNextAnimation() },
-                        failure = { toMainOrGenderPage() },
-                        success = { toMainOrGenderPage() }
-                    )
+                    if (AdSwitch.appLaunch)
+                        launchViewModel.showLaunchAd(
+                            activity = this@LaunchActivity,
+                            loading = { showNextAnimation() },
+                            failure = { toMainOrGenderPage() },
+                            success = { toMainOrGenderPage() }
+                        )
+                    else showNextAnimation()
                 }
             })
         binding.secondLottieView.addAnimatorListener(object : Animator.AnimatorListener {
@@ -58,12 +60,14 @@ class LaunchActivity : AbstractActivity() {
             override fun onAnimationCancel(p0: Animator?) = Unit
             override fun onAnimationRepeat(p0: Animator?) = Unit
             override fun onAnimationEnd(p0: Animator?) {
-                launchViewModel.showLaunchAd(
-                    activity = this@LaunchActivity,
-                    loading = { toMainOrGenderPage() },
-                    failure = { toMainOrGenderPage() },
-                    success = { toMainOrGenderPage() }
-                )
+                if (AdSwitch.appLaunch)
+                    launchViewModel.showLaunchAd(
+                        activity = this@LaunchActivity,
+                        loading = { toMainOrGenderPage() },
+                        failure = { toMainOrGenderPage() },
+                        success = { toMainOrGenderPage() }
+                    )
+                else toMainOrGenderPage()
             }
         })
     }
@@ -72,10 +76,11 @@ class LaunchActivity : AbstractActivity() {
     private fun initializeObserver() {
         LiveEventBus.get<Any?>(EventKey.UPDATE_START_AD_UNIT_ID)
             .observe(this) {
-                launchViewModel.loadLaunchAd(
-                    activity = this,
-                    failure = { toMainOrGenderPage() },
-                    success = { toMainOrGenderPage() })
+                if (AdSwitch.appLaunch)
+                    launchViewModel.loadLaunchAd(
+                        activity = this,
+                        failure = { toMainOrGenderPage() },
+                        success = { toMainOrGenderPage() })
             }
     }
 
