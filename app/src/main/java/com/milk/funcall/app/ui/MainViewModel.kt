@@ -17,13 +17,13 @@ class MainViewModel : ViewModel() {
         ioScope {
             val adUnitId =
                 AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_FIRST)
-            AdManager.loadNativeAds(context, adUnitId,
-                failedRequest = {
-                    ioScope { mainAd.emit(null) }
-                },
-                successRequest = {
-                    ioScope { mainAd.emit(it) }
-                })
+            if (adUnitId.isNotBlank())
+                AdManager.loadNativeAds(
+                    context = context,
+                    adUnitId = adUnitId,
+                    failedRequest = { ioScope { mainAd.emit(null) } },
+                    successRequest = { ioScope { mainAd.emit(it) } })
+            else mainAd.emit(null)
         }
     }
 

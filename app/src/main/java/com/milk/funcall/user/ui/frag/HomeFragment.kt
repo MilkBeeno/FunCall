@@ -52,11 +52,10 @@ class HomeFragment : AbstractFragment() {
                 }
             }
         }
-        launch {
-            mainViewModel.mainAd.collectLatest { nativeAd ->
-                homeViewModel.nativeAd = nativeAd
-                homeViewModel.pagingSource.flow.collectLatest { adapter.submitData(it) }
-            }
+        mainViewModel.mainAd.collectLatest(this) { nativeAd ->
+            homeViewModel.nativeAd = nativeAd
+            homeViewModel.pagingSource.flow
+                .collectLatest { adapter.submitData(it) }
         }
     }
 
