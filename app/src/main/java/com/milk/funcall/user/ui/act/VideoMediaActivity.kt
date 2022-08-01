@@ -6,12 +6,14 @@ import android.os.Bundle
 import android.view.View
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
+import com.milk.funcall.account.Account
 import com.milk.funcall.account.ui.dialog.DeleteMediaDialog
 import com.milk.funcall.chat.ui.act.ChatMessageActivity
 import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.common.media.view.IjkVideoView
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityVideoMediaBinding
+import com.milk.funcall.login.ui.act.LoginActivity
 import com.milk.simple.ktx.*
 import tv.danmaku.ijk.media.player.IMediaPlayer
 
@@ -67,7 +69,12 @@ class VideoMediaActivity : AbstractActivity() {
             }
             binding.llMessage -> {
                 if (isBlacked) return
-                ChatMessageActivity.create(this, targetId)
+                if (Account.userLogged)
+                    ChatMessageActivity.create(this, targetId)
+                else {
+                    showToast(string(R.string.common_place_to_login_first))
+                    LoginActivity.create(this)
+                }
             }
         }
     }

@@ -14,6 +14,7 @@ import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.ui.manager.HorizontalLinearLayoutManager
 import com.milk.funcall.databinding.ActivityImageMediaBinding
+import com.milk.funcall.login.ui.act.LoginActivity
 import com.milk.funcall.user.ui.adapter.ImageMediaAdapter
 import com.milk.funcall.user.ui.dialog.ImageMediaGuideDialog
 import com.milk.simple.ktx.*
@@ -94,7 +95,12 @@ class ImageMediaActivity : AbstractActivity() {
             }
             binding.llMessage -> {
                 if (isBlacked) return
-                ChatMessageActivity.create(this, targetId)
+                if (Account.userLogged)
+                    ChatMessageActivity.create(this, targetId)
+                else {
+                    showToast(string(R.string.common_place_to_login_first))
+                    LoginActivity.create(this)
+                }
             }
         }
     }
