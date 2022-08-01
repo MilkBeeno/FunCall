@@ -16,6 +16,7 @@ import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.account.Account
 import com.milk.funcall.account.ui.frag.MineFragment
 import com.milk.funcall.ad.AdConfig
+import com.milk.funcall.ad.AdSwitch
 import com.milk.funcall.ad.constant.AdCodeKey
 import com.milk.funcall.app.MainService
 import com.milk.funcall.app.ui.MainViewModel
@@ -56,13 +57,15 @@ class MainActivity : AbstractActivity() {
     private fun initializeAdView() {
         try {
             mainViewModel.loadNativeAd(this)
-            val adView = AdView(this)
-            adView.adUnitId =
-                AdConfig.getAdvertiseUnitId(AdCodeKey.MAIN_HOME_BOTTOM)
-            adView.setAdSize(AdSize.BANNER)
-            val adRequest = AdRequest.Builder().build()
-            adView.loadAd(adRequest)
-            binding.root.addView(adView)
+            if (AdSwitch.homeBanner) {
+                val adView = AdView(this)
+                adView.adUnitId =
+                    AdConfig.getAdvertiseUnitId(AdCodeKey.MAIN_HOME_BOTTOM)
+                adView.setAdSize(AdSize.BANNER)
+                val adRequest = AdRequest.Builder().build()
+                adView.loadAd(adRequest)
+                binding.root.addView(adView)
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
