@@ -162,11 +162,13 @@ class EditProfileActivity : AbstractActivity() {
                 toSelectVideo()
             }
             binding.tvSave -> {
-                uploadDialog.show()
                 val name = binding.etName.text.toString()
-                val bio = binding.etAboutMe.text.toString()
                 val link = binding.etLink.text.toString()
-                editProfileViewModel.uploadProfile(name, bio, link)
+                val bio = binding.etAboutMe.text.toString()
+                if (name.isNotBlank()) {
+                    uploadDialog.show()
+                    editProfileViewModel.uploadProfile(name, bio, link)
+                } else showToast(string(R.string.edit_profile_name_not_blank))
             }
         }
     }
