@@ -90,6 +90,7 @@
     <string name="chat_message_list_with_other">Chat with other</string>
     <!--更改个人资料页面翻译-->
     <string name="edit_profile_title">Edit profile</string>
+    <string name="edit_profile_avatar">Update your real avatar</string>
     <string name="edit_profile_save">Save</string>
     <string name="edit_profile_name">Name</string>
     <string name="edit_profile_about_me">About me</string>
