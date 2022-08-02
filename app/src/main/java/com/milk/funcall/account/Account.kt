@@ -82,7 +82,7 @@ object Account {
 
     /** 当前用户登录的粉丝数量 */
     internal val userFansFlow = MutableStateFlow(0)
-    private var userFans: Int = 0
+    internal var userFans: Int = 0
         set(value) {
             KvManger.put(KvKey.ACCOUNT_USER_FANS_NUMBER, value)
             field = value
