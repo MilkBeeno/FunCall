@@ -14,9 +14,10 @@ import com.milk.simple.log.Logger
 class HomeViewModel : ViewModel() {
     private val homeRepository by lazy { HomeRepository() }
     private var groupNumber: Int = 0
-    private var hasAddNativeAd = false
-
     private var nextPositionSpace = 3
+
+    // 只有两个广告时保存广告信息
+    private var homePageAds = Pair<NativeAd?, NativeAd?>(null, null)
     private var lastAddNativeAd: NativeAd? = null
     internal var firstHomePageAd: NativeAd? = null
     internal var secondHomePageAd: NativeAd? = null
@@ -93,7 +94,16 @@ class HomeViewModel : ViewModel() {
                     } else nextPositionSpace += 2 * space - apiResult.size
                 },
                 eight = { space ->
-
+                    if (apiResult.size >= nextPositionSpace) {
+                        lastAddNativeAd = when (lastAddNativeAd) {
+                            homePageAds.first -> homePageAds.second
+                            else -> homePageAds.first
+                        }
+                        val userSimpleInfoModel =
+                            UserSimpleInfoModel(nativeAd = lastAddNativeAd)
+                        apiResult.add(nextPositionSpace, userSimpleInfoModel)
+                        nextPositionSpace += space - apiResult.size
+                    }
                 },
                 twelve = { space ->
                     if (apiResult.size > nextPositionSpace) {
@@ -124,9 +134,18 @@ class HomeViewModel : ViewModel() {
     ) {
         when (homeType) {
             AdType.All -> four(4)
-            AdType.FirstAndSecond,
-            AdType.FirstAndThird,
-            AdType.SecondAndThird -> eight(8)
+            AdType.FirstAndSecond -> {
+                homePageAds = Pair(firstHomePageAd, secondHomePageAd)
+                eight(8)
+            }
+            AdType.FirstAndThird -> {
+                homePageAds = Pair(firstHomePageAd, thirdHomePageAd)
+                eight(8)
+            }
+            AdType.SecondAndThird -> {
+                homePageAds = Pair(secondHomePageAd, thirdHomePageAd)
+                eight(8)
+            }
             AdType.First,
             AdType.Second,
             AdType.Third -> twelve(12)
