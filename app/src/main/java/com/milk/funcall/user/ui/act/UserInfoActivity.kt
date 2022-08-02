@@ -159,14 +159,14 @@ class UserInfoActivity : AbstractActivity() {
     private fun setUserMedia(userInfo: UserInfoModel) {
         // 设置 Video 信息
         val userVideoUrl = userInfo.videoConvert()
-        if (userVideoUrl.isNotEmpty()) {
+        /*if (userVideoUrl.isNotEmpty()) {
             binding.tvVideo.visible()
             binding.flVideo.visible()
             VideoLoader.Builder()
                 .request(userVideoUrl)
                 .target(binding.ivVideo)
                 .build()
-        }
+        }*/
         // 设置 Image 信息
         val userImageList = userInfo.imageListConvert()
         if (userImageList.isNotEmpty()) {
