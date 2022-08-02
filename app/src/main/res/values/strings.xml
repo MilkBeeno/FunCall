@@ -14,7 +14,7 @@
     <string name="common_ok">OK</string>
     <string name="common_confirm">CONFIRM</string>
     <string name="common_cancel" tools:ignore="ButtonCase">CANCEL</string>
-    <string name="common_loading">Logging…</string>
+    <string name="common_loading">Loading…</string>
     <string name="common_uploading">Uploading…</string>
     <string name="common_video">Video</string>
     <string name="common_picture">Photos</string>
