@@ -52,8 +52,10 @@ class HomeFragment : AbstractFragment() {
                 }
             }
         }
-        mainViewModel.mainAd.collectLatest(this) { nativeAd ->
-            homeViewModel.nativeAd = nativeAd
+        mainViewModel.homePageAdLoadSuccess.collectLatest(this) { nativeAds ->
+            homeViewModel.firstHomePageAd = nativeAds[0]
+            homeViewModel.secondHomePageAd = nativeAds[1]
+            homeViewModel.thirdHomePageAd = nativeAds[2]
             homeViewModel.pagingSource.flow
                 .collectLatest { adapter.submitData(it) }
         }
