@@ -94,7 +94,7 @@ class HomeViewModel : ViewModel() {
                     } else nextPositionSpace += 2 * space - apiResult.size
                 },
                 eight = { space ->
-                    if (apiResult.size >= nextPositionSpace) {
+                    if (apiResult.size > nextPositionSpace) {
                         lastAddNativeAd = when (lastAddNativeAd) {
                             homePageAds.first -> homePageAds.second
                             else -> homePageAds.first
@@ -102,8 +102,17 @@ class HomeViewModel : ViewModel() {
                         val userSimpleInfoModel =
                             UserSimpleInfoModel(nativeAd = lastAddNativeAd)
                         apiResult.add(nextPositionSpace, userSimpleInfoModel)
-                        nextPositionSpace += space - apiResult.size
                     }
+                    if (apiResult.size > nextPositionSpace + space) {
+                        lastAddNativeAd = when (lastAddNativeAd) {
+                            homePageAds.first -> homePageAds.second
+                            else -> homePageAds.first
+                        }
+                        val userSimpleInfoModel =
+                            UserSimpleInfoModel(nativeAd = lastAddNativeAd)
+                        apiResult.add(nextPositionSpace + space, userSimpleInfoModel)
+                        nextPositionSpace += 2 * space - apiResult.size
+                    } else nextPositionSpace += space - apiResult.size
                 },
                 twelve = { space ->
                     if (apiResult.size > nextPositionSpace) {
