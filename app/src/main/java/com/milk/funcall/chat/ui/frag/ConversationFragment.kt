@@ -6,6 +6,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
+import com.milk.funcall.account.Account
 import com.milk.funcall.chat.ui.act.ChatMessageActivity
 import com.milk.funcall.chat.ui.adapter.ConversationAdapter
 import com.milk.funcall.chat.ui.dialog.ConversationPopupWindow
@@ -14,10 +15,7 @@ import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.paging.status.RefreshStatus
 import com.milk.funcall.common.ui.AbstractFragment
 import com.milk.funcall.databinding.FragmentChatMessageBinding
-import com.milk.simple.ktx.dp2px
-import com.milk.simple.ktx.gone
-import com.milk.simple.ktx.obtainScreenHeight
-import com.milk.simple.ktx.visible
+import com.milk.simple.ktx.*
 
 class ConversationFragment : AbstractFragment() {
     private val binding by lazy { FragmentChatMessageBinding.inflate(layoutInflater) }
@@ -28,11 +26,6 @@ class ConversationFragment : AbstractFragment() {
     private val popupOffsetY by lazy { requireActivity().dp2px(94.5f).toInt() }
 
     override fun getRootView(): View = binding.root
-
-    override fun initializeData() {
-        conversationAdapter
-            .setPagerSource(conversationViewModel.pagingSource.pager)
-    }
 
     override fun initializeView() {
         binding.headerToolbar.setTitle(R.string.chat_message_title)
@@ -78,6 +71,14 @@ class ConversationFragment : AbstractFragment() {
             true
         }
         binding.tvChatWithOther.setOnClickListener(this)
+    }
+
+    override fun initializeObserver() {
+        super.initializeObserver()
+        Account.userIdFlow.collectLatest(this) {
+            conversationAdapter
+                .setPagerSource(conversationViewModel.pagingSource.pager)
+        }
     }
 
     override fun onMultipleClick(view: View) {
