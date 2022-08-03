@@ -18,4 +18,13 @@ object FirebaseKey {
     const val CLICK_LOGIN_PAGE_USER_AGREEMENT = "Click_login_page_User_Agreement"
     const val LOGIN_SUCCESSFUL = "login_successful"
     const val LOGIN_FAIL = "login_fail"
+
+    /** 选择性别埋点 */
+    const val OPEN_SELECT_GENDER_PAGE = "Open_Select_Gender_page"
+    const val CLICK_GIRL = "Click_girl"
+
+    /** 填写基本资料页面 */
+    const val OPEN_FILL_IN_THE_INFORMATION_PAGE = "Open_fill_in_the_information_page"
+    const val CHANGE_NAME = "change_name"
+    const val CLICK_DEFAULT_AVATAR = "Click_default_avatar"
 }

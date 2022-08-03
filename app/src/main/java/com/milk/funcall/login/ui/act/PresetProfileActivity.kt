@@ -26,6 +26,8 @@ import com.milk.funcall.common.permission.Permission
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.ui.view.BanEnterInputFilter
 import com.milk.funcall.databinding.ActivityPresetProfileBinding
+import com.milk.funcall.firebase.FireBaseManager
+import com.milk.funcall.firebase.constant.FirebaseKey
 import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.login.ui.vm.PresetProfileViewModel
 import com.milk.funcall.user.ui.config.AvatarImage
@@ -60,7 +62,10 @@ class PresetProfileActivity : AbstractActivity() {
         binding.ivUserAvatar.setOnClickListener(this)
         binding.tvStart.setOnClickListener(this)
         binding.etUserName.setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus) KeyBoardUtil.hideKeyboard(this)
+            if (hasFocus)
+                FireBaseManager.logEvent(FirebaseKey.CHANGE_NAME)
+            else
+                KeyBoardUtil.hideKeyboard(this)
         }
     }
 
@@ -90,6 +95,8 @@ class PresetProfileActivity : AbstractActivity() {
     }
 
     private fun initializeData() {
+        FireBaseManager
+            .logEvent(FirebaseKey.OPEN_FILL_IN_THE_INFORMATION_PAGE)
         presetProfileViewModel.getUserAvatarName()
     }
 
@@ -113,6 +120,7 @@ class PresetProfileActivity : AbstractActivity() {
     }
 
     private fun checkStoragePermission() {
+        FireBaseManager.logEvent(FirebaseKey.CLICK_DEFAULT_AVATAR)
         Permission.checkStoragePermission(
             activity = this,
             refuseRequest = { scope, deniedList ->

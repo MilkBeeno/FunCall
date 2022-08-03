@@ -12,6 +12,8 @@ import com.milk.funcall.app.ui.act.MainActivity
 import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityGenderBinding
+import com.milk.funcall.firebase.FireBaseManager
+import com.milk.funcall.firebase.constant.FirebaseKey
 import com.milk.funcall.user.type.Gender
 import com.milk.simple.ktx.color
 import com.milk.simple.ktx.immersiveStatusBar
@@ -28,6 +30,8 @@ class GenderActivity : AbstractActivity() {
     }
 
     private fun initializeView() {
+        FireBaseManager
+            .logEvent(FirebaseKey.OPEN_SELECT_GENDER_PAGE)
         immersiveStatusBar()
         binding.root.navigationBarPadding()
         updateManStatus(true)
@@ -49,6 +53,7 @@ class GenderActivity : AbstractActivity() {
             }
             binding.clWoman -> {
                 if (selectGender != Gender.Woman) {
+                    FireBaseManager.logEvent(FirebaseKey.CLICK_GIRL)
                     updateManStatus(false)
                     updateWomanStatus(true)
                     selectGender = Gender.Woman
