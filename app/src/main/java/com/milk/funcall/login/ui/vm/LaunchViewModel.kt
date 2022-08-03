@@ -7,8 +7,10 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import com.milk.funcall.ad.AdConfig
 import com.milk.funcall.ad.AdManager
+import com.milk.funcall.ad.AdSwitch
 import com.milk.funcall.ad.constant.AdCodeKey
 import com.milk.funcall.ad.ui.AdLoadType
+import com.milk.funcall.common.timer.MilkTimer
 import com.milk.simple.log.Logger
 import java.security.MessageDigest
 
@@ -16,56 +18,35 @@ class LaunchViewModel : ViewModel() {
     /** 广告加载的状态 */
     private var adLoadStatus = AdLoadType.Loading
 
-    /** 第一个动画已经播放完成 */
-    private var firstAnimFinished: Boolean = false
-
-    internal fun loadLaunchAd(
-        activity: FragmentActivity,
-        failure: () -> Unit,
-        success: () -> Unit
-    ) {
-        adLoadStatus = AdLoadType.Loading
-        val adUnitId =
-            AdConfig.getAdvertiseUnitId(AdCodeKey.APP_START)
-        when {
-            adUnitId.isNotBlank() -> {
+    /** 加载广告并设置广告状态 */
+    internal fun loadLaunchAd(activity: FragmentActivity, finished: () -> Unit) {
+        MilkTimer.Builder()
+            .setMillisInFuture(10000)
+            .setOnTickListener { t, it ->
+                if (it <= 7000 && adLoadStatus == AdLoadType.Success)
+                    t.finish()
+            }
+            .setOnFinishedListener {
+                when (adLoadStatus) {
+                    AdLoadType.Success -> {
+                        AdManager.showInterstitial(
+                            activity = activity,
+                            onFailedRequest = { finished() },
+                            onSuccessRequest = { finished() })
+                    }
+                    else -> finished()
+                }
+            }
+            .build()
+            .start()
+        if (AdSwitch.appLaunch) {
+            val adUnitId =
+                AdConfig.getAdvertiseUnitId(AdCodeKey.APP_START)
+            if (adUnitId.isNotBlank()) {
                 AdManager.loadInterstitial(activity, adUnitId,
-                    onFailedRequest = {
-                        if (firstAnimFinished)
-                            failure()
-                        else
-                            adLoadStatus = AdLoadType.Failure
-                    },
-                    onSuccessRequest = {
-                        if (firstAnimFinished) {
-                            AdManager.showInterstitial(
-                                activity = activity,
-                                onFailedRequest = { failure() },
-                                onSuccessRequest = { success() })
-                        } else adLoadStatus = AdLoadType.Success
-                    })
-            }
-            firstAnimFinished -> failure()
-            else -> adLoadStatus = AdLoadType.Failure
-        }
-    }
-
-    internal fun showLaunchAd(
-        activity: FragmentActivity,
-        loading: () -> Unit = {},
-        failure: () -> Unit,
-        success: () -> Unit
-    ) {
-        firstAnimFinished = true
-        when (adLoadStatus) {
-            AdLoadType.Loading -> loading()
-            AdLoadType.Failure -> failure()
-            AdLoadType.Success -> {
-                AdManager.showInterstitial(
-                    activity = activity,
-                    onFailedRequest = { failure() },
-                    onSuccessRequest = { success() })
-            }
+                    onFailedRequest = { adLoadStatus = AdLoadType.Failure },
+                    onSuccessRequest = { adLoadStatus = AdLoadType.Success })
+            } else adLoadStatus = AdLoadType.Failure
         }
     }
 
