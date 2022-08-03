@@ -38,4 +38,11 @@ object FirebaseKey {
     const val CLICK_ABOUT_OUR = "Click_about_our"
     const val CLICK_THE_FAN = "Click_the_fan"
     const val CLICK_ON_EDIT_PROFILE = "Click_on_edit_profile"
+
+    /** 黑名单、粉丝、关注埋点 */
+    const val BLACKLIST_SHOW = "blacklist_show"
+    const val FOLLOW_SHOW = "Follow_show"
+    const val FAN_SHOW = "fan_show"
+    const val CLICK_FAN_AVATAR = "Click_fan_avatar"
+
 }
