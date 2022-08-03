@@ -10,6 +10,8 @@ import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.web.WebActivity
 import com.milk.funcall.common.web.WebType
 import com.milk.funcall.databinding.ActivityAboutUsBinding
+import com.milk.funcall.firebase.FireBaseManager
+import com.milk.funcall.firebase.constant.FirebaseKey
 import com.milk.simple.ktx.immersiveStatusBar
 import com.milk.simple.ktx.navigationBarPadding
 import com.milk.simple.ktx.statusBarPadding
@@ -23,6 +25,7 @@ class AboutUsActivity : AbstractActivity() {
     }
 
     private fun initializeView() {
+        FireBaseManager.logEvent(FirebaseKey.ABOUT_OUR_SHOW)
         immersiveStatusBar()
         binding.headerToolbar.statusBarPadding()
         binding.root.navigationBarPadding()
@@ -37,17 +40,19 @@ class AboutUsActivity : AbstractActivity() {
         super.onMultipleClick(view)
         when (view) {
             binding.llUserAgreement -> {
+                FireBaseManager.logEvent(FirebaseKey.CLICK_USER_AGREEMENT)
                 WebActivity.create(
                     this,
                     WebType.UserAgreement.value,
-                    "http://funcallnow.com/terms.html"
+                    "https://justfuncall.com/terms.html"
                 )
             }
             binding.llUserPrivacy -> {
+                FireBaseManager.logEvent(FirebaseKey.CLICK_PRIVACY_POLICY)
                 WebActivity.create(
                     this,
                     WebType.PrivacyService.value,
-                    "http://funcallnow.com/privacy.html"
+                    "https://justfuncall.com/privacy.html"
                 )
             }
         }

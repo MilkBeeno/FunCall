@@ -45,4 +45,10 @@ object FirebaseKey {
     const val FAN_SHOW = "fan_show"
     const val CLICK_FAN_AVATAR = "Click_fan_avatar"
 
+    /** 关于我们页面埋点 */
+    const val ABOUT_OUR_SHOW = "about_our_show"
+    const val CLICK_USER_AGREEMENT = "Click_User_Agreement"
+    const val OPEN_USER_AGREEMENT_PAGE = "Open_User_Agreement_page"
+    const val CLICK_PRIVACY_POLICY = "Click_Privacy_Policy"
+    const val OPEN_AGREEMENT_PAGE = "Open_agreement_page"
 }

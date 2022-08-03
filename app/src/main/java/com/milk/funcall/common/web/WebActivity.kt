@@ -8,6 +8,8 @@ import android.webkit.WebViewClient
 import com.milk.funcall.R
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityWebBinding
+import com.milk.funcall.firebase.FireBaseManager
+import com.milk.funcall.firebase.constant.FirebaseKey
 import com.milk.simple.ktx.string
 
 class WebActivity : AbstractActivity() {
@@ -20,10 +22,16 @@ class WebActivity : AbstractActivity() {
         binding.headerToolbar.showArrowBack()
         binding.headerToolbar.setTitle(
             when (type) {
-                WebType.UserAgreement.value ->
+                WebType.UserAgreement.value -> {
+                    FireBaseManager
+                        .logEvent(FirebaseKey.OPEN_USER_AGREEMENT_PAGE)
                     string(R.string.login_user_agreement)
-                WebType.PrivacyService.value ->
+                }
+                WebType.PrivacyService.value -> {
+                    FireBaseManager
+                        .logEvent(FirebaseKey.OPEN_AGREEMENT_PAGE)
                     string(R.string.login_user_privacy)
+                }
                 else -> ""
             }
         )
