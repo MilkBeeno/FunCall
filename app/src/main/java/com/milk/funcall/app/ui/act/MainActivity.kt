@@ -102,15 +102,14 @@ class MainActivity : AbstractActivity() {
     }
 
     private fun initializeObserver() {
-        LiveEventBus.get<Any?>(EventKey.BOTTOM_NAVIGATION_UPDATE)
-            .observeSticky(this) {
-                mainViewModel.getConversationCount()
-                    .collectLatest(this) { countList ->
-                        var count = 0
-                        countList?.forEach { count += it }
-                        binding.navigation.updateUnReadCount(count)
-                    }
-            }
+        Account.userIdFlow.collectLatest(this) {
+            mainViewModel.getConversationCount()
+                .collectLatest(this) { countList ->
+                    var count = 0
+                    countList?.forEach { count += it }
+                    binding.navigation.updateUnReadCount(count)
+                }
+        }
         LiveEventBus.get<Any?>(EventKey.JUMP_TO_THE_HOME_PAGE)
             .observe(this) {
                 setTabSelection(homeFragment)

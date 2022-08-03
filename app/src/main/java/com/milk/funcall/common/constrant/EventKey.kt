@@ -12,7 +12,4 @@ object EventKey {
 
     /** 跳转到首页监听事件 */
     const val JUMP_TO_THE_HOME_PAGE = "JUMP_TO_THE_HOME_PAGE"
-
-    /** 底部消息红点更新功能 */
-    const val BOTTOM_NAVIGATION_UPDATE = "BOTTOM_NAVIGATION_UPDATE"
 }

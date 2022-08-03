@@ -1,7 +1,5 @@
 package com.milk.funcall.account
 
-import com.jeremyliao.liveeventbus.LiveEventBus
-import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.user.data.UserInfoModel
 import com.milk.funcall.user.type.Gender
@@ -189,8 +187,6 @@ object Account {
                 userViewOtherFlow.emit(userViewOther)
                 userImageListFlow.emit(userImageList)
                 userVideoFlow.emit(userVideo)
-                LiveEventBus.get<Any?>(EventKey.BOTTOM_NAVIGATION_UPDATE)
-                    .post(null)
             }
         }
     }
@@ -220,8 +216,6 @@ object Account {
             userImageListFlow.emit(mutableListOf())
             userVideo = ""
             userVideoFlow.emit("")
-            LiveEventBus.get<Any?>(EventKey.BOTTOM_NAVIGATION_UPDATE)
-                .post(null)
         }
     }
 
@@ -255,8 +249,6 @@ object Account {
             val videoUrl = info.videoConvert()
             userVideo = videoUrl
             userVideoFlow.emit(videoUrl)
-            LiveEventBus.get<Any?>(EventKey.BOTTOM_NAVIGATION_UPDATE)
-                .post(null)
         }
     }
 }

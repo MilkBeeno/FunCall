@@ -22,22 +22,27 @@ class ConversationAdapter : AbstractPagingAdapter<ConversationWithUserInfoEntity
         ): Boolean {
             return oldItem.conversation.accountId == newItem.conversation.accountId
                     && oldItem.conversation.targetId == newItem.conversation.targetId
+                    && oldItem.userInfo?.targetId == newItem.userInfo?.targetId
         }
 
         override fun areContentsTheSame(
             oldItem: ConversationWithUserInfoEntity,
             newItem: ConversationWithUserInfoEntity
         ): Boolean {
-            return oldItem.conversation.operationTime == newItem.conversation.operationTime
-                    && oldItem.conversation.unReadCount == newItem.conversation.unReadCount
+            return oldItem.conversation.targetName == newItem.conversation.targetName
+                    && oldItem.conversation.targetAvatar == newItem.conversation.targetAvatar
+                    && oldItem.conversation.messageType == newItem.conversation.messageType
+                    && oldItem.conversation.operationTime == newItem.conversation.operationTime
                     && oldItem.conversation.messageContent == newItem.conversation.messageContent
+                    && oldItem.conversation.isAcceptMessage == newItem.conversation.isAcceptMessage
+                    && oldItem.conversation.unReadCount == newItem.conversation.unReadCount
+                    && oldItem.conversation.sendStatus == newItem.conversation.sendStatus
                     && oldItem.conversation.putTopTime == newItem.conversation.putTopTime
                     && oldItem.userInfo?.targetName == newItem.userInfo?.targetName
                     && oldItem.userInfo?.targetAvatar == newItem.userInfo?.targetAvatar
         }
     }
 ) {
-
     override fun convert(holder: PagingViewHolder, item: ConversationWithUserInfoEntity) {
         holder.itemView.setBackgroundColor(
             if (item.conversation.putTopTime > 0)
@@ -65,13 +70,13 @@ class ConversationAdapter : AbstractPagingAdapter<ConversationWithUserInfoEntity
         }
     }
 
-    fun getTargetName(conversationWithUserInfoEntity: ConversationWithUserInfoEntity): String {
+    private fun getTargetName(conversationWithUserInfoEntity: ConversationWithUserInfoEntity): String {
         val userInfo = conversationWithUserInfoEntity.userInfo
         val conversation = conversationWithUserInfoEntity.conversation
         return userInfo?.targetName ?: conversation.targetName
     }
 
-    fun getTargetAvatar(conversationWithUserInfoEntity: ConversationWithUserInfoEntity): String {
+    private fun getTargetAvatar(conversationWithUserInfoEntity: ConversationWithUserInfoEntity): String {
         val userInfo = conversationWithUserInfoEntity.userInfo
         val conversation = conversationWithUserInfoEntity.conversation
         return userInfo?.targetAvatar ?: conversation.targetAvatar
