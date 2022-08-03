@@ -18,10 +18,13 @@ import com.milk.funcall.app.ui.act.MainActivity
 import com.milk.funcall.common.author.AuthLoginManager
 import com.milk.funcall.common.author.AuthType
 import com.milk.funcall.common.author.DeviceNumber
+import com.milk.funcall.common.net.error.ApiErrorCode
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.web.WebActivity
 import com.milk.funcall.common.web.WebType
 import com.milk.funcall.databinding.ActivityLoginBinding
+import com.milk.funcall.firebase.FireBaseManager
+import com.milk.funcall.firebase.constant.FirebaseKey
 import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.login.ui.vm.LoginViewModel
 import com.milk.simple.ktx.*
@@ -53,6 +56,8 @@ class LoginActivity : AbstractActivity() {
             Pair(
                 string(R.string.login_user_agreement),
                 colorClickableSpan(color(R.color.FF8E58FB)) {
+                    FireBaseManager
+                        .logEvent(FirebaseKey.CLICK_LOGIN_PAGE_USER_AGREEMENT)
                     WebActivity.create(
                         this,
                         WebType.UserAgreement.value,
@@ -62,6 +67,8 @@ class LoginActivity : AbstractActivity() {
             Pair(
                 string(R.string.login_user_privacy),
                 colorClickableSpan(color(R.color.FF8E58FB)) {
+                    FireBaseManager
+                        .logEvent(FirebaseKey.CLICK_LOGIN_PAGE_PRIVACY_POLICY)
                     WebActivity.create(
                         this,
                         WebType.PrivacyService.value,
@@ -91,6 +98,9 @@ class LoginActivity : AbstractActivity() {
         loginViewModel.failedRequest = {
             isNotAuthorizing = true
             loadingDialog.dismiss()
+            if (it == ApiErrorCode.MAX_CLIENT_NUMBER) {
+                FireBaseManager.logEvent(FirebaseKey.MAX_REGISTRATIONS_REACHED_SHOW)
+            }
         }
     }
 
@@ -98,6 +108,7 @@ class LoginActivity : AbstractActivity() {
         super.onMultipleClick(view)
         when (view) {
             binding.llGoogle -> checkIsAllowedToLoginAuth {
+                FireBaseManager.logEvent(FirebaseKey.LOGINS_WITH_GOOGLE)
                 if (isNotAuthorizing) {
                     isNotAuthorizing = false
                     loginViewModel.currentDeviceId = it
@@ -105,6 +116,7 @@ class LoginActivity : AbstractActivity() {
                 }
             }
             binding.llFacebook -> checkIsAllowedToLoginAuth {
+                FireBaseManager.logEvent(FirebaseKey.LOGINS_WITH_FB)
                 if (isNotAuthorizing) {
                     isNotAuthorizing = false
                     authLoginManager.facebookAuth()
@@ -112,6 +124,7 @@ class LoginActivity : AbstractActivity() {
                 }
             }
             binding.llDevice -> checkIsAllowedToLoginAuth {
+                FireBaseManager.logEvent(FirebaseKey.LOGINS_WITH_GUEST)
                 if (isNotAuthorizing) {
                     isNotAuthorizing = false
                     loginViewModel.currentDeviceId = it
