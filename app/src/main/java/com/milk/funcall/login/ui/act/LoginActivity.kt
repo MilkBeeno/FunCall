@@ -2,8 +2,16 @@ package com.milk.funcall.login.ui.act
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.text.NoCopySpan
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.TextPaint
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.view.View
+import android.widget.TextView
 import androidx.activity.viewModels
 import com.milk.funcall.R
 import com.milk.funcall.app.ui.act.MainActivity
@@ -40,6 +48,7 @@ class LoginActivity : AbstractActivity() {
         binding.llDevice.setOnClickListener(this)
         binding.ivPrivacyCheck.setOnClickListener(this)
         binding.tvPrivacy.text = string(R.string.login_privacy_desc)
+        // 在内部进行处理避免混淆问题
         binding.tvPrivacy.setSpannableClick(
             Pair(
                 string(R.string.login_user_agreement),
@@ -61,6 +70,7 @@ class LoginActivity : AbstractActivity() {
                 })
         )
     }
+
 
     private fun initializeCallback() {
         authLoginManager.success = { type, accessToken ->
@@ -135,6 +145,46 @@ class LoginActivity : AbstractActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         authLoginManager.onActivityResult(requestCode, resultCode, data)
     }
+
+    /** 对指定文字变色并赋予文字点击事件 */
+    private fun TextView.setSpannableClick(vararg targets: Pair<String, ClickableSpan>) {
+        try {
+            if (text.toString().trim().isBlank()) return
+            val content = text.toString()
+            val builder = SpannableStringBuilder(content)
+            targets.forEach {
+                if (content.contains(it.first)) {
+                    val startIndex = content.indexOf(it.first, ignoreCase = true)
+                    val endIndex = startIndex + it.first.length
+                    val colorFlags = Spannable.SPAN_INCLUSIVE_EXCLUSIVE
+                    builder.setSpan(it.second, startIndex, endIndex, colorFlags)
+                }
+            }
+            movementMethod = LinkMovementMethod.getInstance()
+            highlightColor = Color.TRANSPARENT
+            text = builder
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    /** 指定文字变色和点击抽象实现类 */
+    abstract inner class NoCopyClickableSpan : ClickableSpan(), NoCopySpan {
+        override fun onClick(p0: View) = Unit
+    }
+
+    /** 指定文字变色点击事件实例 */
+    private fun colorClickableSpan(color: Int, clickRequest: () -> Unit) =
+        object : NoCopyClickableSpan() {
+            override fun updateDrawState(ds: TextPaint) {
+                super.updateDrawState(ds)
+                ds.color = color
+                ds.isUnderlineText = false
+                ds.clearShadowLayer()
+            }
+
+            override fun onClick(p0: View) = clickRequest()
+        }
 
     companion object {
         fun create(context: Context) =
