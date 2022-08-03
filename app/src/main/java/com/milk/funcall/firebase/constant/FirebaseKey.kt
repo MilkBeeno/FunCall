@@ -84,4 +84,12 @@ object FirebaseKey {
     const val CLICK_CONFIRM_CONTACT_DOUBLE_CHECK = "Click_Confirm_Contact_Double_Check"
     const val CLICK_CANCEL_SHOW_CONTACT_DOUBLE_CHECK = "Click_Cancel_Show_Contact_double_check"
     const val SHOW_FIRST_UNLOCK_VIDEO_OR_PICTURE = "Show_first_unlock_video_or_picture"
+
+    /** 广告统计埋点 */
+    const val MAKE_AN_AD_REQUEST = "Make_an_ad_request"
+    const val AD_REQUEST_SUCCEEDED = "Ad_request_succeeded"
+    const val AD_REQUEST_FAILED = "Ad_request_failed"
+    const val THE_AD_SHOW_SUCCESS = "The_ad_show_success"
+    const val AD_SHOW_FAILED = "Ad_show_failed"
+    const val CLICK_AD = "click_ad"
 }

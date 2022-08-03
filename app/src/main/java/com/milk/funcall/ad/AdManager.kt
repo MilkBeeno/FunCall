@@ -8,6 +8,8 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.gms.ads.nativead.NativeAd
 import com.milk.funcall.BuildConfig
 import com.milk.funcall.ad.constant.AdCodeKey
+import com.milk.funcall.firebase.FireBaseManager
+import com.milk.funcall.firebase.constant.FirebaseKey
 
 object AdManager {
     private var interstitialAd: InterstitialAd? = null
@@ -32,15 +34,21 @@ object AdManager {
         onFailedRequest: () -> Unit = {},
         onSuccessRequest: () -> Unit = {}
     ) {
+        FireBaseManager
+            .logEvent(FirebaseKey.MAKE_AN_AD_REQUEST, adUnitId, adUnitId)
         val adRequest = AdRequest.Builder().build()
         InterstitialAd.load(context, adUnitId, adRequest,
             object : InterstitialAdLoadCallback() {
                 override fun onAdFailedToLoad(adError: LoadAdError) {
+                    FireBaseManager
+                        .logEvent(FirebaseKey.AD_REQUEST_FAILED, adUnitId, adError.message)
                     interstitialAd = null
                     onFailedRequest()
                 }
 
                 override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                    FireBaseManager
+                        .logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED, adUnitId, adUnitId)
                     AdManager.interstitialAd = interstitialAd
                     onSuccessRequest()
                 }
@@ -50,12 +58,12 @@ object AdManager {
     /** 显示插页广告 */
     fun showInterstitial(
         activity: Activity,
-        onFailedRequest: () -> Unit = {},
+        onFailedRequest: (String) -> Unit = {},
         onSuccessRequest: () -> Unit = {},
         onFinishedRequest: () -> Unit = {}
     ) {
         if (interstitialAd == null) {
-            onFailedRequest()
+            onFailedRequest("")
             onFinishedRequest()
         } else {
             interstitialAd?.show(activity)
@@ -67,7 +75,7 @@ object AdManager {
 
                 override fun onAdFailedToShowFullScreenContent(p0: AdError) {
                     super.onAdFailedToShowFullScreenContent(p0)
-                    onFailedRequest()
+                    onFailedRequest(p0.message)
                     onFinishedRequest()
                 }
 
@@ -85,11 +93,19 @@ object AdManager {
         failedRequest: () -> Unit = {},
         successRequest: (NativeAd) -> Unit = {}
     ) {
+        FireBaseManager
+            .logEvent(FirebaseKey.MAKE_AN_AD_REQUEST, adUnitId, adUnitId)
         val adLoader = AdLoader.Builder(context, adUnitId)
-            .forNativeAd { successRequest(it) }
+            .forNativeAd {
+                FireBaseManager
+                    .logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED, adUnitId, adUnitId)
+                successRequest(it)
+            }
             .withAdListener(object : AdListener() {
                 override fun onAdFailedToLoad(p0: LoadAdError) {
                     super.onAdFailedToLoad(p0)
+                    FireBaseManager
+                        .logEvent(FirebaseKey.AD_REQUEST_FAILED, adUnitId, p0.message)
                     failedRequest()
                 }
             })

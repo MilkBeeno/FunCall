@@ -11,9 +11,14 @@ object FireBaseManager {
         firebaseAnalytics = FirebaseAnalytics.getInstance(context)
     }
 
-    fun logEvent(name: String, params: Bundle? = null) {
+    fun logEvent(name: String, key: String = "", value: String = "") {
         if (this::firebaseAnalytics.isInitialized) {
-            firebaseAnalytics.logEvent(name, params)
+            var bundle: Bundle? = null
+            if (key.isNotBlank() && value.isNotBlank()) {
+                bundle = Bundle()
+                bundle.putString(key, value)
+            }
+            firebaseAnalytics.logEvent(name, bundle)
         }
     }
 }

@@ -251,7 +251,7 @@ class UserInfoActivity : AbstractActivity() {
                 } else {
                     FireBaseManager
                         .logEvent(FirebaseKey.SHOW_FIRST_UNLOCK_VIDEO_OR_PICTURE)
-                showToast(string(R.string.user_info_please_view_video_or_image))
+                    showToast(string(R.string.user_info_please_view_video_or_image))
                 }
             }
         }
@@ -263,17 +263,25 @@ class UserInfoActivity : AbstractActivity() {
             val unitId =
                 AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_LINK)
             loadingDialog.show()
+            FireBaseManager
+                .logEvent(FirebaseKey.MAKE_AN_AD_REQUEST, unitId, unitId)
             val adRequest = AdRequest.Builder().build()
             RewardedAd.load(this, unitId, adRequest,
                 object : RewardedAdLoadCallback() {
                     override fun onAdFailedToLoad(p0: LoadAdError) {
                         super.onAdFailedToLoad(p0)
+                        FireBaseManager
+                            .logEvent(FirebaseKey.AD_REQUEST_FAILED, unitId, p0.message)
                         loadingDialog.dismiss()
                     }
 
                     override fun onAdLoaded(p0: RewardedAd) {
                         super.onAdLoaded(p0)
+                        FireBaseManager
+                            .logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED, unitId, unitId)
                         p0.show(this@UserInfoActivity) {
+                            FireBaseManager
+                                .logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS, unitId, unitId)
                             loadingDialog.dismiss()
                             binding.link.flLinkLocked.gone()
                             userInfoViewModel.hasViewedLink = true

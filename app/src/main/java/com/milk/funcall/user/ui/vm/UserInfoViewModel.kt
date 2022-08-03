@@ -6,6 +6,8 @@ import com.milk.funcall.ad.AdConfig
 import com.milk.funcall.ad.AdManager
 import com.milk.funcall.ad.constant.AdCodeKey
 import com.milk.funcall.common.constrant.KvKey
+import com.milk.funcall.firebase.FireBaseManager
+import com.milk.funcall.firebase.constant.FirebaseKey
 import com.milk.funcall.user.data.UserInfoModel
 import com.milk.funcall.user.repo.UserInfoRepository
 import com.milk.funcall.user.ui.act.UserInfoActivity
@@ -101,7 +103,17 @@ class UserInfoViewModel : ViewModel() {
                     adIsLoading = false
                 },
                 onSuccessRequest = {
-                    AdManager.showInterstitial(activity) {
+                    AdManager.showInterstitial(
+                        activity = activity,
+                        onFailedRequest = {
+                            FireBaseManager
+                                .logEvent(FirebaseKey.AD_SHOW_FAILED, adUnitId, it)
+                            failure()
+                        },
+                        onSuccessRequest = {
+                            FireBaseManager
+                                .logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS, adUnitId, adUnitId)
+                        }) {
                         success()
                         adIsLoading = false
                         hasViewedImage = true
