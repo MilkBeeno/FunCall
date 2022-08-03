@@ -6,6 +6,8 @@ import com.milk.funcall.account.Account
 import com.milk.funcall.account.repo.EditProfileRepository
 import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.media.uploader.MediaUploadRepository
+import com.milk.funcall.firebase.FireBaseManager
+import com.milk.funcall.firebase.constant.FirebaseKey
 import com.milk.simple.ktx.ioScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 
@@ -88,7 +90,7 @@ class EditProfileViewModel : ViewModel() {
             val apiResult = apiResponse.data
             if (apiResponse.success && apiResult != null) {
                 apiResult.forEach { resultImageList.add(it) }
-            }
+            } else FireBaseManager.logEvent(FirebaseKey.UPLOAD_IMAGE_FAIL)
         }
         return resultImageList
     }

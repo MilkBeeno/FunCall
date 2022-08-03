@@ -30,6 +30,8 @@ import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.ui.manager.NoScrollGridLayoutManager
 import com.milk.funcall.common.ui.view.BanEnterInputFilter
 import com.milk.funcall.databinding.ActivityEditProfileBinding
+import com.milk.funcall.firebase.FireBaseManager
+import com.milk.funcall.firebase.constant.FirebaseKey
 import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.user.ui.act.ImageMediaActivity
 import com.milk.funcall.user.ui.act.VideoMediaActivity
@@ -51,6 +53,7 @@ class EditProfileActivity : AbstractActivity() {
     }
 
     private fun initializeObserver() {
+        FireBaseManager.logEvent(FirebaseKey.OPEN_EDIT_PAGE)
         LiveEventBus.get<String>(KvKey.EDIT_PROFILE_DELETE_VIDEO)
             .observe(this) { updateVideo("") }
         LiveEventBus.get<String>(KvKey.EDIT_PROFILE_DELETE_IMAGE)
@@ -64,6 +67,21 @@ class EditProfileActivity : AbstractActivity() {
         editProfileViewModel.uploadResult.collectLatest(this) {
             uploadDialog.dismiss()
             if (it) showToast(string(R.string.edit_profile_success))
+        }
+        binding.etName.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus)
+                FireBaseManager
+                    .logEvent(FirebaseKey.CLICK_ON_THE_NICKNAME_BOX)
+        }
+        binding.etLink.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus)
+                FireBaseManager
+                    .logEvent(FirebaseKey.CLICK_ON_THE_CONTACTION)
+        }
+        binding.etAboutMe.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus)
+                FireBaseManager
+                    .logEvent(FirebaseKey.CLICK_ON_PERSONAL_INTRODUCTION)
         }
     }
 
@@ -145,7 +163,11 @@ class EditProfileActivity : AbstractActivity() {
                 ImageMediaActivity.create(this)
                 LiveEventBus.get<Pair<Int, MutableList<String>>>(KvKey.DISPLAY_IMAGE_MEDIA_LIST)
                     .post(Pair(position, editProfileViewModel.localImageListPath))
-            } else checkStoragePermission { toSelectImage() }
+            } else {
+                FireBaseManager
+                    .logEvent(FirebaseKey.CLICK_UPLOAD_IMAGE_ICON)
+                checkStoragePermission { toSelectImage() }
+            }
         }
         binding.flEditAvatar.setOnClickListener(this)
         binding.flVideo.setOnClickListener(this)
@@ -190,6 +212,7 @@ class EditProfileActivity : AbstractActivity() {
     }
 
     private fun toSelectAvatarImage() {
+        FireBaseManager.logEvent(FirebaseKey.CLICK_ON_AVATAR)
         PictureSelector.create(this)
             .openGallery(SelectMimeType.ofImage())
             .setImageEngine(CoilEngine.current)

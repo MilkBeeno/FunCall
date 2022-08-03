@@ -51,4 +51,13 @@ object FirebaseKey {
     const val OPEN_USER_AGREEMENT_PAGE = "Open_User_Agreement_page"
     const val CLICK_PRIVACY_POLICY = "Click_Privacy_Policy"
     const val OPEN_AGREEMENT_PAGE = "Open_agreement_page"
+
+    /** 编辑个人资料埋点 */
+    const val OPEN_EDIT_PAGE = "Open_edit_page"
+    const val CLICK_ON_THE_NICKNAME_BOX = "Click_on_the_Nickname_box"
+    const val CLICK_ON_AVATAR = "Click_on_avatar"
+    const val CLICK_ON_THE_CONTACTION = "Click_on_the_contaction"
+    const val CLICK_ON_PERSONAL_INTRODUCTION = "Click_on_personal_introduction"
+    const val CLICK_UPLOAD_IMAGE_ICON = "Click_upload_image_icon"
+    const val UPLOAD_IMAGE_FAIL = "upload_image_fail"
 }
