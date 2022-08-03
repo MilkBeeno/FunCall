@@ -16,6 +16,8 @@ import com.milk.funcall.chat.ui.vm.ChatMessageViewModel
 import com.milk.funcall.common.paging.status.RefreshStatus
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityMessageBinding
+import com.milk.funcall.firebase.FireBaseManager
+import com.milk.funcall.firebase.constant.FirebaseKey
 import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.user.ui.act.UserInfoActivity
 import com.milk.simple.keyboard.KeyBoardUtil
@@ -152,16 +154,22 @@ class ChatMessageActivity : AbstractActivity() {
             .setOffsetY(dp2px(10f).toInt())
             .setGravity(Gravity.END)
             .setPutTopRequest(isPutTopped) {
-                if (isPutTopped)
+                if (isPutTopped) {
+                    FireBaseManager.logEvent(FirebaseKey.CLICK_TOP_ON_CHAT_PAGE)
                     chatMessageViewModel.unPinChatMessage()
-                else
+                } else {
+                    FireBaseManager.logEvent(FirebaseKey.CLICK_UNPIN__ON_CHAT_PAGE)
                     chatMessageViewModel.putTopChatMessage()
+                }
             }
             .setFollowRequest(isFollowed) {
+                if (!isFollowed)
+                    FireBaseManager.logEvent(FirebaseKey.CLICK_FOLLOW_ON_CHAT_PAGE)
                 loadingDialog.show()
                 chatMessageViewModel.changeFollowedStatus()
             }
             .setBlackRequest {
+                FireBaseManager.logEvent(FirebaseKey.CLICK_BLACKOUT_ON_CHAT_PAGE)
                 loadingDialog.show()
                 chatMessageViewModel.blackUser()
             }

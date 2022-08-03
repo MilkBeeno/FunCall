@@ -68,5 +68,11 @@ object FirebaseKey {
     const val CLICK_THE_DELETE = "Click_the_delete"
     const val CLICK_TO_UNPIN = "Click_to_unpin"
 
-    /** 对面页面埋点 */
+    /** 对话页面埋点 */
+    const val CLICK_TOP_ON_CHAT_PAGE = "Click_top_on_chat_page"
+    const val CLICK_UNPIN__ON_CHAT_PAGE = "Click_Unpin__on_chat_page"
+    const val CLICK_BLACKOUT_ON_CHAT_PAGE = "Click_blackout_on_chat_page"
+    const val CLICK_FOLLOW_ON_CHAT_PAGE = "Click_Follow_on_chat_page"
+
+    /** 个人主页埋点 */
 }
