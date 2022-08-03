@@ -9,13 +9,17 @@ import com.milk.funcall.ad.AdConfig
 import com.milk.funcall.ad.AdSwitch
 import com.milk.funcall.app.ui.act.MainActivity
 import com.milk.funcall.common.constrant.EventKey
+import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityLaunchBinding
+import com.milk.funcall.firebase.FireBaseManager
+import com.milk.funcall.firebase.constant.FirebaseKey
 import com.milk.funcall.login.ui.vm.LaunchViewModel
 import com.milk.simple.ktx.gone
 import com.milk.simple.ktx.immersiveStatusBar
 import com.milk.simple.ktx.navigationBarPadding
 import com.milk.simple.ktx.visible
+import com.milk.simple.mdr.KvManger
 
 class LaunchActivity : AbstractActivity() {
     private val binding by lazy { ActivityLaunchBinding.inflate(layoutInflater) }
@@ -29,6 +33,7 @@ class LaunchActivity : AbstractActivity() {
         AdSwitch.obtain()
         AdConfig.obtain()
         Account.initialize()
+        checkIsNewClient()
     }
 
     private fun initializeView() {
@@ -99,6 +104,15 @@ class LaunchActivity : AbstractActivity() {
         binding.secondLottieView.visible()
         binding.secondLottieView.setAnimation("launch_second.json")
         binding.secondLottieView.playAnimation()
+    }
+
+    private fun checkIsNewClient() {
+        val isNewClient =
+            KvManger.getBoolean(KvKey.CHECK_IS_NEW_CLIENT, true)
+        if (isNewClient) {
+            KvManger.put(KvKey.CHECK_IS_NEW_CLIENT, false)
+            FireBaseManager.logEvent(FirebaseKey.FIRST_OPEN)
+        }
     }
 
     override fun onInterceptKeyDownEvent(): Boolean = true

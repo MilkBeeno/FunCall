@@ -60,4 +60,7 @@ object KvKey {
 
     /** 看过他人照片插页广告 */
     const val VIEW_OTHER_IMAGE = "VIEW_OTHER_IMAGE"
+
+    /** 判断当前是否是新客户端安装 */
+    const val CHECK_IS_NEW_CLIENT = "CHECK_IS_NEW_CLIENT"
 }
