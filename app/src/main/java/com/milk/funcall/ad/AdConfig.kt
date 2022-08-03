@@ -45,11 +45,8 @@ object AdConfig {
         positionMap.clear()
         result.forEach {
             when (it.code) {
-                AdCodeKey.VIEW_USER_LINK -> {
+                AdCodeKey.VIEW_USER_LINK ->
                     savePositionId(AdCodeKey.VIEW_USER_LINK, it.positionList)
-                    LiveEventBus.get<Any?>(EventKey.UPDATE_START_AD_UNIT_ID)
-                        .post(null)
-                }
                 AdCodeKey.APP_START ->
                     savePositionId(AdCodeKey.APP_START, it.positionList)
                 AdCodeKey.HOME_LIST_FIRST ->
@@ -66,6 +63,8 @@ object AdConfig {
                     savePositionId(AdCodeKey.MAIN_HOME_BOTTOM, it.positionList)
             }
         }
+        LiveEventBus.get<Any?>(EventKey.UPDATE_START_AD_UNIT_ID)
+            .post(null)
     }
 
     /** 将广告 ID 保存在 Map 中 */
