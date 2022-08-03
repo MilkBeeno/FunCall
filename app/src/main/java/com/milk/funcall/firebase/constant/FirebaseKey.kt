@@ -27,4 +27,15 @@ object FirebaseKey {
     const val OPEN_FILL_IN_THE_INFORMATION_PAGE = "Open_fill_in_the_information_page"
     const val CHANGE_NAME = "change_name"
     const val CLICK_DEFAULT_AVATAR = "Click_default_avatar"
+
+    /** 我的页面埋点 */
+    const val CLICK_MY_BUTTON = "Click_my_button"
+    const val CLICK_ON_MY_PAGE_LOGIN_PORTAL = "Click_on_My_Page_Login_Portal"
+    const val CLICK_THE_LOG_OUT = "Click_the_log_out"
+    const val LOG_OUT_SUCCESS = "log_out_Success"
+    const val CLICK_BLACKLIST = "Click_blacklist"
+    const val CLICK_THE_FOLLOW = "Click_the_Follow"
+    const val CLICK_ABOUT_OUR = "Click_about_our"
+    const val CLICK_THE_FAN = "Click_the_fan"
+    const val CLICK_ON_EDIT_PROFILE = "Click_on_edit_profile"
 }

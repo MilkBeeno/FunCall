@@ -8,6 +8,8 @@ import com.milk.funcall.account.ui.dialog.LogoutDialog
 import com.milk.funcall.common.media.loader.ImageLoader
 import com.milk.funcall.common.ui.AbstractFragment
 import com.milk.funcall.databinding.FragmentMineBinding
+import com.milk.funcall.firebase.FireBaseManager
+import com.milk.funcall.firebase.constant.FirebaseKey
 import com.milk.funcall.login.ui.act.GenderActivity
 import com.milk.funcall.login.ui.act.LoginActivity
 import com.milk.funcall.user.ui.config.AvatarImage
@@ -37,6 +39,7 @@ class MineFragment : AbstractFragment() {
         binding.aboutUs.setOption(R.drawable.mine_about_us, R.string.mine_about_us)
         binding.signOut.setOption(R.drawable.mine_sign_out, R.string.mine_sign_out, false)
         logoutDialog.setOnConfirmListener {
+            FireBaseManager.logEvent(FirebaseKey.LOG_OUT_SUCCESS)
             Account.logout()
             GenderActivity.create(requireActivity())
         }
@@ -72,13 +75,34 @@ class MineFragment : AbstractFragment() {
     override fun onMultipleClick(view: View) {
         super.onMultipleClick(view)
         when (view) {
-            binding.llFollows -> FollowsActivity.create(requireContext())
-            binding.llFans -> FansActivity.create(requireContext())
-            binding.editProfile -> EditProfileActivity.create(requireContext())
-            binding.blackedList -> BlackedListActivity.create(requireContext())
-            binding.aboutUs -> AboutUsActivity.create(requireContext())
-            binding.signOut -> logoutDialog.show()
-            binding.tvLogin -> LoginActivity.create(requireContext())
+            binding.llFollows -> {
+                FireBaseManager.logEvent(FirebaseKey.CLICK_THE_FOLLOW)
+                FollowsActivity.create(requireContext())
+            }
+            binding.llFans -> {
+                FireBaseManager.logEvent(FirebaseKey.CLICK_THE_FAN)
+                FansActivity.create(requireContext())
+            }
+            binding.editProfile -> {
+                FireBaseManager.logEvent(FirebaseKey.CLICK_ON_EDIT_PROFILE)
+                EditProfileActivity.create(requireContext())
+            }
+            binding.blackedList -> {
+                FireBaseManager.logEvent(FirebaseKey.CLICK_BLACKLIST)
+                BlackedListActivity.create(requireContext())
+            }
+            binding.aboutUs -> {
+                FireBaseManager.logEvent(FirebaseKey.CLICK_ABOUT_OUR)
+                AboutUsActivity.create(requireContext())
+            }
+            binding.signOut -> {
+                FireBaseManager.logEvent(FirebaseKey.CLICK_THE_LOG_OUT)
+                logoutDialog.show()
+            }
+            binding.tvLogin -> {
+                FireBaseManager.logEvent(FirebaseKey.CLICK_ON_MY_PAGE_LOGIN_PORTAL)
+                LoginActivity.create(requireContext())
+            }
         }
     }
 

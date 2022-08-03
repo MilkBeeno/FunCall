@@ -11,6 +11,8 @@ import android.widget.FrameLayout
 import androidx.annotation.ColorRes
 import com.milk.funcall.R
 import com.milk.funcall.databinding.LayoutBottomNavigationBinding
+import com.milk.funcall.firebase.FireBaseManager
+import com.milk.funcall.firebase.constant.FirebaseKey
 
 class BottomNavigation : FrameLayout {
 
@@ -107,6 +109,7 @@ class BottomNavigation : FrameLayout {
 
     private fun updateMineNav(select: Boolean = false) {
         if (select) {
+            FireBaseManager.logEvent(FirebaseKey.CLICK_MY_BUTTON)
             binding.ivMine.startAnimation(zoomAnimation)
             binding.tvMine.setTextColor(getColor(R.color.FF8E58FB))
             binding.ivMine.setImageResource(R.drawable.main_nav_mine_select)
