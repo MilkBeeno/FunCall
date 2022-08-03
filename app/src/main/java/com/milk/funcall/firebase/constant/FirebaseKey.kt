@@ -60,4 +60,13 @@ object FirebaseKey {
     const val CLICK_ON_PERSONAL_INTRODUCTION = "Click_on_personal_introduction"
     const val CLICK_UPLOAD_IMAGE_ICON = "Click_upload_image_icon"
     const val UPLOAD_IMAGE_FAIL = "upload_image_fail"
+
+    /** 消息列表页面埋点 */
+    const val CLICK_CHAT_WITH_OTHER = "Click_chat_with_other"
+    const val ENTER_MESSAGE = "enter_message"
+    const val CLICK_THE_STICKY = "Click_the_sticky"
+    const val CLICK_THE_DELETE = "Click_the_delete"
+    const val CLICK_TO_UNPIN = "Click_to_unpin"
+
+    /** 对面页面埋点 */
 }

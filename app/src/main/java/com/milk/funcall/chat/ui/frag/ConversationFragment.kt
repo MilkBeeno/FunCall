@@ -15,6 +15,8 @@ import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.paging.status.RefreshStatus
 import com.milk.funcall.common.ui.AbstractFragment
 import com.milk.funcall.databinding.FragmentChatMessageBinding
+import com.milk.funcall.firebase.FireBaseManager
+import com.milk.funcall.firebase.constant.FirebaseKey
 import com.milk.simple.ktx.*
 
 class ConversationFragment : AbstractFragment() {
@@ -34,6 +36,8 @@ class ConversationFragment : AbstractFragment() {
         conversationAdapter.addRefreshedListener {
             when (it) {
                 RefreshStatus.Success -> {
+                    FireBaseManager
+                        .logEvent(FirebaseKey.ENTER_MESSAGE)
                     binding.llEmpty.gone()
                 }
                 RefreshStatus.Empty -> {
@@ -59,12 +63,16 @@ class ConversationFragment : AbstractFragment() {
                 .setOffsetY(offsetY)
                 .setGravity(Gravity.END)
                 .setPutTopRequest(isPutTopped) {
-                    if (isPutTopped)
+                    if (isPutTopped) {
+                        FireBaseManager.logEvent(FirebaseKey.CLICK_THE_STICKY)
                         conversationViewModel.unPinChatMessage(conversation.targetId)
-                    else
+                    } else {
+                        FireBaseManager.logEvent(FirebaseKey.CLICK_TO_UNPIN)
                         conversationViewModel.putTopChatMessage(conversation.targetId)
+                    }
                 }
                 .setDeleteRequest {
+                    FireBaseManager.logEvent(FirebaseKey.CLICK_THE_DELETE)
                     conversationViewModel.deleteChatMessage(conversation.targetId)
                 }
                 .builder()
@@ -83,6 +91,7 @@ class ConversationFragment : AbstractFragment() {
 
     override fun onMultipleClick(view: View) {
         super.onMultipleClick(view)
+        FireBaseManager.logEvent(FirebaseKey.CLICK_CHAT_WITH_OTHER)
         LiveEventBus.get<Any?>(EventKey.JUMP_TO_THE_HOME_PAGE).post(null)
     }
 
