@@ -63,4 +63,7 @@ object KvKey {
 
     /** 判断当前是否是新客户端安装 */
     const val CHECK_IS_NEW_CLIENT = "CHECK_IS_NEW_CLIENT"
+
+    /** 首次安装后打开app进入首页次数 */
+    const val CHECK_NEW_CLIENT_ON_HOME = "CHECK_NEW_CLIENT_ON_HOME"
 }

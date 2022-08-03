@@ -8,15 +8,19 @@ import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
 import com.milk.funcall.app.ui.MainViewModel
 import com.milk.funcall.common.constrant.EventKey
+import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.common.paging.StaggeredGridDecoration
 import com.milk.funcall.common.paging.status.RefreshStatus
 import com.milk.funcall.common.ui.AbstractFragment
 import com.milk.funcall.databinding.FragmentHomeBinding
+import com.milk.funcall.firebase.FireBaseManager
+import com.milk.funcall.firebase.constant.FirebaseKey
 import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.user.ui.act.UserInfoActivity
 import com.milk.funcall.user.ui.adapter.HomeAdapter
 import com.milk.funcall.user.ui.vm.HomeViewModel
 import com.milk.simple.ktx.*
+import com.milk.simple.mdr.KvManger
 import kotlinx.coroutines.flow.collectLatest
 
 class HomeFragment : AbstractFragment() {
@@ -32,6 +36,7 @@ class HomeFragment : AbstractFragment() {
 
     override fun initializeData() {
         super.initializeData()
+        checkNewClientOnHome()
         loadingDialog.show()
         adapter.addRefreshedListener {
             loadingDialog.dismiss()
@@ -58,6 +63,15 @@ class HomeFragment : AbstractFragment() {
             homeViewModel.thirdHomePageAd = nativeAds[2]
             homeViewModel.pagingSource.flow
                 .collectLatest { adapter.submitData(it) }
+        }
+    }
+
+    private fun checkNewClientOnHome() {
+        val checkNewClientOnHome =
+            KvManger.getBoolean(KvKey.CHECK_NEW_CLIENT_ON_HOME, true)
+        if (checkNewClientOnHome) {
+            KvManger.put(KvKey.CHECK_NEW_CLIENT_ON_HOME, false)
+            FireBaseManager.logEvent(FirebaseKey.FIRST_OPEN_HOME_PAGE)
         }
     }
 
