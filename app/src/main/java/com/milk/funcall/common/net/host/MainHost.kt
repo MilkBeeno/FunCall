@@ -2,7 +2,7 @@ package com.milk.funcall.common.net.host
 
 class MainHost : ApiHost {
     override fun releaseUrl(): String {
-        return "http://funcall.sitepscodeserver.com"
+        return "https://api.simplefuncall.com"
     }
 
     override fun debugUrl(): String {
