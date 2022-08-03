@@ -30,7 +30,6 @@ private fun Long.timeCalibration(): Long {
             if (dateTime > System.currentTimeMillis())
                 calibrationValue = dateTime - System.currentTimeMillis()
         }
-
     } catch (e: Exception) {
         e.printStackTrace()
     }
