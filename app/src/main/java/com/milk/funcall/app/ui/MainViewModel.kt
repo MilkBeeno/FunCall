@@ -9,6 +9,7 @@ import com.milk.funcall.ad.AdSwitch
 import com.milk.funcall.ad.constant.AdCodeKey
 import com.milk.funcall.chat.repo.MessageRepository
 import com.milk.simple.ktx.ioScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.combine
 
@@ -19,7 +20,7 @@ class MainViewModel : ViewModel() {
 
     // 三个广告请求的状态
     internal val homePageAdLoadSuccess =
-        combine(secondHomePageAd, thirdHomePageAd, firstHomePageAd) { a, b, c -> arrayOf(a, b, c) }
+        combine(thirdHomePageAd, secondHomePageAd, firstHomePageAd) { a, b, c -> arrayOf(a, b, c) }
 
     internal fun loadNativeAd(context: Context) {
         getFirstHomePageAd(context)
@@ -37,7 +38,10 @@ class MainViewModel : ViewModel() {
                     adUnitId = adUnitId,
                     failedRequest = { ioScope { firstHomePageAd.emit(null) } },
                     successRequest = { ioScope { firstHomePageAd.emit(it) } })
-            else firstHomePageAd.emit(null)
+            else {
+                delay(500)
+                firstHomePageAd.emit(null)
+            }
         }
     }
 
@@ -51,7 +55,10 @@ class MainViewModel : ViewModel() {
                     adUnitId = adUnitId,
                     failedRequest = { ioScope { secondHomePageAd.emit(null) } },
                     successRequest = { ioScope { secondHomePageAd.emit(it) } })
-            else secondHomePageAd.emit(null)
+            else {
+                delay(500)
+                secondHomePageAd.emit(null)
+            }
         }
     }
 
@@ -65,7 +72,10 @@ class MainViewModel : ViewModel() {
                     adUnitId = adUnitId,
                     failedRequest = { ioScope { thirdHomePageAd.emit(null) } },
                     successRequest = { ioScope { thirdHomePageAd.emit(it) } })
-            else thirdHomePageAd.emit(null)
+            else {
+                delay(500)
+                thirdHomePageAd.emit(null)
+            }
         }
     }
 

@@ -56,7 +56,7 @@ class LoginActivity : AbstractActivity() {
                     WebActivity.create(
                         this,
                         WebType.UserAgreement.value,
-                        "http://funcallnow.com/terms.html"
+                        "https://justfuncall.com/terms.html"
                     )
                 }),
             Pair(
@@ -65,7 +65,7 @@ class LoginActivity : AbstractActivity() {
                     WebActivity.create(
                         this,
                         WebType.PrivacyService.value,
-                        "http://funcallnow.com/privacy.html"
+                        "https://justfuncall.com/privacy.html"
                     )
                 })
         )
