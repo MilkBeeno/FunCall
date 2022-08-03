@@ -4,6 +4,8 @@ import android.view.Gravity
 import androidx.fragment.app.FragmentActivity
 import com.milk.funcall.common.ui.dialog.SimpleDialog
 import com.milk.funcall.databinding.DialogViewAdBinding
+import com.milk.funcall.firebase.FireBaseManager
+import com.milk.funcall.firebase.constant.FirebaseKey
 
 class ViewAdDialog(activity: FragmentActivity) : SimpleDialog<DialogViewAdBinding>(activity) {
     private var confirmRequest: (() -> Unit)? = null
@@ -12,8 +14,14 @@ class ViewAdDialog(activity: FragmentActivity) : SimpleDialog<DialogViewAdBindin
         setGravity(Gravity.CENTER)
         setWidthMatchParent(true)
         setCanceledOnTouchOutside(true)
-        binding.tvCancel.setOnClickListener { dismiss() }
+        binding.tvCancel.setOnClickListener {
+            FireBaseManager
+                .logEvent(FirebaseKey.CLICK_CANCEL_SHOW_CONTACT_DOUBLE_CHECK)
+            dismiss()
+        }
         binding.tvConfirm.setOnClickListener {
+            FireBaseManager
+                .logEvent(FirebaseKey.CLICK_CONFIRM_CONTACT_DOUBLE_CHECK)
             confirmRequest?.invoke()
             dismiss()
         }

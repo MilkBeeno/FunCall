@@ -75,4 +75,13 @@ object FirebaseKey {
     const val CLICK_FOLLOW_ON_CHAT_PAGE = "Click_Follow_on_chat_page"
 
     /** 个人主页埋点 */
+    const val CLICK_MESSAGE_ON_PROFILE_PAGE = "Click_Message_on_Profile_page"
+    const val CLICK_MESSAGE_VIEW_IMAGE_PAGE = "Click_Message_View_Image_Page"
+    const val CLICK_MESSAGE_VIEW_VIDEO_PAGE = "Click_Message_View_video_Page"
+    const val CLICK_THE_NEXT = "click_the_next"
+    const val CLICK_PHOTO = "click_photo"
+    const val SHOW_CONTACT_POPUP_DOUBLE_CHECK = "Show_Contact_Popup_Double_Check"
+    const val CLICK_CONFIRM_CONTACT_DOUBLE_CHECK = "Click_Confirm_Contact_Double_Check"
+    const val CLICK_CANCEL_SHOW_CONTACT_DOUBLE_CHECK = "Click_Cancel_Show_Contact_double_check"
+    const val SHOW_FIRST_UNLOCK_VIDEO_OR_PICTURE = "Show_first_unlock_video_or_picture"
 }

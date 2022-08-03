@@ -23,11 +23,12 @@ import com.milk.funcall.chat.ui.act.ChatMessageActivity
 import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.common.media.loader.ImageLoader
-import com.milk.funcall.common.media.loader.VideoLoader
 import com.milk.funcall.common.paging.SimpleGridDecoration
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.ui.manager.NoScrollGridLayoutManager
 import com.milk.funcall.databinding.ActivityUserInfoBinding
+import com.milk.funcall.firebase.FireBaseManager
+import com.milk.funcall.firebase.constant.FirebaseKey
 import com.milk.funcall.login.ui.act.LoginActivity
 import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.user.data.UserInfoModel
@@ -179,6 +180,7 @@ class UserInfoActivity : AbstractActivity() {
             binding.rvImage.layoutManager = NoScrollGridLayoutManager(this, 2)
             binding.rvImage.addItemDecoration(SimpleGridDecoration(this))
             binding.rvImage.adapter = UserImageAdapter(userImageList) { position ->
+                FireBaseManager.logEvent(FirebaseKey.CLICK_PHOTO)
                 ImageMediaActivity
                     .create(this, userInfo.targetId, userInfo.targetIsBlacked)
                 LiveEventBus
@@ -216,6 +218,8 @@ class UserInfoActivity : AbstractActivity() {
                 showToast(string(R.string.user_info_copy_success))
             }
             binding.ivUserNext -> {
+                FireBaseManager
+                    .logEvent(FirebaseKey.CLICK_THE_NEXT)
                 create(this)
                 finish()
             }
@@ -226,6 +230,8 @@ class UserInfoActivity : AbstractActivity() {
                 }
             }
             binding.basic.llMessage -> {
+                FireBaseManager
+                    .logEvent(FirebaseKey.CLICK_MESSAGE_ON_PROFILE_PAGE)
                 if (Account.userLogged) {
                     userInfoViewModel.userInfoFlow.value?.let {
                         if (it.targetIsBlacked) return
@@ -238,9 +244,15 @@ class UserInfoActivity : AbstractActivity() {
             }
             binding.link.llViewLink -> {
                 if (userInfoViewModel.hasViewedVideo || userInfoViewModel.hasViewedImage) {
+                    FireBaseManager
+                        .logEvent(FirebaseKey.SHOW_CONTACT_POPUP_DOUBLE_CHECK)
                     viewAdDialog.show()
                     viewAdDialog.setOnConfirmRequest { loadLinkAd() }
-                } else showToast(string(R.string.user_info_please_view_video_or_image))
+                } else {
+                    FireBaseManager
+                        .logEvent(FirebaseKey.SHOW_FIRST_UNLOCK_VIDEO_OR_PICTURE)
+                showToast(string(R.string.user_info_please_view_video_or_image))
+                }
             }
         }
     }
