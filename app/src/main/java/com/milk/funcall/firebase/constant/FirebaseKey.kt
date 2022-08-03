@@ -1,6 +1,7 @@
 package com.milk.funcall.firebase.constant
 
 object FirebaseKey {
+    /** 登录处埋点 */
     const val FIRST_OPEN = "first_open"
     const val FIRST_OPEN_HOME_PAGE = "first_open_home_page"
     const val LOGINS_WITH_GUEST = "logins_with_guest"

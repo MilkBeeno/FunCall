@@ -46,6 +46,7 @@
     <string name="login_obtain_device_failed">Login failed, unable to get Google Admob ID</string>
     <string name="login_google_auth_failed">Google auth failure,please try again.</string>
     <string name="login_facebook_auth_failed">Facebook auth failure,please try again.</string>
+    <string name="login_max_client">Register with another phone</string>
     <!--创建名字页面翻译-->
     <string name="preset_profile_title">Basic Information</string>
     <string name="preset_profile_tag">Name</string>

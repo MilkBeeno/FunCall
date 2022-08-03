@@ -26,6 +26,7 @@ import com.milk.funcall.databinding.ActivityLoginBinding
 import com.milk.funcall.firebase.FireBaseManager
 import com.milk.funcall.firebase.constant.FirebaseKey
 import com.milk.funcall.login.ui.dialog.LoadingDialog
+import com.milk.funcall.login.ui.dialog.MaxClientDialog
 import com.milk.funcall.login.ui.vm.LoginViewModel
 import com.milk.simple.ktx.*
 
@@ -34,6 +35,7 @@ class LoginActivity : AbstractActivity() {
     private val loginViewModel by viewModels<LoginViewModel>()
     private val authLoginManager by lazy { AuthLoginManager(this) }
     private val loadingDialog by lazy { LoadingDialog(this, string(R.string.common_loading)) }
+    private val maxClientDialog by lazy { MaxClientDialog(this) }
     private var isNotAuthorizing: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,7 +101,9 @@ class LoginActivity : AbstractActivity() {
             isNotAuthorizing = true
             loadingDialog.dismiss()
             if (it == ApiErrorCode.MAX_CLIENT_NUMBER) {
-                FireBaseManager.logEvent(FirebaseKey.MAX_REGISTRATIONS_REACHED_SHOW)
+                FireBaseManager
+                    .logEvent(FirebaseKey.MAX_REGISTRATIONS_REACHED_SHOW)
+                mainScope { maxClientDialog.show() }
             }
         }
     }

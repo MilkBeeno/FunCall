@@ -46,7 +46,7 @@
             android:layout_marginStart="14dp"
             android:layout_marginEnd="14dp"
             android:layout_marginBottom="14dp"
-            android:background="@drawable/shape_chat_message_say_hi"
+            android:background="@drawable/shape_radius_10_white"
             android:visibility="gone"
             tools:visibility="visible">
 
