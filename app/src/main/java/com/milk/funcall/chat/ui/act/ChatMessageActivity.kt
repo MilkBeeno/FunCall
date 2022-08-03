@@ -47,7 +47,8 @@ class ChatMessageActivity : AbstractActivity() {
             if (oldBottom != -1 && oldBottom > bottom && chatMessageAdapter.itemCount > 0) {
                 binding.rvMessage.requestLayout()
                 binding.rvMessage.post {
-                    binding.rvMessage.scrollToPosition(chatMessageAdapter.itemCount - 1)
+                    binding.rvMessage
+                        .scrollToPosition(chatMessageAdapter.itemCount - 1)
                 }
             }
         }
