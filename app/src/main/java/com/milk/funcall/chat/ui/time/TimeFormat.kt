@@ -1,34 +1,48 @@
 package com.milk.funcall.chat.ui.time
 
+import com.milk.funcall.chat.ui.time.TimePattern.TEST_OF_TIME_PATTERN
+import com.milk.simple.ktx.safeToLong
 import java.text.SimpleDateFormat
 import java.util.*
 
-// 服务器时间戳（秒级）自动补全（毫秒级）
-internal fun autoCompleteTime(seconds: Long): Long = if (System.currentTimeMillis()
+/** 获取当前手机系统的时区 */
+private var currentTimeZone: String = TimePattern.GMT_05
+    get() {
+        val timeZone = TimeZone.getDefault()
+        field = timeZone.getDisplayName(false, TimeZone.SHORT)
+        return field
+    }
+
+/**  服务器时间戳（秒级）自动补全（毫秒级） */
+private fun autoCompleteTime(seconds: Long): Long = if (System.currentTimeMillis()
         .toString().length - seconds.toString().length == 3
 ) seconds * 1000 else seconds
 
-// 客户端和服务端时间校准
-fun Long.timeCalibration(
-    timeZone: String = TimePattern.GMT_05,
-    pattern: String = TimePattern.dd_MM_yyyy_HH_mm
-): String {
-    var finalTime = ""
+/** 客户端和服务端时间校准差值 */
+private fun Long.timeCalibration(): Long {
+    var calibrationValue: Long = 0
     try {
-        if (this <= 0) return finalTime
-        val formatter = SimpleDateFormat(pattern, Locale.ENGLISH)
-        formatter.timeZone = TimeZone.getTimeZone(timeZone.uppercase())
-        finalTime = formatter.format(autoCompleteTime(this))
+        if (this > 0) {
+            val formatter = SimpleDateFormat(TEST_OF_TIME_PATTERN, Locale.ENGLISH)
+            formatter.timeZone = TimeZone.getTimeZone(currentTimeZone)
+            val finalTime = formatter.format(this)
+            val dateTime = formatter.parse(finalTime)?.time.safeToLong()
+            if (dateTime > System.currentTimeMillis())
+                calibrationValue = dateTime - System.currentTimeMillis()
+        }
+
     } catch (e: Exception) {
         e.printStackTrace()
     }
-    return finalTime
+    return calibrationValue
 }
 
-// 将时间转为 IM 通用消息、
-fun Long.convertMessageTime(localTime: Long = System.currentTimeMillis()): String {
-    var finalTime = ""
-    val operateCompleteTime = autoCompleteTime(this)
+/** 将时间转为 IM 通用消息 */
+fun Long.convertMessageTime(): String {
+    val finalTime: String
+    val localTime = System.currentTimeMillis()
+    val calibrationValue = timeCalibration()
+    val operateCompleteTime = this - calibrationValue
     val localCompleteTime = autoCompleteTime(localTime)
     val calendar = Calendar.getInstance()
     calendar.timeInMillis = operateCompleteTime
