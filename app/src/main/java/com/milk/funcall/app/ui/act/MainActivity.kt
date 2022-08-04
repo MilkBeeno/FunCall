@@ -27,10 +27,7 @@ import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityMainBinding
 import com.milk.funcall.user.ui.frag.HomeFragment
-import com.milk.simple.ktx.collectLatest
-import com.milk.simple.ktx.immersiveStatusBar
-import com.milk.simple.ktx.navigationBarPadding
-import com.milk.simple.ktx.statusBarPadding
+import com.milk.simple.ktx.*
 import com.milk.simple.log.Logger
 import java.util.*
 
@@ -102,14 +99,6 @@ class MainActivity : AbstractActivity() {
     }
 
     private fun initializeObserver() {
-        Account.userIdFlow.collectLatest(this) {
-            mainViewModel.getConversationCount()
-                .collectLatest(this) { countList ->
-                    var count = 0
-                    countList?.forEach { count += it }
-                    binding.navigation.updateUnReadCount(count)
-                }
-        }
         LiveEventBus.get<Any?>(EventKey.JUMP_TO_THE_HOME_PAGE)
             .observe(this) {
                 setTabSelection(homeFragment)
@@ -118,8 +107,14 @@ class MainActivity : AbstractActivity() {
     }
 
     private fun initializeService() {
-        Account.userLoggedFlow.collectLatest(this) { isLogged ->
-            if (isLogged) {
+        Account.userIdFlow.collect(this) { accountId ->
+            mainViewModel.getConversationCount()
+                .collectLatest(this) { countList ->
+                    var count = 0
+                    countList?.forEach { count += it }
+                    binding.navigation.updateUnReadCount(count)
+                }
+            if (accountId > 0) {
                 connection = object : ServiceConnection {
                     override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
                         // 和服务绑定成功后，服务会回调该方法
