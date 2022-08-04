@@ -19,10 +19,6 @@
     <uses-permission
         android:name="android.permission.WRITE_MEDIA_STORAGE"
         tools:ignore="ProtectedPermissions" />
-    <!-- 写入设置权限 -->
-    <uses-permission
-        android:name="android.permission.WRITE_SETTINGS"
-        tools:ignore="ProtectedPermissions" />
     <!-- facebook 相关 -->
     <queries>
         <package android:name="com.facebook.katana" />
