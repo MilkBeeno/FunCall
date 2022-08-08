@@ -174,7 +174,8 @@ class LoginActivity : AbstractActivity() {
                     val startIndex = content.indexOf(it.first, ignoreCase = true)
                     val endIndex = startIndex + it.first.length
                     val colorFlags = Spannable.SPAN_INCLUSIVE_EXCLUSIVE
-                    builder.setSpan(it.second, startIndex, endIndex, colorFlags)
+                    if (startIndex > 0 && endIndex < content.length)
+                        builder.setSpan(it.second, startIndex, endIndex, colorFlags)
                 }
             }
             movementMethod = LinkMovementMethod.getInstance()
