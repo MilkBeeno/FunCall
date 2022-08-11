@@ -2,13 +2,11 @@ package com.milk.funcall.common.media.engine
 
 import android.content.Context
 import android.view.View
-import com.luck.picture.lib.engine.VideoPlayerEngine
-import com.milk.funcall.common.media.view.IjkPlayerView
-import com.luck.picture.lib.interfaces.OnPlayerListener
-import com.luck.picture.lib.entity.LocalMedia
-import tv.danmaku.ijk.media.player.IjkMediaPlayer
 import com.luck.picture.lib.config.PictureSelectionConfig
-import tv.danmaku.ijk.media.player.IMediaPlayer
+import com.luck.picture.lib.engine.VideoPlayerEngine
+import com.luck.picture.lib.entity.LocalMedia
+import com.luck.picture.lib.interfaces.OnPlayerListener
+import com.milk.funcall.common.media.view.IjkPlayerView
 import java.util.concurrent.CopyOnWriteArrayList
 
 internal class IjkPlayerEngine : VideoPlayerEngine<IjkPlayerView> {

@@ -1,9 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Facebook 元素-->
     <string name="facebook_app_name" translatable="false">@string/app_name</string>
-    <string name="facebook_app_id" translatable="false">367605238837463</string>
-    <string name="fb_login_protocol_scheme" translatable="false">fb367605238837463</string>
-    <string name="facebook_client_token" translatable="false">f00bc187672428f3026d4beb24a3de78</string>
+    <string name="facebook_app_id" translatable="false">1027636711262513</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb1027636711262513</string>
+    <string name="facebook_client_token" translatable="false">7a3af85cead6c0115b4758ed184bdef0</string>
     <!--App 内的翻译-->
     <string name="app_name">Fun Call</string>
     <string name="common_list_loading">Loading</string>
