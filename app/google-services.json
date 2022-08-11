@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "413266931435",
-    "project_id": "fun-call",
-    "storage_bucket": "fun-call.appspot.com"
+    "project_number": "1099275750316",
+    "project_id": "fun-call--messaging-chat-app",
+    "storage_bucket": "fun-call--messaging-chat-app.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:413266931435:android:d23881e56fcf5a206bd8ae",
+        "mobilesdk_app_id": "1:1099275750316:android:49cca945a8656262360809",
         "android_client_info": {
-          "package_name": "com.milk.simplefuncall"
+          "package_name": "com.milk.simplejustfuncall"
         }
       },
       "oauth_client": [
         {
-          "client_id": "413266931435-5114dssgeo9rl1f26nqvaf8n32l57o3t.apps.googleusercontent.com",
+          "client_id": "1099275750316-t77bb86i03r32mfq8omsm0ha2bqu7mpq.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDaymgVHOAH6bcBQcvDi0nb7Ys-IUaKm-4"
+          "current_key": "AIzaSyD-ojSj-NQKcQk8UtNyqoYeKk6PqNMWcvM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "413266931435-5114dssgeo9rl1f26nqvaf8n32l57o3t.apps.googleusercontent.com",
+              "client_id": "1099275750316-t77bb86i03r32mfq8omsm0ha2bqu7mpq.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -9,7 +9,6 @@ import com.facebook.*
 import com.facebook.appevents.AppEventsLogger
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
-import com.milk.funcall.BuildConfig
 import com.milk.funcall.R
 import com.milk.simple.log.Logger
 

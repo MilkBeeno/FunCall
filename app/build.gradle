@@ -8,12 +8,12 @@ plugins {
 android {
     compileSdk 32
     defaultConfig {
-        // 正式包名: com.milk.simplefuncall 测试包名:com.milk.funcall
-        applicationId "com.milk.simplefuncall"
+        // 正式包名: com.milk.simplejustfuncall  测试包名:com.milk.funcall
+        applicationId "com.milk.simplejustfuncall"
         minSdk 21
         targetSdk 32
-        versionCode 103
-        versionName "1.0.3"
+        versionCode 100
+        versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -27,7 +27,7 @@ android {
         myJsk {
             storeFile file("../app/jks/fun_call.jks")
             storePassword 'funcall123456'
-            keyAlias 'gam'
+            keyAlias 'simplejustfuncall'
             keyPassword 'funcall123456'
         }
     }
