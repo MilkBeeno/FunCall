@@ -17,3 +17,7 @@ local.properties
 /app/debug/app-debug.apk
 /app/release/app-release.apk
 /app/release/output-metadata.json
+/app/debug/output-metadata.json
+/app/release/.aab
+/app/release/new_fun_call_1.0.0.aab
+/app/proguardMapping.txt
