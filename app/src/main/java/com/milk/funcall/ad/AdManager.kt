@@ -32,7 +32,7 @@ object AdManager {
         context: Context,
         adUnitId: String,
         onFailedRequest: () -> Unit = {},
-        onSuccessRequest: () -> Unit = {}
+        onSuccessRequest: (String) -> Unit = {}
     ) {
         FireBaseManager
             .logEvent(FirebaseKey.MAKE_AN_AD_REQUEST, adUnitId, adUnitId)
@@ -50,7 +50,7 @@ object AdManager {
                     FireBaseManager
                         .logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED, adUnitId, adUnitId)
                     AdManager.interstitialAd = interstitialAd
-                    onSuccessRequest()
+                    onSuccessRequest(adUnitId)
                 }
             })
     }
@@ -58,6 +58,7 @@ object AdManager {
     /** 显示插页广告 */
     fun showInterstitial(
         activity: Activity,
+        adUnitId: String,
         onFailedRequest: (String) -> Unit = {},
         onSuccessRequest: () -> Unit = {},
         onFinishedRequest: () -> Unit = {}
@@ -68,6 +69,12 @@ object AdManager {
         } else {
             interstitialAd?.show(activity)
             interstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
+                override fun onAdClicked() {
+                    super.onAdClicked()
+                    FireBaseManager
+                        .logEvent(FirebaseKey.CLICK_AD, adUnitId, adUnitId)
+                }
+
                 override fun onAdDismissedFullScreenContent() {
                     onSuccessRequest()
                     onFinishedRequest()
@@ -107,6 +114,12 @@ object AdManager {
                     FireBaseManager
                         .logEvent(FirebaseKey.AD_REQUEST_FAILED, adUnitId, p0.message)
                     failedRequest()
+                }
+
+                override fun onAdClicked() {
+                    super.onAdClicked()
+                    FireBaseManager
+                        .logEvent(FirebaseKey.CLICK_AD, adUnitId, adUnitId)
                 }
             })
             .build()

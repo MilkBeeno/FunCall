@@ -26,6 +26,8 @@ import com.milk.funcall.chat.ui.frag.ConversationFragment
 import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityMainBinding
+import com.milk.funcall.firebase.FireBaseManager
+import com.milk.funcall.firebase.constant.FirebaseKey
 import com.milk.funcall.user.ui.frag.HomeFragment
 import com.milk.simple.ktx.*
 import com.milk.simple.log.Logger
@@ -61,6 +63,10 @@ class MainActivity : AbstractActivity() {
                 adView.setAdSize(AdSize.BANNER)
                 val adRequest = AdRequest.Builder().build()
                 adView.loadAd(adRequest)
+                adView.setOnClickListener {
+                    FireBaseManager
+                        .logEvent(FirebaseKey.CLICK_AD, adView.adUnitId, adView.adUnitId)
+                }
                 binding.root.addView(adView)
             }
         } catch (e: Exception) {

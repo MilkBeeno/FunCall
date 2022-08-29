@@ -105,6 +105,7 @@ class UserInfoViewModel : ViewModel() {
                 onSuccessRequest = {
                     AdManager.showInterstitial(
                         activity = activity,
+                        adUnitId = it,
                         onFailedRequest = {
                             FireBaseManager
                                 .logEvent(FirebaseKey.AD_SHOW_FAILED, adUnitId, it)
