@@ -88,9 +88,10 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="106dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/shape_edit_profile_input_background">
+                android:background="@drawable/shape_edit_profile_input_background"
+                android:minHeight="106dp">
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/etAboutMe"

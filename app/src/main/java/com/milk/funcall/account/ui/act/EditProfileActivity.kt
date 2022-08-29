@@ -154,6 +154,7 @@ class EditProfileActivity : AbstractActivity() {
             val changeLength = it?.length ?: 0
             binding.tvCount.text = changeLength.toString().plus("/150")
         }
+        binding.etLink.filters = arrayOf(BanEnterInputFilter())
         // 选择图片显示
         binding.rvPicture.layoutManager = NoScrollGridLayoutManager(this, 3)
         binding.rvPicture.addItemDecoration(EditProfileImageGridDecoration(this))
