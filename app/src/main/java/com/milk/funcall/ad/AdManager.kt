@@ -76,7 +76,6 @@ object AdManager {
                 }
 
                 override fun onAdDismissedFullScreenContent() {
-                    onSuccessRequest()
                     onFinishedRequest()
                 }
 
@@ -87,6 +86,7 @@ object AdManager {
                 }
 
                 override fun onAdShowedFullScreenContent() {
+                    onSuccessRequest()
                     interstitialAd = null
                 }
             }

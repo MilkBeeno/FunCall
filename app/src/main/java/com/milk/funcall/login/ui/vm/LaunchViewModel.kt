@@ -44,6 +44,8 @@ class LaunchViewModel : ViewModel() {
                             onSuccessRequest = {
                                 FireBaseManager
                                     .logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS, adUnitId, adUnitId)
+                            },
+                            onFinishedRequest = {
                                 finished()
                             })
                     }

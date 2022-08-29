@@ -106,19 +106,20 @@ class UserInfoViewModel : ViewModel() {
                     AdManager.showInterstitial(
                         activity = activity,
                         adUnitId = it,
-                        onFailedRequest = {
+                        onFailedRequest = { error ->
                             FireBaseManager
-                                .logEvent(FirebaseKey.AD_SHOW_FAILED, adUnitId, it)
+                                .logEvent(FirebaseKey.AD_SHOW_FAILED, adUnitId, error)
                             failure()
                         },
                         onSuccessRequest = {
                             FireBaseManager
                                 .logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS, adUnitId, adUnitId)
-                        }) {
-                        success()
-                        adIsLoading = false
-                        hasViewedImage = true
-                    }
+                        },
+                        onFinishedRequest = {
+                            success()
+                            adIsLoading = false
+                            hasViewedImage = true
+                        })
                 })
         else failure()
     }
