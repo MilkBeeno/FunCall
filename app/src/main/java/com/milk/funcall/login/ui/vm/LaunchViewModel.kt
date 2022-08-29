@@ -35,17 +35,17 @@ class LaunchViewModel : ViewModel() {
                     AdLoadType.Success -> {
                         AdManager.showInterstitial(
                             activity = activity,
-                            adUnitId = adUnitId,
-                            onFailedRequest = {
-                                FireBaseManager
-                                    .logEvent(FirebaseKey.AD_SHOW_FAILED, adUnitId, it)
+                            failedRequest = {
+                                FireBaseManager.logEvent(FirebaseKey.AD_SHOW_FAILED)
                                 finished()
                             },
-                            onSuccessRequest = {
-                                FireBaseManager
-                                    .logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS, adUnitId, adUnitId)
+                            successRequest = {
+                                FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS)
                             },
-                            onFinishedRequest = {
+                            clickRequest = {
+                                FireBaseManager.logEvent(FirebaseKey.CLICK_AD)
+                            },
+                            finishedRequest = {
                                 finished()
                             })
                     }
@@ -56,9 +56,16 @@ class LaunchViewModel : ViewModel() {
             .start()
         if (AdSwitch.appLaunch) {
             if (adUnitId.isNotBlank()) {
+                FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST)
                 AdManager.loadInterstitial(activity, adUnitId,
-                    onFailedRequest = { adLoadStatus = AdLoadType.Failure },
-                    onSuccessRequest = { adLoadStatus = AdLoadType.Success })
+                    failedRequest = {
+                        FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_FAILED)
+                        adLoadStatus = AdLoadType.Failure
+                    },
+                    successRequest = {
+                        FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED)
+                        adLoadStatus = AdLoadType.Success
+                    })
             } else adLoadStatus = AdLoadType.Failure
         }
     }

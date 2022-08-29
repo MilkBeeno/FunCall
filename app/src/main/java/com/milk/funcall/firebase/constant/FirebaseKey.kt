@@ -85,11 +85,57 @@ object FirebaseKey {
     const val CLICK_CANCEL_SHOW_CONTACT_DOUBLE_CHECK = "Click_Cancel_Show_Contact_double_check"
     const val SHOW_FIRST_UNLOCK_VIDEO_OR_PICTURE = "Show_first_unlock_video_or_picture"
 
-    /** 广告统计埋点 */
+    /** 发起广告请求的次数_app启动插页广告 */
     const val MAKE_AN_AD_REQUEST = "Make_an_ad_request"
+
+    /** 广告请求成功_app启动插页广告 */
     const val AD_REQUEST_SUCCEEDED = "Ad_request_succeeded"
+
+    /** 广告请求失败（需要统计原因）_app启动插页广告 */
     const val AD_REQUEST_FAILED = "Ad_request_failed"
+
+    /** 广告展示成功_app启动插页广告 */
     const val THE_AD_SHOW_SUCCESS = "The_ad_show_success"
+
+    /** 广告展示失败（需要统计原因）_app启动插页广告 */
     const val AD_SHOW_FAILED = "Ad_show_failed"
+
+    /** 点击广告位_app启动插页广告 */
     const val CLICK_AD = "click_ad"
+
+    /** 发起广告请求_首页瀑布流原生广告 */
+    const val MAKE_AN_AD_REQUEST_1 = "Make_an_ad_request_1"
+
+    /** 广告请求成功_首页瀑布流原生广告 */
+    const val AD_REQUEST_SUCCEEDED_1 = "Ad_request_succeeded_1"
+
+    /** 广告请求失败（需要统计原因）_首页瀑布流原生广告 */
+    const val AD_REQUEST_FAILED_1 = "Ad_request_failed_1"
+
+    /** 点击广告位_首页瀑布流原生广告 */
+    const val CLICK_AD_1 = "click_ad_1"
+
+    /** 发起广告请求_首页瀑布流原生广告-2 */
+    const val MAKE_AN_AD_REQUEST_2 = "Make_an_ad_request_2"
+
+    /** 广告请求成功_首页瀑布流原生广告-2 */
+    const val AD_REQUEST_SUCCEEDED_2 = "Ad_request_succeeded_2"
+
+    /** 广告请求失败（需要统计原因）_首页瀑布流原生广告-2 */
+    const val AD_REQUEST_FAILED_2 = "Ad_request_failed_2"
+
+    /** 点击广告位_首页瀑布流原生广告-2 */
+    const val CLICK_AD_2 = "click_ad_2"
+
+    /** 发起广告请求_首页瀑布流原生广告-3 */
+    const val MAKE_AN_AD_REQUEST_3 = "Make_an_ad_request_3"
+
+    /** 广告请求成功_首页瀑布流原生广告-3 */
+    const val AD_REQUEST_SUCCEEDED_3 = "Ad_request_succeeded_3"
+
+    /** 广告请求失败（需要统计原因）_首页瀑布流原生广告-3 */
+    const val Ad_request_failed_3 = "Ad_request_failed_3"
+
+    /** 点击广告位_首页瀑布流原生广告-3 */
+    const val CLICK_AD_3 = "click_ad_3"
 }

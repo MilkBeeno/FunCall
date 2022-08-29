@@ -100,8 +100,9 @@ class HomeFragment : AbstractFragment() {
             val user = adapter.getNoNullItem(position)
             if (user.targetId > 0)
                 UserInfoActivity.create(requireContext(), user.targetId)
-            else
-                FireBaseManager.logEvent(FirebaseKey.CLICK_AD)
+            else{
+
+            }
         }
     }
 

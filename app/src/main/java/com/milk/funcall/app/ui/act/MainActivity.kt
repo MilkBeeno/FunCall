@@ -64,8 +64,7 @@ class MainActivity : AbstractActivity() {
                 val adRequest = AdRequest.Builder().build()
                 adView.loadAd(adRequest)
                 adView.setOnClickListener {
-                    FireBaseManager
-                        .logEvent(FirebaseKey.CLICK_AD, adView.adUnitId, adView.adUnitId)
+
                 }
                 binding.root.addView(adView)
             }
