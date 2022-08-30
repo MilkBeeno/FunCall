@@ -149,11 +149,12 @@ object AdManager {
         return adView
     }
 
+    /** 激励视频广告展示 */
     fun loadIncentiveVideoAd(
-        context: Context,
+        activity: Activity,
         adUnitId: String,
         loadFailedRequest: (String) -> Unit = {},
-        loadSuccessRequest: (RewardedAd) -> Unit = {},
+        loadSuccessRequest: () -> Unit = {},
         showFailedRequest: (String) -> Unit = {},
         showSuccessRequest: () -> Unit = {},
         clickRequest: () -> Unit = {},
@@ -175,7 +176,7 @@ object AdManager {
                 clickRequest()
             }
         }
-        RewardedAd.load(context, adUnitId, adRequest,
+        RewardedAd.load(activity, adUnitId, adRequest,
             object : RewardedAdLoadCallback() {
                 override fun onAdFailedToLoad(p0: LoadAdError) {
                     super.onAdFailedToLoad(p0)
@@ -184,8 +185,9 @@ object AdManager {
 
                 override fun onAdLoaded(p0: RewardedAd) {
                     super.onAdLoaded(p0)
+                    loadSuccessRequest()
                     p0.fullScreenContentCallback = fullScreenContentCallback
-                    loadSuccessRequest(p0)
+                    p0.show(activity) {}
                 }
             })
     }

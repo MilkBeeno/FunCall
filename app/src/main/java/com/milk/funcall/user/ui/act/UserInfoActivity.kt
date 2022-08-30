@@ -259,32 +259,30 @@ class UserInfoActivity : AbstractActivity() {
     /** 加载获取联系方式激励视频广告 */
     private fun loadLinkAd() {
         try {
-            val unitId =
+            val adUnitId =
                 AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_LINK)
             loadingDialog.show()
             FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_6)
             AdManager.loadIncentiveVideoAd(
-                context = this,
-                adUnitId = unitId,
+                activity = this,
+                adUnitId = adUnitId,
                 loadFailedRequest = {
                     FireBaseManager
-                        .logEvent(FirebaseKey.AD_REQUEST_FAILED_6, unitId, it)
+                        .logEvent(FirebaseKey.AD_REQUEST_FAILED_6, adUnitId, it)
                     loadingDialog.dismiss()
                 },
                 loadSuccessRequest = {
                     FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_6)
-                    it.show(this@UserInfoActivity) {
-                        loadingDialog.dismiss()
-                        binding.link.flLinkLocked.gone()
-                        userInfoViewModel.hasViewedLink = true
-                    }
                 },
                 showFailedRequest = {
                     FireBaseManager
-                        .logEvent(FirebaseKey.AD_SHOW_FAILED_6, unitId, it)
+                        .logEvent(FirebaseKey.AD_SHOW_FAILED_6, adUnitId, it)
                 },
                 showSuccessRequest = {
                     FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_6)
+                    loadingDialog.dismiss()
+                    binding.link.flLinkLocked.gone()
+                    userInfoViewModel.hasViewedLink = true
                 },
                 clickRequest = {
                     FireBaseManager.logEvent(FirebaseKey.CLICK_AD_6)
