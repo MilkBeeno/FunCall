@@ -9,13 +9,11 @@ import android.os.IBinder
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdSize
-import com.google.android.gms.ads.AdView
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.account.Account
 import com.milk.funcall.account.ui.frag.MineFragment
 import com.milk.funcall.ad.AdConfig
+import com.milk.funcall.ad.AdManager
 import com.milk.funcall.ad.AdSwitch
 import com.milk.funcall.ad.constant.AdCodeKey
 import com.milk.funcall.app.MainService
@@ -57,15 +55,26 @@ class MainActivity : AbstractActivity() {
         try {
             mainViewModel.loadNativeAd(this)
             if (AdSwitch.homeBanner) {
-                val adView = AdView(this)
-                adView.adUnitId =
+                FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_4)
+                val adUnitId =
                     AdConfig.getAdvertiseUnitId(AdCodeKey.MAIN_HOME_BOTTOM)
-                adView.setAdSize(AdSize.BANNER)
-                val adRequest = AdRequest.Builder().build()
-                adView.loadAd(adRequest)
-                adView.setOnClickListener {
-
-                }
+                val adView = AdManager.loadBannerAd(
+                    context = this,
+                    adUnitId = adUnitId,
+                    failedRequest = {
+                        FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_FAILED_4, adUnitId, it)
+                        FireBaseManager.logEvent(FirebaseKey.AD_SHOW_FAILED_4, adUnitId, it)
+                    },
+                    successRequest = {
+                        FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_4)
+                    },
+                    showSuccessRequest = {
+                        FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_4)
+                    },
+                    clickRequest = {
+                        FireBaseManager.logEvent(FirebaseKey.CLICK_AD_4)
+                    }
+                )
                 binding.root.addView(adView)
             }
         } catch (e: Exception) {

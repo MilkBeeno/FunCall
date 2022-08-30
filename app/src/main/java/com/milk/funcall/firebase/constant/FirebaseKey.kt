@@ -138,4 +138,22 @@ object FirebaseKey {
 
     /** 点击广告位_首页瀑布流原生广告-3 */
     const val CLICK_AD_3 = "click_ad_3"
+
+    /** 发起广告请求_首页底部的横幅广告 */
+    const val MAKE_AN_AD_REQUEST_4 = "Make_an_ad_request_4"
+
+    /** 广告请求成功_首页底部的横幅广告 */
+    const val AD_REQUEST_SUCCEEDED_4 = "Ad_request_succeeded_4"
+
+    /** 广告请求失败（需要统计原因）_首页底部的横幅广告 */
+    const val AD_REQUEST_FAILED_4 = "Ad_request_failed_4"
+
+    /** 广告展示成功_首页底部的横幅广告 */
+    const val THE_AD_SHOW_SUCCESS_4 = "The_ad_show_success_4"
+
+    /** 广告展示失败（需要统计原因）_首页底部的横幅广告 */
+    const val AD_SHOW_FAILED_4 = "Ad_show_failed_4"
+
+    /** 点击广告位_首页底部的横幅广告 */
+    const val CLICK_AD_4 = "click_ad_4"
 }
