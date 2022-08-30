@@ -266,12 +266,12 @@ class UserInfoActivity : AbstractActivity() {
             AdManager.loadIncentiveVideoAd(
                 context = this,
                 adUnitId = unitId,
-                failedRequest = {
+                loadFailedRequest = {
                     FireBaseManager
                         .logEvent(FirebaseKey.AD_REQUEST_FAILED_6, unitId, it)
                     loadingDialog.dismiss()
                 },
-                successRequest = {
+                loadSuccessRequest = {
                     FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_6)
                     it.show(this@UserInfoActivity) {
                         loadingDialog.dismiss()

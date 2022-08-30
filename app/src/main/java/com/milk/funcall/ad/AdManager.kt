@@ -152,8 +152,8 @@ object AdManager {
     fun loadIncentiveVideoAd(
         context: Context,
         adUnitId: String,
-        failedRequest: (String) -> Unit = {},
-        successRequest: (RewardedAd) -> Unit = {},
+        loadFailedRequest: (String) -> Unit = {},
+        loadSuccessRequest: (RewardedAd) -> Unit = {},
         showFailedRequest: (String) -> Unit = {},
         showSuccessRequest: () -> Unit = {},
         clickRequest: () -> Unit = {},
@@ -179,13 +179,13 @@ object AdManager {
             object : RewardedAdLoadCallback() {
                 override fun onAdFailedToLoad(p0: LoadAdError) {
                     super.onAdFailedToLoad(p0)
-                    failedRequest(p0.message)
+                    loadFailedRequest(p0.message)
                 }
 
                 override fun onAdLoaded(p0: RewardedAd) {
                     super.onAdLoaded(p0)
                     p0.fullScreenContentCallback = fullScreenContentCallback
-                    successRequest(p0)
+                    loadSuccessRequest(p0)
                 }
             })
     }
