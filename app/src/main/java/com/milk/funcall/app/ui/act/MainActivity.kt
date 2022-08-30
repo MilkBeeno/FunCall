@@ -61,11 +61,11 @@ class MainActivity : AbstractActivity() {
                 val adView = AdManager.loadBannerAd(
                     context = this,
                     adUnitId = adUnitId,
-                    failedRequest = {
+                    loadFailedRequest = {
                         FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_FAILED_4, adUnitId, it)
                         FireBaseManager.logEvent(FirebaseKey.AD_SHOW_FAILED_4, adUnitId, it)
                     },
-                    successRequest = {
+                    loadSuccessRequest = {
                         FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_4)
                     },
                     showSuccessRequest = {

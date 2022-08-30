@@ -115,8 +115,8 @@ object AdManager {
     fun loadBannerAd(
         context: Context,
         adUnitId: String,
-        failedRequest: (String) -> Unit = {},
-        successRequest: () -> Unit = {},
+        loadFailedRequest: (String) -> Unit = {},
+        loadSuccessRequest: () -> Unit = {},
         showSuccessRequest: () -> Unit = {},
         clickRequest: () -> Unit = {},
     ): AdView {
@@ -125,14 +125,14 @@ object AdManager {
         adView.setAdSize(AdSize.BANNER)
         val adRequest = AdRequest.Builder().build()
         adView.adListener = object : AdListener() {
-            override fun onAdLoaded() {
-                super.onAdLoaded()
-                successRequest()
+            override fun onAdFailedToLoad(p0: LoadAdError) {
+                super.onAdFailedToLoad(p0)
+                loadFailedRequest(p0.message)
             }
 
-            override fun onAdClicked() {
-                super.onAdClicked()
-                clickRequest()
+            override fun onAdLoaded() {
+                super.onAdLoaded()
+                loadSuccessRequest()
             }
 
             override fun onAdOpened() {
@@ -140,9 +140,9 @@ object AdManager {
                 showSuccessRequest()
             }
 
-            override fun onAdFailedToLoad(p0: LoadAdError) {
-                super.onAdFailedToLoad(p0)
-                failedRequest(p0.message)
+            override fun onAdClicked() {
+                super.onAdClicked()
+                clickRequest()
             }
         }
         adView.loadAd(adRequest)
