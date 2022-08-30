@@ -53,7 +53,6 @@ class MainActivity : AbstractActivity() {
 
     private fun initializeAdView() {
         try {
-            mainViewModel.loadNativeAd(this)
             if (AdSwitch.homeBanner) {
                 FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_4)
                 val adUnitId =

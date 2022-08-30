@@ -1,5 +1,6 @@
 package com.milk.funcall.user.ui.frag
 
+import android.annotation.SuppressLint
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -21,7 +22,6 @@ import com.milk.funcall.user.ui.adapter.HomeAdapter
 import com.milk.funcall.user.ui.vm.HomeViewModel
 import com.milk.simple.ktx.*
 import com.milk.simple.mdr.KvManger
-import kotlinx.coroutines.flow.collectLatest
 
 class HomeFragment : AbstractFragment() {
     private val binding by lazy { FragmentHomeBinding.inflate(layoutInflater) }
@@ -34,10 +34,15 @@ class HomeFragment : AbstractFragment() {
 
     override fun getRootView(): View = binding.root
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun initializeData() {
         super.initializeData()
         checkNewClientOnHome()
         loadingDialog.show()
+        homeViewModel.loadNativeAd(requireContext())
+        homeViewModel.loadNativeAdByTimer(requireContext()) {
+            adapter.notifyDataSetChanged()
+        }
         adapter.addRefreshedListener {
             loadingDialog.dismiss()
             binding.refresh.finishRefresh(1500)
@@ -57,12 +62,11 @@ class HomeFragment : AbstractFragment() {
                 }
             }
         }
-        mainViewModel.homePageAdLoadSuccess.collectLatest(this) { nativeAds ->
-            homeViewModel.firstHomePageAd = nativeAds[0]
-            homeViewModel.secondHomePageAd = nativeAds[1]
-            homeViewModel.thirdHomePageAd = nativeAds[2]
-            homeViewModel.pagingSource.flow
-                .collectLatest { adapter.submitData(it) }
+        homeViewModel.loadAdStatus.collectLatest(this) { status ->
+            if (status[0] && status[1] && status[2]) {
+                homeViewModel.pagingSource.flow
+                    .collectLatest(this) { adapter.submitData(it) }
+            }
         }
     }
 
@@ -100,7 +104,7 @@ class HomeFragment : AbstractFragment() {
             val user = adapter.getNoNullItem(position)
             if (user.targetId > 0)
                 UserInfoActivity.create(requireContext(), user.targetId)
-            else{
+            else {
 
             }
         }
