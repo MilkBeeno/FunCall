@@ -174,4 +174,22 @@ object FirebaseKey {
 
     /** 点击广告_个人主页查看更多照片插页广告 */
     const val CLICK_AD_5 = "click_ad_5"
+
+    /** 发起广告请求_个人主页查看联系方式激励视频 */
+    const val MAKE_AN_AD_REQUEST_6 = "Make_an_ad_request_6"
+
+    /** 广告请求成功_个人主页查看联系方式激励视频 */
+    const val AD_REQUEST_SUCCEEDED_6 = "Ad_request_succeeded_6"
+
+    /** 广告请求失败（需要统计原因）_个人主页查看联系方式激励视频 */
+    const val AD_REQUEST_FAILED_6 = "Ad_request_failed_6"
+
+    /** 广告展示成功_个人主页查看联系方式激励视频 */
+    const val THE_AD_SHOW_SUCCESS_6 = "The_ad_show_success_6"
+
+    /** 广告展示失败（需要统计原因）_个人主页查看联系方式激励视频 */
+    const val AD_SHOW_FAILED_6 = "Ad_show_failed_6"
+
+    /** 点击广告_个人主页查看联系方式激励视频 */
+    const val CLICK_AD_6 = "click_ad_6"
 }

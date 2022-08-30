@@ -9,14 +9,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.widget.LinearLayoutCompat
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.LoadAdError
-import com.google.android.gms.ads.rewarded.RewardedAd
-import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
 import com.milk.funcall.account.Account
 import com.milk.funcall.ad.AdConfig
+import com.milk.funcall.ad.AdManager
 import com.milk.funcall.ad.AdSwitch
 import com.milk.funcall.ad.constant.AdCodeKey
 import com.milk.funcall.chat.ui.act.ChatMessageActivity
@@ -70,7 +67,8 @@ class UserInfoActivity : AbstractActivity() {
             userInfoViewModel.loadImageAd(
                 activity = this,
                 failure = {
-                    loadingDialog.dismiss() },
+                    loadingDialog.dismiss()
+                },
                 success = {
                     loadingDialog.dismiss()
                     binding.mlImage.gone()
@@ -264,23 +262,34 @@ class UserInfoActivity : AbstractActivity() {
             val unitId =
                 AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_LINK)
             loadingDialog.show()
-            val adRequest = AdRequest.Builder().build()
-            RewardedAd.load(this, unitId, adRequest,
-                object : RewardedAdLoadCallback() {
-                    override fun onAdFailedToLoad(p0: LoadAdError) {
-                        super.onAdFailedToLoad(p0)
+            FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_6)
+            AdManager.loadIncentiveVideoAd(
+                context = this,
+                adUnitId = unitId,
+                failedRequest = {
+                    FireBaseManager
+                        .logEvent(FirebaseKey.AD_REQUEST_FAILED_6, unitId, it)
+                    loadingDialog.dismiss()
+                },
+                successRequest = {
+                    FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_6)
+                    it.show(this@UserInfoActivity) {
                         loadingDialog.dismiss()
+                        binding.link.flLinkLocked.gone()
+                        userInfoViewModel.hasViewedLink = true
                     }
-
-                    override fun onAdLoaded(p0: RewardedAd) {
-                        super.onAdLoaded(p0)
-                        p0.show(this@UserInfoActivity) {
-                            loadingDialog.dismiss()
-                            binding.link.flLinkLocked.gone()
-                            userInfoViewModel.hasViewedLink = true
-                        }
-                    }
-                })
+                },
+                showFailedRequest = {
+                    FireBaseManager
+                        .logEvent(FirebaseKey.AD_SHOW_FAILED_6, unitId, it)
+                },
+                showSuccessRequest = {
+                    FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_6)
+                },
+                clickRequest = {
+                    FireBaseManager.logEvent(FirebaseKey.CLICK_AD_6)
+                }
+            )
         } catch (e: Exception) {
             e.printStackTrace()
         }

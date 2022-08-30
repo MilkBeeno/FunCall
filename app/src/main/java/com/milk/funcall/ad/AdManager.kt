@@ -6,6 +6,8 @@ import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.gms.ads.nativead.NativeAd
+import com.google.android.gms.ads.rewarded.RewardedAd
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.milk.funcall.BuildConfig
 import com.milk.funcall.ad.constant.AdCodeKey
 
@@ -109,6 +111,7 @@ object AdManager {
         adLoader.loadAd(AdRequest.Builder().build())
     }
 
+    /** 查看横幅广告 */
     fun loadBannerAd(
         context: Context,
         adUnitId: String,
@@ -144,5 +147,46 @@ object AdManager {
         }
         adView.loadAd(adRequest)
         return adView
+    }
+
+    fun loadIncentiveVideoAd(
+        context: Context,
+        adUnitId: String,
+        failedRequest: (String) -> Unit = {},
+        successRequest: (RewardedAd) -> Unit = {},
+        showFailedRequest: (String) -> Unit = {},
+        showSuccessRequest: () -> Unit = {},
+        clickRequest: () -> Unit = {},
+    ) {
+        val adRequest = AdRequest.Builder().build()
+        val fullScreenContentCallback = object : FullScreenContentCallback() {
+            override fun onAdFailedToShowFullScreenContent(p0: AdError) {
+                super.onAdFailedToShowFullScreenContent(p0)
+                showFailedRequest(p0.message)
+            }
+
+            override fun onAdShowedFullScreenContent() {
+                super.onAdShowedFullScreenContent()
+                showSuccessRequest()
+            }
+
+            override fun onAdClicked() {
+                super.onAdClicked()
+                clickRequest()
+            }
+        }
+        RewardedAd.load(context, adUnitId, adRequest,
+            object : RewardedAdLoadCallback() {
+                override fun onAdFailedToLoad(p0: LoadAdError) {
+                    super.onAdFailedToLoad(p0)
+                    failedRequest(p0.message)
+                }
+
+                override fun onAdLoaded(p0: RewardedAd) {
+                    super.onAdLoaded(p0)
+                    p0.fullScreenContentCallback = fullScreenContentCallback
+                    successRequest(p0)
+                }
+            })
     }
 }
