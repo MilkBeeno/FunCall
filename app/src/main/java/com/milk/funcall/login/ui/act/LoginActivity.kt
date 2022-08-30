@@ -46,6 +46,7 @@ class LoginActivity : AbstractActivity() {
     }
 
     private fun initializeView() {
+        FireBaseManager.logEvent(FirebaseKey.OPEN_LOGINS_PAGE)
         immersiveStatusBar()
         binding.root.navigationBarPadding()
         binding.llGoogle.setOnClickListener(this)

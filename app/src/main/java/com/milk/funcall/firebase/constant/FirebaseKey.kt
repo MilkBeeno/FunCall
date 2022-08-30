@@ -210,4 +210,7 @@ object FirebaseKey {
 
     /** 点击广告_个人主页查看联系方式激励视频 */
     const val CLICK_AD_6 = "click_ad_6"
+
+    /** 进入登录页面 */
+    const val OPEN_LOGINS_PAGE = "open_logins_page"
 }
