@@ -112,6 +112,12 @@ object FirebaseKey {
     /** 广告请求失败（需要统计原因）_首页瀑布流原生广告 */
     const val AD_REQUEST_FAILED_1 = "Ad_request_failed_1"
 
+    /** 广告展示成功_首页瀑布流原生广告 */
+    const val THE_AD_SHOW_SUCCESS_1 = "The_ad_show_success_1"
+
+    /** 广告展示失败（需要统计原因）_首页瀑布流原生广告 */
+    const val AD_SHOW_FAILED_1 = "Ad_show_failed_1"
+
     /** 点击广告位_首页瀑布流原生广告 */
     const val CLICK_AD_1 = "click_ad_1"
 
@@ -124,6 +130,12 @@ object FirebaseKey {
     /** 广告请求失败（需要统计原因）_首页瀑布流原生广告-2 */
     const val AD_REQUEST_FAILED_2 = "Ad_request_failed_2"
 
+    /** 广告展示成功_首页瀑布流原生广告-2 */
+    const val THE_AD_SHOW_SUCCESS_2 = "The_ad_show_success_2"
+
+    /** 广告展示失败（需要统计原因）_首页瀑布流原生广告-2 */
+    const val AD_SHOW_FAILED_2 = "Ad_show_failed_2"
+
     /** 点击广告位_首页瀑布流原生广告-2 */
     const val CLICK_AD_2 = "click_ad_2"
 
@@ -135,6 +147,12 @@ object FirebaseKey {
 
     /** 广告请求失败（需要统计原因）_首页瀑布流原生广告-3 */
     const val Ad_request_failed_3 = "Ad_request_failed_3"
+
+    /** 广告展示成功_首页瀑布流原生广告-3 */
+    const val THE_AD_SHOW_SUCCESS_3 = "The_ad_show_success_3"
+
+    /** 广告展示失败（需要统计原因）_首页瀑布流原生广告-3 */
+    const val AD_SHOW_FAILED_3 = "Ad_show_failed_3"
 
     /** 点击广告位_首页瀑布流原生广告-3 */
     const val CLICK_AD_3 = "click_ad_3"

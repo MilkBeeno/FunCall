@@ -39,13 +39,19 @@ class MainViewModel : ViewModel() {
                 AdManager.loadNativeAds(
                     context = context,
                     adUnitId = adUnitId,
-                    failedRequest = {
-                        FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_FAILED_1, adUnitId, it)
+                    loadFailedRequest = {
+                        FireBaseManager
+                            .logEvent(FirebaseKey.AD_REQUEST_FAILED_1, adUnitId, it)
+                        FireBaseManager
+                            .logEvent(FirebaseKey.AD_SHOW_FAILED_1, adUnitId, it)
                         ioScope { firstHomePageAd.emit(null) }
                     },
-                    successRequest = {
+                    loadSuccessRequest = {
                         FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_1)
                         ioScope { firstHomePageAd.emit(it) }
+                    },
+                    showSuccessRequest = {
+                        FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_1)
                     },
                     clickRequest = {
                         FireBaseManager.logEvent(FirebaseKey.CLICK_AD_1)
@@ -66,13 +72,19 @@ class MainViewModel : ViewModel() {
                 AdManager.loadNativeAds(
                     context = context,
                     adUnitId = adUnitId,
-                    failedRequest = {
-                        FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_FAILED_2, adUnitId, it)
+                    loadFailedRequest = {
+                        FireBaseManager
+                            .logEvent(FirebaseKey.AD_REQUEST_FAILED_2, adUnitId, it)
+                        FireBaseManager
+                            .logEvent(FirebaseKey.AD_SHOW_FAILED_2, adUnitId, it)
                         ioScope { secondHomePageAd.emit(null) }
                     },
-                    successRequest = {
+                    loadSuccessRequest = {
                         FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_2)
                         ioScope { secondHomePageAd.emit(it) }
+                    },
+                    showSuccessRequest = {
+                        FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_2)
                     },
                     clickRequest = {
                         FireBaseManager.logEvent(FirebaseKey.CLICK_AD_2)
@@ -93,13 +105,19 @@ class MainViewModel : ViewModel() {
                 AdManager.loadNativeAds(
                     context = context,
                     adUnitId = adUnitId,
-                    failedRequest = {
-                        FireBaseManager.logEvent(FirebaseKey.Ad_request_failed_3, adUnitId, it)
+                    loadFailedRequest = {
+                        FireBaseManager
+                            .logEvent(FirebaseKey.Ad_request_failed_3, adUnitId, it)
+                        FireBaseManager
+                            .logEvent(FirebaseKey.AD_SHOW_FAILED_3, adUnitId, it)
                         ioScope { thirdHomePageAd.emit(null) }
                     },
-                    successRequest = {
+                    loadSuccessRequest = {
                         FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_3)
                         ioScope { thirdHomePageAd.emit(it) }
+                    },
+                    showSuccessRequest = {
+                        FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_3)
                     },
                     clickRequest = {
                         FireBaseManager.logEvent(FirebaseKey.CLICK_AD_3)

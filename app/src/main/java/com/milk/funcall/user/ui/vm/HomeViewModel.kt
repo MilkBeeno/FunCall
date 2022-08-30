@@ -9,7 +9,6 @@ import com.milk.funcall.common.paging.NetworkPagingSource
 import com.milk.funcall.user.data.UserSimpleInfoModel
 import com.milk.funcall.user.repo.HomeRepository
 import com.milk.funcall.user.type.AdType
-import com.milk.simple.log.Logger
 
 class HomeViewModel : ViewModel() {
     private val homeRepository by lazy { HomeRepository() }
@@ -51,12 +50,6 @@ class HomeViewModel : ViewModel() {
             homeAdSpaceCount(
                 homeType = homeAdType(),
                 four = { space ->
-                    Logger.d(
-                        "firstHomePageAd=$firstHomePageAd," +
-                                "secondHomePageAd=$secondHomePageAd," +
-                                "thirdHomePageAd=$thirdHomePageAd",
-                        "HomeViewModel"
-                    )
                     // nextPositionSpace 默认值是 3 表示列表的第四个位置
                     if (apiResult.size >= nextPositionSpace) {
                         lastAddNativeAd = when (lastAddNativeAd) {
@@ -67,7 +60,6 @@ class HomeViewModel : ViewModel() {
                         val userSimpleInfoModel =
                             UserSimpleInfoModel(nativeAd = lastAddNativeAd)
                         apiResult.add(nextPositionSpace, userSimpleInfoModel)
-                        Logger.d("当前AD是=$lastAddNativeAd", "HomeViewModel")
                     }
                     if (apiResult.size >= nextPositionSpace + space) {
                         lastAddNativeAd = when (lastAddNativeAd) {
@@ -78,7 +70,6 @@ class HomeViewModel : ViewModel() {
                         val userSimpleInfoModel =
                             UserSimpleInfoModel(nativeAd = lastAddNativeAd)
                         apiResult.add(nextPositionSpace + space, userSimpleInfoModel)
-                        Logger.d("当前AD是=$lastAddNativeAd", "HomeViewModel")
                     }
                     if (apiResult.size >= nextPositionSpace + 2 * space) {
                         lastAddNativeAd = when (lastAddNativeAd) {
@@ -90,7 +81,6 @@ class HomeViewModel : ViewModel() {
                             UserSimpleInfoModel(nativeAd = lastAddNativeAd)
                         apiResult.add(nextPositionSpace + 2 * space, userSimpleInfoModel)
                         nextPositionSpace += 3 * space - apiResult.size
-                        Logger.d("当前AD是=$lastAddNativeAd", "HomeViewModel")
                     } else nextPositionSpace += 2 * space - apiResult.size
                 },
                 eight = { space ->

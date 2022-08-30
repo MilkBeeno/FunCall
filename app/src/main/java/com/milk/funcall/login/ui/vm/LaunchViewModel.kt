@@ -35,17 +35,17 @@ class LaunchViewModel : ViewModel() {
                     AdLoadType.Success -> {
                         AdManager.showInterstitial(
                             activity = activity,
-                            failedRequest = {
+                            showFailedRequest = {
                                 FireBaseManager.logEvent(FirebaseKey.AD_SHOW_FAILED)
                                 finished()
                             },
-                            successRequest = {
+                            showSuccessRequest = {
                                 FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS)
                             },
                             clickRequest = {
                                 FireBaseManager.logEvent(FirebaseKey.CLICK_AD)
                             },
-                            finishedRequest = {
+                            showFinishedRequest = {
                                 finished()
                             })
                     }
@@ -58,12 +58,12 @@ class LaunchViewModel : ViewModel() {
             if (adUnitId.isNotBlank()) {
                 FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST)
                 AdManager.loadInterstitial(activity, adUnitId,
-                    failedRequest = {
+                    loadFailedRequest = {
                         FireBaseManager
                             .logEvent(FirebaseKey.AD_REQUEST_FAILED, adUnitId, it)
                         adLoadStatus = AdLoadType.Failure
                     },
-                    successRequest = {
+                    loadSuccessRequest = {
                         FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED)
                         adLoadStatus = AdLoadType.Success
                     })
