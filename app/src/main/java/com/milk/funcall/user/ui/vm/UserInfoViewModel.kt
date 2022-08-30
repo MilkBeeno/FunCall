@@ -6,6 +6,8 @@ import com.milk.funcall.ad.AdConfig
 import com.milk.funcall.ad.AdManager
 import com.milk.funcall.ad.constant.AdCodeKey
 import com.milk.funcall.common.constrant.KvKey
+import com.milk.funcall.firebase.FireBaseManager
+import com.milk.funcall.firebase.constant.FirebaseKey
 import com.milk.funcall.user.data.UserInfoModel
 import com.milk.funcall.user.repo.UserInfoRepository
 import com.milk.funcall.user.ui.act.UserInfoActivity
@@ -90,6 +92,7 @@ class UserInfoViewModel : ViewModel() {
     ) {
         if (adIsLoading) return
         adIsLoading = true
+        FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_5)
         val adUnitId =
             AdConfig.getAdvertiseUnitId(AdCodeKey.APP_START)
         if (adUnitId.isNotBlank())
@@ -97,16 +100,25 @@ class UserInfoViewModel : ViewModel() {
                 context = activity,
                 adUnitId = adUnitId,
                 failedRequest = {
+                    FireBaseManager
+                        .logEvent(FirebaseKey.AD_REQUEST_FAILED_5, adUnitId, it)
                     failure()
                     adIsLoading = false
                 },
                 successRequest = {
+                    FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_5)
                     AdManager.showInterstitial(
                         activity = activity,
                         failedRequest = { error ->
+                            FireBaseManager
+                                .logEvent(FirebaseKey.AD_SHOW_FAILED_5, adUnitId, error)
                             failure()
                         },
                         successRequest = {
+                            FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_5)
+                        },
+                        clickRequest = {
+                            FireBaseManager.logEvent(FirebaseKey.CLICK_AD_5)
                         },
                         finishedRequest = {
                             success()

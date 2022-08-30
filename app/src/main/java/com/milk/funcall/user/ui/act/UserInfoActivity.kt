@@ -69,7 +69,8 @@ class UserInfoActivity : AbstractActivity() {
             loadingDialog.show()
             userInfoViewModel.loadImageAd(
                 activity = this,
-                failure = { loadingDialog.dismiss() },
+                failure = {
+                    loadingDialog.dismiss() },
                 success = {
                     loadingDialog.dismiss()
                     binding.mlImage.gone()

@@ -59,7 +59,8 @@ class LaunchViewModel : ViewModel() {
                 FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST)
                 AdManager.loadInterstitial(activity, adUnitId,
                     failedRequest = {
-                        FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_FAILED)
+                        FireBaseManager
+                            .logEvent(FirebaseKey.AD_REQUEST_FAILED, adUnitId, it)
                         adLoadStatus = AdLoadType.Failure
                     },
                     successRequest = {

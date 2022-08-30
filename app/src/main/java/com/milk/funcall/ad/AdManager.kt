@@ -29,20 +29,20 @@ object AdManager {
     fun loadInterstitial(
         context: Context,
         adUnitId: String,
-        failedRequest: () -> Unit = {},
-        successRequest: (String) -> Unit = {}
+        failedRequest: (String) -> Unit = {},
+        successRequest: () -> Unit = {}
     ) {
         val adRequest = AdRequest.Builder().build()
         InterstitialAd.load(context, adUnitId, adRequest,
             object : InterstitialAdLoadCallback() {
                 override fun onAdFailedToLoad(adError: LoadAdError) {
                     interstitialAd = null
-                    failedRequest()
+                    failedRequest(adError.message)
                 }
 
                 override fun onAdLoaded(interstitialAd: InterstitialAd) {
                     AdManager.interstitialAd = interstitialAd
-                    successRequest(adUnitId)
+                    successRequest()
                 }
             })
     }
