@@ -37,9 +37,7 @@ class HomeFragment : AbstractFragment() {
         checkNewClientOnHome()
         loadingDialog.show()
         homeViewModel.loadNativeAd(requireContext())
-        homeViewModel.loadNativeAdByTimer(requireContext()) {
-            adapter.notifyDataSetChanged()
-        }
+        homeViewModel.loadNativeAdByTimer(requireContext())
         adapter.addRefreshedListener {
             loadingDialog.dismiss()
             binding.refresh.finishRefresh(1500)
@@ -60,10 +58,11 @@ class HomeFragment : AbstractFragment() {
             }
         }
         homeViewModel.loadAdStatus.collectLatest(this) { status ->
-            if (status[0] && status[1] && status[2]) {
+            if (status[0] && status[1] && status[2])
                 homeViewModel.pagingSource.flow
                     .collectLatest(this) { adapter.submitData(it) }
-            }
+            else
+                adapter.notifyDataSetChanged()
         }
     }
 

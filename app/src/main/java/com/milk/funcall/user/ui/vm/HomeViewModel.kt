@@ -59,7 +59,7 @@ class HomeViewModel : ViewModel() {
         getThirdHomePageAd(context, true)
     }
 
-    internal fun loadNativeAdByTimer(context: Context, finishRequest: () -> Unit) {
+    internal fun loadNativeAdByTimer(context: Context) {
         MilkTimer.Builder()
             .setMillisInFuture(30000)
             .setCountDownInterval(1000)
@@ -67,8 +67,7 @@ class HomeViewModel : ViewModel() {
                 getFirstHomePageAd(context, false)
                 getSecondHomePageAd(context, false)
                 getThirdHomePageAd(context, false)
-                finishRequest()
-                loadNativeAdByTimer(context, finishRequest)
+                loadNativeAdByTimer(context)
             }.build().start()
     }
 
@@ -234,12 +233,12 @@ class HomeViewModel : ViewModel() {
                         FireBaseManager
                             .logEvent(FirebaseKey.AD_SHOW_FAILED_1, adUnitId, it)
                         firstHomePageAd = null
-                        if (isFirstLoad) ioScope { loadFirstAd.emit(true) }
+                        ioScope { loadFirstAd.emit(isFirstLoad) }
                     },
                     loadSuccessRequest = {
                         FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_1)
                         firstHomePageAd = it
-                        if (isFirstLoad) ioScope { loadFirstAd.emit(true) }
+                        ioScope { loadFirstAd.emit(isFirstLoad) }
                     },
                     showSuccessRequest = {
                         FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_1)
@@ -249,7 +248,7 @@ class HomeViewModel : ViewModel() {
                     })
             else {
                 delay(500)
-                loadFirstAd.emit(true)
+                loadFirstAd.emit(isFirstLoad)
             }
         }
     }
@@ -269,12 +268,12 @@ class HomeViewModel : ViewModel() {
                         FireBaseManager
                             .logEvent(FirebaseKey.AD_SHOW_FAILED_2, adUnitId, it)
                         secondHomePageAd = null
-                        if (isFirstLoad) ioScope { loadSecondAd.emit(true) }
+                        ioScope { loadSecondAd.emit(isFirstLoad) }
                     },
                     loadSuccessRequest = {
                         FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_2)
                         secondHomePageAd = it
-                        if (isFirstLoad) ioScope { loadSecondAd.emit(true) }
+                        ioScope { loadSecondAd.emit(isFirstLoad) }
                     },
                     showSuccessRequest = {
                         FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_2)
@@ -284,7 +283,7 @@ class HomeViewModel : ViewModel() {
                     })
             else {
                 delay(500)
-                loadSecondAd.emit(true)
+                loadSecondAd.emit(isFirstLoad)
             }
         }
     }
@@ -304,12 +303,12 @@ class HomeViewModel : ViewModel() {
                         FireBaseManager
                             .logEvent(FirebaseKey.AD_SHOW_FAILED_3, adUnitId, it)
                         thirdHomePageAd = null
-                        if (isFirstLoad) ioScope { loadThirdAd.emit(true) }
+                        ioScope { loadThirdAd.emit(isFirstLoad) }
                     },
                     loadSuccessRequest = {
                         FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_3)
                         thirdHomePageAd = it
-                        if (isFirstLoad) ioScope { loadThirdAd.emit(true) }
+                        ioScope { loadThirdAd.emit(isFirstLoad) }
                     },
                     showSuccessRequest = {
                         FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_3)
@@ -319,7 +318,7 @@ class HomeViewModel : ViewModel() {
                     })
             else {
                 delay(500)
-                loadThirdAd.emit(true)
+                loadThirdAd.emit(isFirstLoad)
             }
         }
     }
