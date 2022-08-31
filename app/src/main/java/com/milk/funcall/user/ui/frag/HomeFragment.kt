@@ -2,12 +2,10 @@ package com.milk.funcall.user.ui.frag
 
 import android.annotation.SuppressLint
 import android.view.View
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
-import com.milk.funcall.app.ui.MainViewModel
 import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.common.paging.StaggeredGridDecoration
@@ -25,7 +23,6 @@ import com.milk.simple.mdr.KvManger
 
 class HomeFragment : AbstractFragment() {
     private val binding by lazy { FragmentHomeBinding.inflate(layoutInflater) }
-    private val mainViewModel by activityViewModels<MainViewModel>()
     private val homeViewModel by viewModels<HomeViewModel>()
     private val adapter by lazy { HomeAdapter() }
     private val loadingDialog by lazy {
