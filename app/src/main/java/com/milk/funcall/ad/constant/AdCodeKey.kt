@@ -19,10 +19,10 @@ object AdCodeKey {
     /** 第三个首页瀑布流原生广告 */
     internal const val HOME_LIST_THIRD = "87654328"
 
-    /** 个人主页查看用户视频激励视频  */
+    /** 个人主页查看用户视频插页广告  */
     internal const val VIEW_USER_VIDEO = "87654324"
 
-    /** 个人主页查看用户视频激励视频  */
+    /** 个人主页查看更多照片插页广告  */
     internal const val VIEW_USER_IMAGE = "87654325"
 
     /** 首页底部的横幅广告  */

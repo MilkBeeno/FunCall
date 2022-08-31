@@ -94,7 +94,7 @@ class UserInfoViewModel : ViewModel() {
         adIsLoading = true
         FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_5)
         val adUnitId =
-            AdConfig.getAdvertiseUnitId(AdCodeKey.APP_START)
+            AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_IMAGE)
         if (adUnitId.isNotBlank())
             AdManager.loadInterstitial(
                 context = activity,
