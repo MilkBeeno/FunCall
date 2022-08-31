@@ -31,6 +31,7 @@ import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.user.data.UserInfoModel
 import com.milk.funcall.user.ui.adapter.UserImageAdapter
 import com.milk.funcall.user.ui.dialog.ViewAdDialog
+import com.milk.funcall.user.ui.dialog.ViewLinkDialog
 import com.milk.funcall.user.ui.vm.UserInfoViewModel
 import com.milk.simple.ktx.*
 
@@ -40,6 +41,7 @@ class UserInfoActivity : AbstractActivity() {
     private val userId by lazy { intent.getLongExtra(USER_ID, 0) }
     private val loadingDialog by lazy { LoadingDialog(this, string(R.string.common_loading)) }
     private val viewAdDialog by lazy { ViewAdDialog(this) }
+    private val viewLinkDialog by lazy { ViewLinkDialog(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,18 +64,7 @@ class UserInfoActivity : AbstractActivity() {
         binding.mlImage.setOnClickListener(this)
         binding.link.flLinkLocked.setOnClickListener(this)
         binding.link.llViewLink.setOnClickListener(this)
-        binding.mlImage.setOnClickRequest {
-            loadingDialog.show()
-            userInfoViewModel.loadImageAd(
-                activity = this,
-                failure = {
-                    loadingDialog.dismiss()
-                },
-                success = {
-                    loadingDialog.dismiss()
-                    binding.mlImage.gone()
-                })
-        }
+        binding.mlImage.setOnClickRequest { loadImageAd() }
     }
 
     private fun initializeObserver() {
@@ -250,7 +241,8 @@ class UserInfoActivity : AbstractActivity() {
                 } else {
                     FireBaseManager
                         .logEvent(FirebaseKey.SHOW_FIRST_UNLOCK_VIDEO_OR_PICTURE)
-                    showToast(string(R.string.user_info_please_view_video_or_image))
+                    viewLinkDialog.show()
+                    viewLinkDialog.setOnConfirmRequest { loadImageAd() }
                 }
             }
         }
@@ -291,6 +283,20 @@ class UserInfoActivity : AbstractActivity() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    /** 获取个人相册插页广告 */
+    private fun loadImageAd() {
+        loadingDialog.show()
+        userInfoViewModel.loadImageAd(
+            activity = this,
+            failure = {
+                loadingDialog.dismiss()
+            },
+            success = {
+                loadingDialog.dismiss()
+                binding.mlImage.gone()
+            })
     }
 
     companion object {

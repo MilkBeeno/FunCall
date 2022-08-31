@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivClose"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="43dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="188dp"
+            android:padding="7dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/login_max_client_number"
+            app:layout_constraintBottom_toTopOf="@+id/llContent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/llContent"
+            android:layout_width="match_parent"
+            android:layout_height="175dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="29dp"
+            android:layout_marginEnd="29dp"
+            android:background="@drawable/user_info_view_ad_background"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="61dp"
+                android:text="@string/user_info_please_view_video_or_image"
+                android:textColor="@color/FF1E1E21"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvConfirm"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="35dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/shape_common_next_background"
+                android:gravity="center"
+                android:text="@string/common_confirm"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="144dp"
+            android:layout_height="132dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="124dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/user_info_view_ad"
+            app:layout_constraintBottom_toBottomOf="@+id/llContent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
