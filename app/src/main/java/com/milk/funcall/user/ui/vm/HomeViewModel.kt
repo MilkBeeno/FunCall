@@ -16,7 +16,7 @@ import com.milk.funcall.firebase.FireBaseManager
 import com.milk.funcall.firebase.constant.FirebaseKey
 import com.milk.funcall.user.data.UserSimpleInfoModel
 import com.milk.funcall.user.repo.HomeRepository
-import com.milk.funcall.user.type.AdType
+import com.milk.funcall.user.type.ItemAdType
 import com.milk.simple.ktx.ioScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -34,13 +34,11 @@ class HomeViewModel : ViewModel() {
     private var groupNumber: Int = 0
     private var nextPositionSpace = 3
 
-    // 只有两个广告时保存广告信息
-    private var homePageAds = Pair<NativeAd?, NativeAd?>(null, null)
-    private var lastAddNativeAd: NativeAd? = null
-
-    private var firstHomePageAd: NativeAd? = null
-    private var secondHomePageAd: NativeAd? = null
-    private var thirdHomePageAd: NativeAd? = null
+    // 当前三个广告实例
+    internal var firstHomePageAd: NativeAd? = null
+    internal var secondHomePageAd: NativeAd? = null
+    internal var thirdHomePageAd: NativeAd? = null
+    private var lastAddItemAdType: ItemAdType = ItemAdType.Null
 
     internal val pagingSource = Pager(
         PagingConfig(
@@ -85,71 +83,65 @@ class HomeViewModel : ViewModel() {
                 }
             }
             // 广告插入处理
-            homeAdSpaceCount(
-                homeType = homeAdType(),
+            addAdToHomeList(
                 four = { space ->
                     // nextPositionSpace 默认值是 3 表示列表的第四个位置
                     if (apiResult.size >= nextPositionSpace) {
-                        lastAddNativeAd = when (lastAddNativeAd) {
-                            firstHomePageAd -> secondHomePageAd
-                            secondHomePageAd -> thirdHomePageAd
-                            else -> firstHomePageAd
+                        lastAddItemAdType = when (lastAddItemAdType) {
+                            ItemAdType.FirstAd -> ItemAdType.SecondAd
+                            ItemAdType.SecondAd -> ItemAdType.ThirdAd
+                            else -> ItemAdType.FirstAd
                         }
                         val userSimpleInfoModel =
-                            UserSimpleInfoModel(nativeAd = lastAddNativeAd)
+                            UserSimpleInfoModel(itemAdType = lastAddItemAdType)
                         apiResult.add(nextPositionSpace, userSimpleInfoModel)
                     }
                     if (apiResult.size >= nextPositionSpace + space) {
-                        lastAddNativeAd = when (lastAddNativeAd) {
-                            firstHomePageAd -> secondHomePageAd
-                            secondHomePageAd -> thirdHomePageAd
-                            else -> firstHomePageAd
+                        lastAddItemAdType = when (lastAddItemAdType) {
+                            ItemAdType.FirstAd -> ItemAdType.SecondAd
+                            ItemAdType.SecondAd -> ItemAdType.ThirdAd
+                            else -> ItemAdType.FirstAd
                         }
                         val userSimpleInfoModel =
-                            UserSimpleInfoModel(nativeAd = lastAddNativeAd)
+                            UserSimpleInfoModel(itemAdType = lastAddItemAdType)
                         apiResult.add(nextPositionSpace + space, userSimpleInfoModel)
                     }
                     if (apiResult.size >= nextPositionSpace + 2 * space) {
-                        lastAddNativeAd = when (lastAddNativeAd) {
-                            firstHomePageAd -> secondHomePageAd
-                            secondHomePageAd -> thirdHomePageAd
-                            else -> firstHomePageAd
+                        lastAddItemAdType = when (lastAddItemAdType) {
+                            ItemAdType.FirstAd -> ItemAdType.SecondAd
+                            ItemAdType.SecondAd -> ItemAdType.ThirdAd
+                            else -> ItemAdType.FirstAd
                         }
                         val userSimpleInfoModel =
-                            UserSimpleInfoModel(nativeAd = lastAddNativeAd)
+                            UserSimpleInfoModel(itemAdType = lastAddItemAdType)
                         apiResult.add(nextPositionSpace + 2 * space, userSimpleInfoModel)
                         nextPositionSpace += 3 * space - apiResult.size
                     } else nextPositionSpace += 2 * space - apiResult.size
                 },
-                eight = { space ->
+                eight = { space, pair ->
                     if (apiResult.size > nextPositionSpace) {
-                        lastAddNativeAd = when (lastAddNativeAd) {
-                            homePageAds.first -> homePageAds.second
-                            else -> homePageAds.first
+                        lastAddItemAdType = when (lastAddItemAdType) {
+                            pair.first -> pair.second
+                            else -> pair.first
                         }
                         val userSimpleInfoModel =
-                            UserSimpleInfoModel(nativeAd = lastAddNativeAd)
+                            UserSimpleInfoModel(itemAdType = lastAddItemAdType)
                         apiResult.add(nextPositionSpace, userSimpleInfoModel)
                     }
                     if (apiResult.size > nextPositionSpace + space) {
-                        lastAddNativeAd = when (lastAddNativeAd) {
-                            homePageAds.first -> homePageAds.second
-                            else -> homePageAds.first
+                        lastAddItemAdType = when (lastAddItemAdType) {
+                            pair.first -> pair.second
+                            else -> pair.first
                         }
                         val userSimpleInfoModel =
-                            UserSimpleInfoModel(nativeAd = lastAddNativeAd)
+                            UserSimpleInfoModel(itemAdType = lastAddItemAdType)
                         apiResult.add(nextPositionSpace + space, userSimpleInfoModel)
                         nextPositionSpace += 2 * space - apiResult.size
                     } else nextPositionSpace += space - apiResult.size
                 },
-                twelve = { space ->
+                twelve = { space, item ->
                     if (apiResult.size > nextPositionSpace) {
-                        val nativeAd = when {
-                            firstHomePageAd != null -> firstHomePageAd
-                            secondHomePageAd != null -> secondHomePageAd
-                            else -> thirdHomePageAd
-                        }
-                        val userSimpleInfoModel = UserSimpleInfoModel(nativeAd = nativeAd)
+                        val userSimpleInfoModel = UserSimpleInfoModel(itemAdType = item)
                         apiResult.add(nextPositionSpace, userSimpleInfoModel)
                         nextPositionSpace += space - apiResult.size
                     } else nextPositionSpace %= 8
@@ -162,59 +154,38 @@ class HomeViewModel : ViewModel() {
         )
     }
 
-    /** 广告间隔位置的数量 */
-    private fun homeAdSpaceCount(
-        homeType: AdType,
+    /** 1.只有一个广告时相隔 12 个位置 2.只有两个广告时相隔 8 个位置 3.三个广告时想隔 4 个位置 */
+    private fun addAdToHomeList(
         four: (Int) -> Unit,
-        eight: (Int) -> Unit,
-        twelve: (Int) -> Unit
+        eight: (Int, Pair<ItemAdType, ItemAdType>) -> Unit,
+        twelve: (Int, ItemAdType) -> Unit
     ) {
-        when (homeType) {
-            AdType.All -> four(4)
-            AdType.FirstAndSecond -> {
-                homePageAds = Pair(firstHomePageAd, secondHomePageAd)
-                eight(8)
-            }
-            AdType.FirstAndThird -> {
-                homePageAds = Pair(firstHomePageAd, thirdHomePageAd)
-                eight(8)
-            }
-            AdType.SecondAndThird -> {
-                homePageAds = Pair(secondHomePageAd, thirdHomePageAd)
-                eight(8)
-            }
-            AdType.First,
-            AdType.Second,
-            AdType.Third -> twelve(12)
-            else -> Unit
-        }
-    }
-
-    /** 按照需求定位：1.只有一个广告时相隔 12 个位置 2.只有两个广告时相隔 8 个位置 3.三个广告时想隔 4 个位置 */
-    private fun homeAdType(): AdType {
-        return when {
+        when {
             firstHomePageAd != null
                     && secondHomePageAd != null
-                    && thirdHomePageAd != null -> AdType.All
+                    && thirdHomePageAd != null -> four(4)
             firstHomePageAd != null
                     && secondHomePageAd != null
-                    && thirdHomePageAd == null -> AdType.FirstAndSecond
+                    && thirdHomePageAd == null ->
+                eight(8, Pair(ItemAdType.FirstAd, ItemAdType.SecondAd))
             firstHomePageAd != null
                     && thirdHomePageAd != null
-                    && secondHomePageAd == null -> AdType.FirstAndThird
+                    && secondHomePageAd == null ->
+                eight(8, Pair(ItemAdType.FirstAd, ItemAdType.ThirdAd))
             secondHomePageAd != null
                     && thirdHomePageAd != null
-                    && firstHomePageAd == null -> AdType.SecondAndThird
+                    && firstHomePageAd == null ->
+                eight(8, Pair(ItemAdType.SecondAd, ItemAdType.ThirdAd))
             firstHomePageAd != null
                     && secondHomePageAd == null
-                    && thirdHomePageAd == null -> AdType.First
+                    && thirdHomePageAd == null -> twelve(12, ItemAdType.FirstAd)
             secondHomePageAd != null
                     && firstHomePageAd == null
-                    && thirdHomePageAd == null -> AdType.Second
+                    && thirdHomePageAd == null -> twelve(12, ItemAdType.SecondAd)
             thirdHomePageAd != null
                     && firstHomePageAd == null
-                    && secondHomePageAd == null -> AdType.Third
-            else -> AdType.Null
+                    && secondHomePageAd == null -> twelve(12, ItemAdType.ThirdAd)
+            else -> Unit
         }
     }
 

@@ -58,6 +58,9 @@ class HomeFragment : AbstractFragment() {
             }
         }
         homeViewModel.loadAdStatus.collectLatest(this) { status ->
+            adapter.firstHomePageAd = homeViewModel.firstHomePageAd
+            adapter.secondHomePageAd = homeViewModel.secondHomePageAd
+            adapter.thirdHomePageAd = homeViewModel.thirdHomePageAd
             if (status[0] && status[1] && status[2])
                 homeViewModel.pagingSource.flow
                     .collectLatest(this) { adapter.submitData(it) }

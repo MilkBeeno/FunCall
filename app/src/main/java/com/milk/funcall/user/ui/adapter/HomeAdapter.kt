@@ -4,6 +4,7 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.DiffUtil
+import com.google.android.gms.ads.nativead.NativeAd
 import com.milk.funcall.R
 import com.milk.funcall.ad.ui.HomeAdLayout
 import com.milk.funcall.common.media.loader.ImageLoader
@@ -12,6 +13,7 @@ import com.milk.funcall.common.paging.FooterLoadStateAdapter
 import com.milk.funcall.common.paging.MultiTypeDelegate
 import com.milk.funcall.common.paging.PagingViewHolder
 import com.milk.funcall.user.data.UserSimpleInfoModel
+import com.milk.funcall.user.type.ItemAdType
 import com.milk.funcall.user.type.OnlineState
 import com.milk.simple.ktx.*
 
@@ -30,6 +32,10 @@ class HomeAdapter : AbstractPagingAdapter<UserSimpleInfoModel>(
         ) = false
     }
 ) {
+    internal var firstHomePageAd: NativeAd? = null
+    internal var secondHomePageAd: NativeAd? = null
+    internal var thirdHomePageAd: NativeAd? = null
+
     init {
         setMultiTypeDelegate(object : MultiTypeDelegate {
             override fun getItemViewId(viewType: Int): Int {
@@ -43,14 +49,23 @@ class HomeAdapter : AbstractPagingAdapter<UserSimpleInfoModel>(
 
     override fun convert(holder: PagingViewHolder, item: UserSimpleInfoModel) {
         when {
-            item.nativeAd != null -> setAd(holder, item)
+            item.itemAdType != ItemAdType.Null -> setAd(holder, item)
             else -> setContent(holder, item)
         }
     }
 
     private fun setAd(holder: PagingViewHolder, item: UserSimpleInfoModel) {
-        item.nativeAd?.let {
-            holder.getView<HomeAdLayout>(R.id.homeAdLayout).setNativeAd(it)
+        when (item.itemAdType) {
+            ItemAdType.FirstAd -> firstHomePageAd?.let {
+                holder.getView<HomeAdLayout>(R.id.homeAdLayout).setNativeAd(it)
+            }
+            ItemAdType.SecondAd -> secondHomePageAd?.let {
+                holder.getView<HomeAdLayout>(R.id.homeAdLayout).setNativeAd(it)
+            }
+            ItemAdType.ThirdAd -> thirdHomePageAd?.let {
+                holder.getView<HomeAdLayout>(R.id.homeAdLayout).setNativeAd(it)
+            }
+            else -> Unit
         }
     }
 
@@ -115,7 +130,8 @@ class HomeAdapter : AbstractPagingAdapter<UserSimpleInfoModel>(
 
     override fun getItemViewType(position: Int): Int {
         val item = getNoNullItem(position)
-        return if (item.nativeAd != null) LayoutType.Ad.value else LayoutType.Content.value
+        return if (item.itemAdType != ItemAdType.Null)
+            LayoutType.Ad.value else LayoutType.Content.value
     }
 
     enum class LayoutType(val value: Int) { Content(1), Ad(2) }
