@@ -1,0 +1,17 @@
+dependencies {
+    //Anythink (Necessary)
+    implementation "com.anythink.sdk:core:5.7.24"
+    implementation "com.anythink.sdk:nativead:5.7.24"
+    implementation "com.anythink.sdk:banner:5.7.24"
+    implementation "com.anythink.sdk:interstitial:5.7.24"
+    implementation "com.anythink.sdk:rewardedvideo:5.7.24"
+    implementation "com.anythink.sdk:splash:5.7.24"
+
+    //Androidx (Necessary)
+    //implementation "androidx.appcompat:appcompat:1.5.0"
+
+    //Facebook
+    implementation "com.anythink.sdk:adapter-facebook:5.7.24"
+    implementation "com.facebook.android:audience-network-sdk:6.2.0"
+    implementation "androidx.recyclerview:recyclerview:1.2.1"
+}

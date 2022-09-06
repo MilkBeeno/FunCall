@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'com.google.gms.google-services'
 }
+apply from: rootProject.file("./gradles/topon.gradle")
 
 android {
     compileSdk 32
@@ -71,7 +72,7 @@ android {
 
 dependencies {
     // 自定义组件库
-    implementation 'com.github.MilkBeeno:Library:1.2.7'
+    implementation 'com.github.MilkBeeno:Library:1.2.8'
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.appcompat:appcompat:1.4.2'
@@ -106,20 +107,20 @@ dependencies {
     // retrofit 网络请求
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
-    implementation "com.google.code.gson:gson:2.8.8"
+    implementation "com.google.code.gson:gson:2.8.9"
     // google 广告 ID 生成
     implementation 'androidx.ads:ads-identifier:1.0.0-alpha04'
     implementation 'com.google.guava:guava:28.0-android'
     // image 高斯模糊库
     implementation 'com.github.centerzx:ShapeBlurView:1.0.1'
     // 谷歌广告依赖库
-    implementation("com.google.android.gms:play-services-ads:21.0.0")
+    implementation("com.google.android.gms:play-services-ads:21.1.0")
     // firebase 统计功能
     implementation platform('com.google.firebase:firebase-bom:30.1.0')
-    implementation("com.google.firebase:firebase-analytics:21.0.0")
+    implementation("com.google.firebase:firebase-analytics:21.1.1")
     // google 登录功能
     implementation 'com.google.firebase:firebase-auth-ktx'
-    implementation 'com.google.android.gms:play-services-auth:20.2.0'
+    implementation 'com.google.android.gms:play-services-auth:20.3.0'
     // 滑动指示器库
     implementation 'me.relex:circleindicator:2.1.6'
     // glide 图片加载
