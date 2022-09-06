@@ -21,3 +21,4 @@ local.properties
 /app/release/.aab
 /app/release/new_fun_call_1.0.0.aab
 /app/proguardMapping.txt
+/app/release/app-release.aab
