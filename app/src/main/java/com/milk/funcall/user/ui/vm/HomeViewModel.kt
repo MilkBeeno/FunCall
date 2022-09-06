@@ -7,7 +7,7 @@ import androidx.paging.PagingConfig
 import com.google.android.gms.ads.nativead.NativeAd
 import com.milk.funcall.ad.AdConfig
 import com.milk.funcall.ad.AdManager
-import com.milk.funcall.ad.AdSwitch
+import com.milk.funcall.ad.AdSwitchControl
 import com.milk.funcall.ad.constant.AdCodeKey
 import com.milk.funcall.common.data.ApiPagingResponse
 import com.milk.funcall.common.paging.NetworkPagingSource
@@ -194,7 +194,7 @@ class HomeViewModel : ViewModel() {
             FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_1)
             val adUnitId =
                 AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_FIRST)
-            if (adUnitId.isNotBlank() && AdSwitch.homeListFirst)
+            if (adUnitId.isNotBlank() && AdSwitchControl.homeListFirst)
                 AdManager.loadNativeAds(
                     context = context,
                     adUnitId = adUnitId,
@@ -229,7 +229,7 @@ class HomeViewModel : ViewModel() {
             FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_2)
             val adUnitId =
                 AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_SECOND)
-            if (adUnitId.isNotBlank() && AdSwitch.homeListSecond)
+            if (adUnitId.isNotBlank() && AdSwitchControl.homeListSecond)
                 AdManager.loadNativeAds(
                     context = context,
                     adUnitId = adUnitId,
@@ -264,7 +264,7 @@ class HomeViewModel : ViewModel() {
             FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_3)
             val adUnitId =
                 AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_THIRD)
-            if (adUnitId.isNotBlank() && AdSwitch.homeListThird)
+            if (adUnitId.isNotBlank() && AdSwitchControl.homeListThird)
                 AdManager.loadNativeAds(
                     context = context,
                     adUnitId = adUnitId,

@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import com.milk.funcall.ad.AdConfig
 import com.milk.funcall.ad.AdManager
-import com.milk.funcall.ad.AdSwitch
+import com.milk.funcall.ad.AdSwitchControl
 import com.milk.funcall.ad.constant.AdCodeKey
 import com.milk.funcall.ad.ui.AdLoadType
 import com.milk.funcall.common.timer.MilkTimer
@@ -54,7 +54,7 @@ class LaunchViewModel : ViewModel() {
             }
             .build()
             .start()
-        if (AdSwitch.appLaunch) {
+        if (AdSwitchControl.appLaunch) {
             if (adUnitId.isNotBlank()) {
                 FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST)
                 AdManager.loadInterstitial(activity, adUnitId,

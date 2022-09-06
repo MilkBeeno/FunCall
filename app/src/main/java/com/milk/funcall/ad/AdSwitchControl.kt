@@ -6,7 +6,8 @@ import com.milk.funcall.ad.repo.AdRepository
 import com.milk.simple.ktx.ioScope
 import com.milk.simple.mdr.KvManger
 
-object AdSwitch {
+/** 广告开关控制器、控制某个广告位是否展示或关闭 */
+object AdSwitchControl {
     var adMaster: Boolean = true
         set(value) {
             KvManger.put(AdCodeKey.AD_MASTER_SWITCH, value)
@@ -89,7 +90,6 @@ object AdSwitch {
             return field
         }
 
-    /** 广告展示开启的开关 */
     fun obtain() {
         ioScope {
             val apiResponse = AdRepository().getAdSwitch(
