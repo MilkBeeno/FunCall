@@ -5,9 +5,10 @@ import android.content.pm.PackageManager
 import android.util.Base64
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
+import com.anythink.interstitial.api.ATInterstitial
 import com.milk.funcall.ad.AdConfig
-import com.milk.funcall.ad.AdmobManager
 import com.milk.funcall.ad.AdSwitchControl
+import com.milk.funcall.ad.TopOnManager
 import com.milk.funcall.ad.constant.AdCodeKey
 import com.milk.funcall.ad.ui.AdLoadType
 import com.milk.funcall.common.timer.MilkTimer
@@ -22,6 +23,7 @@ class LaunchViewModel : ViewModel() {
 
     /** 加载广告并设置广告状态 */
     internal fun loadLaunchAd(activity: FragmentActivity, finished: () -> Unit) {
+        var interstitial: ATInterstitial? = null
         val adUnitId =
             AdConfig.getAdvertiseUnitId(AdCodeKey.APP_START)
         MilkTimer.Builder()
@@ -31,44 +33,36 @@ class LaunchViewModel : ViewModel() {
                     t.finish()
             }
             .setOnFinishedListener {
-                when (adLoadStatus) {
-                    AdLoadType.Success -> {
-                        AdmobManager.showInterstitial(
-                            activity = activity,
-                            showFailedRequest = {
-                                FireBaseManager.logEvent(FirebaseKey.AD_SHOW_FAILED)
-                                finished()
-                            },
-                            showSuccessRequest = {
-                                FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS)
-                            },
-                            clickRequest = {
-                                FireBaseManager.logEvent(FirebaseKey.CLICK_AD)
-                            },
-                            showFinishedRequest = {
-                                finished()
-                            })
-                    }
-                    else -> finished()
-                }
+                if (adLoadStatus == AdLoadType.Success)
+                    interstitial?.show(activity)
+                finished()
             }
             .build()
             .start()
-        if (AdSwitchControl.appLaunch) {
-            if (adUnitId.isNotBlank()) {
-                FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST)
-                AdmobManager.loadInterstitial(activity, adUnitId,
-                    loadFailedRequest = {
-                        FireBaseManager
-                            .logEvent(FirebaseKey.AD_REQUEST_FAILED, adUnitId, it)
-                        adLoadStatus = AdLoadType.Failure
-                    },
-                    loadSuccessRequest = {
-                        FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED)
-                        adLoadStatus = AdLoadType.Success
-                    })
-            } else adLoadStatus = AdLoadType.Failure
-        }
+        if (AdSwitchControl.appLaunch && adUnitId.isNotBlank()) {
+            FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST)
+            interstitial = TopOnManager.loadInterstitial(
+                activity = activity,
+                adUnitId = adUnitId,
+                loadFailureRequest = {
+                    FireBaseManager
+                        .logEvent(FirebaseKey.AD_REQUEST_FAILED, adUnitId, it)
+                    adLoadStatus = AdLoadType.Failure
+                },
+                loadSuccessRequest = {
+                    FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED)
+                    adLoadStatus = AdLoadType.Success
+                },
+                showFailureRequest = {
+                    FireBaseManager.logEvent(FirebaseKey.AD_SHOW_FAILED)
+                },
+                showSuccessRequest = {
+                    FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS)
+                },
+                clickRequest = {
+                    FireBaseManager.logEvent(FirebaseKey.CLICK_AD)
+                })
+        } else adLoadStatus = AdLoadType.Failure
     }
 
     @SuppressLint("PackageManagerGetSignatures")

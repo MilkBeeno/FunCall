@@ -4,7 +4,6 @@ plugins {
     id 'kotlin-kapt'
     id 'com.google.gms.google-services'
 }
-apply from: rootProject.file("./gradles/topon.gradle")
 
 android {
     compileSdk 32
@@ -40,6 +39,8 @@ android {
             buildConfigField 'String', 'AD_APP_ID', "${AD_APP_ID_DEBUG}"
             buildConfigField 'String', 'AD_APP_VERSION', "${AD_APP_VERSION_DEBUG}"
             buildConfigField 'String', 'AD_APP_CHANNEL', "${AD_APP_CHANNEL}"
+            buildConfigField 'String', 'TOP_ON_ID', "${TOP_ON_APP_ID_DEBUG}"
+            buildConfigField 'String', 'TOP_ON_KEY', "${TOP_ON_APP_KEY_DEBUG}"
             signingConfig signingConfigs.myJsk
         }
         release {
@@ -50,6 +51,8 @@ android {
             buildConfigField 'String', 'AD_APP_ID', "${AD_APP_ID_RELEASE}"
             buildConfigField 'String', 'AD_APP_VERSION', "${AD_APP_VERSION_RELEASE}"
             buildConfigField 'String', 'AD_APP_CHANNEL', "${AD_APP_CHANNEL}"
+            buildConfigField 'String', 'TOP_ON_ID', "${TOP_ON_APP_ID_RELEASE}"
+            buildConfigField 'String', 'TOP_ON_KEY', "${TOP_ON_APP_KEY_RELEASE}"
             signingConfig signingConfigs.myJsk
         }
     }
@@ -74,6 +77,7 @@ dependencies {
     // 自定义组件库
     implementation 'com.github.MilkBeeno:Library:1.2.8'
     implementation 'androidx.core:core-ktx:1.8.0'
+    implementation "androidx.appcompat:appcompat:1.4.2"
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
@@ -133,4 +137,15 @@ dependencies {
     implementation 'com.guolindev.permissionx:permissionx:1.6.4'
     // 视频播放库
     implementation "tv.danmaku.ijk.media:ijkplayer-java:0.8.8"
+    // Anythink (Necessary) 聚合广告- TopOn 平台依赖
+    implementation "com.anythink.sdk:core:5.9.96"
+    implementation "com.anythink.sdk:nativead:5.9.96"
+    implementation "com.anythink.sdk:banner:5.9.96"
+    implementation "com.anythink.sdk:interstitial:5.9.96"
+    implementation "com.anythink.sdk:rewardedvideo:5.9.96"
+    implementation "com.anythink.sdk:splash:5.9.96"
+    // Facebook 聚合广告- Facebook 广告依赖
+    implementation "com.anythink.sdk:adapter-facebook:5.9.96"
+    implementation "com.facebook.android:audience-network-sdk:6.11.0"
+    implementation "androidx.annotation:annotation:1.4.0"
 }
