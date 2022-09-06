@@ -13,7 +13,7 @@ import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.account.Account
 import com.milk.funcall.account.ui.frag.MineFragment
 import com.milk.funcall.ad.AdConfig
-import com.milk.funcall.ad.AdManager
+import com.milk.funcall.ad.AdmobManager
 import com.milk.funcall.ad.AdSwitchControl
 import com.milk.funcall.ad.constant.AdCodeKey
 import com.milk.funcall.app.MainService
@@ -57,7 +57,7 @@ class MainActivity : AbstractActivity() {
                 FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_4)
                 val adUnitId =
                     AdConfig.getAdvertiseUnitId(AdCodeKey.MAIN_HOME_BOTTOM)
-                val adView = AdManager.loadBannerAd(
+                val adView = AdmobManager.loadBannerAd(
                     context = this,
                     adUnitId = adUnitId,
                     loadFailedRequest = {

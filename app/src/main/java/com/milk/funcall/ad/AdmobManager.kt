@@ -11,7 +11,7 @@ import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.milk.funcall.BuildConfig
 import com.milk.funcall.ad.constant.AdCodeKey
 
-object AdManager {
+object AdmobManager {
     private var interstitialAd: InterstitialAd? = null
 
     fun initialize(context: Context) {
@@ -43,7 +43,7 @@ object AdManager {
                 }
 
                 override fun onAdLoaded(interstitialAd: InterstitialAd) {
-                    AdManager.interstitialAd = interstitialAd
+                    AdmobManager.interstitialAd = interstitialAd
                     loadSuccessRequest()
                 }
             })

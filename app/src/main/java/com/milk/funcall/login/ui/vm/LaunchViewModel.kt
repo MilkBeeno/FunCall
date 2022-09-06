@@ -6,7 +6,7 @@ import android.util.Base64
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import com.milk.funcall.ad.AdConfig
-import com.milk.funcall.ad.AdManager
+import com.milk.funcall.ad.AdmobManager
 import com.milk.funcall.ad.AdSwitchControl
 import com.milk.funcall.ad.constant.AdCodeKey
 import com.milk.funcall.ad.ui.AdLoadType
@@ -33,7 +33,7 @@ class LaunchViewModel : ViewModel() {
             .setOnFinishedListener {
                 when (adLoadStatus) {
                     AdLoadType.Success -> {
-                        AdManager.showInterstitial(
+                        AdmobManager.showInterstitial(
                             activity = activity,
                             showFailedRequest = {
                                 FireBaseManager.logEvent(FirebaseKey.AD_SHOW_FAILED)
@@ -57,7 +57,7 @@ class LaunchViewModel : ViewModel() {
         if (AdSwitchControl.appLaunch) {
             if (adUnitId.isNotBlank()) {
                 FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST)
-                AdManager.loadInterstitial(activity, adUnitId,
+                AdmobManager.loadInterstitial(activity, adUnitId,
                     loadFailedRequest = {
                         FireBaseManager
                             .logEvent(FirebaseKey.AD_REQUEST_FAILED, adUnitId, it)

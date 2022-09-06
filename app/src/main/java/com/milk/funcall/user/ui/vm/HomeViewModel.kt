@@ -6,7 +6,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import com.google.android.gms.ads.nativead.NativeAd
 import com.milk.funcall.ad.AdConfig
-import com.milk.funcall.ad.AdManager
+import com.milk.funcall.ad.AdmobManager
 import com.milk.funcall.ad.AdSwitchControl
 import com.milk.funcall.ad.constant.AdCodeKey
 import com.milk.funcall.common.data.ApiPagingResponse
@@ -195,7 +195,7 @@ class HomeViewModel : ViewModel() {
             val adUnitId =
                 AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_FIRST)
             if (adUnitId.isNotBlank() && AdSwitchControl.homeListFirst)
-                AdManager.loadNativeAds(
+                AdmobManager.loadNativeAds(
                     context = context,
                     adUnitId = adUnitId,
                     loadFailedRequest = {
@@ -230,7 +230,7 @@ class HomeViewModel : ViewModel() {
             val adUnitId =
                 AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_SECOND)
             if (adUnitId.isNotBlank() && AdSwitchControl.homeListSecond)
-                AdManager.loadNativeAds(
+                AdmobManager.loadNativeAds(
                     context = context,
                     adUnitId = adUnitId,
                     loadFailedRequest = {
@@ -265,7 +265,7 @@ class HomeViewModel : ViewModel() {
             val adUnitId =
                 AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_THIRD)
             if (adUnitId.isNotBlank() && AdSwitchControl.homeListThird)
-                AdManager.loadNativeAds(
+                AdmobManager.loadNativeAds(
                     context = context,
                     adUnitId = adUnitId,
                     loadFailedRequest = {

@@ -13,7 +13,7 @@ import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
 import com.milk.funcall.account.Account
 import com.milk.funcall.ad.AdConfig
-import com.milk.funcall.ad.AdManager
+import com.milk.funcall.ad.AdmobManager
 import com.milk.funcall.ad.AdSwitchControl
 import com.milk.funcall.ad.constant.AdCodeKey
 import com.milk.funcall.chat.ui.act.ChatMessageActivity
@@ -255,7 +255,7 @@ class UserInfoActivity : AbstractActivity() {
                 AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_LINK)
             loadingDialog.show()
             FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_6)
-            AdManager.loadIncentiveVideoAd(
+            AdmobManager.loadIncentiveVideoAd(
                 activity = this,
                 adUnitId = adUnitId,
                 loadFailedRequest = {

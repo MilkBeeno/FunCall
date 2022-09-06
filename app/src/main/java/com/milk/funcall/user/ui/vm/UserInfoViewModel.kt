@@ -3,7 +3,7 @@ package com.milk.funcall.user.ui.vm
 import androidx.lifecycle.ViewModel
 import com.milk.funcall.account.Account
 import com.milk.funcall.ad.AdConfig
-import com.milk.funcall.ad.AdManager
+import com.milk.funcall.ad.AdmobManager
 import com.milk.funcall.ad.constant.AdCodeKey
 import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.firebase.FireBaseManager
@@ -96,7 +96,7 @@ class UserInfoViewModel : ViewModel() {
         val adUnitId =
             AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_IMAGE)
         if (adUnitId.isNotBlank())
-            AdManager.loadInterstitial(
+            AdmobManager.loadInterstitial(
                 context = activity,
                 adUnitId = adUnitId,
                 loadFailedRequest = {
@@ -107,7 +107,7 @@ class UserInfoViewModel : ViewModel() {
                 },
                 loadSuccessRequest = {
                     FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_5)
-                    AdManager.showInterstitial(
+                    AdmobManager.showInterstitial(
                         activity = activity,
                         showFailedRequest = { error ->
                             FireBaseManager
