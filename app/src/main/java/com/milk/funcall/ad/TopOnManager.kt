@@ -10,6 +10,8 @@ import com.anythink.core.api.*
 import com.anythink.interstitial.api.ATInterstitial
 import com.anythink.interstitial.api.ATInterstitialListener
 import com.anythink.network.facebook.FacebookATInitConfig
+import com.anythink.rewardvideo.api.ATRewardVideoAd
+import com.anythink.rewardvideo.api.ATRewardVideoListener
 import com.milk.funcall.BuildConfig
 import com.milk.simple.log.Logger
 
@@ -137,5 +139,53 @@ object TopOnManager {
         })
         bannerView.loadAd()
         return bannerView
+    }
+
+    /** 激励视频广告展示 */
+    internal fun loadIncentiveVideoAd(
+        activity: FragmentActivity,
+        adUnitId: String,
+        loadFailureRequest: (String) -> Unit = {},
+        loadSuccessRequest: () -> Unit = {},
+        showFailureRequest: (String) -> Unit = {},
+        showSuccessRequest: () -> Unit = {},
+        clickRequest: () -> Unit = {},
+    ) {
+        val rewardVideoAd = ATRewardVideoAd(activity, adUnitId)
+        rewardVideoAd.setAdListener(object : ATRewardVideoListener {
+            override fun onRewardedVideoAdLoaded() {
+                loadSuccessRequest()
+                rewardVideoAd.show(activity)
+            }
+
+            override fun onRewardedVideoAdFailed(p0: AdError?) {
+                // 注意：禁止在此回调中执行广告的加载方法进行重试，否则会引起很多无用请求且可能会导致应用卡顿
+                loadFailureRequest(p0?.desc.toString())
+            }
+
+            override fun onRewardedVideoAdPlayStart(p0: ATAdInfo?) {
+                // ATAdInfo可区分广告平台以及获取广告平台的广告位ID等
+                showSuccessRequest()
+            }
+
+            override fun onRewardedVideoAdPlayEnd(p0: ATAdInfo?) {
+            }
+
+            override fun onRewardedVideoAdPlayFailed(p0: AdError?, p1: ATAdInfo?) {
+                showFailureRequest(p0?.desc.toString())
+            }
+
+            override fun onRewardedVideoAdClosed(p0: ATAdInfo?) {
+            }
+
+            override fun onRewardedVideoAdPlayClicked(p0: ATAdInfo?) {
+                clickRequest()
+            }
+
+            override fun onReward(p0: ATAdInfo?) {
+                //建议在此回调中下发奖励，一般在onRewardedVideoAdClosed之前回调
+            }
+        })
+        rewardVideoAd.load()
     }
 }

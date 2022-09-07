@@ -9,12 +9,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.widget.LinearLayoutCompat
+import com.anythink.rewardvideo.api.ATRewardVideoAd
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
 import com.milk.funcall.account.Account
 import com.milk.funcall.ad.AdConfig
-import com.milk.funcall.ad.AdmobManager
 import com.milk.funcall.ad.AdSwitchControl
+import com.milk.funcall.ad.TopOnManager
 import com.milk.funcall.ad.constant.AdCodeKey
 import com.milk.funcall.chat.ui.act.ChatMessageActivity
 import com.milk.funcall.common.constrant.EventKey
@@ -255,10 +256,10 @@ class UserInfoActivity : AbstractActivity() {
                 AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_LINK)
             loadingDialog.show()
             FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_6)
-            AdmobManager.loadIncentiveVideoAd(
+              TopOnManager.loadIncentiveVideoAd(
                 activity = this,
                 adUnitId = adUnitId,
-                loadFailedRequest = {
+                loadFailureRequest = {
                     FireBaseManager
                         .logEvent(FirebaseKey.AD_REQUEST_FAILED_6, adUnitId, it)
                     loadingDialog.dismiss()
@@ -266,7 +267,7 @@ class UserInfoActivity : AbstractActivity() {
                 loadSuccessRequest = {
                     FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_6)
                 },
-                showFailedRequest = {
+                showFailureRequest = {
                     FireBaseManager
                         .logEvent(FirebaseKey.AD_SHOW_FAILED_6, adUnitId, it)
                 },
