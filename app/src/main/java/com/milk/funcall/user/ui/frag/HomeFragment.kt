@@ -36,8 +36,8 @@ class HomeFragment : AbstractFragment() {
         super.initializeData()
         checkNewClientOnHome()
         loadingDialog.show()
-        homeViewModel.loadNativeAd(requireContext())
-        homeViewModel.loadNativeAdByTimer(requireContext())
+        homeViewModel.loadNativeAd(requireActivity())
+        homeViewModel.loadNativeAdByTimer(requireActivity())
         adapter.addRefreshedListener {
             loadingDialog.dismiss()
             binding.refresh.finishRefresh(1500)

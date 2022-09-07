@@ -7,7 +7,7 @@
     app:cardCornerRadius="10dp"
     tools:layout_width="166dp">
 
-    <com.milk.funcall.ad.ui.HomeAdLayout
+    <com.milk.funcall.ad.ui.TopOnNativeView
         android:id="@+id/homeAdLayout"
         android:layout_width="match_parent"
         android:layout_height="223dp" />

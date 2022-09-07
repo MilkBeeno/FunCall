@@ -1,13 +1,13 @@
 package com.milk.funcall.user.ui.vm
 
-import android.content.Context
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import com.google.android.gms.ads.nativead.NativeAd
+import com.anythink.nativead.api.NativeAd
 import com.milk.funcall.ad.AdConfig
-import com.milk.funcall.ad.AdmobManager
 import com.milk.funcall.ad.AdSwitchControl
+import com.milk.funcall.ad.TopOnManager
 import com.milk.funcall.ad.constant.AdCodeKey
 import com.milk.funcall.common.data.ApiPagingResponse
 import com.milk.funcall.common.paging.NetworkPagingSource
@@ -18,6 +18,7 @@ import com.milk.funcall.user.data.UserSimpleInfoModel
 import com.milk.funcall.user.repo.HomeRepository
 import com.milk.funcall.user.type.ItemAdType
 import com.milk.simple.ktx.ioScope
+import com.milk.simple.log.Logger
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.combine
@@ -51,21 +52,21 @@ class HomeViewModel : ViewModel() {
         }
     )
 
-    internal fun loadNativeAd(context: Context) {
-        getFirstHomePageAd(context, true)
-        getSecondHomePageAd(context, true)
-        getThirdHomePageAd(context, true)
+    internal fun loadNativeAd(activity: FragmentActivity) {
+        getFirstHomePageAd(activity, true)
+        getSecondHomePageAd(activity, true)
+        getThirdHomePageAd(activity, true)
     }
 
-    internal fun loadNativeAdByTimer(context: Context) {
+    internal fun loadNativeAdByTimer(activity: FragmentActivity) {
         MilkTimer.Builder()
             .setMillisInFuture(30000)
             .setCountDownInterval(1000)
             .setOnFinishedListener {
-                getFirstHomePageAd(context, false)
-                getSecondHomePageAd(context, false)
-                getThirdHomePageAd(context, false)
-                loadNativeAdByTimer(context)
+                getFirstHomePageAd(activity, false)
+                getSecondHomePageAd(activity, false)
+                getThirdHomePageAd(activity, false)
+                loadNativeAdByTimer(activity)
             }.build().start()
     }
 
@@ -189,16 +190,16 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    private fun getFirstHomePageAd(context: Context, isFirstLoad: Boolean) {
+    private fun getFirstHomePageAd(activity: FragmentActivity, isFirstLoad: Boolean) {
         ioScope {
             FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_1)
             val adUnitId =
                 AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_FIRST)
             if (adUnitId.isNotBlank() && AdSwitchControl.homeListFirst)
-                AdmobManager.loadNativeAds(
-                    context = context,
+                TopOnManager.loadNativeAd(
+                    activity = activity,
                     adUnitId = adUnitId,
-                    loadFailedRequest = {
+                    loadFailureRequest = {
                         FireBaseManager
                             .logEvent(FirebaseKey.AD_REQUEST_FAILED_1, adUnitId, it)
                         FireBaseManager
@@ -208,15 +209,17 @@ class HomeViewModel : ViewModel() {
                     },
                     loadSuccessRequest = {
                         FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_1)
-                        firstHomePageAd = it
+                        firstHomePageAd = it?.nativeAd
+                        Logger.d("第一个请求陈公公","hlc")
                         ioScope { loadFirstAd.emit(isFirstLoad) }
                     },
-                    showSuccessRequest = {
-                        FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_1)
-                    },
-                    clickRequest = {
-                        FireBaseManager.logEvent(FirebaseKey.CLICK_AD_1)
-                    })
+//                    showSuccessRequest = {
+//                        FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_1)
+//                    },
+//                    clickRequest = {
+//                        FireBaseManager.logEvent(FirebaseKey.CLICK_AD_1)
+//                    }
+                )
             else {
                 delay(500)
                 loadFirstAd.emit(isFirstLoad)
@@ -224,16 +227,16 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    private fun getSecondHomePageAd(context: Context, isFirstLoad: Boolean) {
+    private fun getSecondHomePageAd(activity: FragmentActivity, isFirstLoad: Boolean) {
         ioScope {
             FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_2)
             val adUnitId =
                 AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_SECOND)
             if (adUnitId.isNotBlank() && AdSwitchControl.homeListSecond)
-                AdmobManager.loadNativeAds(
-                    context = context,
+                TopOnManager.loadNativeAd(
+                    activity = activity,
                     adUnitId = adUnitId,
-                    loadFailedRequest = {
+                    loadFailureRequest = {
                         FireBaseManager
                             .logEvent(FirebaseKey.AD_REQUEST_FAILED_2, adUnitId, it)
                         FireBaseManager
@@ -243,15 +246,17 @@ class HomeViewModel : ViewModel() {
                     },
                     loadSuccessRequest = {
                         FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_2)
-                        secondHomePageAd = it
+                        secondHomePageAd = it?.nativeAd
+                        Logger.d("第二个请求陈公公","hlc")
                         ioScope { loadSecondAd.emit(isFirstLoad) }
                     },
-                    showSuccessRequest = {
+                    /*showSuccessRequest = {
                         FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_2)
                     },
                     clickRequest = {
                         FireBaseManager.logEvent(FirebaseKey.CLICK_AD_2)
-                    })
+                    }*/
+                )
             else {
                 delay(500)
                 loadSecondAd.emit(isFirstLoad)
@@ -259,16 +264,16 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    private fun getThirdHomePageAd(context: Context, isFirstLoad: Boolean) {
+    private fun getThirdHomePageAd(activity: FragmentActivity, isFirstLoad: Boolean) {
         ioScope {
             FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_3)
             val adUnitId =
                 AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_THIRD)
             if (adUnitId.isNotBlank() && AdSwitchControl.homeListThird)
-                AdmobManager.loadNativeAds(
-                    context = context,
+                TopOnManager.loadNativeAd(
+                    activity = activity,
                     adUnitId = adUnitId,
-                    loadFailedRequest = {
+                    loadFailureRequest = {
                         FireBaseManager
                             .logEvent(FirebaseKey.Ad_request_failed_3, adUnitId, it)
                         FireBaseManager
@@ -278,15 +283,17 @@ class HomeViewModel : ViewModel() {
                     },
                     loadSuccessRequest = {
                         FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_3)
-                        thirdHomePageAd = it
+                        thirdHomePageAd = it?.nativeAd
+                        Logger.d("第三个请求陈公公","hlc")
                         ioScope { loadThirdAd.emit(isFirstLoad) }
                     },
-                    showSuccessRequest = {
-                        FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_3)
-                    },
-                    clickRequest = {
-                        FireBaseManager.logEvent(FirebaseKey.CLICK_AD_3)
-                    })
+//                    showSuccessRequest = {
+//                        FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_3)
+//                    },
+//                    clickRequest = {
+//                        FireBaseManager.logEvent(FirebaseKey.CLICK_AD_3)
+//                    }
+                )
             else {
                 delay(500)
                 loadThirdAd.emit(isFirstLoad)

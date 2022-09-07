@@ -9,6 +9,8 @@ import com.anythink.banner.api.ATBannerView
 import com.anythink.core.api.*
 import com.anythink.interstitial.api.ATInterstitial
 import com.anythink.interstitial.api.ATInterstitialListener
+import com.anythink.nativead.api.ATNative
+import com.anythink.nativead.api.ATNativeNetworkListener
 import com.anythink.network.facebook.FacebookATInitConfig
 import com.anythink.rewardvideo.api.ATRewardVideoAd
 import com.anythink.rewardvideo.api.ATRewardVideoListener
@@ -189,5 +191,28 @@ object TopOnManager {
             }
         })
         rewardVideoAd.load()
+    }
+
+    /** 加载原生广告 */
+    internal fun loadNativeAd(
+        activity: FragmentActivity,
+        adUnitId: String,
+        loadFailureRequest: (String) -> Unit = {},
+        loadSuccessRequest: (ATNative?) -> Unit = {}
+    ) {
+        var atNative: ATNative? = null
+        val listener = object : ATNativeNetworkListener {
+            override fun onNativeAdLoaded() {
+                loadSuccessRequest(atNative)
+            }
+
+            override fun onNativeAdLoadFail(adError: AdError) {
+                // 注意：禁止在此回调中执行广告的加载方法进行重试，否则会引起很多无用请求且可能会导致应用卡顿
+                loadFailureRequest(adError.desc.toString())
+            }
+        }
+        atNative = ATNative(activity, adUnitId, listener)
+        // 发起广告请求
+        atNative.makeAdRequest()
     }
 }

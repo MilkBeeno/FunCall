@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nativeAdView"
+    android:layout_width="166dp"
+    android:layout_height="233dp"
+    tools:ignore="RtlSymmetry">
+
+    <com.google.android.gms.ads.nativead.MediaView
+        android:id="@+id/mediaView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iconView"
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            android:layout_marginStart="10dp"
+            app:shapeAppearanceOverlay="@style/circleStyle"
+            tools:ignore="ContentDescription" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/native_ad_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:includeFontPadding="false"
+                android:lines="1"
+                android:maxWidth="165dp"
+                android:singleLine="true"
+                android:textColor="@color/FF1E1E21"
+                android:textSize="13sp"
+                tools:text="head_line" />
+
+            <TextView
+                android:id="@+id/native_ad_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:ellipsize="end"
+                android:includeFontPadding="false"
+                android:maxWidth="165dp"
+                android:maxLines="2"
+                android:textColor="@color/FF1E1E21"
+                android:textSize="12sp"
+                tools:text="aaa" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <!-- 谷歌广告点击事件响应 Button -->
+    <TextView
+        android:id="@+id/native_ad_install_btn"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@null" />
+</FrameLayout>
