@@ -51,6 +51,7 @@ object TopOnManager {
         loadSuccessRequest: () -> Unit = {},
         showFailureRequest: (String) -> Unit = {},
         showSuccessRequest: () -> Unit = {},
+        finishedRequest: () -> Unit = {},
         clickRequest: () -> Unit = {}
     ): ATInterstitial {
         val interstitialAd = ATInterstitial(activity, adUnitId)
@@ -75,6 +76,7 @@ object TopOnManager {
 
             override fun onInterstitialAdClose(p0: ATAdInfo?) {
                 // 建议在此回调中调用load进行广告的加载，方便下一次广告的展示（不需要调用isAdReady())
+                finishedRequest()
             }
 
             override fun onInterstitialAdVideoStart(p0: ATAdInfo?) {
