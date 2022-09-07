@@ -35,7 +35,8 @@ class LaunchViewModel : ViewModel() {
             .setOnFinishedListener {
                 if (adLoadStatus == AdLoadType.Success)
                     interstitial?.show(activity)
-                finished()
+                else
+                    finished()
             }
             .build()
             .start()
@@ -58,6 +59,9 @@ class LaunchViewModel : ViewModel() {
                 },
                 showSuccessRequest = {
                     FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS)
+                },
+                finishedRequest = {
+                    finished()
                 },
                 clickRequest = {
                     FireBaseManager.logEvent(FirebaseKey.CLICK_AD)
