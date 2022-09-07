@@ -1,13 +1,18 @@
 package com.milk.funcall.ad
 
 import android.app.Application
+import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.fragment.app.FragmentActivity
+import com.anythink.banner.api.ATBannerListener
+import com.anythink.banner.api.ATBannerView
 import com.anythink.core.api.*
 import com.anythink.interstitial.api.ATInterstitial
 import com.anythink.interstitial.api.ATInterstitialListener
 import com.anythink.network.facebook.FacebookATInitConfig
 import com.milk.funcall.BuildConfig
 import com.milk.simple.log.Logger
+
 
 /**
  * TopOn 广告聚合平台管理、目前只添加 Facebook 广告接入
@@ -84,5 +89,53 @@ object TopOnManager {
         })
         interstitialAd.load()
         return interstitialAd
+    }
+
+    /** 查看横幅广告 */
+    internal fun loadBannerAd(
+        activity: FragmentActivity,
+        adUnitId: String,
+        loadFailureRequest: (String) -> Unit = {},
+        loadSuccessRequest: () -> Unit = {},
+        showFailureRequest: (String) -> Unit = {},
+        showSuccessRequest: () -> Unit = {},
+        clickRequest: () -> Unit = {},
+    ): ATBannerView {
+        val bannerView = ATBannerView(activity)
+        bannerView.setPlacementId(adUnitId)
+        val width = activity.resources.displayMetrics.widthPixels
+        val height = ViewGroup.LayoutParams.WRAP_CONTENT
+        bannerView.layoutParams = FrameLayout.LayoutParams(width, height)
+        bannerView.setBannerAdListener(object : ATBannerListener {
+            override fun onBannerLoaded() {
+                loadSuccessRequest()
+            }
+
+            override fun onBannerFailed(p0: AdError?) {
+                loadFailureRequest(p0?.desc.toString())
+            }
+
+            override fun onBannerClicked(p0: ATAdInfo?) {
+                clickRequest()
+            }
+
+            override fun onBannerShow(p0: ATAdInfo?) {
+                showSuccessRequest()
+            }
+
+            override fun onBannerClose(p0: ATAdInfo?) {
+
+            }
+
+            override fun onBannerAutoRefreshed(p0: ATAdInfo?) {
+
+            }
+
+            override fun onBannerAutoRefreshFail(p0: AdError?) {
+                showFailureRequest(p0?.desc.toString())
+            }
+        })
+        bannerView.loadAd()
+        return bannerView
     }
 }
