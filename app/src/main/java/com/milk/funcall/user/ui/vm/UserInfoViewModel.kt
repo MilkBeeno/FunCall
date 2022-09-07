@@ -1,9 +1,10 @@
 package com.milk.funcall.user.ui.vm
 
 import androidx.lifecycle.ViewModel
+import com.anythink.interstitial.api.ATInterstitial
 import com.milk.funcall.account.Account
 import com.milk.funcall.ad.AdConfig
-import com.milk.funcall.ad.AdmobManager
+import com.milk.funcall.ad.TopOnManager
 import com.milk.funcall.ad.constant.AdCodeKey
 import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.firebase.FireBaseManager
@@ -95,37 +96,34 @@ class UserInfoViewModel : ViewModel() {
         FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_5)
         val adUnitId =
             AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_IMAGE)
-        if (adUnitId.isNotBlank())
-            AdmobManager.loadInterstitial(
-                context = activity,
+        var interstitial: ATInterstitial? = null
+        if (adUnitId.isNotBlank()) {
+            interstitial = TopOnManager.loadInterstitial(
+                activity = activity,
                 adUnitId = adUnitId,
-                loadFailedRequest = {
+                loadFailureRequest = {
                     FireBaseManager
                         .logEvent(FirebaseKey.AD_REQUEST_FAILED_5, adUnitId, it)
                     failure()
                     adIsLoading = false
                 },
                 loadSuccessRequest = {
+                    interstitial?.show(activity)
                     FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_5)
-                    AdmobManager.showInterstitial(
-                        activity = activity,
-                        showFailedRequest = { error ->
-                            FireBaseManager
-                                .logEvent(FirebaseKey.AD_SHOW_FAILED_5, adUnitId, error)
-                            failure()
-                        },
-                        showSuccessRequest = {
-                            FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_5)
-                        },
-                        clickRequest = {
-                            FireBaseManager.logEvent(FirebaseKey.CLICK_AD_5)
-                        },
-                        showFinishedRequest = {
-                            success()
-                            adIsLoading = false
-                            hasViewedImage = true
-                        })
+                },
+                showFailureRequest = {
+                    FireBaseManager.logEvent(FirebaseKey.AD_SHOW_FAILED_5, adUnitId, it)
+                    failure()
+                },
+                showSuccessRequest = {
+                    FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_5)
+                    success()
+                    adIsLoading = false
+                    hasViewedImage = true
+                },
+                clickRequest = {
+                    FireBaseManager.logEvent(FirebaseKey.CLICK_AD_5)
                 })
-        else failure()
+        } else failure()
     }
 }
