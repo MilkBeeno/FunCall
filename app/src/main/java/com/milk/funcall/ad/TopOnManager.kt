@@ -1,12 +1,9 @@
 package com.milk.funcall.ad
 
-import android.app.Activity
 import android.app.Application
-import android.content.Context
 import androidx.fragment.app.FragmentActivity
 import com.anythink.core.api.*
 import com.anythink.interstitial.api.ATInterstitial
-import com.anythink.interstitial.api.ATInterstitialAutoAd
 import com.anythink.interstitial.api.ATInterstitialListener
 import com.anythink.network.facebook.FacebookATInitConfig
 import com.milk.funcall.BuildConfig
@@ -27,11 +24,15 @@ object TopOnManager {
         val atNetworkConfig = builder.build()
         ATSDK.init(application, BuildConfig.TOP_ON_ID, BuildConfig.TOP_ON_KEY, atNetworkConfig)
         ATSDK.setNetworkLogDebug(BuildConfig.DEBUG)
-        // 检查广告平台的集成状态，提交审核时需注释此 API
-        if (BuildConfig.DEBUG) ATSDK.integrationChecking(application)
-        // (v5.7.77新增) 打印当前设备的设备信息(IMEI、OAID、GAID、AndroidID等)
-        ATSDK.testModeDeviceInfo(application) { deviceInfo ->
-            Logger.d("deviceInfo: $deviceInfo", "TopOnManager")
+        if (BuildConfig.DEBUG) {
+            val deviceId = "0ac0d66705af5bd5"
+            ATSDK.setDebuggerConfig(application, deviceId, null)
+            // 检查广告平台的集成状态，提交审核时需注释此 API
+            ATSDK.integrationChecking(application)
+            // (v5.7.77新增) 打印当前设备的设备信息(IMEI、OAID、GAID、AndroidID等)
+            ATSDK.testModeDeviceInfo(application) { deviceInfo ->
+                Logger.d("deviceInfo: $deviceInfo", "TopOnManager")
+            }
         }
     }
 
