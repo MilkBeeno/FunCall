@@ -81,7 +81,6 @@ class LoginActivity : AbstractActivity() {
         )
     }
 
-
     private fun initializeCallback() {
         authLoginManager.success = { type, accessToken ->
             // Logger.d("获取的accessToken是=${accessToken}", "hlc")
