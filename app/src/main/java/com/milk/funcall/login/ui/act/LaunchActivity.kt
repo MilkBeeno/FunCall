@@ -66,11 +66,11 @@ class LaunchActivity : AbstractActivity() {
     }
 
     private fun toMainOrGenderPage() {
+        finish()
         if (Account.userLogged || Account.userGender.isNotBlank())
             MainActivity.create(this)
         else
             GenderActivity.create(this)
-        finish()
     }
 
     private fun showNextAnimation() {
