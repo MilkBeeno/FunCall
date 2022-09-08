@@ -6,7 +6,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.DiffUtil
 import com.anythink.nativead.api.NativeAd
 import com.milk.funcall.R
-import com.milk.funcall.ad.ui.TopOnNativeView
+import com.milk.funcall.ad.ui.TopAdView
 import com.milk.funcall.common.media.loader.ImageLoader
 import com.milk.funcall.common.paging.AbstractPagingAdapter
 import com.milk.funcall.common.paging.FooterLoadStateAdapter
@@ -57,13 +57,13 @@ class HomeAdapter : AbstractPagingAdapter<UserSimpleInfoModel>(
     private fun setAd(holder: PagingViewHolder, item: UserSimpleInfoModel) {
         when (item.itemAdType) {
             ItemAdType.FirstAd -> firstHomePageAd?.let {
-                holder.getView<TopOnNativeView>(R.id.homeAdLayout).createView(it)
+                holder.getView<TopAdView>(R.id.homeAdLayout).showTopOnNativeAd(it,"")
             }
             ItemAdType.SecondAd -> secondHomePageAd?.let {
-                holder.getView<TopOnNativeView>(R.id.homeAdLayout).createView(it)
+                holder.getView<TopAdView>(R.id.homeAdLayout).showTopOnNativeAd(it,"")
             }
             ItemAdType.ThirdAd -> thirdHomePageAd?.let {
-                holder.getView<TopOnNativeView>(R.id.homeAdLayout).createView(it)
+                holder.getView<TopAdView>(R.id.homeAdLayout).showTopOnNativeAd(it,"")
             }
             else -> Unit
         }

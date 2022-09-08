@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/topOnLayout"
+    android:layout_width="166dp"
+    android:layout_height="233dp"
+    android:background="@color/FFFA64C8">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp">
+
+            <FrameLayout
+                android:id="@+id/native_ad_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/native_ad_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:includeFontPadding="false"
+                android:maxWidth="165dp"
+                android:singleLine="true"
+                android:textColor="@color/FF1E1E21"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                tools:text="head_line" />
+
+            <TextView
+                android:id="@+id/native_ad_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:ellipsize="end"
+                android:includeFontPadding="false"
+                android:maxWidth="165dp"
+                android:maxLines="2"
+                android:singleLine="true"
+                android:textColor="@color/FF1E1E21"
+                android:textSize="12sp"
+                tools:text="aaa" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <TextView
+        android:id="@+id/native_ad_install_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textColor="#ffffff" />
+
+    <FrameLayout
+        android:id="@+id/native_ad_content_image_area"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/native_self_adlogo"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginStart="2dp"
+        android:visibility="gone" />
+
+    <com.anythink.nativead.api.ATNativeImageView
+        android:id="@+id/native_ad_logo"
+        android:layout_width="40dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="2dp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/native_ad_from"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:background="#888888"
+        android:gravity="center"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:textColor="#ffffff"
+        android:textSize="6sp"
+        android:visibility="gone"
+        tools:ignore="SmallSp" />
+</FrameLayout>
