@@ -29,8 +29,10 @@ class TopAdView : FrameLayout {
         anyThinkNativeAdView?.let {
             it.removeAllViews()
             if (it.parent == null) {
-                val params =
-                    LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+                val params = LayoutParams(
+                    LayoutParams.MATCH_PARENT,
+                    LayoutParams.MATCH_PARENT
+                )
                 addView(it, params)
             }
         }
