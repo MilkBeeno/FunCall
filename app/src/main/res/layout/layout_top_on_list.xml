@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/topOnLayout"
     android:layout_width="match_parent"
-    android:layout_height="233dp"
+    android:layout_height="232dp"
     tools:background="@color/FFFA64C8"
     tools:layout_width="166dp">
     <!-- 广告的安装按钮 -->
@@ -23,8 +23,7 @@
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:layout_height="38dp"
-            android:background="@drawable/shape_home_top_shadow"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical">
             <!-- 广告的 ICON -->
             <androidx.cardview.widget.CardView
