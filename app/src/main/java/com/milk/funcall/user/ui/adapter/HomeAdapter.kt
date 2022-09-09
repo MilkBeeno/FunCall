@@ -57,13 +57,13 @@ class HomeAdapter : AbstractPagingAdapter<UserSimpleInfoModel>(
     private fun setAd(holder: PagingViewHolder, item: UserSimpleInfoModel) {
         when (item.itemAdType) {
             ItemAdType.FirstAd -> firstHomePageAd?.let {
-                holder.getView<TopAdView>(R.id.homeAdLayout).showTopOnNativeAd(it,"")
+                holder.getView<TopAdView>(R.id.homeAdLayout).showTopOnNativeAd(it)
             }
             ItemAdType.SecondAd -> secondHomePageAd?.let {
-                holder.getView<TopAdView>(R.id.homeAdLayout).showTopOnNativeAd(it,"")
+                holder.getView<TopAdView>(R.id.homeAdLayout).showTopOnNativeAd(it)
             }
             ItemAdType.ThirdAd -> thirdHomePageAd?.let {
-                holder.getView<TopAdView>(R.id.homeAdLayout).showTopOnNativeAd(it,"")
+                holder.getView<TopAdView>(R.id.homeAdLayout).showTopOnNativeAd(it)
             }
             else -> Unit
         }
