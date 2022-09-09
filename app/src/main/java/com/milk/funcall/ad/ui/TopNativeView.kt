@@ -22,6 +22,7 @@ class TopNativeView : FrameLayout {
     constructor(ctx: Context, attrs: AttributeSet, defAttr: Int) : super(ctx, attrs, defAttr)
 
     internal fun createView(nativeAd: NativeAd) {
+        removeAllViews()
         mClickView.clear()
         prepareInfo = ATNativePrepareInfo()
         LayoutInflater
@@ -109,17 +110,17 @@ class TopNativeView : FrameLayout {
             prepareInfo?.mainImageView = imageView
         }
 
-        /*  if (!TextUtils.isEmpty(adMaterial.adFrom)) {
-              adFromView.text = if (adMaterial.adFrom != null) adMaterial.adFrom else ""
-              adFromView.visibility = VISIBLE
-          } else {
-              adFromView.visibility = GONE
-          }
-          mClickView.add(titleView)
-          mClickView.add(descView)
-          mClickView.add(iconView)
-          mClickView.add(imageView)
-          mClickView.add(iconArea)*/
+        if (!TextUtils.isEmpty(adMaterial.adFrom)) {
+            adFromView.text = if (adMaterial.adFrom != null) adMaterial.adFrom else ""
+            adFromView.visibility = GONE
+        } else {
+            adFromView.visibility = GONE
+        }
+        /* mClickView.add(titleView)
+         mClickView.add(descView)
+         mClickView.add(iconView)
+         mClickView.add(imageView)
+         mClickView.add(iconArea)*/
 
         mClickView.add(ctaView)
         prepareInfo?.clickViewList = mClickView
