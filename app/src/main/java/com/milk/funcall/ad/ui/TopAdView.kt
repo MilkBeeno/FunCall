@@ -44,8 +44,8 @@ class TopAdView : FrameLayout {
                 addView(it, params)
             }
         }
+        mNativeAdTop?.destory()
         dispatchItemAd(itemAdType) { nativeAd ->
-            mNativeAdTop?.destory()
             mNativeAdTop = nativeAd
             mNativeAdTop?.let {
                 it.setNativeEventListener(object : ATNativeEventListener {
