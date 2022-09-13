@@ -34,7 +34,7 @@ object TopOnManager {
         ATSDK.init(application, BuildConfig.TOP_ON_ID, BuildConfig.TOP_ON_KEY, atNetworkConfig)
         ATSDK.setNetworkLogDebug(BuildConfig.DEBUG)
         if (BuildConfig.DEBUG) {
-            val deviceId = "31f99d709cafb402"
+            val deviceId = "0ac0d66705af5bd5"
             ATSDK.setDebuggerConfig(application, deviceId, null)
             // 检查广告平台的集成状态，提交审核时需注释此 API
             ATSDK.integrationChecking(application)
@@ -187,7 +187,7 @@ object TopOnManager {
             }
 
             override fun onReward(p0: ATAdInfo?) {
-                //建议在此回调中下发奖励，一般在onRewardedVideoAdClosed之前回调
+                // 建议在此回调中下发奖励，一般在onRewardedVideoAdClosed之前回调
             }
         })
         rewardVideoAd.load()
@@ -212,7 +212,6 @@ object TopOnManager {
             }
         }
         atNative = ATNative(activity, adUnitId, listener)
-        // 发起广告请求
         atNative.makeAdRequest()
     }
 }

@@ -1,44 +1,19 @@
 package com.milk.funcall.user.ui.vm
 
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import com.anythink.nativead.api.NativeAd
-import com.milk.funcall.ad.AdConfig
 import com.milk.funcall.ad.AdSwitchControl
-import com.milk.funcall.ad.TopOnManager
-import com.milk.funcall.ad.constant.AdCodeKey
 import com.milk.funcall.common.data.ApiPagingResponse
 import com.milk.funcall.common.paging.NetworkPagingSource
-import com.milk.funcall.common.timer.MilkTimer
-import com.milk.funcall.firebase.FireBaseManager
-import com.milk.funcall.firebase.constant.FirebaseKey
 import com.milk.funcall.user.data.UserSimpleInfoModel
 import com.milk.funcall.user.repo.HomeRepository
 import com.milk.funcall.user.type.ItemAdType
-import com.milk.simple.ktx.ioScope
-import com.milk.simple.log.Logger
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.combine
 
 class HomeViewModel : ViewModel() {
     private val homeRepository by lazy { HomeRepository() }
-
-    // 广告加载的状态
-    private var loadFirstAd = MutableSharedFlow<Boolean>()
-    private var loadSecondAd = MutableSharedFlow<Boolean>()
-    private var loadThirdAd = MutableSharedFlow<Boolean>()
-    internal val loadAdStatus =
-        combine(loadFirstAd, loadSecondAd, loadThirdAd) { a, b, c -> arrayOf(a, b, c) }
     private var groupNumber: Int = 0
     private var nextPositionSpace = 3
-
-    // 当前三个广告实例
-    internal var firstHomePageAd: NativeAd? = null
-    internal var secondHomePageAd: NativeAd? = null
-    internal var thirdHomePageAd: NativeAd? = null
     private var lastAddItemAdType: ItemAdType = ItemAdType.Null
 
     internal val pagingSource = Pager(
@@ -51,24 +26,6 @@ class HomeViewModel : ViewModel() {
             NetworkPagingSource { getHomeList(it) }
         }
     )
-
-    internal fun loadNativeAd(activity: FragmentActivity) {
-        getFirstHomePageAd(activity, true)
-        getSecondHomePageAd(activity, true)
-        getThirdHomePageAd(activity, true)
-    }
-
-    internal fun loadNativeAdByTimer(activity: FragmentActivity) {
-        MilkTimer.Builder()
-            .setMillisInFuture(30000)
-            .setCountDownInterval(1000)
-            .setOnFinishedListener {
-                getFirstHomePageAd(activity, false)
-                getSecondHomePageAd(activity, false)
-                getThirdHomePageAd(activity, false)
-                loadNativeAdByTimer(activity)
-            }.build().start()
-    }
 
     private suspend fun getHomeList(index: Int): ApiPagingResponse<UserSimpleInfoModel> {
         val apiResponse = homeRepository.getHomeList(index, groupNumber)
@@ -162,142 +119,31 @@ class HomeViewModel : ViewModel() {
         twelve: (Int, ItemAdType) -> Unit
     ) {
         when {
-            firstHomePageAd != null
-                    && secondHomePageAd != null
-                    && thirdHomePageAd != null -> four(4)
-            firstHomePageAd != null
-                    && secondHomePageAd != null
-                    && thirdHomePageAd == null ->
+            AdSwitchControl.homeListFirst
+                    && AdSwitchControl.homeListSecond
+                    && AdSwitchControl.homeListThird -> four(4)
+            AdSwitchControl.homeListFirst
+                    && AdSwitchControl.homeListSecond
+                    && !AdSwitchControl.homeListThird ->
                 eight(8, Pair(ItemAdType.FirstAd, ItemAdType.SecondAd))
-            firstHomePageAd != null
-                    && thirdHomePageAd != null
-                    && secondHomePageAd == null ->
+            AdSwitchControl.homeListFirst
+                    && AdSwitchControl.homeListThird
+                    && !AdSwitchControl.homeListSecond ->
                 eight(8, Pair(ItemAdType.FirstAd, ItemAdType.ThirdAd))
-            secondHomePageAd != null
-                    && thirdHomePageAd != null
-                    && firstHomePageAd == null ->
+            AdSwitchControl.homeListSecond
+                    && AdSwitchControl.homeListThird
+                    && !AdSwitchControl.homeListFirst ->
                 eight(8, Pair(ItemAdType.SecondAd, ItemAdType.ThirdAd))
-            firstHomePageAd != null
-                    && secondHomePageAd == null
-                    && thirdHomePageAd == null -> twelve(12, ItemAdType.FirstAd)
-            secondHomePageAd != null
-                    && firstHomePageAd == null
-                    && thirdHomePageAd == null -> twelve(12, ItemAdType.SecondAd)
-            thirdHomePageAd != null
-                    && firstHomePageAd == null
-                    && secondHomePageAd == null -> twelve(12, ItemAdType.ThirdAd)
+            AdSwitchControl.homeListFirst
+                    && !AdSwitchControl.homeListSecond
+                    && !AdSwitchControl.homeListThird -> twelve(12, ItemAdType.FirstAd)
+            AdSwitchControl.homeListSecond
+                    && !AdSwitchControl.homeListFirst
+                    && !AdSwitchControl.homeListThird -> twelve(12, ItemAdType.SecondAd)
+            !AdSwitchControl.homeListThird
+                    && !AdSwitchControl.homeListFirst
+                    && !AdSwitchControl.homeListSecond -> twelve(12, ItemAdType.ThirdAd)
             else -> Unit
-        }
-    }
-
-    private fun getFirstHomePageAd(activity: FragmentActivity, isFirstLoad: Boolean) {
-        ioScope {
-            FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_1)
-            val adUnitId =
-                AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_FIRST)
-            if (adUnitId.isNotBlank() && AdSwitchControl.homeListFirst)
-                TopOnManager.loadNativeAd(
-                    activity = activity,
-                    adUnitId = adUnitId,
-                    loadFailureRequest = {
-                        FireBaseManager
-                            .logEvent(FirebaseKey.AD_REQUEST_FAILED_1, adUnitId, it)
-                        FireBaseManager
-                            .logEvent(FirebaseKey.AD_SHOW_FAILED_1, adUnitId, it)
-                        firstHomePageAd = null
-                        ioScope { loadFirstAd.emit(isFirstLoad) }
-                    },
-                    loadSuccessRequest = {
-                        FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_1)
-                        firstHomePageAd = it?.nativeAd
-                        Logger.d("第一个请求陈公公","hlc")
-                        ioScope { loadFirstAd.emit(isFirstLoad) }
-                    },
-//                    showSuccessRequest = {
-//                        FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_1)
-//                    },
-//                    clickRequest = {
-//                        FireBaseManager.logEvent(FirebaseKey.CLICK_AD_1)
-//                    }
-                )
-            else {
-                delay(500)
-                loadFirstAd.emit(isFirstLoad)
-            }
-        }
-    }
-
-    private fun getSecondHomePageAd(activity: FragmentActivity, isFirstLoad: Boolean) {
-        ioScope {
-            FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_2)
-            val adUnitId =
-                AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_SECOND)
-            if (adUnitId.isNotBlank() && AdSwitchControl.homeListSecond)
-                TopOnManager.loadNativeAd(
-                    activity = activity,
-                    adUnitId = adUnitId,
-                    loadFailureRequest = {
-                        FireBaseManager
-                            .logEvent(FirebaseKey.AD_REQUEST_FAILED_2, adUnitId, it)
-                        FireBaseManager
-                            .logEvent(FirebaseKey.AD_SHOW_FAILED_2, adUnitId, it)
-                        secondHomePageAd = null
-                        ioScope { loadSecondAd.emit(isFirstLoad) }
-                    },
-                    loadSuccessRequest = {
-                        FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_2)
-                        secondHomePageAd = it?.nativeAd
-                        Logger.d("第二个请求陈公公","hlc")
-                        ioScope { loadSecondAd.emit(isFirstLoad) }
-                    },
-                    /*showSuccessRequest = {
-                        FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_2)
-                    },
-                    clickRequest = {
-                        FireBaseManager.logEvent(FirebaseKey.CLICK_AD_2)
-                    }*/
-                )
-            else {
-                delay(500)
-                loadSecondAd.emit(isFirstLoad)
-            }
-        }
-    }
-
-    private fun getThirdHomePageAd(activity: FragmentActivity, isFirstLoad: Boolean) {
-        ioScope {
-            FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_3)
-            val adUnitId =
-                AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_THIRD)
-            if (adUnitId.isNotBlank() && AdSwitchControl.homeListThird)
-                TopOnManager.loadNativeAd(
-                    activity = activity,
-                    adUnitId = adUnitId,
-                    loadFailureRequest = {
-                        FireBaseManager
-                            .logEvent(FirebaseKey.Ad_request_failed_3, adUnitId, it)
-                        FireBaseManager
-                            .logEvent(FirebaseKey.AD_SHOW_FAILED_3, adUnitId, it)
-                        thirdHomePageAd = null
-                        ioScope { loadThirdAd.emit(isFirstLoad) }
-                    },
-                    loadSuccessRequest = {
-                        FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_3)
-                        thirdHomePageAd = it?.nativeAd
-                        Logger.d("第三个请求陈公公","hlc")
-                        ioScope { loadThirdAd.emit(isFirstLoad) }
-                    },
-//                    showSuccessRequest = {
-//                        FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_3)
-//                    },
-//                    clickRequest = {
-//                        FireBaseManager.logEvent(FirebaseKey.CLICK_AD_3)
-//                    }
-                )
-            else {
-                delay(500)
-                loadThirdAd.emit(isFirstLoad)
-            }
         }
     }
 }

@@ -4,7 +4,6 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.DiffUtil
-import com.anythink.nativead.api.NativeAd
 import com.milk.funcall.R
 import com.milk.funcall.ad.ui.TopAdView
 import com.milk.funcall.common.media.loader.ImageLoader
@@ -32,9 +31,6 @@ class HomeAdapter : AbstractPagingAdapter<UserSimpleInfoModel>(
         ) = false
     }
 ) {
-    internal var firstHomePageAd: NativeAd? = null
-    internal var secondHomePageAd: NativeAd? = null
-    internal var thirdHomePageAd: NativeAd? = null
 
     init {
         setMultiTypeDelegate(object : MultiTypeDelegate {
@@ -56,15 +52,15 @@ class HomeAdapter : AbstractPagingAdapter<UserSimpleInfoModel>(
 
     private fun setAd(holder: PagingViewHolder, item: UserSimpleInfoModel) {
         when (item.itemAdType) {
-            ItemAdType.FirstAd -> firstHomePageAd?.let {
-                holder.getView<TopAdView>(R.id.homeAdLayout).showTopOnNativeAd(it)
-            }
-            ItemAdType.SecondAd -> secondHomePageAd?.let {
-                holder.getView<TopAdView>(R.id.homeAdLayout).showTopOnNativeAd(it)
-            }
-            ItemAdType.ThirdAd -> thirdHomePageAd?.let {
-                holder.getView<TopAdView>(R.id.homeAdLayout).showTopOnNativeAd(it)
-            }
+            ItemAdType.FirstAd ->
+                holder.getView<TopAdView>(R.id.homeAdLayout)
+                    .showTopOnNativeAd(itemAdType = item.itemAdType)
+            ItemAdType.SecondAd ->
+                holder.getView<TopAdView>(R.id.homeAdLayout)
+                    .showTopOnNativeAd(itemAdType = item.itemAdType)
+            ItemAdType.ThirdAd ->
+                holder.getView<TopAdView>(R.id.homeAdLayout)
+                    .showTopOnNativeAd(itemAdType = item.itemAdType)
             else -> Unit
         }
     }

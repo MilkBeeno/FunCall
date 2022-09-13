@@ -36,8 +36,6 @@ class HomeFragment : AbstractFragment() {
         super.initializeData()
         checkNewClientOnHome()
         loadingDialog.show()
-        homeViewModel.loadNativeAd(requireActivity())
-        homeViewModel.loadNativeAdByTimer(requireActivity())
         adapter.addRefreshedListener {
             loadingDialog.dismiss()
             binding.refresh.finishRefresh(1500)
@@ -57,16 +55,8 @@ class HomeFragment : AbstractFragment() {
                 }
             }
         }
-        homeViewModel.loadAdStatus.collectLatest(this) { status ->
-            adapter.firstHomePageAd = homeViewModel.firstHomePageAd
-            adapter.secondHomePageAd = homeViewModel.secondHomePageAd
-            adapter.thirdHomePageAd = homeViewModel.thirdHomePageAd
-            if (status[0] && status[1] && status[2])
-                homeViewModel.pagingSource.flow
-                    .collectLatest(this) { adapter.submitData(it) }
-            else
-                adapter.notifyDataSetChanged()
-        }
+        homeViewModel.pagingSource.flow
+            .collectLatest(this) { adapter.submitData(it) }
     }
 
     private fun checkNewClientOnHome() {
