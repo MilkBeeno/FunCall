@@ -117,7 +117,7 @@ dependencies {
     // image 高斯模糊库
     implementation 'com.github.centerzx:ShapeBlurView:1.0.1'
     // 谷歌广告依赖库
-    implementation("com.google.android.gms:play-services-ads:21.1.0")
+    // implementation("com.google.android.gms:play-services-ads:21.1.0")
     // firebase 统计功能
     implementation platform('com.google.firebase:firebase-bom:30.1.0')
     implementation("com.google.firebase:firebase-analytics:21.1.1")
