@@ -27,9 +27,9 @@ class LaunchViewModel : ViewModel() {
         val adUnitId =
             AdConfig.getAdvertiseUnitId(AdCodeKey.APP_START)
         MilkTimer.Builder()
-            .setMillisInFuture(10000)
+            .setMillisInFuture(13000)
             .setOnTickListener { t, it ->
-                if (it <= 7000 && adLoadStatus == AdLoadType.Success)
+                if (it <= 10000 && adLoadStatus == AdLoadType.Success)
                     t.finish()
             }
             .setOnFinishedListener {
