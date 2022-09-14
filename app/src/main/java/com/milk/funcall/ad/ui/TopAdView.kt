@@ -32,10 +32,11 @@ class TopAdView : FrameLayout {
     private var mNativeAdTop: NativeAd? = null
 
     fun showTopOnNativeAd(itemAdType: ItemAdType) {
+        removeAllViews()
         visibility = VISIBLE
+        anyThinkNativeAdView?.removeAllViews()
         anyThinkNativeAdView = ATNativeAdView(context)
         anyThinkNativeAdView?.let {
-            it.removeAllViews()
             if (it.parent == null) {
                 val params = LayoutParams(
                     LayoutParams.MATCH_PARENT,
