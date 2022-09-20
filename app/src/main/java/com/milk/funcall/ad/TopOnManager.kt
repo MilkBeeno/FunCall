@@ -11,7 +11,6 @@ import com.anythink.interstitial.api.ATInterstitial
 import com.anythink.interstitial.api.ATInterstitialListener
 import com.anythink.nativead.api.ATNative
 import com.anythink.nativead.api.ATNativeNetworkListener
-import com.anythink.network.facebook.FacebookATInitConfig
 import com.anythink.rewardvideo.api.ATRewardVideoAd
 import com.anythink.rewardvideo.api.ATRewardVideoListener
 import com.milk.funcall.BuildConfig
@@ -21,20 +20,18 @@ import com.milk.simple.log.Logger
 /**
  * TopOn 广告聚合平台管理、目前只添加 Facebook 广告接入
  */
-object MetaAdManager {
+object TopOnManager {
     private val atInitConfigs = arrayListOf<ATInitConfig>()
 
     internal fun initialize(application: Application) {
         // 初始化 SDK
-        val facebookATInitConfig = FacebookATInitConfig()
-        atInitConfigs.add(facebookATInitConfig)
         val builder = ATNetworkConfig.Builder()
         builder.withInitConfigList(atInitConfigs)
         val atNetworkConfig = builder.build()
         ATSDK.init(application, BuildConfig.TOP_ON_ID, BuildConfig.TOP_ON_KEY, atNetworkConfig)
         ATSDK.setNetworkLogDebug(BuildConfig.DEBUG)
         if (BuildConfig.DEBUG) {
-            val deviceId = "31f99d709cafb402"
+            val deviceId = "0ac0d66705af5bd5"
             ATSDK.setDebuggerConfig(application, deviceId, null)
             // 检查广告平台的集成状态，提交审核时需注释此 API
             ATSDK.integrationChecking(application)

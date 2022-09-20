@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.anythink.interstitial.api.ATInterstitial
 import com.milk.funcall.account.Account
 import com.milk.funcall.ad.AdConfig
-import com.milk.funcall.ad.MetaAdManager
+import com.milk.funcall.ad.TopOnManager
 import com.milk.funcall.ad.constant.AdCodeKey
 import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.firebase.FireBaseManager
@@ -98,7 +98,7 @@ class UserInfoViewModel : ViewModel() {
             AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_IMAGE)
         var interstitial: ATInterstitial? = null
         if (adUnitId.isNotBlank()) {
-            interstitial = MetaAdManager.loadInterstitial(
+            interstitial = TopOnManager.loadInterstitial(
                 activity = activity,
                 adUnitId = adUnitId,
                 loadFailureRequest = {

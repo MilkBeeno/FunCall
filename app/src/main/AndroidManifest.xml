@@ -46,8 +46,7 @@
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
-        <!-- source file: nonchina_jcenter/network_sdk/admob/21.1.0/AndroidManifest.xml -->
-        <!-- Google 广告 -->
+        <!-- Admob 广告相关的 -->
         <meta-data
             android:name="com.google.android.gms.ads.AD_MANAGER_APP"
             android:value="true" />

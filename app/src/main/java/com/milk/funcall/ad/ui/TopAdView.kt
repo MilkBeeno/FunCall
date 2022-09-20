@@ -12,7 +12,7 @@ import com.anythink.nativead.api.ATNativeEventListener
 import com.anythink.nativead.api.NativeAd
 import com.milk.funcall.ad.AdConfig
 import com.milk.funcall.ad.AdSwitchControl
-import com.milk.funcall.ad.MetaAdManager
+import com.milk.funcall.ad.TopOnManager
 import com.milk.funcall.ad.constant.AdCodeKey
 import com.milk.funcall.firebase.FireBaseManager
 import com.milk.funcall.firebase.constant.FirebaseKey
@@ -133,7 +133,7 @@ class TopAdView : FrameLayout {
             val adUnitId =
                 AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_FIRST)
             if (adUnitId.isNotBlank() && AdSwitchControl.homeListFirst)
-                MetaAdManager.loadNativeAd(
+                TopOnManager.loadNativeAd(
                     activity = activity,
                     adUnitId = adUnitId,
                     loadFailureRequest = {
@@ -162,7 +162,7 @@ class TopAdView : FrameLayout {
             val adUnitId =
                 AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_SECOND)
             if (adUnitId.isNotBlank() && AdSwitchControl.homeListSecond)
-                MetaAdManager.loadNativeAd(
+                TopOnManager.loadNativeAd(
                     activity = activity,
                     adUnitId = adUnitId,
                     loadFailureRequest = {
@@ -191,7 +191,7 @@ class TopAdView : FrameLayout {
             val adUnitId =
                 AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_THIRD)
             if (adUnitId.isNotBlank() && AdSwitchControl.homeListThird)
-                MetaAdManager.loadNativeAd(
+                TopOnManager.loadNativeAd(
                     activity = activity,
                     adUnitId = adUnitId,
                     loadFailureRequest = {
