@@ -145,13 +145,7 @@ class TopAdView : FrameLayout {
                     loadSuccessRequest = {
                         FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_1)
                         action(it?.nativeAd)
-                    },
-//                    showSuccessRequest = {
-//                        FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_1)
-//                    },
-//                    clickRequest = {
-//                        FireBaseManager.logEvent(FirebaseKey.CLICK_AD_1)
-//                    }
+                    }
                 )
         }
     }
@@ -174,13 +168,7 @@ class TopAdView : FrameLayout {
                     loadSuccessRequest = {
                         FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_2)
                         action(it?.nativeAd)
-                    },
-                    /*showSuccessRequest = {
-                        FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_2)
-                    },
-                    clickRequest = {
-                        FireBaseManager.logEvent(FirebaseKey.CLICK_AD_2)
-                    }*/
+                    }
                 )
         }
     }
@@ -203,13 +191,7 @@ class TopAdView : FrameLayout {
                     loadSuccessRequest = {
                         FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_3)
                         action.invoke(it?.nativeAd)
-                    },
-//                    showSuccessRequest = {
-//                        FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_3)
-//                    },
-//                    clickRequest = {
-//                        FireBaseManager.logEvent(FirebaseKey.CLICK_AD_3)
-//                    }
+                    }
                 )
         }
     }
