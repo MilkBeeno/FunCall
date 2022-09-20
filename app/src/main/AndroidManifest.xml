@@ -43,11 +43,14 @@
             android:required="false" />
 
         <!-- Admob 广告相关的 -->
-        <!-- Google 广告ID 正式服 ID=“ ca-app-pub-9835209825468303~6826154181 ”-->
-        <!-- Google 广告ID 测试服 ID=“ ca-app-pub-3940256099942544~3347511713 “-->
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+        <!-- source file: nonchina_jcenter/network_sdk/admob/21.1.0/AndroidManifest.xml -->
+        <!-- Google 广告 -->
         <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713" />
+            android:name="com.google.android.gms.ads.AD_MANAGER_APP"
+            android:value="true" />
 
         <!-- 屏幕适配方案 -->
         <meta-data

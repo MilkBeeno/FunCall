@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import com.anythink.interstitial.api.ATInterstitial
 import com.milk.funcall.ad.AdConfig
 import com.milk.funcall.ad.AdSwitchControl
-import com.milk.funcall.ad.TopOnManager
+import com.milk.funcall.ad.MetaAdManager
 import com.milk.funcall.ad.constant.AdCodeKey
 import com.milk.funcall.ad.ui.AdLoadType
 import com.milk.funcall.common.timer.MilkTimer
@@ -42,7 +42,7 @@ class LaunchViewModel : ViewModel() {
             .start()
         if (AdSwitchControl.appLaunch && adUnitId.isNotBlank()) {
             FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST)
-            interstitial = TopOnManager.loadInterstitial(
+            interstitial = MetaAdManager.loadInterstitial(
                 activity = activity,
                 adUnitId = adUnitId,
                 loadFailureRequest = {

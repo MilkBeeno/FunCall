@@ -14,7 +14,7 @@ import com.milk.funcall.account.Account
 import com.milk.funcall.account.ui.frag.MineFragment
 import com.milk.funcall.ad.AdConfig
 import com.milk.funcall.ad.AdSwitchControl
-import com.milk.funcall.ad.TopOnManager
+import com.milk.funcall.ad.MetaAdManager
 import com.milk.funcall.ad.constant.AdCodeKey
 import com.milk.funcall.app.MainService
 import com.milk.funcall.app.ui.MainViewModel
@@ -57,7 +57,7 @@ class MainActivity : AbstractActivity() {
                 FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_4)
                 val adUnitId =
                     AdConfig.getAdvertiseUnitId(AdCodeKey.MAIN_HOME_BOTTOM)
-                val adView = TopOnManager.loadBannerAd(
+                val adView = MetaAdManager.loadBannerAd(
                     activity = this,
                     adUnitId = adUnitId,
                     loadFailureRequest = {
