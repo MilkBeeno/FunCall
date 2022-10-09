@@ -5,9 +5,12 @@ import android.os.Build
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
+import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import com.milk.funcall.R
 import com.milk.funcall.databinding.LayoutMineOptionBinding
+import com.milk.simple.ktx.color
 
 class MineOptions : FrameLayout {
     private val binding =
@@ -20,6 +23,7 @@ class MineOptions : FrameLayout {
     fun setOption(
         @DrawableRes image: Int,
         @StringRes string: Int,
+        @ColorRes color: Int = context.color(R.color.FF1E1E21),
         showLine: Boolean = true
     ) {
         binding.ivContent.setImageResource(image)

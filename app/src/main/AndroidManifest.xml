@@ -174,7 +174,11 @@
             android:exported="false"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
-
+        <activity
+            android:name=".account.ui.act.RechargeActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <!-- google 广告的活动页面 -->
         <activity
             android:name="com.google.android.gms.ads.AdActivity"

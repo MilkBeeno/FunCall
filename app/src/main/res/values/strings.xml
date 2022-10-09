@@ -70,6 +70,7 @@
     <string name="mine_follows">Follows</string>
     <string name="mine_fans">Fans</string>
     <string name="mine_edit_profile">Edit profile</string>
+    <string name="mine_recharge">Cancel Ads</string>
     <string name="mine_sign_out">Sign out</string>
     <string name="mine_about_us">About us</string>
     <string name="mine_blacked_list">Blacked list</string>
@@ -121,4 +122,8 @@
     <string name="user_info_media_locked_view">View Now</string>
     <string name="user_info_please_view_video_or_image">Please watch the video or picture first.</string>
     <string name="user_info_view_ad">Rewarded video coming soon</string>
+    <string name="recharge_title">subscription</string>
+    <string name="recharge_week">1 Week</string>
+    <string name="recharge_year">1 Year</string>
+    <string name="recharge_desc">（Free to try, cancel at any time）</string>
 </resources>

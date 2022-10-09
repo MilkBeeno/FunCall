@@ -130,6 +130,12 @@
                 android:layout_marginTop="10dp" />
 
             <com.milk.funcall.account.ui.view.MineOptions
+                android:id="@+id/recharge"
+                android:layout_width="match_parent"
+                android:layout_height="53dp"
+                android:layout_marginTop="10dp" />
+
+            <com.milk.funcall.account.ui.view.MineOptions
                 android:id="@+id/blackedList"
                 android:layout_width="match_parent"
                 android:layout_height="53dp" />
