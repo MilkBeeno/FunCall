@@ -14,8 +14,8 @@ import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.ui.manager.HorizontalLinearLayoutManager
 import com.milk.funcall.databinding.ActivityImageMediaBinding
-import com.milk.funcall.firebase.FireBaseManager
-import com.milk.funcall.firebase.constant.FirebaseKey
+import com.milk.funcall.common.firebase.FireBaseManager
+import com.milk.funcall.common.firebase.constant.FirebaseKey
 import com.milk.funcall.login.ui.act.LoginActivity
 import com.milk.funcall.user.ui.adapter.ImageMediaAdapter
 import com.milk.funcall.user.ui.dialog.ImageMediaGuideDialog

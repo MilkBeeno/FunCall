@@ -1,4 +1,4 @@
-package com.milk.funcall.ad.ui
+package com.milk.funcall.common.ad.ui
 
 import android.content.Context
 import android.text.TextUtils

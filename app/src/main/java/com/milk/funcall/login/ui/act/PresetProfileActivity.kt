@@ -26,8 +26,8 @@ import com.milk.funcall.common.permission.Permission
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.ui.view.BanEnterInputFilter
 import com.milk.funcall.databinding.ActivityPresetProfileBinding
-import com.milk.funcall.firebase.FireBaseManager
-import com.milk.funcall.firebase.constant.FirebaseKey
+import com.milk.funcall.common.firebase.FireBaseManager
+import com.milk.funcall.common.firebase.constant.FirebaseKey
 import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.login.ui.vm.PresetProfileViewModel
 import com.milk.funcall.user.ui.config.AvatarImage

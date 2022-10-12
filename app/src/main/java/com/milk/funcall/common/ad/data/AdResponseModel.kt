@@ -1,4 +1,4 @@
-package com.milk.funcall.ad.data
+package com.milk.funcall.common.ad.data
 
 data class AdResponseModel(
     val code: Int = 0,

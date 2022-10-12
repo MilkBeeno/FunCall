@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import com.milk.funcall.account.Account
 import com.milk.funcall.account.repo.AccountRepository
 import com.milk.funcall.common.author.AuthType
-import com.milk.funcall.firebase.FireBaseManager
-import com.milk.funcall.firebase.constant.FirebaseKey
+import com.milk.funcall.common.firebase.FireBaseManager
+import com.milk.funcall.common.firebase.constant.FirebaseKey
 import com.milk.funcall.login.repo.LoginRepository
 import com.milk.simple.ktx.ioScope
 

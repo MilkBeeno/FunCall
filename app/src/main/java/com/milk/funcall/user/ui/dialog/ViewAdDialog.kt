@@ -4,8 +4,8 @@ import android.view.Gravity
 import androidx.fragment.app.FragmentActivity
 import com.milk.funcall.common.ui.dialog.SimpleDialog
 import com.milk.funcall.databinding.DialogViewAdBinding
-import com.milk.funcall.firebase.FireBaseManager
-import com.milk.funcall.firebase.constant.FirebaseKey
+import com.milk.funcall.common.firebase.FireBaseManager
+import com.milk.funcall.common.firebase.constant.FirebaseKey
 
 class ViewAdDialog(activity: FragmentActivity) : SimpleDialog<DialogViewAdBinding>(activity) {
     private var confirmRequest: (() -> Unit)? = null

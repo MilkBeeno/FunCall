@@ -1,4 +1,4 @@
-package com.milk.funcall.ad.api
+package com.milk.funcall.common.ad.api
 
 import com.milk.funcall.common.net.ApiClient
 

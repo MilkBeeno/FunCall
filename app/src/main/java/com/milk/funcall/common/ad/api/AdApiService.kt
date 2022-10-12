@@ -1,6 +1,6 @@
-package com.milk.funcall.ad.api
+package com.milk.funcall.common.ad.api
 
-import com.milk.funcall.ad.data.AdModel
+import com.milk.funcall.common.ad.data.AdModel
 import com.milk.funcall.common.data.ApiResponse
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded

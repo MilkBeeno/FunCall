@@ -8,8 +8,8 @@ import android.webkit.WebViewClient
 import com.milk.funcall.R
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityWebBinding
-import com.milk.funcall.firebase.FireBaseManager
-import com.milk.funcall.firebase.constant.FirebaseKey
+import com.milk.funcall.common.firebase.FireBaseManager
+import com.milk.funcall.common.firebase.constant.FirebaseKey
 import com.milk.simple.ktx.string
 
 class WebActivity : AbstractActivity() {

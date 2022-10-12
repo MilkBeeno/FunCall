@@ -1,15 +1,15 @@
-package com.milk.funcall.ad
+package com.milk.funcall.common.ad
 
 import android.content.Context
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.BaseApplication
 import com.milk.funcall.BuildConfig
 import com.milk.funcall.R
-import com.milk.funcall.ad.constant.AdCodeKey
-import com.milk.funcall.ad.data.AdModel
-import com.milk.funcall.ad.data.AdPositionModel
-import com.milk.funcall.ad.data.AdResponseModel
-import com.milk.funcall.ad.repo.AdRepository
+import com.milk.funcall.common.ad.constant.AdCodeKey
+import com.milk.funcall.common.ad.data.AdModel
+import com.milk.funcall.common.ad.data.AdPositionModel
+import com.milk.funcall.common.ad.data.AdResponseModel
+import com.milk.funcall.common.ad.repo.AdRepository
 import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.net.json.JsonConvert
 import com.milk.simple.ktx.ioScope

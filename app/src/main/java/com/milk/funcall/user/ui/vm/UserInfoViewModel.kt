@@ -3,12 +3,12 @@ package com.milk.funcall.user.ui.vm
 import androidx.lifecycle.ViewModel
 import com.anythink.interstitial.api.ATInterstitial
 import com.milk.funcall.account.Account
-import com.milk.funcall.ad.AdConfig
-import com.milk.funcall.ad.TopOnManager
-import com.milk.funcall.ad.constant.AdCodeKey
+import com.milk.funcall.common.ad.AdConfig
+import com.milk.funcall.common.ad.TopOnManager
+import com.milk.funcall.common.ad.constant.AdCodeKey
 import com.milk.funcall.common.constrant.KvKey
-import com.milk.funcall.firebase.FireBaseManager
-import com.milk.funcall.firebase.constant.FirebaseKey
+import com.milk.funcall.common.firebase.FireBaseManager
+import com.milk.funcall.common.firebase.constant.FirebaseKey
 import com.milk.funcall.user.data.UserInfoModel
 import com.milk.funcall.user.repo.UserInfoRepository
 import com.milk.funcall.user.ui.act.UserInfoActivity

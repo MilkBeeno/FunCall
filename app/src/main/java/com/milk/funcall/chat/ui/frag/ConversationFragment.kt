@@ -15,8 +15,8 @@ import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.paging.status.RefreshStatus
 import com.milk.funcall.common.ui.AbstractFragment
 import com.milk.funcall.databinding.FragmentChatMessageBinding
-import com.milk.funcall.firebase.FireBaseManager
-import com.milk.funcall.firebase.constant.FirebaseKey
+import com.milk.funcall.common.firebase.FireBaseManager
+import com.milk.funcall.common.firebase.constant.FirebaseKey
 import com.milk.simple.ktx.*
 
 class ConversationFragment : AbstractFragment() {

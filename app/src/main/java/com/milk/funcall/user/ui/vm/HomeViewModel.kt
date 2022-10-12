@@ -3,7 +3,7 @@ package com.milk.funcall.user.ui.vm
 import androidx.lifecycle.ViewModel
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import com.milk.funcall.ad.AdControl
+import com.milk.funcall.common.ad.AdControl
 import com.milk.funcall.common.data.ApiPagingResponse
 import com.milk.funcall.common.paging.NetworkPagingSource
 import com.milk.funcall.user.data.UserSimpleInfoModel

@@ -12,8 +12,8 @@ import com.milk.funcall.app.ui.act.MainActivity
 import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityGenderBinding
-import com.milk.funcall.firebase.FireBaseManager
-import com.milk.funcall.firebase.constant.FirebaseKey
+import com.milk.funcall.common.firebase.FireBaseManager
+import com.milk.funcall.common.firebase.constant.FirebaseKey
 import com.milk.funcall.user.type.Gender
 import com.milk.simple.ktx.color
 import com.milk.simple.ktx.immersiveStatusBar

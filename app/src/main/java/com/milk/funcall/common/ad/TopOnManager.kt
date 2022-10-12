@@ -1,4 +1,4 @@
-package com.milk.funcall.ad
+package com.milk.funcall.common.ad
 
 import android.app.Application
 import android.view.ViewGroup

@@ -13,8 +13,8 @@ import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.common.media.view.IjkVideoView
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityVideoMediaBinding
-import com.milk.funcall.firebase.FireBaseManager
-import com.milk.funcall.firebase.constant.FirebaseKey
+import com.milk.funcall.common.firebase.FireBaseManager
+import com.milk.funcall.common.firebase.constant.FirebaseKey
 import com.milk.funcall.login.ui.act.LoginActivity
 import com.milk.simple.ktx.*
 import tv.danmaku.ijk.media.player.IMediaPlayer

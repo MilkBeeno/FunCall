@@ -1,4 +1,4 @@
-package com.milk.funcall.firebase
+package com.milk.funcall.common.firebase
 
 import android.content.Context
 import android.os.Bundle

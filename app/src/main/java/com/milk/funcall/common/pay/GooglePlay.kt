@@ -1,4 +1,4 @@
-package com.milk.funcall.pay
+package com.milk.funcall.common.pay
 
 import android.app.Activity
 import android.content.Context

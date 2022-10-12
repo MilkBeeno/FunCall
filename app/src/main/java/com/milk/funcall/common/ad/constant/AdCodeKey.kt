@@ -1,4 +1,4 @@
-package com.milk.funcall.ad.constant
+package com.milk.funcall.common.ad.constant
 
 object AdCodeKey {
     /** 测试的设备号 */

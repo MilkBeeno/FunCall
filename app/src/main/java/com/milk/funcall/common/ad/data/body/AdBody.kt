@@ -1,4 +1,4 @@
-package com.milk.funcall.ad.data.body
+package com.milk.funcall.common.ad.data.body
 
 data class AdBody(
     val appId: String = "",

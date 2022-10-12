@@ -1,4 +1,4 @@
-package com.milk.funcall.firebase.constant
+package com.milk.funcall.common.firebase.constant
 
 object FirebaseKey {
     /** 登录处埋点 */

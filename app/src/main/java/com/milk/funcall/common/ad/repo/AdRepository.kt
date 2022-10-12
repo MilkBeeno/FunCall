@@ -1,6 +1,6 @@
-package com.milk.funcall.ad.repo
+package com.milk.funcall.common.ad.repo
 
-import com.milk.funcall.ad.api.ApiService
+import com.milk.funcall.common.ad.api.ApiService
 import com.milk.funcall.common.net.retrofit
 
 class AdRepository {
