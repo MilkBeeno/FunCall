@@ -11,7 +11,7 @@ import com.anythink.nativead.api.ATNativeDislikeListener
 import com.anythink.nativead.api.ATNativeEventListener
 import com.anythink.nativead.api.NativeAd
 import com.milk.funcall.ad.AdConfig
-import com.milk.funcall.ad.AdSwitchControl
+import com.milk.funcall.ad.AdControl
 import com.milk.funcall.ad.TopOnManager
 import com.milk.funcall.ad.constant.AdCodeKey
 import com.milk.funcall.firebase.FireBaseManager
@@ -132,7 +132,7 @@ class TopAdView : FrameLayout {
             FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_1)
             val adUnitId =
                 AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_FIRST)
-            if (adUnitId.isNotBlank() && AdSwitchControl.homeListFirst)
+            if (adUnitId.isNotBlank() && AdControl.homeListFirst)
                 TopOnManager.loadNativeAd(
                     activity = activity,
                     adUnitId = adUnitId,
@@ -155,7 +155,7 @@ class TopAdView : FrameLayout {
             FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_2)
             val adUnitId =
                 AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_SECOND)
-            if (adUnitId.isNotBlank() && AdSwitchControl.homeListSecond)
+            if (adUnitId.isNotBlank() && AdControl.homeListSecond)
                 TopOnManager.loadNativeAd(
                     activity = activity,
                     adUnitId = adUnitId,
@@ -178,7 +178,7 @@ class TopAdView : FrameLayout {
             FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_3)
             val adUnitId =
                 AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_THIRD)
-            if (adUnitId.isNotBlank() && AdSwitchControl.homeListThird)
+            if (adUnitId.isNotBlank() && AdControl.homeListThird)
                 TopOnManager.loadNativeAd(
                     activity = activity,
                     adUnitId = adUnitId,

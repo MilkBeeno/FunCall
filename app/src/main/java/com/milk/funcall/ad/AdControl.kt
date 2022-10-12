@@ -7,7 +7,7 @@ import com.milk.simple.ktx.ioScope
 import com.milk.simple.mdr.KvManger
 
 /** 广告开关控制器、控制某个广告位是否展示或关闭 */
-object AdSwitchControl {
+object AdControl {
     var adMaster: Boolean = true
         set(value) {
             KvManger.put(AdCodeKey.AD_MASTER_SWITCH, value)

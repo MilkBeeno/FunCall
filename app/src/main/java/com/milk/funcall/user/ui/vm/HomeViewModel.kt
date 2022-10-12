@@ -3,7 +3,7 @@ package com.milk.funcall.user.ui.vm
 import androidx.lifecycle.ViewModel
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import com.milk.funcall.ad.AdSwitchControl
+import com.milk.funcall.ad.AdControl
 import com.milk.funcall.common.data.ApiPagingResponse
 import com.milk.funcall.common.paging.NetworkPagingSource
 import com.milk.funcall.user.data.UserSimpleInfoModel
@@ -119,30 +119,30 @@ class HomeViewModel : ViewModel() {
         twelve: (Int, ItemAdType) -> Unit
     ) {
         when {
-            AdSwitchControl.homeListFirst
-                    && AdSwitchControl.homeListSecond
-                    && AdSwitchControl.homeListThird -> four(4)
-            AdSwitchControl.homeListFirst
-                    && AdSwitchControl.homeListSecond
-                    && !AdSwitchControl.homeListThird ->
+            AdControl.homeListFirst
+                    && AdControl.homeListSecond
+                    && AdControl.homeListThird -> four(4)
+            AdControl.homeListFirst
+                    && AdControl.homeListSecond
+                    && !AdControl.homeListThird ->
                 eight(8, Pair(ItemAdType.FirstAd, ItemAdType.SecondAd))
-            AdSwitchControl.homeListFirst
-                    && AdSwitchControl.homeListThird
-                    && !AdSwitchControl.homeListSecond ->
+            AdControl.homeListFirst
+                    && AdControl.homeListThird
+                    && !AdControl.homeListSecond ->
                 eight(8, Pair(ItemAdType.FirstAd, ItemAdType.ThirdAd))
-            AdSwitchControl.homeListSecond
-                    && AdSwitchControl.homeListThird
-                    && !AdSwitchControl.homeListFirst ->
+            AdControl.homeListSecond
+                    && AdControl.homeListThird
+                    && !AdControl.homeListFirst ->
                 eight(8, Pair(ItemAdType.SecondAd, ItemAdType.ThirdAd))
-            AdSwitchControl.homeListFirst
-                    && !AdSwitchControl.homeListSecond
-                    && !AdSwitchControl.homeListThird -> twelve(12, ItemAdType.FirstAd)
-            AdSwitchControl.homeListSecond
-                    && !AdSwitchControl.homeListFirst
-                    && !AdSwitchControl.homeListThird -> twelve(12, ItemAdType.SecondAd)
-            !AdSwitchControl.homeListThird
-                    && !AdSwitchControl.homeListFirst
-                    && !AdSwitchControl.homeListSecond -> twelve(12, ItemAdType.ThirdAd)
+            AdControl.homeListFirst
+                    && !AdControl.homeListSecond
+                    && !AdControl.homeListThird -> twelve(12, ItemAdType.FirstAd)
+            AdControl.homeListSecond
+                    && !AdControl.homeListFirst
+                    && !AdControl.homeListThird -> twelve(12, ItemAdType.SecondAd)
+            !AdControl.homeListThird
+                    && !AdControl.homeListFirst
+                    && !AdControl.homeListSecond -> twelve(12, ItemAdType.ThirdAd)
             else -> Unit
         }
     }

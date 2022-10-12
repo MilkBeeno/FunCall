@@ -66,4 +66,7 @@ object KvKey {
 
     /** 首次安装后打开app进入首页次数 */
     const val CHECK_NEW_CLIENT_ON_HOME = "CHECK_NEW_CLIENT_ON_HOME"
+
+    /** 是否订阅了观看他人信息免费广告 */
+    const val USER_SUBSCRIBE_TO_VIEW_OTHER_FREE = "USER_SUBSCRIBE_TO_VIEW_OTHER_FREE"
 }

@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import com.anythink.interstitial.api.ATInterstitial
 import com.milk.funcall.ad.AdConfig
-import com.milk.funcall.ad.AdSwitchControl
+import com.milk.funcall.ad.AdControl
 import com.milk.funcall.ad.TopOnManager
 import com.milk.funcall.ad.constant.AdCodeKey
 import com.milk.funcall.ad.ui.AdLoadType
@@ -40,7 +40,7 @@ class LaunchViewModel : ViewModel() {
             }
             .build()
             .start()
-        if (AdSwitchControl.appLaunch && adUnitId.isNotBlank()) {
+        if (AdControl.appLaunch && adUnitId.isNotBlank()) {
             FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST)
             interstitial = TopOnManager.loadInterstitial(
                 activity = activity,
