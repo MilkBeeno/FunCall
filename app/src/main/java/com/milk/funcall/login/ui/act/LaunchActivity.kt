@@ -31,7 +31,7 @@ class LaunchActivity : AbstractActivity() {
         initializeView()
         initializeObserver()
         AdControl.obtain()
-        AdConfig.obtain()
+        AdConfig.switch()
         Account.initialize()
         checkIsNewClient()
     }
