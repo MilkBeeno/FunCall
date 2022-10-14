@@ -15,7 +15,7 @@ import com.milk.funcall.account.Account
 import com.milk.funcall.common.ad.AdConfig
 import com.milk.funcall.common.ad.AdControl
 import com.milk.funcall.common.ad.TopOnManager
-import com.milk.funcall.common.ad.constant.AdCodeKey
+import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.chat.ui.act.ChatMessageActivity
 import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.constrant.KvKey
@@ -25,7 +25,7 @@ import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.ui.manager.NoScrollGridLayoutManager
 import com.milk.funcall.databinding.ActivityUserInfoBinding
 import com.milk.funcall.common.firebase.FireBaseManager
-import com.milk.funcall.common.firebase.constant.FirebaseKey
+import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.login.ui.act.LoginActivity
 import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.user.data.UserInfoModel

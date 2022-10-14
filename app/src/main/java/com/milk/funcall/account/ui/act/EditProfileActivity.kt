@@ -31,7 +31,7 @@ import com.milk.funcall.common.ui.manager.NoScrollGridLayoutManager
 import com.milk.funcall.common.ui.view.BanEnterInputFilter
 import com.milk.funcall.databinding.ActivityEditProfileBinding
 import com.milk.funcall.common.firebase.FireBaseManager
-import com.milk.funcall.common.firebase.constant.FirebaseKey
+import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.user.ui.act.ImageMediaActivity
 import com.milk.funcall.user.ui.act.VideoMediaActivity

@@ -1,4 +1,4 @@
-package com.milk.funcall.common.ad.constant
+package com.milk.funcall.common.constrant
 
 object AdCodeKey {
     /** 测试的设备号 */
@@ -28,7 +28,7 @@ object AdCodeKey {
     /** 首页底部的横幅广告  */
     internal const val MAIN_HOME_BOTTOM = "87654326"
 
-    /*******************************  以下是广告开关配置保存的 KEY ************************************/
+    /******************************* 以下是广告开关配置保存的 KEY ************************************/
 
     /** 广告总开关 */
     internal const val AD_MASTER_SWITCH = "Ad_master_switch"

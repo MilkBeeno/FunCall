@@ -1,7 +1,7 @@
 package com.milk.funcall.common.ad.api
 
 import com.milk.funcall.common.ad.data.AdModel
-import com.milk.funcall.common.data.ApiResponse
+import com.milk.funcall.common.response.ApiResponse
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST

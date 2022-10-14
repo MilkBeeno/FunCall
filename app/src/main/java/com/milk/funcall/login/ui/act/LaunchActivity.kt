@@ -13,7 +13,7 @@ import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityLaunchBinding
 import com.milk.funcall.common.firebase.FireBaseManager
-import com.milk.funcall.common.firebase.constant.FirebaseKey
+import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.login.ui.vm.LaunchViewModel
 import com.milk.simple.ktx.gone
 import com.milk.simple.ktx.immersiveStatusBar

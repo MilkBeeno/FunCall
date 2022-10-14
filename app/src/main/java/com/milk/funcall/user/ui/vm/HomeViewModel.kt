@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import com.milk.funcall.common.ad.AdControl
-import com.milk.funcall.common.data.ApiPagingResponse
+import com.milk.funcall.common.response.ApiPagingResponse
 import com.milk.funcall.common.paging.NetworkPagingSource
 import com.milk.funcall.user.data.UserSimpleInfoModel
 import com.milk.funcall.user.repo.HomeRepository

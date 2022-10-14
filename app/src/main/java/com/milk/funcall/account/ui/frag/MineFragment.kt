@@ -9,7 +9,7 @@ import com.milk.funcall.common.media.loader.ImageLoader
 import com.milk.funcall.common.ui.AbstractFragment
 import com.milk.funcall.databinding.FragmentMineBinding
 import com.milk.funcall.common.firebase.FireBaseManager
-import com.milk.funcall.common.firebase.constant.FirebaseKey
+import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.login.ui.act.GenderActivity
 import com.milk.funcall.login.ui.act.LoginActivity
 import com.milk.funcall.user.ui.config.AvatarImage

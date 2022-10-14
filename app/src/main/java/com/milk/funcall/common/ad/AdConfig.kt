@@ -5,7 +5,7 @@ import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.BaseApplication
 import com.milk.funcall.BuildConfig
 import com.milk.funcall.R
-import com.milk.funcall.common.ad.constant.AdCodeKey
+import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.ad.data.AdModel
 import com.milk.funcall.common.ad.data.AdPositionModel
 import com.milk.funcall.common.ad.data.AdResponseModel

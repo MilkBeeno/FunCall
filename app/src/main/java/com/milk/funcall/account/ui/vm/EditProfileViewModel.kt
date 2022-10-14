@@ -7,7 +7,7 @@ import com.milk.funcall.account.repo.EditProfileRepository
 import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.media.uploader.MediaUploadRepository
 import com.milk.funcall.common.firebase.FireBaseManager
-import com.milk.funcall.common.firebase.constant.FirebaseKey
+import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.simple.ktx.ioScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 

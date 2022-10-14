@@ -1,6 +1,6 @@
 package com.milk.funcall.common.net
 
-import com.milk.funcall.common.data.ApiResponse
+import com.milk.funcall.common.response.ApiResponse
 import com.milk.funcall.common.net.error.ApiErrorCode
 import com.milk.funcall.common.net.error.ApiErrorHandler
 

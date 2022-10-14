@@ -12,7 +12,7 @@ import androidx.annotation.ColorRes
 import com.milk.funcall.R
 import com.milk.funcall.databinding.LayoutBottomNavigationBinding
 import com.milk.funcall.common.firebase.FireBaseManager
-import com.milk.funcall.common.firebase.constant.FirebaseKey
+import com.milk.funcall.common.constrant.FirebaseKey
 
 class BottomNavigation : FrameLayout {
 

@@ -1,4 +1,4 @@
-package com.milk.funcall.common.data
+package com.milk.funcall.common.response
 
 import com.google.gson.annotations.SerializedName
 

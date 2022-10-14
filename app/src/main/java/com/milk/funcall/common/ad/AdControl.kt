@@ -1,7 +1,7 @@
 package com.milk.funcall.common.ad
 
 import com.milk.funcall.BuildConfig
-import com.milk.funcall.common.ad.constant.AdCodeKey
+import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.ad.repo.AdRepository
 import com.milk.simple.ktx.ioScope
 import com.milk.simple.mdr.KvManger

@@ -13,9 +13,9 @@ import com.anythink.nativead.api.NativeAd
 import com.milk.funcall.common.ad.AdConfig
 import com.milk.funcall.common.ad.AdControl
 import com.milk.funcall.common.ad.TopOnManager
-import com.milk.funcall.common.ad.constant.AdCodeKey
+import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.firebase.FireBaseManager
-import com.milk.funcall.common.firebase.constant.FirebaseKey
+import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.user.type.ItemAdType
 import com.milk.simple.ktx.ioScope
 

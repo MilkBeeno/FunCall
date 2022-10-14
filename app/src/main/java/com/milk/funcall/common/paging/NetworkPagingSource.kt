@@ -2,7 +2,7 @@ package com.milk.funcall.common.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.milk.funcall.common.data.ApiPagingResponse
+import com.milk.funcall.common.response.ApiPagingResponse
 
 class NetworkPagingSource<T : Any>(
     private val netWorkRequest: suspend (Int) -> ApiPagingResponse<T>

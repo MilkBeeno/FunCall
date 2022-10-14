@@ -1,4 +1,4 @@
-package com.milk.funcall.common.data
+package com.milk.funcall.common.response
 
 /**
  * Paging3 分页展示模型

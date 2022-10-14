@@ -1,6 +1,6 @@
 package com.milk.funcall.common.media.uploader
 
-import com.milk.funcall.common.data.ApiResponse
+import com.milk.funcall.common.response.ApiResponse
 import okhttp3.MultipartBody
 import retrofit2.http.Multipart
 import retrofit2.http.POST

@@ -11,7 +11,7 @@ import com.milk.funcall.common.web.WebActivity
 import com.milk.funcall.common.web.WebType
 import com.milk.funcall.databinding.ActivityAboutUsBinding
 import com.milk.funcall.common.firebase.FireBaseManager
-import com.milk.funcall.common.firebase.constant.FirebaseKey
+import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.simple.ktx.immersiveStatusBar
 import com.milk.simple.ktx.navigationBarPadding
 import com.milk.simple.ktx.statusBarPadding

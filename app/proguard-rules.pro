@@ -237,7 +237,7 @@
     public void set*(***);
     public *** get*();
 }
--keep public class com.milk.funcall.common.data.** {
+-keep public class com.milk.funcall.common.response.** {
     public void set*(***);
     public *** get*();
 }

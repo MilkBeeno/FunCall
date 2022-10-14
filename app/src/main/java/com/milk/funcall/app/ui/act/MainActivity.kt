@@ -15,7 +15,7 @@ import com.milk.funcall.account.ui.frag.MineFragment
 import com.milk.funcall.common.ad.AdConfig
 import com.milk.funcall.common.ad.AdControl
 import com.milk.funcall.common.ad.TopOnManager
-import com.milk.funcall.common.ad.constant.AdCodeKey
+import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.app.MainService
 import com.milk.funcall.app.ui.MainViewModel
 import com.milk.funcall.app.ui.view.BottomNavigation
@@ -25,7 +25,7 @@ import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityMainBinding
 import com.milk.funcall.common.firebase.FireBaseManager
-import com.milk.funcall.common.firebase.constant.FirebaseKey
+import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.user.ui.frag.HomeFragment
 import com.milk.simple.ktx.*
 import com.milk.simple.log.Logger

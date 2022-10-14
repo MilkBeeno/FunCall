@@ -9,11 +9,11 @@ import com.anythink.interstitial.api.ATInterstitial
 import com.milk.funcall.common.ad.AdConfig
 import com.milk.funcall.common.ad.AdControl
 import com.milk.funcall.common.ad.TopOnManager
-import com.milk.funcall.common.ad.constant.AdCodeKey
+import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.ad.ui.AdLoadType
 import com.milk.funcall.common.timer.MilkTimer
 import com.milk.funcall.common.firebase.FireBaseManager
-import com.milk.funcall.common.firebase.constant.FirebaseKey
+import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.simple.log.Logger
 import java.security.MessageDigest
 

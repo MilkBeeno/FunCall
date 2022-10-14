@@ -1,6 +1,6 @@
 package com.milk.funcall.login.api
 
-import com.milk.funcall.common.data.ApiResponse
+import com.milk.funcall.common.response.ApiResponse
 import com.milk.funcall.login.data.AvatarNameModel
 import com.milk.funcall.login.data.LoginModel
 import retrofit2.http.*

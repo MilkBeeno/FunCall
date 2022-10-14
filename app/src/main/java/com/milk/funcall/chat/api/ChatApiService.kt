@@ -3,7 +3,7 @@ package com.milk.funcall.chat.api
 import com.milk.funcall.chat.data.ChatMsgReceiveModel
 import com.milk.funcall.chat.data.ChatMsgSentTextModel
 import com.milk.funcall.chat.data.HeartBeatModel
-import com.milk.funcall.common.data.ApiResponse
+import com.milk.funcall.common.response.ApiResponse
 import retrofit2.http.*
 
 interface ChatApiService {
