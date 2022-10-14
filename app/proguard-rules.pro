@@ -301,3 +301,6 @@
 -keepclassmembers public class com.anythink.myoffer.ui.** {
    public *;
 }
+
+# 谷歌支付混淆
+-keep class com.android.vending.billing.**

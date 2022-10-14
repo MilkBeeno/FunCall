@@ -1,11 +1,10 @@
 package com.milk.funcall.common.pay
 
 import android.app.Activity
-import android.content.Context
 
 interface Pay {
     /** SDK 初始化 */
-    fun initialize(context: Context)
+    fun initialize(activity: Activity)
 
     /** 支付断开连接 */
     fun disconnect()
@@ -14,14 +13,14 @@ interface Pay {
     fun connected()
 
     /** 进行购买 */
-    fun launchPurchase(activity: Activity, productDetails: Any?)
+    fun launchPurchase(activity: Activity, productDetails: Any)
 
     /** 购买成功 */
-    fun purchaseSuccess(purchaseToken:Any)
+    fun paySuccessListener(listener: () -> Unit)
 
     /** 取消购买 */
-    fun purchaseCancel()
+    fun payCancelListener(listener: () -> Unit)
 
     /** 购买失败 */
-    fun purchaseFailure()
+    fun payFailureListener(listener: () -> Unit)
 }
