@@ -10,7 +10,7 @@ interface BlackedApiService {
     @FormUrlEncoded
     @POST("/funcall/pageBlackedList")
     suspend fun getBlackedList(
-        @Field("current") index: Int,
-        @Field("size") size: Int = 20
+            @Field("current") index: Int,
+            @Field("size") size: Int = 20
     ): ApiResponse<BlackedListModel>
 }
