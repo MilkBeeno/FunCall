@@ -1,6 +1,6 @@
 package com.milk.funcall.account.data
 
-import com.milk.funcall.common.mdr.table.UserInfoEntity
+import com.milk.funcall.common.db.table.UserInfoEntity
 
 data class FansOrFollowsModel(
     var current: Int = 0,

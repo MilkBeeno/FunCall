@@ -1,10 +1,10 @@
-package com.milk.funcall.common.mdr.dao
+package com.milk.funcall.common.db.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.milk.funcall.common.mdr.table.UserInfoEntity
+import com.milk.funcall.common.db.table.UserInfoEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

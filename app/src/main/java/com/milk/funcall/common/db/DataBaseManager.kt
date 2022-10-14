@@ -1,4 +1,4 @@
-package com.milk.funcall.common.mdr
+package com.milk.funcall.common.db
 
 import android.app.Application
 import androidx.room.Room

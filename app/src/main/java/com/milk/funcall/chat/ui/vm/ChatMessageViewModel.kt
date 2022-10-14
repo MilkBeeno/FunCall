@@ -5,8 +5,8 @@ import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.account.Account
 import com.milk.funcall.chat.repo.MessageRepository
 import com.milk.funcall.common.constrant.EventKey
-import com.milk.funcall.common.mdr.table.ChatMessageEntity
-import com.milk.funcall.common.mdr.table.UserInfoEntity
+import com.milk.funcall.common.db.table.ChatMessageEntity
+import com.milk.funcall.common.db.table.UserInfoEntity
 import com.milk.funcall.common.paging.LocalPagingSource
 import com.milk.funcall.user.data.UserInfoModel
 import com.milk.funcall.user.repo.UserInfoRepository

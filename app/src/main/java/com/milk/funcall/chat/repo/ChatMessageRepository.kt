@@ -2,8 +2,8 @@ package com.milk.funcall.chat.repo
 
 import com.milk.funcall.account.Account
 import com.milk.funcall.chat.ui.type.ChatMsgSendStatus
-import com.milk.funcall.common.mdr.DataBaseManager
-import com.milk.funcall.common.mdr.table.ChatMessageEntity
+import com.milk.funcall.common.db.DataBaseManager
+import com.milk.funcall.common.db.table.ChatMessageEntity
 
 /** 私聊消息仓库、主要用于中转私聊消息 */
 class ChatMessageRepository {

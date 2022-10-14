@@ -5,9 +5,9 @@ import com.milk.funcall.account.Account
 import com.milk.funcall.chat.api.ApiService
 import com.milk.funcall.chat.ui.type.ChatMessageType
 import com.milk.funcall.chat.ui.type.ChatMsgSendStatus
-import com.milk.funcall.common.mdr.DataBaseManager
-import com.milk.funcall.common.mdr.table.ChatMessageEntity
-import com.milk.funcall.common.mdr.table.ConversationWithUserInfoEntity
+import com.milk.funcall.common.db.DataBaseManager
+import com.milk.funcall.common.db.table.ChatMessageEntity
+import com.milk.funcall.common.db.table.ConversationWithUserInfoEntity
 import com.milk.funcall.common.net.retrofit
 import com.milk.simple.ktx.ioScope
 import com.milk.simple.log.Logger

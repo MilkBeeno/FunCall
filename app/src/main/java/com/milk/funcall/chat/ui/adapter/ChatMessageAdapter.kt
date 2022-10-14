@@ -8,8 +8,8 @@ import com.milk.funcall.R
 import com.milk.funcall.account.Account
 import com.milk.funcall.chat.ui.time.convertMessageTime
 import com.milk.funcall.chat.ui.type.ChatMessageType
-import com.milk.funcall.common.mdr.table.ChatMessageEntity
-import com.milk.funcall.common.mdr.table.UserInfoEntity
+import com.milk.funcall.common.db.table.ChatMessageEntity
+import com.milk.funcall.common.db.table.UserInfoEntity
 import com.milk.funcall.common.media.loader.ImageLoader
 import com.milk.funcall.common.paging.AbstractPagingAdapter
 import com.milk.funcall.common.paging.MultiTypeDelegate

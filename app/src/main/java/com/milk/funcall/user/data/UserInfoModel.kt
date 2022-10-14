@@ -1,7 +1,7 @@
 package com.milk.funcall.user.data
 
 import com.google.gson.annotations.SerializedName
-import com.milk.funcall.common.mdr.table.UserInfoEntity
+import com.milk.funcall.common.db.table.UserInfoEntity
 import java.io.Serializable
 
 data class UserInfoModel(

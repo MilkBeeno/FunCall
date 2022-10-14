@@ -6,7 +6,7 @@ import androidx.paging.PagingConfig
 import com.milk.funcall.account.Account
 import com.milk.funcall.account.repo.FansOrFollowsRepository
 import com.milk.funcall.common.response.ApiPagingResponse
-import com.milk.funcall.common.mdr.table.UserInfoEntity
+import com.milk.funcall.common.db.table.UserInfoEntity
 import com.milk.funcall.common.paging.NetworkPagingSource
 
 class FansViewModel : ViewModel() {

@@ -6,7 +6,7 @@ import com.milk.funcall.R
 import com.milk.funcall.account.Account
 import com.milk.funcall.chat.ui.time.convertMessageTime
 import com.milk.funcall.chat.ui.view.MessageRedDotView
-import com.milk.funcall.common.mdr.table.ConversationWithUserInfoEntity
+import com.milk.funcall.common.db.table.ConversationWithUserInfoEntity
 import com.milk.funcall.common.media.loader.ImageLoader
 import com.milk.funcall.common.paging.AbstractPagingAdapter
 import com.milk.funcall.common.paging.PagingViewHolder

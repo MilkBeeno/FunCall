@@ -2,8 +2,8 @@ package com.milk.funcall.chat.repo
 
 import com.milk.funcall.account.Account
 import com.milk.funcall.chat.ui.type.ChatMsgSendStatus
-import com.milk.funcall.common.mdr.DataBaseManager
-import com.milk.funcall.common.mdr.table.ConversationEntity
+import com.milk.funcall.common.db.DataBaseManager
+import com.milk.funcall.common.db.table.ConversationEntity
 import com.milk.simple.ktx.safeToLong
 
 /** MessageFragment 页面会话列表数据 */

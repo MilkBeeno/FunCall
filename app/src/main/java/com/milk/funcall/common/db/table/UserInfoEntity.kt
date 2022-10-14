@@ -1,4 +1,4 @@
-package com.milk.funcall.common.mdr.table
+package com.milk.funcall.common.db.table
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

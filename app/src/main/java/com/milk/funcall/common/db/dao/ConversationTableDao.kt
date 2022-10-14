@@ -1,12 +1,12 @@
-package com.milk.funcall.common.mdr.dao
+package com.milk.funcall.common.db.dao
 
 import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.milk.funcall.common.mdr.table.ConversationEntity
-import com.milk.funcall.common.mdr.table.ConversationWithUserInfoEntity
+import com.milk.funcall.common.db.table.ConversationEntity
+import com.milk.funcall.common.db.table.ConversationWithUserInfoEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

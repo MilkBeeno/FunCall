@@ -3,7 +3,7 @@ package com.milk.funcall
 import android.app.Application
 import com.milk.funcall.common.ad.TopOnManager
 import com.milk.funcall.common.author.FacebookAuth
-import com.milk.funcall.common.mdr.DataBaseManager
+import com.milk.funcall.common.db.DataBaseManager
 import com.milk.funcall.common.media.loader.LoaderConfig
 import com.milk.funcall.common.net.error.ApiErrorHandler
 import com.milk.funcall.common.firebase.FireBaseManager

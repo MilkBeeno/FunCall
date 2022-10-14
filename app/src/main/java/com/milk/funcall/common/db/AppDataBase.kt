@@ -1,13 +1,13 @@
-package com.milk.funcall.common.mdr
+package com.milk.funcall.common.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.milk.funcall.common.mdr.dao.ChatMessageTableDao
-import com.milk.funcall.common.mdr.dao.ConversationTableDao
-import com.milk.funcall.common.mdr.dao.UserInfoTableDao
-import com.milk.funcall.common.mdr.table.ChatMessageEntity
-import com.milk.funcall.common.mdr.table.ConversationEntity
-import com.milk.funcall.common.mdr.table.UserInfoEntity
+import com.milk.funcall.common.db.dao.ChatMessageTableDao
+import com.milk.funcall.common.db.dao.ConversationTableDao
+import com.milk.funcall.common.db.dao.UserInfoTableDao
+import com.milk.funcall.common.db.table.ChatMessageEntity
+import com.milk.funcall.common.db.table.ConversationEntity
+import com.milk.funcall.common.db.table.UserInfoEntity
 
 @Database(
     entities = [ChatMessageEntity::class, UserInfoEntity::class, ConversationEntity::class],
