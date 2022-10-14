@@ -32,5 +32,6 @@ class MineOptions : FrameLayout {
             context.resources.getString(string, context.theme)
         else
             context.resources.getString(string)
+        binding.tvContent.setTextColor(color)
     }
 }
