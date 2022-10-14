@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/popup_message_to_top"
+    android:background="@drawable/shape_popup_message_to_top"
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
