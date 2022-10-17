@@ -25,8 +25,7 @@ class TopNativeView : FrameLayout {
         removeAllViews()
         mClickView.clear()
         prepareInfo = ATNativePrepareInfo()
-        LayoutInflater
-            .from(context).inflate(R.layout.layout_top_on_list, this)
+        LayoutInflater.from(context).inflate(R.layout.layout_top_on_list, this)
         val titleView = findViewById<TextView>(R.id.native_ad_title)
         val contentArea = findViewById<FrameLayout>(R.id.native_ad_content_image_area)
         val descView = findViewById<TextView>(R.id.native_ad_desc)
@@ -59,10 +58,7 @@ class TopNativeView : FrameLayout {
                 (mediaView.parent as ViewGroup).removeView(mediaView)
             }
             if (mediaView != null) {
-                val params = LayoutParams(
-                    LayoutParams.MATCH_PARENT,
-                    LayoutParams.WRAP_CONTENT
-                )
+                val params = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
                 contentArea.addView(mediaView, params)
             }
             return

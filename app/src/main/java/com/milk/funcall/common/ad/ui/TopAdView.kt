@@ -14,8 +14,8 @@ import com.milk.funcall.common.ad.AdConfig
 import com.milk.funcall.common.ad.AdControl
 import com.milk.funcall.common.ad.TopOnManager
 import com.milk.funcall.common.constrant.AdCodeKey
-import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.constrant.FirebaseKey
+import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.user.type.ItemAdType
 import com.milk.simple.ktx.ioScope
 
@@ -38,10 +38,7 @@ class TopAdView : FrameLayout {
         anyThinkNativeAdView = ATNativeAdView(context)
         anyThinkNativeAdView?.let {
             if (it.parent == null) {
-                val params = LayoutParams(
-                    LayoutParams.MATCH_PARENT,
-                    LayoutParams.MATCH_PARENT
-                )
+                val params = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
                 addView(it, params)
             }
         }
@@ -130,23 +127,21 @@ class TopAdView : FrameLayout {
     private fun getFirstHomePageAd(activity: FragmentActivity, action: (NativeAd?) -> Unit) {
         ioScope {
             FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_1)
-            val adUnitId =
-                AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_FIRST)
-            if (adUnitId.isNotBlank() && AdControl.homeListFirst)
+            val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_FIRST)
+            if (adUnitId.isNotBlank() && AdControl.homeListFirst) {
                 TopOnManager.loadNativeAd(
                     activity = activity,
                     adUnitId = adUnitId,
                     loadFailureRequest = {
-                        FireBaseManager
-                            .logEvent(FirebaseKey.AD_REQUEST_FAILED_1, adUnitId, it)
-                        FireBaseManager
-                            .logEvent(FirebaseKey.AD_SHOW_FAILED_1, adUnitId, it)
+                        FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_FAILED_1, adUnitId, it)
+                        FireBaseManager.logEvent(FirebaseKey.AD_SHOW_FAILED_1, adUnitId, it)
                     },
                     loadSuccessRequest = {
                         FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_1)
                         action(it?.nativeAd)
                     }
                 )
+            }
         }
     }
 
@@ -155,21 +150,20 @@ class TopAdView : FrameLayout {
             FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_2)
             val adUnitId =
                 AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_SECOND)
-            if (adUnitId.isNotBlank() && AdControl.homeListSecond)
+            if (adUnitId.isNotBlank() && AdControl.homeListSecond) {
                 TopOnManager.loadNativeAd(
                     activity = activity,
                     adUnitId = adUnitId,
                     loadFailureRequest = {
-                        FireBaseManager
-                            .logEvent(FirebaseKey.AD_REQUEST_FAILED_2, adUnitId, it)
-                        FireBaseManager
-                            .logEvent(FirebaseKey.AD_SHOW_FAILED_2, adUnitId, it)
+                        FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_FAILED_2, adUnitId, it)
+                        FireBaseManager.logEvent(FirebaseKey.AD_SHOW_FAILED_2, adUnitId, it)
                     },
                     loadSuccessRequest = {
                         FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_2)
                         action(it?.nativeAd)
                     }
                 )
+            }
         }
     }
 
@@ -178,7 +172,7 @@ class TopAdView : FrameLayout {
             FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_3)
             val adUnitId =
                 AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_THIRD)
-            if (adUnitId.isNotBlank() && AdControl.homeListThird)
+            if (adUnitId.isNotBlank() && AdControl.homeListThird) {
                 TopOnManager.loadNativeAd(
                     activity = activity,
                     adUnitId = adUnitId,
@@ -193,6 +187,7 @@ class TopAdView : FrameLayout {
                         action.invoke(it?.nativeAd)
                     }
                 )
+            }
         }
     }
 }
