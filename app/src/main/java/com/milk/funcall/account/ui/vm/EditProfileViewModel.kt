@@ -5,9 +5,9 @@ import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.account.Account
 import com.milk.funcall.account.repo.EditProfileRepository
 import com.milk.funcall.common.constrant.EventKey
-import com.milk.funcall.common.media.uploader.MediaUploadRepository
-import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.constrant.FirebaseKey
+import com.milk.funcall.common.firebase.FireBaseManager
+import com.milk.funcall.common.media.uploader.MediaUploadRepository
 import com.milk.simple.ktx.ioScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 
@@ -40,7 +40,9 @@ class EditProfileViewModel : ViewModel() {
                 Account.saveAccountInfo(apiResult)
                 LiveEventBus.get<Boolean>(EventKey.REFRESH_HOME_LIST)
                     .post(true)
-            } else uploadResult.emit(false)
+            } else {
+                uploadResult.emit(false)
+            }
         }
     }
 
@@ -78,10 +80,11 @@ class EditProfileViewModel : ViewModel() {
         val uploadImageList = mutableListOf<String>()
         // 遍历当前选择图片并把要上传的图片添加到集合中
         localImageListPath.forEach { cache ->
-            if (Account.userImageList.contains(cache))
+            if (Account.userImageList.contains(cache)) {
                 alreadyExistsImage.add(cache)
-            else
+            } else {
                 uploadImageList.add(cache)
+            }
         }
         resultImageList.addAll(alreadyExistsImage)
         if (uploadImageList.isNotEmpty()) {
@@ -90,7 +93,9 @@ class EditProfileViewModel : ViewModel() {
             val apiResult = apiResponse.data
             if (apiResponse.success && apiResult != null) {
                 apiResult.forEach { resultImageList.add(it) }
-            } else FireBaseManager.logEvent(FirebaseKey.UPLOAD_IMAGE_FAIL)
+            } else {
+                FireBaseManager.logEvent(FirebaseKey.UPLOAD_IMAGE_FAIL)
+            }
         }
         return resultImageList
     }

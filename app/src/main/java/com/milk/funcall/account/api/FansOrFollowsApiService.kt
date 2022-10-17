@@ -10,16 +10,16 @@ interface FansOrFollowsApiService {
     @FormUrlEncoded
     @POST("/funcall/pageFollowOrFans")
     suspend fun getFans(
-            @Field("current") pageIndex: Int,
-            @Field("ffType") type: String = "fans",
-            @Field("size") size: Int = 8,
+        @Field("current") pageIndex: Int,
+        @Field("ffType") type: String = "fans",
+        @Field("size") size: Int = 8,
     ): ApiResponse<FansOrFollowsModel>
 
     @FormUrlEncoded
     @POST("/funcall/pageFollowOrFans")
     suspend fun getFollows(
-            @Field("current") pageIndex: Int,
-            @Field("ffType") type: String = "follow",
-            @Field("size") size: Int = 8,
+        @Field("current") pageIndex: Int,
+        @Field("ffType") type: String = "follow",
+        @Field("size") size: Int = 8,
     ): ApiResponse<FansOrFollowsModel>
 }

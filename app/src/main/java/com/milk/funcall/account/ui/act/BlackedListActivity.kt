@@ -8,11 +8,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.milk.funcall.R
 import com.milk.funcall.account.ui.adapter.BlackedListAdapter
 import com.milk.funcall.account.ui.vm.BlackedViewModel
+import com.milk.funcall.common.constrant.FirebaseKey
+import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.paging.status.RefreshStatus
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityBlackedListBinding
-import com.milk.funcall.common.firebase.FireBaseManager
-import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.user.ui.act.UserInfoActivity
 import com.milk.simple.ktx.*
@@ -39,8 +39,7 @@ class BlackedListActivity : AbstractActivity() {
         binding.rvBlackList.layoutManager = GridLayoutManager(this, 4)
         binding.rvBlackList.adapter = blackedListAdapter
         blackedListAdapter.setOnItemChildClickListener { adapter, _, position ->
-            UserInfoActivity
-                .create(this, adapter.getNoNullItem(position).userId)
+            UserInfoActivity.create(this, adapter.getNoNullItem(position).userId)
         }
     }
 
@@ -49,15 +48,15 @@ class BlackedListActivity : AbstractActivity() {
         loadingDialog.show()
         blackedListAdapter.addRefreshedListener {
             loadingDialog.dismiss()
-            if (it == RefreshStatus.Success && blackedListAdapter.itemCount > 0)
+            if (it == RefreshStatus.Success && blackedListAdapter.itemCount > 0) {
                 binding.ivEmpty.gone()
-            else
+            } else {
                 binding.ivEmpty.visible()
-        }
-        blackedViewModel.pagingSource.flow
-            .collectLatest(this) {
-                blackedListAdapter.submitData(it)
             }
+        }
+        blackedViewModel.pagingSource.flow.collectLatest(this) {
+            blackedListAdapter.submitData(it)
+        }
     }
 
     companion object {

@@ -25,13 +25,13 @@ class EditProfileImageAdapter :
     override fun onBindViewHolder(holder: EditProfileImageViewHolder, position: Int) {
         val imageView = holder.itemView as AppCompatImageView
         val imageUrl = imageList[position]
-        if (imageUrl.isNotBlank())
+        if (imageUrl.isNotBlank()) {
             ImageLoader.Builder()
                 .request(imageUrl)
                 .placeholder(R.drawable.common_list_default_medium)
                 .target(imageView)
                 .build()
-        else {
+        } else {
             imageView.setImageResource(R.drawable.common_media_add)
         }
         imageView.setOnClickListener {

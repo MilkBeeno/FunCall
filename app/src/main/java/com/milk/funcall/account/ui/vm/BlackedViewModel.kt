@@ -5,8 +5,8 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import com.milk.funcall.account.data.BlackedModel
 import com.milk.funcall.account.repo.BlackedRepository
-import com.milk.funcall.common.response.ApiPagingResponse
 import com.milk.funcall.common.paging.NetworkPagingSource
+import com.milk.funcall.common.response.ApiPagingResponse
 
 class BlackedViewModel : ViewModel() {
     private val blackedRepository by lazy { BlackedRepository() }

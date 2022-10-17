@@ -28,10 +28,11 @@ class MineOptions : FrameLayout {
     ) {
         binding.ivContent.setImageResource(image)
         binding.vLine.visibility = if (showLine) VISIBLE else GONE
-        binding.tvContent.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        binding.tvContent.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             context.resources.getString(string, context.theme)
-        else
+        } else {
             context.resources.getString(string)
+        }
         binding.tvContent.setTextColor(color)
     }
 }

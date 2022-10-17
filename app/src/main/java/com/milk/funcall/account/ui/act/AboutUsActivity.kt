@@ -6,12 +6,12 @@ import android.os.Bundle
 import android.view.View
 import com.milk.funcall.BuildConfig
 import com.milk.funcall.R
+import com.milk.funcall.common.constrant.FirebaseKey
+import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.web.WebActivity
 import com.milk.funcall.common.web.WebType
 import com.milk.funcall.databinding.ActivityAboutUsBinding
-import com.milk.funcall.common.firebase.FireBaseManager
-import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.simple.ktx.immersiveStatusBar
 import com.milk.simple.ktx.navigationBarPadding
 import com.milk.simple.ktx.statusBarPadding

@@ -17,8 +17,8 @@ class BlackedListAdapter : AbstractPagingAdapter<BlackedModel>(
 
         override fun areContentsTheSame(oldItem: BlackedModel, newItem: BlackedModel): Boolean {
             return oldItem.userName == newItem.userName
-                    && oldItem.userAvatar == newItem.userAvatar
-                    && oldItem.userGender == newItem.userGender
+                && oldItem.userAvatar == newItem.userAvatar
+                && oldItem.userGender == newItem.userGender
         }
     }
 ) {

@@ -20,7 +20,9 @@ import com.milk.funcall.account.Account
 import com.milk.funcall.account.ui.adapter.EditProfileImageAdapter
 import com.milk.funcall.account.ui.decoration.EditProfileImageGridDecoration
 import com.milk.funcall.account.ui.vm.EditProfileViewModel
+import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.common.constrant.KvKey
+import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.media.MediaLogger
 import com.milk.funcall.common.media.engine.*
 import com.milk.funcall.common.media.loader.ImageLoader
@@ -30,8 +32,6 @@ import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.ui.manager.NoScrollGridLayoutManager
 import com.milk.funcall.common.ui.view.BanEnterInputFilter
 import com.milk.funcall.databinding.ActivityEditProfileBinding
-import com.milk.funcall.common.firebase.FireBaseManager
-import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.user.ui.act.ImageMediaActivity
 import com.milk.funcall.user.ui.act.VideoMediaActivity
@@ -69,19 +69,13 @@ class EditProfileActivity : AbstractActivity() {
             if (it) showToast(string(R.string.edit_profile_success))
         }
         binding.etName.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus)
-                FireBaseManager
-                    .logEvent(FirebaseKey.CLICK_ON_THE_NICKNAME_BOX)
+            if (hasFocus) FireBaseManager.logEvent(FirebaseKey.CLICK_ON_THE_NICKNAME_BOX)
         }
         binding.etLink.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus)
-                FireBaseManager
-                    .logEvent(FirebaseKey.CLICK_ON_THE_CONTACTION)
+            if (hasFocus) FireBaseManager.logEvent(FirebaseKey.CLICK_ON_THE_CONTACTION)
         }
         binding.etAboutMe.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus)
-                FireBaseManager
-                    .logEvent(FirebaseKey.CLICK_ON_PERSONAL_INTRODUCTION)
+            if (hasFocus) FireBaseManager.logEvent(FirebaseKey.CLICK_ON_PERSONAL_INTRODUCTION)
         }
     }
 
@@ -90,7 +84,7 @@ class EditProfileActivity : AbstractActivity() {
             avatar.isBlank() ->
                 binding.ivUserAvatar.setImageResource(defaultAvatar)
             localUpdate ||
-                    editProfileViewModel.localAvatarPath.isBlank() -> {
+                editProfileViewModel.localAvatarPath.isBlank() -> {
                 ImageLoader.Builder()
                     .loadAvatar(avatar)
                     .target(binding.ivUserAvatar)
@@ -106,7 +100,7 @@ class EditProfileActivity : AbstractActivity() {
                 binding.ivVideo.setImageResource(R.drawable.common_media_add)
             }
             localUpdate ||
-                    editProfileViewModel.localVideoPath.isBlank() -> {
+                editProfileViewModel.localVideoPath.isBlank() -> {
                 binding.ivVideoMask.visible()
                 VideoLoader.Builder()
                     .target(binding.ivVideo)
@@ -208,7 +202,11 @@ class EditProfileActivity : AbstractActivity() {
                 )
             },
             resultRequest = { allGranted, _ ->
-                if (allGranted) resultRequest() else showToast(string(R.string.common_refuse))
+                if (allGranted) {
+                    resultRequest()
+                } else {
+                    showToast(string(R.string.common_refuse))
+                }
             })
     }
 
@@ -283,8 +281,7 @@ class EditProfileActivity : AbstractActivity() {
                 override fun onResult(result: ArrayList<LocalMedia>?) {
                     if (result != null && result.size > 0) {
                         updateImageList(appendImageList = result)
-                        MediaLogger
-                            .analyticalSelectResults(this@EditProfileActivity, result)
+                        MediaLogger.analyticalSelectResults(this@EditProfileActivity, result)
                     }
                 }
             })

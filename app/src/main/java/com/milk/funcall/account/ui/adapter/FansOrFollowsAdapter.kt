@@ -20,10 +20,10 @@ class FansOrFollowsAdapter : AbstractPagingAdapter<UserInfoEntity>(
 
         override fun areContentsTheSame(oldItem: UserInfoEntity, newItem: UserInfoEntity): Boolean {
             return oldItem.targetAvatar == newItem.targetAvatar
-                    && oldItem.targetName == newItem.targetName
-                    && oldItem.targetOnline == newItem.targetOnline
-                    && oldItem.targetImage == newItem.targetImage
-                    && oldItem.targetVideo == newItem.targetVideo
+                && oldItem.targetName == newItem.targetName
+                && oldItem.targetOnline == newItem.targetOnline
+                && oldItem.targetImage == newItem.targetImage
+                && oldItem.targetVideo == newItem.targetVideo
         }
     }
 ) {
@@ -40,11 +40,19 @@ class FansOrFollowsAdapter : AbstractPagingAdapter<UserInfoEntity>(
             .target(holder.getView(R.id.ivUserAvatar))
             .build()
         holder.getView<View>(R.id.vState).setBackgroundResource(
-            if (isOnline) R.drawable.shape_home_online_state else R.drawable.shape_home_offline_state
+            if (isOnline) {
+                R.drawable.shape_home_online_state
+            } else {
+                R.drawable.shape_home_offline_state
+            }
         )
         holder.getView<AppCompatTextView>(R.id.tvState).apply {
             setTextColor(
-                if (isOnline) context.color(R.color.FF58FFD3) else context.color(R.color.FFEAECF6)
+                if (isOnline) {
+                    context.color(R.color.FF58FFD3)
+                } else {
+                    context.color(R.color.FFEAECF6)
+                }
             )
             setText(if (isOnline) R.string.home_online else R.string.home_offline)
         }

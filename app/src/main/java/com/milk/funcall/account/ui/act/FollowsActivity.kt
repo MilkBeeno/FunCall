@@ -11,12 +11,12 @@ import com.milk.funcall.R
 import com.milk.funcall.account.ui.adapter.FansOrFollowsAdapter
 import com.milk.funcall.account.ui.vm.FollowsViewModel
 import com.milk.funcall.common.constrant.EventKey
+import com.milk.funcall.common.constrant.FirebaseKey
+import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.paging.SimpleGridDecoration
 import com.milk.funcall.common.paging.status.RefreshStatus
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityFollowsBinding
-import com.milk.funcall.common.firebase.FireBaseManager
-import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.user.ui.act.UserInfoActivity
 import com.milk.simple.ktx.*
@@ -46,8 +46,7 @@ class FollowsActivity : AbstractActivity() {
         binding.rvFollows.adapter = followsAdapter
         binding.tvAttention.setOnClickListener(this)
         followsAdapter.setOnItemClickListener { adapter, _, position ->
-            UserInfoActivity
-                .create(this, adapter.getNoNullItem(position).targetId)
+            UserInfoActivity.create(this, adapter.getNoNullItem(position).targetId)
         }
     }
 
@@ -55,13 +54,15 @@ class FollowsActivity : AbstractActivity() {
         FireBaseManager.logEvent(FirebaseKey.FOLLOW_SHOW)
         followsAdapter.addRefreshedListener {
             loadingDialog.dismiss()
-            if (it == RefreshStatus.Success && followsAdapter.itemCount > 0)
+            if (it == RefreshStatus.Success && followsAdapter.itemCount > 0) {
                 binding.llFollowsEmpty.gone()
-            else
+            } else {
                 binding.llFollowsEmpty.visible()
+            }
         }
-        followsViewModel.pagingSource.flow
-            .collectLatest(this) { followsAdapter.submitData(it) }
+        followsViewModel.pagingSource.flow.collectLatest(this) {
+            followsAdapter.submitData(it)
+        }
     }
 
     override fun onMultipleClick(view: View) {
@@ -69,8 +70,7 @@ class FollowsActivity : AbstractActivity() {
         when (view) {
             binding.tvAttention -> {
                 finish()
-                LiveEventBus.get<Any?>(EventKey.JUMP_TO_THE_HOME_PAGE)
-                    .post(null)
+                LiveEventBus.get<Any?>(EventKey.JUMP_TO_THE_HOME_PAGE).post(null)
             }
         }
     }

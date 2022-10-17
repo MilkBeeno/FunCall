@@ -1,15 +1,16 @@
 package com.milk.funcall.account.ui.frag
 
 import android.view.View
+import androidx.fragment.app.Fragment
 import com.milk.funcall.R
 import com.milk.funcall.account.Account
 import com.milk.funcall.account.ui.act.*
 import com.milk.funcall.account.ui.dialog.LogoutDialog
+import com.milk.funcall.common.constrant.FirebaseKey
+import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.media.loader.ImageLoader
 import com.milk.funcall.common.ui.AbstractFragment
 import com.milk.funcall.databinding.FragmentMineBinding
-import com.milk.funcall.common.firebase.FireBaseManager
-import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.login.ui.act.GenderActivity
 import com.milk.funcall.login.ui.act.LoginActivity
 import com.milk.funcall.user.ui.config.AvatarImage
@@ -46,12 +47,18 @@ class MineFragment : AbstractFragment() {
 
     override fun initializeObserver() {
         Account.userLoggedFlow.collectLatest(this) {
-            if (it) binding.flNotSigned.gone() else binding.flNotSigned.visible()
+            if (it) {
+                binding.flNotSigned.gone()
+            } else {
+                binding.flNotSigned.visible()
+            }
         }
         Account.userAvatarFlow.collectLatest(this) {
             if (it.isNotBlank()) {
                 ImageLoader.Builder().loadAvatar(it).target(binding.ivUserAvatar).build()
-            } else binding.ivUserAvatar.setImageResource(defaultAvatar)
+            } else {
+                binding.ivUserAvatar.setImageResource(defaultAvatar)
+            }
         }
         Account.userGenderFlow.collectLatest(this) {
             binding.ivUserGender.updateGender(it)
@@ -105,6 +112,8 @@ class MineFragment : AbstractFragment() {
     }
 
     companion object {
-        fun create() = MineFragment()
+        fun create(): Fragment {
+            return MineFragment()
+        }
     }
 }

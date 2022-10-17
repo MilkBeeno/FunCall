@@ -11,12 +11,12 @@ import com.milk.funcall.R
 import com.milk.funcall.account.ui.adapter.FansOrFollowsAdapter
 import com.milk.funcall.account.ui.vm.FansViewModel
 import com.milk.funcall.common.constrant.EventKey
+import com.milk.funcall.common.constrant.FirebaseKey
+import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.paging.SimpleGridDecoration
 import com.milk.funcall.common.paging.status.RefreshStatus
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityFansBinding
-import com.milk.funcall.common.firebase.FireBaseManager
-import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.user.ui.act.UserInfoActivity
 import com.milk.simple.ktx.*
@@ -45,8 +45,7 @@ class FansActivity : AbstractActivity() {
         binding.rvFans.adapter = fansAdapter
         binding.tvPublish.setOnClickListener(this)
         fansAdapter.setOnItemClickListener { adapter, _, position ->
-            UserInfoActivity
-                .create(this, adapter.getNoNullItem(position).targetId)
+            UserInfoActivity.create(this, adapter.getNoNullItem(position).targetId)
         }
     }
 
@@ -55,13 +54,15 @@ class FansActivity : AbstractActivity() {
         loadingDialog.show()
         fansAdapter.addRefreshedListener {
             loadingDialog.dismiss()
-            if (it == RefreshStatus.Success && fansAdapter.itemCount > 0)
+            if (it == RefreshStatus.Success && fansAdapter.itemCount > 0) {
                 binding.llFanEmpty.gone()
-            else
+            } else {
                 binding.llFanEmpty.visible()
+            }
         }
-        fansViewModel.pagingSource.flow
-            .collectLatest(this) { fansAdapter.submitData(it) }
+        fansViewModel.pagingSource.flow.collectLatest(this) {
+            fansAdapter.submitData(it)
+        }
     }
 
     override fun onMultipleClick(view: View) {
@@ -69,8 +70,7 @@ class FansActivity : AbstractActivity() {
         when (view) {
             binding.tvPublish -> {
                 FireBaseManager.logEvent(FirebaseKey.CLICK_FAN_AVATAR)
-                LiveEventBus.get<Any?>(EventKey.JUMP_TO_THE_HOME_PAGE)
-                    .post(null)
+                LiveEventBus.get<Any?>(EventKey.JUMP_TO_THE_HOME_PAGE).post(null)
                 finish()
             }
         }
