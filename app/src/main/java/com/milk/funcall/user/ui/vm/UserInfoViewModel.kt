@@ -6,9 +6,9 @@ import com.milk.funcall.account.Account
 import com.milk.funcall.common.ad.AdConfig
 import com.milk.funcall.common.ad.TopOnManager
 import com.milk.funcall.common.constrant.AdCodeKey
+import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.common.firebase.FireBaseManager
-import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.user.data.UserInfoModel
 import com.milk.funcall.user.repo.UserInfoRepository
 import com.milk.funcall.user.ui.act.UserInfoActivity
@@ -94,8 +94,7 @@ class UserInfoViewModel : ViewModel() {
         if (adIsLoading) return
         adIsLoading = true
         FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_5)
-        val adUnitId =
-            AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_IMAGE)
+        val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_IMAGE)
         var interstitial: ATInterstitial? = null
         if (adUnitId.isNotBlank()) {
             interstitial = TopOnManager.loadInterstitial(

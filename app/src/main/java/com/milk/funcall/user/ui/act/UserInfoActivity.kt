@@ -252,35 +252,36 @@ class UserInfoActivity : AbstractActivity() {
     /** 加载获取联系方式激励视频广告 */
     private fun loadLinkAd() {
         try {
-            val adUnitId =
-                AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_LINK)
             loadingDialog.show()
-            FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_6)
-            TopOnManager.loadIncentiveVideoAd(
-                activity = this,
-                adUnitId = adUnitId,
-                loadFailureRequest = {
-                    FireBaseManager
-                        .logEvent(FirebaseKey.AD_REQUEST_FAILED_6, adUnitId, it)
-                    loadingDialog.dismiss()
-                },
-                loadSuccessRequest = {
-                    FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_6)
-                },
-                showFailureRequest = {
-                    FireBaseManager
-                        .logEvent(FirebaseKey.AD_SHOW_FAILED_6, adUnitId, it)
-                },
-                showSuccessRequest = {
-                    FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_6)
-                    loadingDialog.dismiss()
-                    binding.link.flLinkLocked.gone()
-                    userInfoViewModel.hasViewedLink = true
-                },
-                clickRequest = {
-                    FireBaseManager.logEvent(FirebaseKey.CLICK_AD_6)
-                }
-            )
+            val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_LINK)
+            if (adUnitId.isNotBlank()) {
+                FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_6)
+                TopOnManager.loadIncentiveVideoAd(
+                    activity = this,
+                    adUnitId = adUnitId,
+                    loadFailureRequest = {
+                        FireBaseManager
+                            .logEvent(FirebaseKey.AD_REQUEST_FAILED_6, adUnitId, it)
+                        loadingDialog.dismiss()
+                    },
+                    loadSuccessRequest = {
+                        FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_6)
+                    },
+                    showFailureRequest = {
+                        FireBaseManager
+                            .logEvent(FirebaseKey.AD_SHOW_FAILED_6, adUnitId, it)
+                    },
+                    showSuccessRequest = {
+                        FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_6)
+                        loadingDialog.dismiss()
+                        binding.link.flLinkLocked.gone()
+                        userInfoViewModel.hasViewedLink = true
+                    },
+                    clickRequest = {
+                        FireBaseManager.logEvent(FirebaseKey.CLICK_AD_6)
+                    }
+                )
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
