@@ -11,7 +11,6 @@ import com.anythink.nativead.api.ATNativeDislikeListener
 import com.anythink.nativead.api.ATNativeEventListener
 import com.anythink.nativead.api.NativeAd
 import com.milk.funcall.common.ad.AdConfig
-import com.milk.funcall.common.ad.AdControl
 import com.milk.funcall.common.ad.TopOnManager
 import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.constrant.FirebaseKey
@@ -19,9 +18,7 @@ import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.user.type.ItemAdType
 import com.milk.simple.ktx.ioScope
 
-/**
- * 原生广告  分为 google原生  Facebook 原生， is原生
- */
+/** 原生广告 分为 google原生  Facebook 原生， is原生 */
 class TopAdView : FrameLayout {
 
     constructor(ctx: Context) : super(ctx)
@@ -128,7 +125,7 @@ class TopAdView : FrameLayout {
         ioScope {
             FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_1)
             val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_FIRST)
-            if (adUnitId.isNotBlank() && AdControl.homeListFirst) {
+            if (adUnitId.isNotBlank()) {
                 TopOnManager.loadNativeAd(
                     activity = activity,
                     adUnitId = adUnitId,
@@ -150,7 +147,7 @@ class TopAdView : FrameLayout {
             FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_2)
             val adUnitId =
                 AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_SECOND)
-            if (adUnitId.isNotBlank() && AdControl.homeListSecond) {
+            if (adUnitId.isNotBlank()) {
                 TopOnManager.loadNativeAd(
                     activity = activity,
                     adUnitId = adUnitId,
@@ -172,7 +169,7 @@ class TopAdView : FrameLayout {
             FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_3)
             val adUnitId =
                 AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_THIRD)
-            if (adUnitId.isNotBlank() && AdControl.homeListThird) {
+            if (adUnitId.isNotBlank()) {
                 TopOnManager.loadNativeAd(
                     activity = activity,
                     adUnitId = adUnitId,

@@ -5,15 +5,14 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.account.Account
-import com.milk.funcall.common.ad.AdConfig
-import com.milk.funcall.common.ad.AdControl
 import com.milk.funcall.app.ui.act.MainActivity
+import com.milk.funcall.common.ad.AdConfig
 import com.milk.funcall.common.constrant.EventKey
+import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.common.constrant.KvKey
+import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityLaunchBinding
-import com.milk.funcall.common.firebase.FireBaseManager
-import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.login.ui.vm.LaunchViewModel
 import com.milk.simple.ktx.gone
 import com.milk.simple.ktx.immersiveStatusBar
@@ -30,9 +29,8 @@ class LaunchActivity : AbstractActivity() {
         setContentView(binding.root)
         initializeView()
         initializeObserver()
-        AdControl.obtain()
-        AdConfig.switch()
         Account.initialize()
+        AdConfig.initialize()
         checkIsNewClient()
     }
 

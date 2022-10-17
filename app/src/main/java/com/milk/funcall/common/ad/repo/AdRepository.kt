@@ -8,10 +8,6 @@ class AdRepository {
     private val adApiService: AdApiService =
         ApiClient.obtainRetrofit().create(AdApiService::class.java)
 
-    suspend fun getAdSwitch(appId: String, pkgVersion: String, channel: String) = retrofit {
-        adApiService.getAdSwitch(appId, pkgVersion, channel)
-    }
-
     suspend fun getAdConfig(appId: String, pkgVersion: String, channel: String) = retrofit {
         adApiService.getAdConfig(appId, pkgVersion, channel)
     }

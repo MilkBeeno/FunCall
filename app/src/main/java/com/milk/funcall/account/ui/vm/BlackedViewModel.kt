@@ -11,7 +11,7 @@ import com.milk.funcall.common.response.ApiPagingResponse
 class BlackedViewModel : ViewModel() {
     private val blackedRepository by lazy { BlackedRepository() }
     val pagingSource = Pager(
-        PagingConfig(
+        config =  PagingConfig(
             pageSize = 20,
             prefetchDistance = 4,
             enablePlaceholders = false

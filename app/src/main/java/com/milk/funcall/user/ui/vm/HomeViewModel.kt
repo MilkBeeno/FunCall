@@ -3,9 +3,10 @@ package com.milk.funcall.user.ui.vm
 import androidx.lifecycle.ViewModel
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import com.milk.funcall.common.ad.AdControl
-import com.milk.funcall.common.response.ApiPagingResponse
+import com.milk.funcall.common.ad.AdConfig
+import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.paging.NetworkPagingSource
+import com.milk.funcall.common.response.ApiPagingResponse
 import com.milk.funcall.user.data.UserSimpleInfoModel
 import com.milk.funcall.user.repo.HomeRepository
 import com.milk.funcall.user.type.ItemAdType
@@ -15,9 +16,18 @@ class HomeViewModel : ViewModel() {
     private var groupNumber: Int = 0
     private var nextPositionSpace = 3
     private var lastAddItemAdType: ItemAdType = ItemAdType.Null
+    private val homeListFirst by lazy {
+        AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_FIRST).isNotBlank()
+    }
+    private val homeListSecond by lazy {
+        AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_SECOND).isNotBlank()
+    }
+    private val homeListThird by lazy {
+        AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_THIRD).isNotBlank()
+    }
 
     internal val pagingSource = Pager(
-        PagingConfig(
+        config = PagingConfig(
             pageSize = 8,
             prefetchDistance = 2,
             enablePlaceholders = false
@@ -119,30 +129,20 @@ class HomeViewModel : ViewModel() {
         twelve: (Int, ItemAdType) -> Unit
     ) {
         when {
-            AdControl.homeListFirst
-                    && AdControl.homeListSecond
-                    && AdControl.homeListThird -> four(4)
-            AdControl.homeListFirst
-                    && AdControl.homeListSecond
-                    && !AdControl.homeListThird ->
+            homeListFirst && homeListSecond && homeListThird ->
+                four(4)
+            homeListFirst && homeListSecond && !homeListThird ->
                 eight(8, Pair(ItemAdType.FirstAd, ItemAdType.SecondAd))
-            AdControl.homeListFirst
-                    && AdControl.homeListThird
-                    && !AdControl.homeListSecond ->
+            homeListFirst && homeListThird && !homeListSecond ->
                 eight(8, Pair(ItemAdType.FirstAd, ItemAdType.ThirdAd))
-            AdControl.homeListSecond
-                    && AdControl.homeListThird
-                    && !AdControl.homeListFirst ->
+            homeListSecond && homeListThird && !homeListFirst ->
                 eight(8, Pair(ItemAdType.SecondAd, ItemAdType.ThirdAd))
-            AdControl.homeListFirst
-                    && !AdControl.homeListSecond
-                    && !AdControl.homeListThird -> twelve(12, ItemAdType.FirstAd)
-            AdControl.homeListSecond
-                    && !AdControl.homeListFirst
-                    && !AdControl.homeListThird -> twelve(12, ItemAdType.SecondAd)
-            !AdControl.homeListThird
-                    && !AdControl.homeListFirst
-                    && !AdControl.homeListSecond -> twelve(12, ItemAdType.ThirdAd)
+            homeListFirst && !homeListSecond && !homeListThird ->
+                twelve(12, ItemAdType.FirstAd)
+            homeListSecond && !homeListFirst && !homeListThird ->
+                twelve(12, ItemAdType.SecondAd)
+            !homeListThird && !homeListFirst && !homeListSecond ->
+                twelve(12, ItemAdType.ThirdAd)
             else -> Unit
         }
     }
