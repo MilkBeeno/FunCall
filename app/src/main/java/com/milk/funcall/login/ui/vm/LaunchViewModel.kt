@@ -23,23 +23,23 @@ class LaunchViewModel : ViewModel() {
     /** 加载广告并设置广告状态 */
     internal fun loadLaunchAd(activity: FragmentActivity, finished: () -> Unit) {
         var interstitial: ATInterstitial? = null
+        MilkTimer.Builder()
+            .setMillisInFuture(13000)
+            .setOnTickListener { t, it ->
+                if (it <= 10000 && adLoadStatus == AdLoadType.Success) t.finish()
+            }
+            .setOnFinishedListener {
+                if (adLoadStatus == AdLoadType.Success) {
+                    interstitial?.show(activity)
+                } else {
+                    finished()
+                }
+            }
+            .build()
+            .start()
         val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.APP_START)
         if (adUnitId.isNotBlank() && AdConfig.adCancelType != 2) {
             FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST)
-            MilkTimer.Builder()
-                .setMillisInFuture(13000)
-                .setOnTickListener { t, it ->
-                    if (it <= 10000 && adLoadStatus == AdLoadType.Success) t.finish()
-                }
-                .setOnFinishedListener {
-                    if (adLoadStatus == AdLoadType.Success) {
-                        interstitial?.show(activity)
-                    } else {
-                        finished()
-                    }
-                }
-                .build()
-                .start()
             interstitial = TopOnManager.loadInterstitial(
                 activity = activity,
                 adUnitId = adUnitId,

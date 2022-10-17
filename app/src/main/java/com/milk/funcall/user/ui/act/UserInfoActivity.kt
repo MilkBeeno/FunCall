@@ -14,7 +14,6 @@ import com.milk.funcall.R
 import com.milk.funcall.account.Account
 import com.milk.funcall.chat.ui.act.ChatMessageActivity
 import com.milk.funcall.common.ad.AdConfig
-import com.milk.funcall.common.ad.TopOnManager
 import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.constrant.FirebaseKey
@@ -132,10 +131,14 @@ class UserInfoActivity : AbstractActivity() {
         binding.tvUserId.text = "ID : ".plus(userInfo.targetIdx)
         binding.tvUserBio.text = userInfo.targetBio
         if (userInfo.targetLink.isNotBlank()) {
-            if (userInfoViewModel.hasViewedLink) {
-                binding.link.flLinkLocked.gone()
-            } else {
+            val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_LINK)
+            if (!userInfoViewModel.hasViewedLink
+                && adUnitId.isNotBlank()
+                && AdConfig.adCancelType == 0
+            ) {
                 binding.link.flLinkLocked.visible()
+            } else {
+                binding.link.flLinkLocked.gone()
             }
             binding.link.clLink.visible()
             binding.link.tvNotLink.gone()
@@ -163,10 +166,14 @@ class UserInfoActivity : AbstractActivity() {
         if (userImageList.isNotEmpty()) {
             binding.tvImage.visible()
             binding.rvImage.visible()
-            if (userInfoViewModel.hasViewedImage) {
-                binding.mlImage.gone()
-            } else {
+            val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_IMAGE)
+            if (!userInfoViewModel.hasViewedImage
+                && adUnitId.isNotBlank()
+                && AdConfig.adCancelType == 0
+            ) {
                 binding.mlImage.visible()
+            } else {
+                binding.mlImage.gone()
             }
             binding.rvImage.layoutManager = NoScrollGridLayoutManager(this, 2)
             binding.rvImage.addItemDecoration(SimpleGridDecoration(this))
@@ -253,35 +260,15 @@ class UserInfoActivity : AbstractActivity() {
     private fun loadLinkAd() {
         try {
             loadingDialog.show()
-            val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_LINK)
-            if (adUnitId.isNotBlank() && AdConfig.adCancelType == 0) {
-                FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_6)
-                TopOnManager.loadIncentiveVideoAd(
-                    activity = this,
-                    adUnitId = adUnitId,
-                    loadFailureRequest = {
-                        FireBaseManager
-                            .logEvent(FirebaseKey.AD_REQUEST_FAILED_6, adUnitId, it)
-                        loadingDialog.dismiss()
-                    },
-                    loadSuccessRequest = {
-                        FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_6)
-                    },
-                    showFailureRequest = {
-                        FireBaseManager
-                            .logEvent(FirebaseKey.AD_SHOW_FAILED_6, adUnitId, it)
-                    },
-                    showSuccessRequest = {
-                        FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_6)
-                        loadingDialog.dismiss()
-                        binding.link.flLinkLocked.gone()
-                        userInfoViewModel.hasViewedLink = true
-                    },
-                    clickRequest = {
-                        FireBaseManager.logEvent(FirebaseKey.CLICK_AD_6)
-                    }
-                )
-            }
+            userInfoViewModel.loadLinkAd(
+                activity = this,
+                failure = { loadingDialog.dismiss() },
+                success = {
+                    loadingDialog.dismiss()
+                    binding.link.flLinkLocked.gone()
+                    userInfoViewModel.hasViewedLink = true
+                }
+            )
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -292,9 +279,7 @@ class UserInfoActivity : AbstractActivity() {
         loadingDialog.show()
         userInfoViewModel.loadImageAd(
             activity = this,
-            failure = {
-                loadingDialog.dismiss()
-            },
+            failure = { loadingDialog.dismiss() },
             success = {
                 loadingDialog.dismiss()
                 binding.mlImage.gone()

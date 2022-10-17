@@ -144,7 +144,7 @@ class HomeViewModel : ViewModel() {
                 twelve(12, ItemAdType.FirstAd)
             homeListSecond && !homeListFirst && !homeListThird ->
                 twelve(12, ItemAdType.SecondAd)
-            !homeListThird && !homeListFirst && !homeListSecond ->
+            homeListThird && !homeListFirst && !homeListSecond ->
                 twelve(12, ItemAdType.ThirdAd)
             else -> Unit
         }

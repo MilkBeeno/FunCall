@@ -86,6 +86,38 @@ class UserInfoViewModel : ViewModel() {
         }
     }
 
+    internal fun loadLinkAd(
+        activity: UserInfoActivity,
+        failure: () -> Unit,
+        success: () -> Unit
+    ) {
+        val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_LINK)
+        if (adUnitId.isNotBlank()) {
+            FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_6)
+            TopOnManager.loadIncentiveVideoAd(
+                activity = activity,
+                adUnitId = adUnitId,
+                loadFailureRequest = {
+                    FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_FAILED_6, adUnitId, it)
+                    failure()
+                },
+                loadSuccessRequest = {
+                    FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_6)
+                },
+                showFailureRequest = {
+                    FireBaseManager.logEvent(FirebaseKey.AD_SHOW_FAILED_6, adUnitId, it)
+                },
+                showSuccessRequest = {
+                    FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_6)
+                    success()
+                },
+                clickRequest = {
+                    FireBaseManager.logEvent(FirebaseKey.CLICK_AD_6)
+                }
+            )
+        }
+    }
+
     internal fun loadImageAd(
         activity: UserInfoActivity,
         failure: () -> Unit,
@@ -96,13 +128,12 @@ class UserInfoViewModel : ViewModel() {
         FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_5)
         val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_IMAGE)
         var interstitial: ATInterstitial? = null
-        if (adUnitId.isNotBlank() && AdConfig.adCancelType == 0) {
+        if (adUnitId.isNotBlank()) {
             interstitial = TopOnManager.loadInterstitial(
                 activity = activity,
                 adUnitId = adUnitId,
                 loadFailureRequest = {
-                    FireBaseManager
-                        .logEvent(FirebaseKey.AD_REQUEST_FAILED_5, adUnitId, it)
+                    FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_FAILED_5, adUnitId, it)
                     failure()
                     adIsLoading = false
                 },
