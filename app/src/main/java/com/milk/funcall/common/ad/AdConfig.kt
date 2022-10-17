@@ -1,22 +1,19 @@
 package com.milk.funcall.common.ad
 
-import android.content.Context
 import com.jeremyliao.liveeventbus.LiveEventBus
-import com.milk.funcall.BaseApplication
 import com.milk.funcall.BuildConfig
-import com.milk.funcall.R
-import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.ad.data.AdModel
 import com.milk.funcall.common.ad.data.AdPositionModel
 import com.milk.funcall.common.ad.data.AdResponseModel
 import com.milk.funcall.common.ad.repo.AdRepository
+import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.net.json.JsonConvert
 import com.milk.simple.ktx.ioScope
 import com.milk.simple.mdr.KvManger
 
 object AdConfig {
-    private const val AD_CONFIG = "AD_CONFIG"
+    private const val AD_CONFIG = "AD_CONFIG_FUN_CALL"
     private val positionMap = mutableMapOf<String, String>()
 
     /** 获取网络中最新的广告信息 */
@@ -33,9 +30,11 @@ object AdConfig {
                 updateAdUnitId(result)
                 KvManger.put(AD_CONFIG, apiResult)
             } else {
-                val config = getLocalConfig(BaseApplication.instance)
-                JsonConvert.toModel(config, AdResponseModel::class.java)
-                    ?.result?.let { updateAdUnitId(it) }
+                val storedConfig = KvManger.getString(AD_CONFIG)
+                if (storedConfig.isNotBlank()) {
+                    JsonConvert.toModel(storedConfig, AdResponseModel::class.java)
+                        ?.result?.let { updateAdUnitId(it) }
+                }
             }
         }
     }
@@ -71,19 +70,6 @@ object AdConfig {
     private fun savePositionId(positionCode: String, positionList: MutableList<AdPositionModel>?) {
         if (positionList != null && positionList.size > 0) {
             positionMap[positionCode] = positionList[0].posId
-        }
-    }
-
-    /** 网络获取广告失败、使用本地保存的广告 */
-    private fun getLocalConfig(context: Context): String {
-        val storedConfig = KvManger.getString(AD_CONFIG)
-        return storedConfig.ifBlank {
-            val defaultConfig = if (BuildConfig.DEBUG)
-                String(context.resources.openRawResource(R.raw.config_debug).readBytes())
-            else
-                String(context.resources.openRawResource(R.raw.config_release).readBytes())
-            KvManger.put(AD_CONFIG, defaultConfig)
-            defaultConfig
         }
     }
 
