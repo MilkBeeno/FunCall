@@ -254,7 +254,7 @@ class UserInfoActivity : AbstractActivity() {
         try {
             loadingDialog.show()
             val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_LINK)
-            if (adUnitId.isNotBlank()) {
+            if (adUnitId.isNotBlank() && AdConfig.adCancelType == 0) {
                 FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_6)
                 TopOnManager.loadIncentiveVideoAd(
                     activity = this,

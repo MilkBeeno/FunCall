@@ -17,13 +17,16 @@ class HomeViewModel : ViewModel() {
     private var nextPositionSpace = 3
     private var lastAddItemAdType: ItemAdType = ItemAdType.Null
     private val homeListFirst by lazy {
-        AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_FIRST).isNotBlank()
+        AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_FIRST)
+            .isNotBlank() && AdConfig.adCancelType != 2
     }
     private val homeListSecond by lazy {
-        AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_SECOND).isNotBlank()
+        AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_SECOND)
+            .isNotBlank() && AdConfig.adCancelType != 2
     }
     private val homeListThird by lazy {
-        AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_THIRD).isNotBlank()
+        AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_THIRD)
+            .isNotBlank() && AdConfig.adCancelType != 2
     }
 
     internal val pagingSource = Pager(

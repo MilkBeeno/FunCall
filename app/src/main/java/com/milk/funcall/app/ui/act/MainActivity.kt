@@ -53,7 +53,7 @@ class MainActivity : AbstractActivity() {
     private fun initializeAdView() {
         try {
             val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.MAIN_HOME_BOTTOM)
-            if (adUnitId.isNotBlank()) {
+            if (adUnitId.isNotBlank() && AdConfig.adCancelType != 2) {
                 FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_4)
                 val adView = TopOnManager.loadBannerAd(
                     activity = this,

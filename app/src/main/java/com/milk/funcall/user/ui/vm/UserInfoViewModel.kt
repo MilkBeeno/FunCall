@@ -96,7 +96,7 @@ class UserInfoViewModel : ViewModel() {
         FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_5)
         val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_IMAGE)
         var interstitial: ATInterstitial? = null
-        if (adUnitId.isNotBlank()) {
+        if (adUnitId.isNotBlank() && AdConfig.adCancelType == 0) {
             interstitial = TopOnManager.loadInterstitial(
                 activity = activity,
                 adUnitId = adUnitId,
