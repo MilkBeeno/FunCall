@@ -18,7 +18,6 @@ import com.milk.funcall.app.ui.view.BottomNavigation
 import com.milk.funcall.chat.repo.MessageRepository
 import com.milk.funcall.chat.ui.frag.ConversationFragment
 import com.milk.funcall.common.ad.AdConfig
-import com.milk.funcall.common.ad.AdControl
 import com.milk.funcall.common.ad.TopOnManager
 import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.constrant.EventKey
@@ -53,10 +52,9 @@ class MainActivity : AbstractActivity() {
 
     private fun initializeAdView() {
         try {
-            if (AdControl.homeBanner) {
+            val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.MAIN_HOME_BOTTOM)
+            if (adUnitId.isNotBlank()) {
                 FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_4)
-                val adUnitId =
-                    AdConfig.getAdvertiseUnitId(AdCodeKey.MAIN_HOME_BOTTOM)
                 val adView = TopOnManager.loadBannerAd(
                     activity = this,
                     adUnitId = adUnitId,

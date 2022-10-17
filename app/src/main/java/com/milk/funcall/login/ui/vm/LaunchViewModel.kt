@@ -7,13 +7,12 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import com.anythink.interstitial.api.ATInterstitial
 import com.milk.funcall.common.ad.AdConfig
-import com.milk.funcall.common.ad.AdControl
 import com.milk.funcall.common.ad.TopOnManager
-import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.ad.ui.AdLoadType
-import com.milk.funcall.common.timer.MilkTimer
-import com.milk.funcall.common.firebase.FireBaseManager
+import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.constrant.FirebaseKey
+import com.milk.funcall.common.firebase.FireBaseManager
+import com.milk.funcall.common.timer.MilkTimer
 import com.milk.simple.log.Logger
 import java.security.MessageDigest
 
@@ -24,23 +23,22 @@ class LaunchViewModel : ViewModel() {
     /** 加载广告并设置广告状态 */
     internal fun loadLaunchAd(activity: FragmentActivity, finished: () -> Unit) {
         var interstitial: ATInterstitial? = null
-        val adUnitId =
-            AdConfig.getAdvertiseUnitId(AdCodeKey.APP_START)
+        val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.APP_START)
         MilkTimer.Builder()
             .setMillisInFuture(13000)
             .setOnTickListener { t, it ->
-                if (it <= 10000 && adLoadStatus == AdLoadType.Success)
-                    t.finish()
+                if (it <= 10000 && adLoadStatus == AdLoadType.Success) t.finish()
             }
             .setOnFinishedListener {
-                if (adLoadStatus == AdLoadType.Success)
+                if (adLoadStatus == AdLoadType.Success) {
                     interstitial?.show(activity)
-                else
+                } else {
                     finished()
+                }
             }
             .build()
             .start()
-        if (AdControl.appLaunch && adUnitId.isNotBlank()) {
+        if (adUnitId.isNotBlank()) {
             FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST)
             interstitial = TopOnManager.loadInterstitial(
                 activity = activity,
@@ -79,7 +77,7 @@ class LaunchViewModel : ViewModel() {
                 md.update(signature.toByteArray())
                 Logger.d(
                     "包名是" + activity.packageName +
-                            "密钥是：" + Base64.encodeToString(md.digest(), Base64.DEFAULT),
+                        "密钥是：" + Base64.encodeToString(md.digest(), Base64.DEFAULT),
                     "KeyHash"
                 )
             }

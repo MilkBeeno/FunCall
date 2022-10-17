@@ -1,31 +1,13 @@
 package com.milk.funcall.common.ad
 
 import com.milk.funcall.BuildConfig
-import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.ad.repo.AdRepository
+import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.simple.ktx.ioScope
 import com.milk.simple.mdr.KvManger
 
 /** 广告开关控制器、控制某个广告位是否展示或关闭 */
 object AdControl {
-    var adMaster: Boolean = true
-        set(value) {
-            KvManger.put(AdCodeKey.AD_MASTER_SWITCH, value)
-            field = value
-        }
-        get() {
-            field = KvManger.getBoolean(AdCodeKey.AD_MASTER_SWITCH)
-            return field
-        }
-    var appLaunch: Boolean = true
-        set(value) {
-            KvManger.put(AdCodeKey.APP_LAUNCH_INTERSTITIAL, value)
-            field = value
-        }
-        get() {
-            field = KvManger.getBoolean(AdCodeKey.APP_LAUNCH_INTERSTITIAL)
-            return field
-        }
     var homeListFirst: Boolean = true
         set(value) {
             KvManger.put(AdCodeKey.HOMEPAGE_WATERFALL_ADS_FIRST, value)
@@ -53,42 +35,6 @@ object AdControl {
             field = KvManger.getBoolean(AdCodeKey.HOMEPAGE_WATERFALL_ADS_THIRD)
             return field
         }
-    var homeBanner: Boolean = true
-        set(value) {
-            KvManger.put(AdCodeKey.BANNER_OF_HOMEPAGE, value)
-            field = value
-        }
-        get() {
-            field = KvManger.getBoolean(AdCodeKey.BANNER_OF_HOMEPAGE)
-            return field
-        }
-    var viewUserLink: Boolean = true
-        set(value) {
-            KvManger.put(AdCodeKey.VIEW_CONTACT_VIDEO_ADS, value)
-            field = value
-        }
-        get() {
-            field = KvManger.getBoolean(AdCodeKey.VIEW_CONTACT_VIDEO_ADS)
-            return field
-        }
-    var viewUserVideo: Boolean = true
-        set(value) {
-            KvManger.put(AdCodeKey.VIEW_USER_VIDEO_ADS, value)
-            field = value
-        }
-        get() {
-            field = KvManger.getBoolean(AdCodeKey.VIEW_USER_VIDEO_ADS)
-            return field
-        }
-    var viewUserImage: Boolean = true
-        set(value) {
-            KvManger.put(AdCodeKey.VIEW_PHOTO_ADS, value)
-            field = value
-        }
-        get() {
-            field = KvManger.getBoolean(AdCodeKey.VIEW_PHOTO_ADS)
-            return field
-        }
 
     fun obtain() {
         ioScope {
@@ -99,12 +45,6 @@ object AdControl {
             )
             val apiResult = apiResponse.data
             if (apiResponse.success && apiResult != null) {
-                apiResult[AdCodeKey.AD_MASTER_SWITCH]?.let {
-                    adMaster = it == "true"
-                }
-                apiResult[AdCodeKey.APP_LAUNCH_INTERSTITIAL]?.let {
-                    appLaunch = it == "true"
-                }
                 apiResult[AdCodeKey.HOMEPAGE_WATERFALL_ADS_FIRST]?.let {
                     homeListFirst = it == "true"
                 }
@@ -113,18 +53,6 @@ object AdControl {
                 }
                 apiResult[AdCodeKey.HOMEPAGE_WATERFALL_ADS_THIRD]?.let {
                     homeListThird = it == "true"
-                }
-                apiResult[AdCodeKey.BANNER_OF_HOMEPAGE]?.let {
-                    homeBanner = it == "true"
-                }
-                apiResult[AdCodeKey.VIEW_CONTACT_VIDEO_ADS]?.let {
-                    viewUserLink = it == "true"
-                }
-                apiResult[AdCodeKey.VIEW_USER_VIDEO_ADS]?.let {
-                    viewUserVideo = it == "true"
-                }
-                apiResult[AdCodeKey.VIEW_PHOTO_ADS]?.let {
-                    viewUserImage = it == "true"
                 }
             }
         }

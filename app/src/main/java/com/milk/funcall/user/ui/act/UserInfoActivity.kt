@@ -12,20 +12,19 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
 import com.milk.funcall.account.Account
+import com.milk.funcall.chat.ui.act.ChatMessageActivity
 import com.milk.funcall.common.ad.AdConfig
-import com.milk.funcall.common.ad.AdControl
 import com.milk.funcall.common.ad.TopOnManager
 import com.milk.funcall.common.constrant.AdCodeKey
-import com.milk.funcall.chat.ui.act.ChatMessageActivity
 import com.milk.funcall.common.constrant.EventKey
+import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.common.constrant.KvKey
+import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.media.loader.ImageLoader
 import com.milk.funcall.common.paging.SimpleGridDecoration
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.ui.manager.NoScrollGridLayoutManager
 import com.milk.funcall.databinding.ActivityUserInfoBinding
-import com.milk.funcall.common.firebase.FireBaseManager
-import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.login.ui.act.LoginActivity
 import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.user.data.UserInfoModel
@@ -133,10 +132,11 @@ class UserInfoActivity : AbstractActivity() {
         binding.tvUserId.text = "ID : ".plus(userInfo.targetIdx)
         binding.tvUserBio.text = userInfo.targetBio
         if (userInfo.targetLink.isNotBlank()) {
-            if (userInfoViewModel.hasViewedLink || !AdControl.viewUserLink)
+            if (userInfoViewModel.hasViewedLink) {
                 binding.link.flLinkLocked.gone()
-            else
+            } else {
                 binding.link.flLinkLocked.visible()
+            }
             binding.link.clLink.visible()
             binding.link.tvNotLink.gone()
             binding.link.tvContact.text = userInfo.targetLink
@@ -163,10 +163,11 @@ class UserInfoActivity : AbstractActivity() {
         if (userImageList.isNotEmpty()) {
             binding.tvImage.visible()
             binding.rvImage.visible()
-            if (userInfoViewModel.hasViewedImage || !AdControl.viewUserImage)
+            if (userInfoViewModel.hasViewedImage) {
                 binding.mlImage.gone()
-            else
+            } else {
                 binding.mlImage.visible()
+            }
             binding.rvImage.layoutManager = NoScrollGridLayoutManager(this, 2)
             binding.rvImage.addItemDecoration(SimpleGridDecoration(this))
             binding.rvImage.adapter = UserImageAdapter(userImageList) { position ->
@@ -255,7 +256,7 @@ class UserInfoActivity : AbstractActivity() {
                 AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_LINK)
             loadingDialog.show()
             FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_6)
-              TopOnManager.loadIncentiveVideoAd(
+            TopOnManager.loadIncentiveVideoAd(
                 activity = this,
                 adUnitId = adUnitId,
                 loadFailureRequest = {
