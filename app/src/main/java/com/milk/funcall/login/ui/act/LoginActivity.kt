@@ -17,14 +17,14 @@ import com.milk.funcall.R
 import com.milk.funcall.app.ui.act.MainActivity
 import com.milk.funcall.common.author.AuthLoginManager
 import com.milk.funcall.common.author.AuthType
-import com.milk.funcall.common.author.DeviceNumber
+import com.milk.funcall.common.author.Device
+import com.milk.funcall.common.constrant.FirebaseKey
+import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.net.error.ApiErrorCode
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.web.WebActivity
 import com.milk.funcall.common.web.WebType
 import com.milk.funcall.databinding.ActivityLoginBinding
-import com.milk.funcall.common.firebase.FireBaseManager
-import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.login.ui.dialog.MaxClientDialog
 import com.milk.funcall.login.ui.vm.LoginViewModel
@@ -149,13 +149,15 @@ class LoginActivity : AbstractActivity() {
 
     private fun checkIsAllowedToLoginAuth(request: (String) -> Unit) {
         if (loginViewModel.agreementPrivacy) {
-            DeviceNumber.obtain(this@LoginActivity) { success, deviceId ->
-                if (success && deviceId.isNotBlank())
-                    mainScope { request(deviceId) }
-                else
-                    showToast(string(R.string.login_obtain_device_failed))
+            val deviceId = Device.getDeviceUniqueId(this)
+            if (deviceId.isNotBlank()) {
+                mainScope { request(deviceId) }
+            } else {
+                showToast(string(R.string.login_obtain_device_failed))
             }
-        } else showToast(string(R.string.login_check_privacy))
+        } else {
+            showToast(string(R.string.login_check_privacy))
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

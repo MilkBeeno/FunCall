@@ -17,7 +17,7 @@ object AdConfig {
     private val positionMap = mutableMapOf<String, String>()
 
     /** 获取网络中最新的广告信息 */
-    fun initialize() {
+    fun obtain() {
         if (positionMap.isNotEmpty()) return
         ioScope {
             val apiResult = AdRepository().getAdConfig(
