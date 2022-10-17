@@ -12,20 +12,20 @@ import androidx.fragment.app.FragmentTransaction
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.account.Account
 import com.milk.funcall.account.ui.frag.MineFragment
-import com.milk.funcall.common.ad.AdConfig
-import com.milk.funcall.common.ad.AdControl
-import com.milk.funcall.common.ad.TopOnManager
-import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.app.MainService
 import com.milk.funcall.app.ui.MainViewModel
 import com.milk.funcall.app.ui.view.BottomNavigation
 import com.milk.funcall.chat.repo.MessageRepository
 import com.milk.funcall.chat.ui.frag.ConversationFragment
+import com.milk.funcall.common.ad.AdConfig
+import com.milk.funcall.common.ad.AdControl
+import com.milk.funcall.common.ad.TopOnManager
+import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.constrant.EventKey
+import com.milk.funcall.common.constrant.FirebaseKey
+import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityMainBinding
-import com.milk.funcall.common.firebase.FireBaseManager
-import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.user.ui.frag.HomeFragment
 import com.milk.simple.ktx.*
 import com.milk.simple.log.Logger
@@ -99,8 +99,7 @@ class MainActivity : AbstractActivity() {
             when (type) {
                 BottomNavigation.Type.Home -> {
                     if (refresh) {
-                        LiveEventBus.get<Boolean>(EventKey.REFRESH_HOME_LIST)
-                            .post(true)
+                        LiveEventBus.get<Boolean>(EventKey.REFRESH_HOME_LIST).post(true)
                     } else setTabSelection(homeFragment)
                 }
                 BottomNavigation.Type.Message -> {
@@ -114,21 +113,19 @@ class MainActivity : AbstractActivity() {
     }
 
     private fun initializeObserver() {
-        LiveEventBus.get<Any?>(EventKey.JUMP_TO_THE_HOME_PAGE)
-            .observe(this) {
-                setTabSelection(homeFragment)
-                binding.navigation.updateSelectNav(BottomNavigation.Type.Home)
-            }
+        LiveEventBus.get<Any?>(EventKey.JUMP_TO_THE_HOME_PAGE).observe(this) {
+            setTabSelection(homeFragment)
+            binding.navigation.updateSelectNav(BottomNavigation.Type.Home)
+        }
     }
 
     private fun initializeService() {
         Account.userIdFlow.collect(this) { accountId ->
-            mainViewModel.getConversationCount()
-                .collectLatest(this) { countList ->
-                    var count = 0
-                    countList?.forEach { count += it }
-                    binding.navigation.updateUnReadCount(count)
-                }
+            mainViewModel.getConversationCount().collectLatest(this) { countList ->
+                var count = 0
+                countList?.forEach { count += it }
+                binding.navigation.updateUnReadCount(count)
+            }
             if (accountId > 0) {
                 connection = object : ServiceConnection {
                     override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
