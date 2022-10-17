@@ -32,10 +32,10 @@ class ChatMessageAdapter : AbstractPagingAdapter<ChatMessageEntity>(
             newItem: ChatMessageEntity
         ): Boolean {
             return oldItem.accountId == newItem.accountId
-                    && oldItem.targetId == newItem.targetId
-                    && oldItem.operationTime == newItem.operationTime
-                    && oldItem.isReadMessage == newItem.isReadMessage
-                    && oldItem.messageContent == newItem.messageContent
+                && oldItem.targetId == newItem.targetId
+                && oldItem.operationTime == newItem.operationTime
+                && oldItem.isReadMessage == newItem.isReadMessage
+                && oldItem.messageContent == newItem.messageContent
         }
     }) {
 

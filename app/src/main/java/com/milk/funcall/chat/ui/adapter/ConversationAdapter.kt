@@ -21,8 +21,8 @@ class ConversationAdapter : AbstractPagingAdapter<ConversationWithUserInfoEntity
             newItem: ConversationWithUserInfoEntity
         ): Boolean {
             return oldItem.conversation.accountId == newItem.conversation.accountId
-                    && oldItem.conversation.targetId == newItem.conversation.targetId
-                    && oldItem.userInfo?.targetId == newItem.userInfo?.targetId
+                && oldItem.conversation.targetId == newItem.conversation.targetId
+                && oldItem.userInfo?.targetId == newItem.userInfo?.targetId
         }
 
         override fun areContentsTheSame(
@@ -30,16 +30,16 @@ class ConversationAdapter : AbstractPagingAdapter<ConversationWithUserInfoEntity
             newItem: ConversationWithUserInfoEntity
         ): Boolean {
             return oldItem.conversation.targetName == newItem.conversation.targetName
-                    && oldItem.conversation.targetAvatar == newItem.conversation.targetAvatar
-                    && oldItem.conversation.messageType == newItem.conversation.messageType
-                    && oldItem.conversation.operationTime == newItem.conversation.operationTime
-                    && oldItem.conversation.messageContent == newItem.conversation.messageContent
-                    && oldItem.conversation.isAcceptMessage == newItem.conversation.isAcceptMessage
-                    && oldItem.conversation.unReadCount == newItem.conversation.unReadCount
-                    && oldItem.conversation.sendStatus == newItem.conversation.sendStatus
-                    && oldItem.conversation.putTopTime == newItem.conversation.putTopTime
-                    && oldItem.userInfo?.targetName == newItem.userInfo?.targetName
-                    && oldItem.userInfo?.targetAvatar == newItem.userInfo?.targetAvatar
+                && oldItem.conversation.targetAvatar == newItem.conversation.targetAvatar
+                && oldItem.conversation.messageType == newItem.conversation.messageType
+                && oldItem.conversation.operationTime == newItem.conversation.operationTime
+                && oldItem.conversation.messageContent == newItem.conversation.messageContent
+                && oldItem.conversation.isAcceptMessage == newItem.conversation.isAcceptMessage
+                && oldItem.conversation.unReadCount == newItem.conversation.unReadCount
+                && oldItem.conversation.sendStatus == newItem.conversation.sendStatus
+                && oldItem.conversation.putTopTime == newItem.conversation.putTopTime
+                && oldItem.userInfo?.targetName == newItem.userInfo?.targetName
+                && oldItem.userInfo?.targetAvatar == newItem.userInfo?.targetAvatar
         }
     }
 ) {

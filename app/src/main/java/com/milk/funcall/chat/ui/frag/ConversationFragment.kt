@@ -12,11 +12,11 @@ import com.milk.funcall.chat.ui.adapter.ConversationAdapter
 import com.milk.funcall.chat.ui.dialog.ConversationPopupWindow
 import com.milk.funcall.chat.ui.vm.ConversationViewModel
 import com.milk.funcall.common.constrant.EventKey
+import com.milk.funcall.common.constrant.FirebaseKey
+import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.paging.status.RefreshStatus
 import com.milk.funcall.common.ui.AbstractFragment
 import com.milk.funcall.databinding.FragmentChatMessageBinding
-import com.milk.funcall.common.firebase.FireBaseManager
-import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.simple.ktx.*
 
 class ConversationFragment : AbstractFragment() {
@@ -36,8 +36,7 @@ class ConversationFragment : AbstractFragment() {
         conversationAdapter.addRefreshedListener {
             when (it) {
                 RefreshStatus.Success -> {
-                    FireBaseManager
-                        .logEvent(FirebaseKey.ENTER_MESSAGE)
+                    FireBaseManager.logEvent(FirebaseKey.ENTER_MESSAGE)
                     binding.llEmpty.gone()
                 }
                 RefreshStatus.Empty -> {

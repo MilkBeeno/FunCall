@@ -13,11 +13,11 @@ import com.milk.funcall.R
 import com.milk.funcall.chat.ui.adapter.ChatMessageAdapter
 import com.milk.funcall.chat.ui.dialog.ChatMessagePopupWindow
 import com.milk.funcall.chat.ui.vm.ChatMessageViewModel
+import com.milk.funcall.common.constrant.FirebaseKey
+import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.paging.status.RefreshStatus
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityMessageBinding
-import com.milk.funcall.common.firebase.FireBaseManager
-import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.user.ui.act.UserInfoActivity
 import com.milk.simple.keyboard.KeyBoardUtil
@@ -49,8 +49,7 @@ class ChatMessageActivity : AbstractActivity() {
             if (oldBottom != -1 && oldBottom > bottom && chatMessageAdapter.itemCount > 0) {
                 binding.rvMessage.requestLayout()
                 binding.rvMessage.post {
-                    binding.rvMessage
-                        .scrollToPosition(chatMessageAdapter.itemCount - 1)
+                    binding.rvMessage.scrollToPosition(chatMessageAdapter.itemCount - 1)
                 }
             }
         }
@@ -93,37 +92,30 @@ class ChatMessageActivity : AbstractActivity() {
     }
 
     private fun updateSendState() {
-        if (binding.etMessage.text.toString().isBlank())
-            binding.tvSend.setBackgroundResource(
-                R.drawable.shape_chat_message_send_un_available
-            )
-        else
-            binding.tvSend.setBackgroundResource(
-                R.drawable.shape_chat_message_send_available
-            )
+        if (binding.etMessage.text.toString().isBlank()) {
+            binding.tvSend.setBackgroundResource(R.drawable.shape_chat_message_send_un_available)
+        } else {
+            binding.tvSend.setBackgroundResource(R.drawable.shape_chat_message_send_available)
+        }
     }
 
     private fun initializeData() {
-        chatMessageViewModel.getTargetInfoByDB(targetId)
-            .collectLatest(this) {
-                if (it != null) {
-                    binding.headerToolbar.setTitle(it.targetName)
-                    chatMessageViewModel.updateUserInfoEntity(it)
-                    chatMessageAdapter.setUserInfoEntity(it)
-                    chatMessageAdapter
-                        .setPagerSource(chatMessageViewModel.pagingSource.pager)
-                } else chatMessageViewModel.getTargetInfoByNetwork(targetId)
-            }
-        chatMessageViewModel.followedStatusFlow
-            .collectLatest(this) {
-                loadingDialog.dismiss()
-                if (it == true) showToast(string(R.string.common_success))
-            }
-        chatMessageViewModel.blackUserFlow
-            .collectLatest(this) {
-                loadingDialog.dismiss()
-                if (it) finish()
-            }
+        chatMessageViewModel.getTargetInfoByDB(targetId).collectLatest(this) {
+            if (it != null) {
+                binding.headerToolbar.setTitle(it.targetName)
+                chatMessageViewModel.updateUserInfoEntity(it)
+                chatMessageAdapter.setUserInfoEntity(it)
+                chatMessageAdapter.setPagerSource(chatMessageViewModel.pagingSource.pager)
+            } else chatMessageViewModel.getTargetInfoByNetwork(targetId)
+        }
+        chatMessageViewModel.followedStatusFlow.collectLatest(this) {
+            loadingDialog.dismiss()
+            if (it == true) showToast(string(R.string.common_success))
+        }
+        chatMessageViewModel.blackUserFlow.collectLatest(this) {
+            loadingDialog.dismiss()
+            if (it) finish()
+        }
     }
 
     override fun onMultipleClick(view: View) {
@@ -137,8 +129,9 @@ class ChatMessageActivity : AbstractActivity() {
             }
             binding.tvSend -> {
                 val messageContent = binding.etMessage.text.toString()
-                if (messageContent.isNotBlank())
+                if (messageContent.isNotBlank()) {
                     chatMessageViewModel.sendTextChatMessage(messageContent)
+                }
                 binding.etMessage.text?.clear()
             }
         }
@@ -146,8 +139,7 @@ class ChatMessageActivity : AbstractActivity() {
 
     private fun showPopupWindow() {
         val isPutTopped = chatMessageViewModel.userPutTopStatus
-        val isFollowed =
-            chatMessageViewModel.userInfoEntity?.targetIsFollowed ?: false
+        val isFollowed = chatMessageViewModel.userInfoEntity?.targetIsFollowed ?: false
         ChatMessagePopupWindow.Builder(this)
             .applyView(binding.ivMore)
             .setOffsetX(-dp2px(150f).toInt())
@@ -163,8 +155,9 @@ class ChatMessageActivity : AbstractActivity() {
                 }
             }
             .setFollowRequest(isFollowed) {
-                if (!isFollowed)
+                if (!isFollowed) {
                     FireBaseManager.logEvent(FirebaseKey.CLICK_FOLLOW_ON_CHAT_PAGE)
+                }
                 loadingDialog.show()
                 chatMessageViewModel.changeFollowedStatus()
             }

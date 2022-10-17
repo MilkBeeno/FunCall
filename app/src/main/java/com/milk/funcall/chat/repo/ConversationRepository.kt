@@ -41,11 +41,11 @@ class ConversationRepository {
 
     /** 本地数据发送状态更新 */
     internal fun updateSendStatus(targetId: Long, sendSuccess: Boolean) {
-        val status = if (sendSuccess)
+        val status = if (sendSuccess) {
             ChatMsgSendStatus.SendSuccess.value
-        else
+        } else {
             ChatMsgSendStatus.SendFailed.value
-        DataBaseManager.DB.conversationTableDao()
-            .updateSendStatus(Account.userId, targetId, status)
+        }
+        DataBaseManager.DB.conversationTableDao().updateSendStatus(Account.userId, targetId, status)
     }
 }

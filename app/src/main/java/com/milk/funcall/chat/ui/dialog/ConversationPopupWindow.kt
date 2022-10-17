@@ -43,19 +43,19 @@ class ConversationPopupWindow(
             popupWindow = null
         }
         val tvPutTop = targetLayout.findViewById<AppCompatTextView>(R.id.tvPutTop)
-        tvPutTop.text = if (isPutTopped)
+        tvPutTop.text = if (isPutTopped) {
             context.string(R.string.common_un_pin)
-        else
+        } else {
             context.string(R.string.common_up_top)
+        }
         tvPutTop.setOnClickListener {
             popupWindow?.dismiss()
             putTopRequest?.invoke()
         }
-        targetLayout.findViewById<AppCompatTextView>(R.id.tvDelete)
-            .setOnClickListener {
-                popupWindow?.dismiss()
-                deleteRequest?.invoke()
-            }
+        targetLayout.findViewById<AppCompatTextView>(R.id.tvDelete).setOnClickListener {
+            popupWindow?.dismiss()
+            deleteRequest?.invoke()
+        }
     }
 
     class Builder(private val context: Context) {

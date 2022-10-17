@@ -45,28 +45,29 @@ class ChatMessagePopupWindow(
             popupWindow = null
         }
         val tvPutTop = targetLayout.findViewById<AppCompatTextView>(R.id.tvPutTop)
-        tvPutTop.text = if (isPutTopped)
+        tvPutTop.text = if (isPutTopped) {
             context.string(R.string.common_un_pin)
-        else
+        } else {
             context.string(R.string.common_up_top)
+        }
         tvPutTop.setOnClickListener {
             popupWindow?.dismiss()
             putTopRequest?.invoke()
         }
         val tvFollow = targetLayout.findViewById<AppCompatTextView>(R.id.tvFollow)
-        tvFollow.text = if (isFollowed)
+        tvFollow.text = if (isFollowed) {
             context.string(R.string.common_un_follow)
-        else
+        } else {
             context.string(R.string.common_follow)
+        }
         tvFollow.setOnClickListener {
             popupWindow?.dismiss()
             followRequest?.invoke()
         }
-        targetLayout.findViewById<AppCompatTextView>(R.id.tvBlack)
-            .setOnClickListener {
-                popupWindow?.dismiss()
-                blackRequest?.invoke()
-            }
+        targetLayout.findViewById<AppCompatTextView>(R.id.tvBlack).setOnClickListener {
+            popupWindow?.dismiss()
+            blackRequest?.invoke()
+        }
     }
 
     class Builder(private val context: Context) {

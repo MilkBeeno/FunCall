@@ -12,8 +12,9 @@ class ChatRecyclerView : RecyclerView {
     constructor(ctx: Context, attrs: AttributeSet, defAttr: Int) : super(ctx, attrs, defAttr)
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        if (ev?.action == MotionEvent.ACTION_DOWN)
+        if (ev?.action == MotionEvent.ACTION_DOWN) {
             KeyBoardUtil.hideKeyboard(this)
+        }
         return super.dispatchTouchEvent(ev)
     }
 }

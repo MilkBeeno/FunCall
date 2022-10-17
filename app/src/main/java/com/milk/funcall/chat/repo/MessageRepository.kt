@@ -2,26 +2,27 @@ package com.milk.funcall.chat.repo
 
 import androidx.paging.PagingSource
 import com.milk.funcall.account.Account
-import com.milk.funcall.chat.api.ApiService
+import com.milk.funcall.chat.api.ChatApiService
 import com.milk.funcall.chat.ui.type.ChatMessageType
 import com.milk.funcall.chat.ui.type.ChatMsgSendStatus
 import com.milk.funcall.common.db.DataBaseManager
 import com.milk.funcall.common.db.table.ChatMessageEntity
 import com.milk.funcall.common.db.table.ConversationWithUserInfoEntity
+import com.milk.funcall.common.net.ApiClient
 import com.milk.funcall.common.net.retrofit
 import com.milk.simple.ktx.ioScope
 import com.milk.simple.log.Logger
 
 object MessageRepository {
+    private val chatApiService: ChatApiService =
+        ApiClient.obtainRetrofit().create(ChatApiService::class.java)
     private val chatMessageRepository by lazy { ChatMessageRepository() }
     private val conversationRepository by lazy { ConversationRepository() }
 
     /** 心跳包数据验证、检测是否有新的消息 */
     internal fun heartBeat() {
         ioScope {
-            val apiResponse = retrofit {
-                ApiService.chatApiService.heartBeat()
-            }
+            val apiResponse = retrofit { chatApiService.heartBeat() }
             val apiResult = apiResponse.data
             if (apiResponse.success && apiResult != null) {
                 Logger.d(
@@ -40,8 +41,7 @@ object MessageRepository {
 
     /** 从服务器端新消息数据、并保存到数据库中 */
     private suspend fun getChatMessageByNetwork() {
-        val apiResponse =
-            retrofit { ApiService.chatApiService.getMessagesFromNetwork() }
+        val apiResponse = retrofit { chatApiService.getMessagesFromNetwork() }
         val apiResult = apiResponse.data
         if (apiResponse.success && apiResult != null) {
             apiResult.forEach { chatMsgReceiveModel ->
@@ -102,8 +102,7 @@ object MessageRepository {
             sendStatus = ChatMsgSendStatus.Sending.value,
             messageContent = messageContent
         )
-        val apiResponse =
-            ApiService.chatApiService.sendTextChatMessage(targetId, messageContent)
+        val apiResponse = chatApiService.sendTextChatMessage(targetId, messageContent)
         val apiResult = apiResponse.data
         // 消息发送状态更新、3.发送成功 2.发送失败
         if (apiResponse.success && apiResult != null) {
