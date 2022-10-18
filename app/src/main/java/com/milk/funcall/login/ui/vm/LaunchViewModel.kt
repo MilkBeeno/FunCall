@@ -6,6 +6,7 @@ import android.util.Base64
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import com.anythink.interstitial.api.ATInterstitial
+import com.milk.funcall.app.AppConfig
 import com.milk.funcall.common.ad.AdConfig
 import com.milk.funcall.common.ad.TopOnManager
 import com.milk.funcall.common.ad.ui.AdLoadType
@@ -38,7 +39,7 @@ class LaunchViewModel : ViewModel() {
             .build()
             .start()
         val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.APP_START)
-        if (adUnitId.isNotBlank() && AdConfig.adCancelType != 2) {
+        if (adUnitId.isNotBlank() && AppConfig.adCancelType != 2) {
             FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST)
             interstitial = TopOnManager.loadInterstitial(
                 activity = activity,

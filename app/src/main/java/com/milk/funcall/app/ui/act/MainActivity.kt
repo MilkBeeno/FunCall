@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.account.Account
 import com.milk.funcall.account.ui.frag.MineFragment
+import com.milk.funcall.app.AppConfig
 import com.milk.funcall.app.MainService
 import com.milk.funcall.app.ui.MainViewModel
 import com.milk.funcall.app.ui.view.BottomNavigation
@@ -53,7 +54,7 @@ class MainActivity : AbstractActivity() {
     private fun initializeAdView() {
         try {
             val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.MAIN_HOME_BOTTOM)
-            if (adUnitId.isNotBlank() && AdConfig.adCancelType != 2) {
+            if (adUnitId.isNotBlank() && AppConfig.adCancelType != 2) {
                 FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_4)
                 val adView = TopOnManager.loadBannerAd(
                     activity = this,

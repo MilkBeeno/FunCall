@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.account.Account
+import com.milk.funcall.app.AppConfig
 import com.milk.funcall.app.ui.act.MainActivity
 import com.milk.funcall.common.ad.AdConfig
 import com.milk.funcall.common.constrant.EventKey
@@ -29,6 +30,7 @@ class LaunchActivity : AbstractActivity() {
         setContentView(binding.root)
         initializeView()
         initializeObserver()
+        AppConfig.obtain()
         Account.initialize()
         AdConfig.obtain()
         checkIsNewClient()

@@ -30,7 +30,11 @@ data class UserInfoModel(
     val targetVideoUrl: UserMediaModel? = null,
     // 用户照片地址
     @SerializedName("imageMaterialList")
-    var targetImageList: MutableList<UserMediaModel>? = null
+    var targetImageList: MutableList<UserMediaModel>? = null,
+    // 解锁个人资料页面类型 1->免费查看 2->播放广告查看
+    var unlockType: Int = 0,
+    // 解锁个人资料剩余次数
+    var viewUnlockTimes: Int = 0,
 ) : UserInfoEntity(), Serializable {
 
     fun imageListConvert(): MutableList<String> {
