@@ -3,7 +3,6 @@ package com.milk.funcall.user.ui.vm
 import androidx.lifecycle.ViewModel
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import com.milk.funcall.app.AppConfig
 import com.milk.funcall.common.ad.AdConfig
 import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.paging.NetworkPagingSource
@@ -19,15 +18,15 @@ class HomeViewModel : ViewModel() {
     private var lastAddItemAdType: ItemAdType = ItemAdType.Null
     private val homeListFirst by lazy {
         AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_FIRST)
-            .isNotBlank() && AppConfig.adCancelType != 2
+            .isNotBlank() && AdConfig.adCancelType != 2
     }
     private val homeListSecond by lazy {
         AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_SECOND)
-            .isNotBlank() && AppConfig.adCancelType != 2
+            .isNotBlank() && AdConfig.adCancelType != 2
     }
     private val homeListThird by lazy {
         AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_THIRD)
-            .isNotBlank() && AppConfig.adCancelType != 2
+            .isNotBlank() && AdConfig.adCancelType != 2
     }
 
     internal val pagingSource = Pager(

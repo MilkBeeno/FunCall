@@ -7,14 +7,14 @@ import com.milk.simple.ktx.safeToInt
 import com.milk.simple.mdr.KvManger
 
 object AppConfig {
-    /** 免广告类型：0->需要展示广告 1->免个人主页广告 2->免 app 所有广告 */
-    internal var adCancelType: Int = 0
+    /** 免广告类型: 1->免个人主页广告 2->免 app 所有广告 */
+    internal var freeAdType: Int = 0
         set(value) {
-            KvManger.put(AppConfigKey.AD_CANCEL_TYPE, value)
+            KvManger.put(AppConfigKey.FREE_AD_TYPE, value)
             field = value
         }
         get() {
-            field = KvManger.getInt(AppConfigKey.AD_CANCEL_TYPE)
+            field = KvManger.getInt(AppConfigKey.FREE_AD_TYPE)
             return field
         }
 
@@ -49,8 +49,8 @@ object AppConfig {
             )
             val apiResult = apiResponse.data
             if (apiResponse.success && apiResult != null) {
-                apiResult[AppConfigKey.AD_CANCEL_TYPE]?.let {
-                    adCancelType = it.safeToInt()
+                apiResult[AppConfigKey.FREE_AD_TYPE]?.let {
+                    freeAdType = it.safeToInt()
                 }
                 apiResult[AppConfigKey.VIEW_AD_UNLOCK_TIMES]?.let {
                     viewAdUnlockTimes = it.safeToInt()

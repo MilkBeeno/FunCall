@@ -2,6 +2,7 @@ package com.milk.funcall.common.ad
 
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.BuildConfig
+import com.milk.funcall.app.AppConfig
 import com.milk.funcall.common.ad.data.AdModel
 import com.milk.funcall.common.ad.data.AdPositionModel
 import com.milk.funcall.common.ad.data.AdResponseModel
@@ -15,6 +16,14 @@ import com.milk.simple.mdr.KvManger
 object AdConfig {
     private const val AD_CONFIG = "AD_CONFIG_FUN_CALL"
     private val positionMap = mutableMapOf<String, String>()
+
+    /** 免广告类型：0->需要展示广告 1->免个人主页广告 2->免 app 所有广告 */
+    internal var adCancelType: Int = 0
+        get() {
+            // todo 需要判断是否是VIP的状态下
+            field = AppConfig.freeAdType
+            return field
+        }
 
     /** 获取网络中最新的广告信息 */
     fun obtain() {

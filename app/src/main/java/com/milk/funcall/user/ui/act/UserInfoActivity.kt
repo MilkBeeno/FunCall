@@ -12,7 +12,6 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
 import com.milk.funcall.account.Account
-import com.milk.funcall.app.AppConfig
 import com.milk.funcall.chat.ui.act.ChatMessageActivity
 import com.milk.funcall.common.ad.AdConfig
 import com.milk.funcall.common.constrant.AdCodeKey
@@ -135,7 +134,7 @@ class UserInfoActivity : AbstractActivity() {
             val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_LINK)
             if (!userInfoViewModel.hasViewedLink
                 && adUnitId.isNotBlank()
-                && AppConfig.adCancelType == 0
+                && AdConfig.adCancelType == 0
             ) {
                 binding.link.flLinkLocked.visible()
             } else {
@@ -170,7 +169,7 @@ class UserInfoActivity : AbstractActivity() {
             val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_IMAGE)
             if (!userInfoViewModel.hasViewedImage
                 && adUnitId.isNotBlank()
-                && AppConfig.adCancelType == 0
+                && AdConfig.adCancelType == 0
             ) {
                 binding.mlImage.visible()
             } else {
