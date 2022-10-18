@@ -225,6 +225,7 @@ class UserInfoActivity : AbstractActivity() {
 
     private fun loadUserInfo() {
         binding.lvLoading.visible()
+        userInfoViewModel.setDeviceId(this)
         userInfoViewModel.loadUserInfo(userId)
     }
 

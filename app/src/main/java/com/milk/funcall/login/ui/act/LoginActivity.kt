@@ -138,10 +138,11 @@ class LoginActivity : AbstractActivity() {
             binding.ivPrivacyCheck -> {
                 loginViewModel.agreementPrivacy = !loginViewModel.agreementPrivacy
                 binding.ivPrivacyCheck.setImageResource(
-                    if (loginViewModel.agreementPrivacy)
+                    if (loginViewModel.agreementPrivacy) {
                         R.drawable.login_privacy_checked
-                    else
+                    } else {
                         R.drawable.login_privacy_no_check
+                    }
                 )
             }
         }

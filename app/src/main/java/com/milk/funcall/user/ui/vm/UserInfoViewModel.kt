@@ -1,10 +1,11 @@
 package com.milk.funcall.user.ui.vm
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import com.anythink.interstitial.api.ATInterstitial
-import com.milk.funcall.account.Account
 import com.milk.funcall.common.ad.AdConfig
 import com.milk.funcall.common.ad.TopOnManager
+import com.milk.funcall.common.author.Device
 import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.common.constrant.KvKey
@@ -21,43 +22,51 @@ class UserInfoViewModel : ViewModel() {
     internal val loadUserInfoStatusFlow = MutableSharedFlow<Boolean>()
     internal val changeFollowedStatusFlow = MutableSharedFlow<Boolean>()
 
-    private val targetId by lazy { getUserInfoModel().targetId }
+    private var deviceId: String = ""
+    private var targetId: Long = 0
     internal var hasViewedLink: Boolean = false
         set(value) {
-            if (targetId > 0)
-                KvManger.put(KvKey.VIEW_OTHER_LINK.plus(Account.userId).plus(targetId), value)
+            if (targetId > 0) {
+                KvManger.put(KvKey.VIEW_OTHER_LINK.plus(deviceId).plus(targetId), value)
+            }
             field = value
         }
         get() {
             if (targetId > 0)
                 field =
-                    KvManger.getBoolean(KvKey.VIEW_OTHER_LINK.plus(Account.userId).plus(targetId))
+                    KvManger.getBoolean(KvKey.VIEW_OTHER_LINK.plus(deviceId).plus(targetId))
             return field
         }
     internal var hasViewedVideo: Boolean = false
         set(value) {
-            if (targetId > 0)
-                KvManger.put(KvKey.VIEW_OTHER_VIDEO.plus(Account.userId).plus(targetId), value)
+            if (targetId > 0) {
+                KvManger.put(KvKey.VIEW_OTHER_VIDEO.plus(deviceId).plus(targetId), value)
+            }
             field = value
         }
         get() {
             if (targetId > 0)
                 field =
-                    KvManger.getBoolean(KvKey.VIEW_OTHER_VIDEO.plus(Account.userId).plus(targetId))
+                    KvManger.getBoolean(KvKey.VIEW_OTHER_VIDEO.plus(deviceId).plus(targetId))
             return field
         }
     internal var hasViewedImage: Boolean = false
         set(value) {
-            if (targetId > 0)
-                KvManger.put(KvKey.VIEW_OTHER_IMAGE.plus(Account.userId).plus(targetId), value)
+            if (targetId > 0) {
+                KvManger.put(KvKey.VIEW_OTHER_IMAGE.plus(deviceId).plus(targetId), value)
+            }
             field = value
         }
         get() {
             if (targetId > 0)
                 field =
-                    KvManger.getBoolean(KvKey.VIEW_OTHER_IMAGE.plus(Account.userId).plus(targetId))
+                    KvManger.getBoolean(KvKey.VIEW_OTHER_IMAGE.plus(deviceId).plus(targetId))
             return field
         }
+
+    internal fun setDeviceId(context: Context) {
+        deviceId = Device.getDeviceUniqueId(context)
+    }
 
     internal fun loadUserInfo(userId: Long) {
         ioScope {
@@ -67,7 +76,7 @@ class UserInfoViewModel : ViewModel() {
                 UserInfoRepository.getNextUserInfoByNetwork()
             }
             userInfoModel = apiResponse.data
-            userInfoModel?.unlockType = 1
+            targetId = userInfoModel?.targetId ?: 0
             loadUserInfoStatusFlow.emit(apiResponse.success && userInfoModel != null)
         }
     }
