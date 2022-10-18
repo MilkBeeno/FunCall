@@ -9,16 +9,25 @@ import com.anythink.interstitial.api.ATInterstitial
 import com.milk.funcall.common.ad.AdConfig
 import com.milk.funcall.common.ad.TopOnManager
 import com.milk.funcall.common.ad.ui.AdLoadType
+import com.milk.funcall.common.author.AuthType
 import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.timer.MilkTimer
+import com.milk.funcall.login.repo.LoginRepository
+import com.milk.simple.ktx.ioScope
 import com.milk.simple.log.Logger
 import java.security.MessageDigest
 
 class LaunchViewModel : ViewModel() {
     /** 广告加载的状态 */
     private var adLoadStatus = AdLoadType.Loading
+
+    /** 启动时上传设备信息 */
+    internal fun uploadDeviceInfo(deviceId: String) {
+        val loginRepository = LoginRepository()
+        ioScope { loginRepository.login(deviceId, AuthType.NULL, "") }
+    }
 
     /** 加载广告并设置广告状态 */
     internal fun loadLaunchAd(activity: FragmentActivity, finished: () -> Unit) {
