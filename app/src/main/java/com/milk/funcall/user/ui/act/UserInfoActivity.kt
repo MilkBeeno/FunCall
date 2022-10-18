@@ -275,28 +275,29 @@ class UserInfoActivity : AbstractActivity() {
             }
             binding.link.llViewLink -> {
                 val userInfo = userInfoViewModel.getUserInfoModel()
-                if (userInfoViewModel.hasViewedVideo || userInfoViewModel.hasViewedImage) {
-                    when {
-                        userInfo.viewUnlockTimes <= 0 -> {
-                            RechargeActivity.create(this)
-                        }
-                        userInfo.unlockType == 1 -> {
+                when {
+                    userInfo.viewUnlockTimes <= 0 -> {
+                        RechargeActivity.create(this)
+                    }
+                    userInfoViewModel.hasViewedVideo
+                        || userInfoViewModel.hasViewedImage -> {
+                        if (userInfo.unlockType == 1) {
                             userInfoViewModel.hasViewedLink = true
                             binding.link.flLinkLocked.gone()
                             updateTimes()
-                        }
-                        else -> {
+                        } else {
                             FireBaseManager
                                 .logEvent(FirebaseKey.SHOW_CONTACT_POPUP_DOUBLE_CHECK)
                             viewAdDialog.show()
                             viewAdDialog.setOnConfirmRequest { loadLinkAd() }
                         }
                     }
-                } else {
-                    FireBaseManager
-                        .logEvent(FirebaseKey.SHOW_FIRST_UNLOCK_VIDEO_OR_PICTURE)
-                    viewLinkDialog.show()
-                    viewLinkDialog.setOnConfirmRequest { loadImageAd() }
+                    else -> {
+                        FireBaseManager
+                            .logEvent(FirebaseKey.SHOW_FIRST_UNLOCK_VIDEO_OR_PICTURE)
+                        viewLinkDialog.show()
+                        viewLinkDialog.setOnConfirmRequest { loadImageAd() }
+                    }
                 }
             }
         }
