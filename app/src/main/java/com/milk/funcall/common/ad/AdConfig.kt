@@ -17,7 +17,7 @@ object AdConfig {
     private const val AD_CONFIG = "AD_CONFIG_FUN_CALL"
     private val positionMap = mutableMapOf<String, String>()
 
-    /** 免广告类型：0->需要展示广告 1->免个人主页广告 2->免 app 所有广告 */
+    /** 是否展示广告判断：0->需要展示广告 1->免个人主页广告 2->免 app 所有广告 */
     internal var adCancelType: Int = 0
         get() {
             // todo 需要判断是否是VIP的状态下
