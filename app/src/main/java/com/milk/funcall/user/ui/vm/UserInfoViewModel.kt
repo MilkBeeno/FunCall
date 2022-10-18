@@ -107,6 +107,7 @@ class UserInfoViewModel : ViewModel() {
                 showSuccessRequest = {
                     FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_6)
                     success()
+                    hasViewedLink = true
                 },
                 clickRequest = {
                     FireBaseManager.logEvent(FirebaseKey.CLICK_AD_6)

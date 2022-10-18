@@ -141,22 +141,7 @@ class UserInfoActivity : AbstractActivity() {
                 && adUnitId.isNotBlank()
                 && AdConfig.adCancelType == 0
             ) {
-                val maxTimes = if (userInfo.unlockType == 1) {
-                    binding.link.ivLinkType
-                        .setBackgroundResource(R.drawable.user_info_media_locked_view)
-                    AppConfig.freeUnlockTimes
-                } else {
-                    binding.link.ivLinkType
-                        .setBackgroundResource(R.drawable.user_info_media_locked_view_ad)
-                    AppConfig.viewAdUnlockTimes
-                }
-                binding.link.tvLinkTimes.text =
-                    "(".plus(string(R.string.user_info_unlock_times))
-                        .plus(" ")
-                        .plus(userInfo.viewUnlockTimes)
-                        .plus("/")
-                        .plus(maxTimes)
-                        .plus(")")
+                setLinkTimes()
                 binding.link.flLinkLocked.visible()
             } else {
                 binding.link.flLinkLocked.gone()
@@ -169,6 +154,26 @@ class UserInfoActivity : AbstractActivity() {
             binding.link.tvNotLink.visible()
             binding.link.flLinkLocked.gone()
         }
+    }
+
+    private fun setLinkTimes() {
+        val userInfo = userInfoViewModel.getUserInfoModel()
+        val maxTimes = if (userInfo.unlockType == 1) {
+            binding.link.ivLinkType
+                .setBackgroundResource(R.drawable.user_info_media_locked_view)
+            AppConfig.freeUnlockTimes
+        } else {
+            binding.link.ivLinkType
+                .setBackgroundResource(R.drawable.user_info_media_locked_view_ad)
+            AppConfig.viewAdUnlockTimes
+        }
+        binding.link.tvLinkTimes.text =
+            "(".plus(string(R.string.user_info_unlock_times))
+                .plus(" ")
+                .plus(userInfo.viewUnlockTimes)
+                .plus("/")
+                .plus(maxTimes)
+                .plus(")")
     }
 
     private fun setUserVideo(): Boolean {
@@ -199,6 +204,7 @@ class UserInfoActivity : AbstractActivity() {
                 && AdConfig.adCancelType == 0
             ) {
                 binding.mlImage.visible()
+                binding.mlImage.setMediaTimes(userInfo)
             } else {
                 binding.mlImage.gone()
             }
@@ -291,7 +297,7 @@ class UserInfoActivity : AbstractActivity() {
                 success = {
                     loadingDialog.dismiss()
                     binding.link.flLinkLocked.gone()
-                    userInfoViewModel.hasViewedLink = true
+                    updateTimes()
                 }
             )
         } catch (e: Exception) {
@@ -308,7 +314,20 @@ class UserInfoActivity : AbstractActivity() {
             success = {
                 loadingDialog.dismiss()
                 binding.mlImage.gone()
+                updateTimes()
             })
+    }
+
+    private fun updateTimes() {
+        val userInfo = userInfoViewModel.getUserInfoModel()
+        val count = userInfo.viewUnlockTimes - 1
+        userInfo.viewUnlockTimes = if (count <= 0) 0 else count
+        if (!userInfoViewModel.hasViewedLink) {
+            setLinkTimes()
+        }
+        if (!userInfoViewModel.hasViewedImage) {
+            binding.mlImage.setMediaTimes(userInfo)
+        }
     }
 
     companion object {
