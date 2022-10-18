@@ -74,8 +74,11 @@ class UserInfoActivity : AbstractActivity() {
                 binding.link.root.visible()
                 binding.llMedia.visible()
                 setUserBasic()
-                setUserMedia()
                 setUserFollow()
+                setUserLink()
+                val videoEmpty = setUserVideo()
+                val imageEmpty = setUserImage()
+                if (videoEmpty && imageEmpty) binding.ivMediaEmpty.visible()
             } else {
                 showToast(string(R.string.user_info_obtain_failed))
                 finish()
@@ -128,6 +131,10 @@ class UserInfoActivity : AbstractActivity() {
         binding.tvUserName.text = userInfo.targetName
         binding.tvUserId.text = "ID : ".plus(userInfo.targetIdx)
         binding.tvUserBio.text = userInfo.targetBio
+    }
+
+    private fun setUserLink() {
+        val userInfo = userInfoViewModel.getUserInfoModel()
         if (userInfo.targetLink.isNotBlank()) {
             val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_LINK)
             if (!userInfoViewModel.hasViewedLink
@@ -164,7 +171,7 @@ class UserInfoActivity : AbstractActivity() {
         }
     }
 
-    private fun setUserMedia() {
+    private fun setUserVideo(): Boolean {
         val userInfo = userInfoViewModel.getUserInfoModel()
         // 设置 Video 信息
         val userVideoUrl = userInfo.videoConvert()
@@ -176,6 +183,11 @@ class UserInfoActivity : AbstractActivity() {
                 .target(binding.ivVideo)
                 .build()
         }*/
+        return userVideoUrl.isBlank()
+    }
+
+    private fun setUserImage(): Boolean {
+        val userInfo = userInfoViewModel.getUserInfoModel()
         // 设置 Image 信息
         val userImageList = userInfo.imageListConvert()
         if (userImageList.isNotEmpty()) {
@@ -201,9 +213,7 @@ class UserInfoActivity : AbstractActivity() {
                     .post(Pair(position, userImageList))
             }
         } else binding.mlImage.gone()
-        if (userVideoUrl.isEmpty() && userImageList.isEmpty()) {
-            binding.ivMediaEmpty.visible()
-        }
+        return userImageList.isEmpty()
     }
 
     private fun loadUserInfo() {
