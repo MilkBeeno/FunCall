@@ -125,7 +125,7 @@
                     android:layout_width="19dp"
                     android:layout_height="19dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/user_info_media_locked_view_ad" />
+                    tools:src="@drawable/user_info_media_locked_view_ad" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"

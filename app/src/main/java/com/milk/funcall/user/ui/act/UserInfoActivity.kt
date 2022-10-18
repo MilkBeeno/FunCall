@@ -12,6 +12,7 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
 import com.milk.funcall.account.Account
+import com.milk.funcall.account.ui.act.RechargeActivity
 import com.milk.funcall.app.AppConfig
 import com.milk.funcall.chat.ui.act.ChatMessageActivity
 import com.milk.funcall.common.ad.AdConfig
@@ -160,11 +161,11 @@ class UserInfoActivity : AbstractActivity() {
         val userInfo = userInfoViewModel.getUserInfoModel()
         val maxTimes = if (userInfo.unlockType == 1) {
             binding.link.ivLinkType
-                .setBackgroundResource(R.drawable.user_info_media_locked_view)
+                .setImageResource(R.drawable.user_info_media_locked_view)
             AppConfig.freeUnlockTimes
         } else {
             binding.link.ivLinkType
-                .setBackgroundResource(R.drawable.user_info_media_locked_view_ad)
+                .setImageResource(R.drawable.user_info_media_locked_view_ad)
             AppConfig.viewAdUnlockTimes
         }
         binding.link.tvLinkTimes.text =
@@ -272,11 +273,24 @@ class UserInfoActivity : AbstractActivity() {
                 }
             }
             binding.link.llViewLink -> {
+                val userInfo = userInfoViewModel.getUserInfoModel()
                 if (userInfoViewModel.hasViewedVideo || userInfoViewModel.hasViewedImage) {
-                    FireBaseManager
-                        .logEvent(FirebaseKey.SHOW_CONTACT_POPUP_DOUBLE_CHECK)
-                    viewAdDialog.show()
-                    viewAdDialog.setOnConfirmRequest { loadLinkAd() }
+                    when {
+                        userInfo.viewUnlockTimes <= 0 -> {
+                            RechargeActivity.create(this)
+                        }
+                        userInfo.unlockType == 1 -> {
+                            userInfoViewModel.hasViewedLink = true
+                            binding.link.flLinkLocked.gone()
+                            updateTimes()
+                        }
+                        else -> {
+                            FireBaseManager
+                                .logEvent(FirebaseKey.SHOW_CONTACT_POPUP_DOUBLE_CHECK)
+                            viewAdDialog.show()
+                            viewAdDialog.setOnConfirmRequest { loadLinkAd() }
+                        }
+                    }
                 } else {
                     FireBaseManager
                         .logEvent(FirebaseKey.SHOW_FIRST_UNLOCK_VIDEO_OR_PICTURE)
@@ -289,33 +303,42 @@ class UserInfoActivity : AbstractActivity() {
 
     /** 加载获取联系方式激励视频广告 */
     private fun loadLinkAd() {
-        try {
-            loadingDialog.show()
-            userInfoViewModel.loadLinkAd(
-                activity = this,
-                failure = { loadingDialog.dismiss() },
-                success = {
-                    loadingDialog.dismiss()
-                    binding.link.flLinkLocked.gone()
-                    updateTimes()
-                }
-            )
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    /** 获取个人相册插页广告 */
-    private fun loadImageAd() {
         loadingDialog.show()
-        userInfoViewModel.loadImageAd(
+        userInfoViewModel.loadLinkAd(
             activity = this,
             failure = { loadingDialog.dismiss() },
             success = {
                 loadingDialog.dismiss()
+                binding.link.flLinkLocked.gone()
+                updateTimes()
+            }
+        )
+    }
+
+    /** 获取个人相册插页广告 */
+    private fun loadImageAd() {
+        val userInfo = userInfoViewModel.getUserInfoModel()
+        when {
+            userInfo.viewUnlockTimes <= 0 -> {
+                RechargeActivity.create(this)
+            }
+            userInfo.unlockType == 1 -> {
+                userInfoViewModel.hasViewedImage = true
                 binding.mlImage.gone()
                 updateTimes()
-            })
+            }
+            else -> {
+                loadingDialog.show()
+                userInfoViewModel.loadImageAd(
+                    activity = this,
+                    failure = { loadingDialog.dismiss() },
+                    success = {
+                        loadingDialog.dismiss()
+                        binding.mlImage.gone()
+                        updateTimes()
+                    })
+            }
+        }
     }
 
     private fun updateTimes() {

@@ -67,6 +67,7 @@ class UserInfoViewModel : ViewModel() {
                 UserInfoRepository.getNextUserInfoByNetwork()
             }
             userInfoModel = apiResponse.data
+            userInfoModel?.unlockType = 1
             loadUserInfoStatusFlow.emit(apiResponse.success && userInfoModel != null)
         }
     }
