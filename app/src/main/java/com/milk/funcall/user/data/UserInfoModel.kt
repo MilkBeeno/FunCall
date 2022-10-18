@@ -1,6 +1,7 @@
 package com.milk.funcall.user.data
 
 import com.google.gson.annotations.SerializedName
+import com.milk.funcall.app.AppConfig
 import com.milk.funcall.common.db.table.UserInfoEntity
 import java.io.Serializable
 
@@ -34,7 +35,7 @@ data class UserInfoModel(
     // 解锁个人资料页面类型 1->免费查看 2->播放广告查看
     var unlockType: Int = 0,
     // 解锁个人资料剩余次数
-    var viewUnlockTimes: Int = 0,
+    var viewUnlockTimes: Int = AppConfig.viewAdUnlockTimes,
 ) : UserInfoEntity(), Serializable {
 
     fun imageListConvert(): MutableList<String> {

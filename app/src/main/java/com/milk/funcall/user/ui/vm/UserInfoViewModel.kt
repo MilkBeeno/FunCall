@@ -15,13 +15,13 @@ import com.milk.funcall.user.ui.act.UserInfoActivity
 import com.milk.simple.ktx.ioScope
 import com.milk.simple.mdr.KvManger
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 
 class UserInfoViewModel : ViewModel() {
-    private var targetId: Long = 0
-    private var adIsLoading = false
-    internal val userInfoFlow = MutableStateFlow<UserInfoModel?>(UserInfoModel())
-    internal val userFollowedStatusFlow = MutableSharedFlow<Boolean?>()
+    private var userInfoModel: UserInfoModel? = null
+    internal val loadUserInfoStatusFlow = MutableSharedFlow<Boolean>()
+    internal val changeFollowedStatusFlow = MutableSharedFlow<Boolean>()
+
+    private val targetId by lazy { getUserInfoModel().targetId }
     internal var hasViewedLink: Boolean = false
         set(value) {
             if (targetId > 0)
@@ -59,38 +59,35 @@ class UserInfoViewModel : ViewModel() {
             return field
         }
 
-    internal fun getUserTotalInfo(userId: Long) {
+    internal fun loadUserInfo(userId: Long) {
         ioScope {
-            val apiResponse = if (userId > 0)
+            val apiResponse = if (userId > 0) {
                 UserInfoRepository.getUserInfoByNetwork(userId)
-            else
+            } else {
                 UserInfoRepository.getNextUserInfoByNetwork()
-            val apiResult = apiResponse.data
-            if (apiResponse.success && apiResult != null) {
-                targetId = apiResult.targetId
-                userInfoFlow.emit(apiResult)
-            } else userInfoFlow.emit(null)
+            }
+            userInfoModel = apiResponse.data
+            loadUserInfoStatusFlow.emit(apiResponse.success && userInfoModel != null)
         }
     }
+
+    internal fun getUserInfoModel() = checkNotNull(userInfoModel)
 
     internal fun changeFollowedStatus() {
         ioScope {
-            val targetId = userInfoFlow.value?.targetId ?: 0
-            val isFollowed = !(userInfoFlow.value?.targetIsFollowed ?: false)
-            val apiResponse =
-                UserInfoRepository.changeFollowedStatus(targetId, isFollowed)
+            val followedUserInfoModel = getUserInfoModel()
+            val targetId = followedUserInfoModel.targetId
+            val isFollowed = !followedUserInfoModel.targetIsFollowed
+            val apiResponse = UserInfoRepository.changeFollowedStatus(targetId, isFollowed)
             if (apiResponse.success) {
-                userInfoFlow.value?.targetIsFollowed = isFollowed
-                userFollowedStatusFlow.emit(isFollowed)
-            } else userFollowedStatusFlow.emit(null)
+                followedUserInfoModel.targetIsFollowed = isFollowed
+                changeFollowedStatusFlow.emit(true)
+            } else changeFollowedStatusFlow.emit(false)
         }
     }
 
-    internal fun loadLinkAd(
-        activity: UserInfoActivity,
-        failure: () -> Unit,
-        success: () -> Unit
-    ) {
+    /** 查看联系人激励视频广告加载 */
+    internal fun loadLinkAd(activity: UserInfoActivity, failure: () -> Unit, success: () -> Unit) {
         val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_LINK)
         if (adUnitId.isNotBlank()) {
             FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_6)
@@ -118,13 +115,8 @@ class UserInfoViewModel : ViewModel() {
         }
     }
 
-    internal fun loadImageAd(
-        activity: UserInfoActivity,
-        failure: () -> Unit,
-        success: () -> Unit
-    ) {
-        if (adIsLoading) return
-        adIsLoading = true
+    /** 查看个人照片插页广告加载 */
+    internal fun loadImageAd(activity: UserInfoActivity, failure: () -> Unit, success: () -> Unit) {
         FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_5)
         val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_IMAGE)
         var interstitial: ATInterstitial? = null
@@ -135,7 +127,6 @@ class UserInfoViewModel : ViewModel() {
                 loadFailureRequest = {
                     FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_FAILED_5, adUnitId, it)
                     failure()
-                    adIsLoading = false
                 },
                 loadSuccessRequest = {
                     interstitial?.show(activity)
@@ -148,7 +139,6 @@ class UserInfoViewModel : ViewModel() {
                 showSuccessRequest = {
                     FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_5)
                     success()
-                    adIsLoading = false
                     hasViewedImage = true
                 },
                 clickRequest = {

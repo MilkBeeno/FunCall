@@ -12,6 +12,7 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
 import com.milk.funcall.account.Account
+import com.milk.funcall.app.AppConfig
 import com.milk.funcall.chat.ui.act.ChatMessageActivity
 import com.milk.funcall.common.ad.AdConfig
 import com.milk.funcall.common.constrant.AdCodeKey
@@ -26,7 +27,6 @@ import com.milk.funcall.common.ui.manager.NoScrollGridLayoutManager
 import com.milk.funcall.databinding.ActivityUserInfoBinding
 import com.milk.funcall.login.ui.act.LoginActivity
 import com.milk.funcall.login.ui.dialog.LoadingDialog
-import com.milk.funcall.user.data.UserInfoModel
 import com.milk.funcall.user.ui.adapter.UserImageAdapter
 import com.milk.funcall.user.ui.dialog.ViewAdDialog
 import com.milk.funcall.user.ui.dialog.ViewLinkDialog
@@ -66,44 +66,41 @@ class UserInfoActivity : AbstractActivity() {
     }
 
     private fun initializeObserver() {
-        userInfoViewModel.userInfoFlow.collectLatest(this) {
-            when {
-                it != null && it.targetId > 0 -> {
-                    binding.lvLoading.gone()
-                    binding.llUserNext.visible()
-                    binding.basic.root.visible()
-                    binding.link.root.visible()
-                    binding.llMedia.visible()
-                    setUserBasic(it)
-                    setUserMedia(it)
-                    setUserFollow(it.targetIsFollowed)
-                }
-                it == null -> {
-                    showToast(string(R.string.user_info_obtain_failed))
-                    finish()
-                }
+        userInfoViewModel.loadUserInfoStatusFlow.collectLatest(this) {
+            if (it) {
+                binding.lvLoading.gone()
+                binding.llUserNext.visible()
+                binding.basic.root.visible()
+                binding.link.root.visible()
+                binding.llMedia.visible()
+                setUserBasic()
+                setUserMedia()
+                setUserFollow()
+            } else {
+                showToast(string(R.string.user_info_obtain_failed))
+                finish()
             }
         }
-        userInfoViewModel.userFollowedStatusFlow.collectLatest(this) {
+        userInfoViewModel.changeFollowedStatusFlow.collectLatest(this) {
             loadingDialog.dismiss()
-            if (it != null) {
-                setUserFollow(it)
+            if (it) {
+                setUserFollow()
                 showToast(string(R.string.common_success))
             }
         }
         LiveEventBus.get<Pair<Boolean, Long>>(EventKey.USER_FOLLOWED_STATUS_CHANGED)
             .observe(this) {
                 if (it.second == userId) {
-                    setUserFollow(it.first)
-                    userInfoViewModel.userInfoFlow.value?.targetIsFollowed = it.first
+                    userInfoViewModel.getUserInfoModel().targetIsFollowed = it.first
+                    setUserFollow()
                 }
             }
     }
 
-    private fun setUserFollow(isFollowed: Boolean) {
+    private fun setUserFollow() {
         binding.basic.llFollow.visible()
         val params = binding.basic.ivFollow.layoutParams as LinearLayoutCompat.LayoutParams
-        if (isFollowed) {
+        if (userInfoViewModel.getUserInfoModel().targetIsFollowed) {
             binding.basic.tvFollow.gone()
             binding.basic.ivFollow.setImageResource(R.drawable.user_info_followed)
             binding.basic.llFollow.setBackgroundResource(R.drawable.shape_user_info_followed)
@@ -121,7 +118,8 @@ class UserInfoActivity : AbstractActivity() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun setUserBasic(userInfo: UserInfoModel) {
+    private fun setUserBasic() {
+        val userInfo = userInfoViewModel.getUserInfoModel()
         ImageLoader.Builder()
             .loadAvatar(userInfo.targetAvatar, userInfo.targetGender)
             .target(binding.basic.ivUserAvatar)
@@ -136,6 +134,22 @@ class UserInfoActivity : AbstractActivity() {
                 && adUnitId.isNotBlank()
                 && AdConfig.adCancelType == 0
             ) {
+                val maxTimes = if (userInfo.unlockType == 1) {
+                    binding.link.ivLinkType
+                        .setBackgroundResource(R.drawable.user_info_media_locked_view)
+                    AppConfig.freeUnlockTimes
+                } else {
+                    binding.link.ivLinkType
+                        .setBackgroundResource(R.drawable.user_info_media_locked_view_ad)
+                    AppConfig.viewAdUnlockTimes
+                }
+                binding.link.tvLinkTimes.text =
+                    "(".plus(string(R.string.user_info_unlock_times))
+                        .plus(" ")
+                        .plus(userInfo.viewUnlockTimes)
+                        .plus("/")
+                        .plus(maxTimes)
+                        .plus(")")
                 binding.link.flLinkLocked.visible()
             } else {
                 binding.link.flLinkLocked.gone()
@@ -150,7 +164,8 @@ class UserInfoActivity : AbstractActivity() {
         }
     }
 
-    private fun setUserMedia(userInfo: UserInfoModel) {
+    private fun setUserMedia() {
+        val userInfo = userInfoViewModel.getUserInfoModel()
         // 设置 Video 信息
         val userVideoUrl = userInfo.videoConvert()
         /*if (userVideoUrl.isNotEmpty()) {
@@ -193,7 +208,7 @@ class UserInfoActivity : AbstractActivity() {
 
     private fun loadUserInfo() {
         binding.lvLoading.visible()
-        userInfoViewModel.getUserTotalInfo(userId)
+        userInfoViewModel.loadUserInfo(userId)
     }
 
     override fun onMultipleClick(view: View) {
@@ -222,7 +237,7 @@ class UserInfoActivity : AbstractActivity() {
                 finish()
             }
             binding.flVideo -> {
-                userInfoViewModel.userInfoFlow.value?.let {
+                userInfoViewModel.getUserInfoModel().let {
                     VideoMediaActivity
                         .create(this, it.videoConvert(), it.targetId, it.targetIsBlacked)
                 }
@@ -231,7 +246,7 @@ class UserInfoActivity : AbstractActivity() {
                 FireBaseManager
                     .logEvent(FirebaseKey.CLICK_MESSAGE_ON_PROFILE_PAGE)
                 if (Account.userLogged) {
-                    userInfoViewModel.userInfoFlow.value?.let {
+                    userInfoViewModel.getUserInfoModel().let {
                         if (it.targetIsBlacked) return
                         ChatMessageActivity.create(this, it.targetId)
                     }

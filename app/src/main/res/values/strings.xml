@@ -116,6 +116,7 @@
     <string name="user_info_not_bio">No profile yet ~</string>
     <string name="user_info_not_link">Social platform homepage link has not been uploaded yet ~</string>
     <string name="user_info_obtain_failed">Failed to get user information.</string>
+    <string name="user_info_unlock_times">Free Times</string>
     <string name="user_info_contact_details">How to contact me :</string>
     <string name="user_info_copy_success">Contact details copy successful.</string>
     <string name="user_info_media_locked">Information is locked</string>

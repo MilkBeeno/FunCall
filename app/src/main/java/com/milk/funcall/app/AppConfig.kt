@@ -3,7 +3,6 @@ package com.milk.funcall.app
 import com.milk.funcall.BuildConfig
 import com.milk.funcall.common.constrant.AppConfigKey
 import com.milk.simple.ktx.ioScope
-import com.milk.simple.ktx.safeToInt
 import com.milk.simple.mdr.KvManger
 
 object AppConfig {
@@ -19,7 +18,7 @@ object AppConfig {
         }
 
     /** 观看广告解锁个人资料信息免费次数 */
-    internal var viewAdUnlockTimes: Int = 3
+    internal var viewAdUnlockTimes: Int = 0
         set(value) {
             KvManger.put(AppConfigKey.VIEW_AD_UNLOCK_TIMES, value)
             field = value
@@ -50,13 +49,13 @@ object AppConfig {
             val apiResult = apiResponse.data
             if (apiResponse.success && apiResult != null) {
                 apiResult[AppConfigKey.FREE_AD_TYPE]?.let {
-                    freeAdType = it.safeToInt()
+                    freeAdType = it.toInt() // 强制转换可能会崩溃
                 }
                 apiResult[AppConfigKey.VIEW_AD_UNLOCK_TIMES]?.let {
-                    viewAdUnlockTimes = it.safeToInt()
+                    viewAdUnlockTimes = it.toInt() // 强制转换可能会崩溃
                 }
                 apiResult[AppConfigKey.FREE_UNLOCK_TIMES]?.let {
-                    freeUnlockTimes = it.safeToInt()
+                    freeUnlockTimes = it.toInt() // 强制转换可能会崩溃
                 }
             }
         }
