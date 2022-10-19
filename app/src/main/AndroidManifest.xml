@@ -36,7 +36,16 @@
         android:theme="@style/Theme.FunCall"
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute">
+        <!-- 后台私聊服务 -->
         <service android:name=".app.MainService" />
+        <!-- Firebase 推送服务 -->
+        <service
+            android:name=".common.firebase.FCMMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         <!-- Android 9 以上适配 Apache的兼容 -->
         <uses-library

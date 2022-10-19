@@ -14,6 +14,7 @@ import com.milk.funcall.account.Account
 import com.milk.funcall.account.ui.frag.MineFragment
 import com.milk.funcall.app.MainService
 import com.milk.funcall.app.ui.MainViewModel
+import com.milk.funcall.app.ui.dialog.NotificationDialog
 import com.milk.funcall.app.ui.view.BottomNavigation
 import com.milk.funcall.chat.repo.MessageRepository
 import com.milk.funcall.chat.ui.frag.ConversationFragment
@@ -22,12 +23,15 @@ import com.milk.funcall.common.ad.TopOnManager
 import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.constrant.FirebaseKey
+import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.ui.AbstractActivity
+import com.milk.funcall.common.util.NotificationUtil
 import com.milk.funcall.databinding.ActivityMainBinding
 import com.milk.funcall.user.ui.frag.HomeFragment
 import com.milk.simple.ktx.*
 import com.milk.simple.log.Logger
+import com.milk.simple.mdr.KvManger
 import java.util.*
 
 class MainActivity : AbstractActivity() {
@@ -48,6 +52,7 @@ class MainActivity : AbstractActivity() {
         initializeView()
         initializeObserver()
         initializeService()
+        setNotificationConfig()
     }
 
     private fun initializeAdView() {
@@ -155,6 +160,22 @@ class MainActivity : AbstractActivity() {
                 timer?.cancel()
                 connection?.let { unbindService(it) }
             }
+        }
+    }
+
+    private fun setNotificationConfig() {
+        if (!NotificationUtil.isEnabled(this)) {
+            val alreadySet = KvManger.getBoolean(KvKey.ALREADY_SET_NOTIFICATION)
+            NotificationDialog(this) {
+                if (alreadySet) {
+                    NotificationUtil.toSystemSetting(this)
+                } else {
+                    KvManger.put(KvKey.ALREADY_SET_NOTIFICATION, true)
+                    NotificationUtil.getPermission(this)
+                }
+            }.show()
+        } else {
+            KvManger.put(KvKey.ALREADY_SET_NOTIFICATION, true)
         }
     }
 

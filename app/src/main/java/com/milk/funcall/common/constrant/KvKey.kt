@@ -69,4 +69,7 @@ object KvKey {
 
     /** 是否订阅了观看他人信息免费广告 */
     const val USER_SUBSCRIBE_TO_VIEW_OTHER_FREE = "USER_SUBSCRIBE_TO_VIEW_OTHER_FREE"
+
+    /** 是否已经设置过通知权限 */
+    const val ALREADY_SET_NOTIFICATION = "ALREADY_SET_NOTIFICATION"
 }
