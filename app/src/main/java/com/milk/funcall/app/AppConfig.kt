@@ -3,6 +3,7 @@ package com.milk.funcall.app
 import com.milk.funcall.BuildConfig
 import com.milk.funcall.common.constrant.AppConfigKey
 import com.milk.simple.ktx.ioScope
+import com.milk.simple.log.Logger
 import com.milk.simple.mdr.KvManger
 
 object AppConfig {
@@ -48,14 +49,19 @@ object AppConfig {
             )
             val apiResult = apiResponse.data
             if (apiResponse.success && apiResult != null) {
-                apiResult[AppConfigKey.FREE_AD_TYPE]?.let {
-                    freeAdType = it.toInt() // 强制转换可能会崩溃
-                }
-                apiResult[AppConfigKey.VIEW_AD_UNLOCK_TIMES]?.let {
-                    viewAdUnlockTimes = it.toInt() // 强制转换可能会崩溃
-                }
-                apiResult[AppConfigKey.FREE_UNLOCK_TIMES]?.let {
-                    freeUnlockTimes = it.toInt() // 强制转换可能会崩溃
+                try {
+                    apiResult[AppConfigKey.FREE_AD_TYPE]?.let {
+                        freeAdType = it.toInt()
+                    }
+                    apiResult[AppConfigKey.VIEW_AD_UNLOCK_TIMES]?.let {
+                        viewAdUnlockTimes = it.toInt()
+                    }
+                    apiResult[AppConfigKey.FREE_UNLOCK_TIMES]?.let {
+                        freeUnlockTimes = it.toInt()
+                    }
+                } catch (e: NumberFormatException) {
+                    Logger.d("类型转换错误信息:${e.message}", "AppConfig")
+                    e.printStackTrace()
                 }
             }
         }

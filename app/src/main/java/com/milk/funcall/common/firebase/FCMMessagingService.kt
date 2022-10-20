@@ -16,13 +16,15 @@ class FCMMessagingService : FirebaseMessagingService() {
         if (notification != null && notification.body != null) {
             sendNotification(
                 BaseApplication.instance,
+                message.data["userId"].toString(),
                 notification.title.toString(),
                 notification.body.toString(),
-                notification.icon.toString(),
+                notification.imageUrl?.path.toString(),
             )
         } else {
             sendNotification(
                 BaseApplication.instance,
+                message.data["userId"].toString(),
                 message.data["title"].toString(),
                 message.data["body"].toString(),
                 message.data["icon"].toString()
@@ -32,24 +34,26 @@ class FCMMessagingService : FirebaseMessagingService() {
 
     private fun sendNotification(
         context: Context,
+        userId: String,
         messageTitle: String,
         messageBody: String,
         imageUrl: String
     ) {
         Logger.d(
-            "MessageTitle=$messageTitle,MessageBody=$messageBody",
+            "UserId=$userId,MessageTitle=$messageTitle," +
+                "MessageBody=$messageBody,ImageUrl=$imageUrl",
             "FCMMessagingService"
         )
-        // todo hlc 参数配置问题
         ioScope {
             val bitmap = BitmapUtil.obtain(imageUrl)
             if (bitmap != null) {
-                NotificationUtil.show(context, 12345, messageTitle, messageBody, bitmap)
+                NotificationUtil.show(context, userId, messageTitle, messageBody, bitmap)
             }
         }
     }
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
+        Logger.d("当前存在的token是:$token", "FCMMessagingService")
     }
 }

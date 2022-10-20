@@ -13,6 +13,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.milk.funcall.R
 import com.milk.funcall.user.ui.act.UserInfoActivity
+import com.milk.simple.log.Logger
 
 object NotificationUtil {
     private const val CHANNEL_ID = "Funcall100"
@@ -42,7 +43,7 @@ object NotificationUtil {
     @SuppressLint("UnspecifiedImmutableFlag", "InlinedApi")
     internal fun show(
         context: Context,
-        userId: Long,
+        userId: String,
         title: String,
         content: String,
         avatar: Bitmap
@@ -50,7 +51,13 @@ object NotificationUtil {
         val finalChannelId = createChannel(context, CHANNEL_ID, CHANNEL_NAME)
         val intent = Intent(context, UserInfoActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-        intent.putExtra("USER_ID", userId)
+        try {
+            intent.putExtra("USER_ID", userId.toLong())
+        } catch (e: NumberFormatException) {
+            Logger.d("类型转换错误信息:${e.message}", "NotificationUtil")
+            e.printStackTrace()
+        }
+
         val flag = PendingIntent.FLAG_UPDATE_CURRENT
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, flag)
         val notification = NotificationCompat.Builder(context, finalChannelId)
