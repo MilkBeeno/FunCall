@@ -19,6 +19,7 @@
     <string name="common_video">Video</string>
     <string name="common_picture">Photos</string>
     <string name="common_success">Success</string>
+    <string name="common_successful">Successful</string>
     <string name="common_place_to_login_first">Please log in to operate.</string>
     <string name="common_follow">Follow</string>
     <string name="common_un_follow">UnFollow</string>
