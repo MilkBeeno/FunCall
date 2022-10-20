@@ -19,7 +19,7 @@ import com.milk.funcall.user.type.ItemAdType
 import com.milk.simple.ktx.ioScope
 
 /** 原生广告 分为 google原生  Facebook 原生， is原生 */
-class TopAdView : FrameLayout {
+class ListAdView : FrameLayout {
 
     constructor(ctx: Context) : super(ctx)
     constructor(ctx: Context, attrs: AttributeSet) : super(ctx, attrs)

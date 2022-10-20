@@ -5,7 +5,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.DiffUtil
 import com.milk.funcall.R
-import com.milk.funcall.common.ad.ui.TopAdView
+import com.milk.funcall.common.ad.ui.ListAdView
 import com.milk.funcall.common.media.loader.ImageLoader
 import com.milk.funcall.common.paging.AbstractPagingAdapter
 import com.milk.funcall.common.paging.FooterLoadStateAdapter
@@ -53,13 +53,13 @@ class HomeAdapter : AbstractPagingAdapter<UserSimpleInfoModel>(
     private fun setAd(holder: PagingViewHolder, item: UserSimpleInfoModel) {
         when (item.itemAdType) {
             ItemAdType.FirstAd ->
-                holder.getView<TopAdView>(R.id.homeAdLayout)
+                holder.getView<ListAdView>(R.id.homeAdLayout)
                     .showTopOnNativeAd(itemAdType = item.itemAdType)
             ItemAdType.SecondAd ->
-                holder.getView<TopAdView>(R.id.homeAdLayout)
+                holder.getView<ListAdView>(R.id.homeAdLayout)
                     .showTopOnNativeAd(itemAdType = item.itemAdType)
             ItemAdType.ThirdAd ->
-                holder.getView<TopAdView>(R.id.homeAdLayout)
+                holder.getView<ListAdView>(R.id.homeAdLayout)
                     .showTopOnNativeAd(itemAdType = item.itemAdType)
             else -> Unit
         }
