@@ -10,7 +10,7 @@ import com.milk.funcall.common.db.table.ConversationWithUserInfoEntity
 import com.milk.funcall.common.media.loader.ImageLoader
 import com.milk.funcall.common.paging.AbstractPagingAdapter
 import com.milk.funcall.common.paging.PagingViewHolder
-import com.milk.funcall.user.type.Gender
+import com.milk.funcall.user.status.Gender
 import com.milk.simple.ktx.color
 
 class ConversationAdapter : AbstractPagingAdapter<ConversationWithUserInfoEntity>(

@@ -2,7 +2,7 @@ package com.milk.funcall.account
 
 import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.user.data.UserInfoModel
-import com.milk.funcall.user.type.Gender
+import com.milk.funcall.user.status.Gender
 import com.milk.simple.ktx.ioScope
 import com.milk.simple.mdr.KvManger
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -8,7 +8,7 @@ import com.milk.funcall.common.db.table.UserInfoEntity
 import com.milk.funcall.common.media.loader.ImageLoader
 import com.milk.funcall.common.paging.AbstractPagingAdapter
 import com.milk.funcall.common.paging.PagingViewHolder
-import com.milk.funcall.user.type.OnlineState
+import com.milk.funcall.user.status.OnlineState
 import com.milk.simple.ktx.color
 
 class FansOrFollowsAdapter : AbstractPagingAdapter<UserInfoEntity>(

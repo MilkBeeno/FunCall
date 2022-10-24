@@ -1,7 +1,7 @@
 package com.milk.funcall.user.ui.config
 
 import com.milk.funcall.R
-import com.milk.funcall.user.type.Gender
+import com.milk.funcall.user.status.Gender
 
 class AvatarImage {
     fun obtain(gender: String): Int {

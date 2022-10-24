@@ -30,7 +30,7 @@ import com.milk.funcall.databinding.ActivityUserInfoBinding
 import com.milk.funcall.login.ui.act.LoginActivity
 import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.user.data.UserInfoModel
-import com.milk.funcall.user.type.UnlockType
+import com.milk.funcall.user.status.UnlockType
 import com.milk.funcall.user.ui.adapter.UserImageAdapter
 import com.milk.funcall.user.ui.dialog.ViewAdDialog
 import com.milk.funcall.user.ui.dialog.ViewLinkDialog

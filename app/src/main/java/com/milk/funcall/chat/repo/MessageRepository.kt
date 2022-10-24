@@ -3,8 +3,8 @@ package com.milk.funcall.chat.repo
 import androidx.paging.PagingSource
 import com.milk.funcall.account.Account
 import com.milk.funcall.chat.api.ChatApiService
-import com.milk.funcall.chat.ui.type.ChatMessageType
-import com.milk.funcall.chat.ui.type.ChatMsgSendStatus
+import com.milk.funcall.chat.status.ChatMessageType
+import com.milk.funcall.chat.status.ChatMsgSendStatus
 import com.milk.funcall.common.db.DataBaseManager
 import com.milk.funcall.common.db.table.ChatMessageEntity
 import com.milk.funcall.common.db.table.ConversationWithUserInfoEntity

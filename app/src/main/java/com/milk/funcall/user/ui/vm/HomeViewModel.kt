@@ -9,7 +9,7 @@ import com.milk.funcall.common.paging.NetworkPagingSource
 import com.milk.funcall.common.response.ApiPagingResponse
 import com.milk.funcall.user.data.UserSimpleInfoModel
 import com.milk.funcall.user.repo.HomeRepository
-import com.milk.funcall.user.type.ItemAdType
+import com.milk.funcall.user.status.ItemAdType
 
 class HomeViewModel : ViewModel() {
     private val homeRepository by lazy { HomeRepository() }

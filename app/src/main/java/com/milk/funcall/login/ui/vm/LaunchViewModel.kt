@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import com.anythink.interstitial.api.ATInterstitial
 import com.milk.funcall.common.ad.AdConfig
 import com.milk.funcall.common.ad.AdManager
-import com.milk.funcall.common.ad.type.AdLoadType
+import com.milk.funcall.common.ad.AdLoadType
 import com.milk.funcall.common.author.AuthType
 import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.constrant.FirebaseKey

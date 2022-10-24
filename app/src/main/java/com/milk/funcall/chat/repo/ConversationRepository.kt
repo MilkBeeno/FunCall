@@ -1,7 +1,7 @@
 package com.milk.funcall.chat.repo
 
 import com.milk.funcall.account.Account
-import com.milk.funcall.chat.ui.type.ChatMsgSendStatus
+import com.milk.funcall.chat.status.ChatMsgSendStatus
 import com.milk.funcall.common.db.DataBaseManager
 import com.milk.funcall.common.db.table.ConversationEntity
 import com.milk.simple.ktx.safeToLong

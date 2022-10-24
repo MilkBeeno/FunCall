@@ -11,7 +11,7 @@
         android:layout_height="45dp"
         android:background="@drawable/shape_home_top_shadow" />
 
-    <com.milk.funcall.common.ad.view.ListAdView
+    <com.milk.funcall.user.ui.view.ListAdView
         android:id="@+id/homeAdLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

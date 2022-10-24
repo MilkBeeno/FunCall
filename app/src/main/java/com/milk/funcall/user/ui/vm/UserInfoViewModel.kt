@@ -10,7 +10,7 @@ import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.user.data.UserInfoModel
 import com.milk.funcall.user.repo.UserInfoRepository
-import com.milk.funcall.user.type.UnlockType
+import com.milk.funcall.user.status.UnlockType
 import com.milk.funcall.user.ui.act.UserInfoActivity
 import com.milk.simple.ktx.ioScope
 import kotlinx.coroutines.flow.MutableSharedFlow

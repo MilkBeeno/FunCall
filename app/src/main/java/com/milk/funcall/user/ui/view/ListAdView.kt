@@ -1,4 +1,4 @@
-package com.milk.funcall.common.ad.view
+package com.milk.funcall.user.ui.view
 
 import android.content.Context
 import android.util.AttributeSet
@@ -15,7 +15,7 @@ import com.milk.funcall.common.ad.AdManager
 import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.common.firebase.FireBaseManager
-import com.milk.funcall.user.type.ItemAdType
+import com.milk.funcall.user.status.ItemAdType
 import com.milk.simple.ktx.ioScope
 
 /** 原生广告 分为 google原生  Facebook 原生， is原生 */

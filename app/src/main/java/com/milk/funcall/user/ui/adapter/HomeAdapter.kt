@@ -5,15 +5,15 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.DiffUtil
 import com.milk.funcall.R
-import com.milk.funcall.common.ad.view.ListAdView
+import com.milk.funcall.user.ui.view.ListAdView
 import com.milk.funcall.common.media.loader.ImageLoader
 import com.milk.funcall.common.paging.AbstractPagingAdapter
 import com.milk.funcall.common.paging.FooterLoadStateAdapter
 import com.milk.funcall.common.paging.MultiTypeDelegate
 import com.milk.funcall.common.paging.PagingViewHolder
 import com.milk.funcall.user.data.UserSimpleInfoModel
-import com.milk.funcall.user.type.ItemAdType
-import com.milk.funcall.user.type.OnlineState
+import com.milk.funcall.user.status.ItemAdType
+import com.milk.funcall.user.status.OnlineState
 import com.milk.simple.ktx.*
 
 class HomeAdapter : AbstractPagingAdapter<UserSimpleInfoModel>(

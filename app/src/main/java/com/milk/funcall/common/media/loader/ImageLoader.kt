@@ -10,7 +10,7 @@ import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
 import com.milk.funcall.R
 import com.milk.funcall.account.Account
-import com.milk.funcall.user.type.Gender
+import com.milk.funcall.user.status.Gender
 import okhttp3.HttpUrl
 import java.io.File
 import java.nio.ByteBuffer

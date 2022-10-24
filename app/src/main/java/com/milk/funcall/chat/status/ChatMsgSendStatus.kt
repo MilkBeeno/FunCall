@@ -1,4 +1,4 @@
-package com.milk.funcall.chat.ui.type
+package com.milk.funcall.chat.status
 
 /** 私聊消息发送状态 */
 enum class ChatMsgSendStatus(val value: Int) {

@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
 import com.milk.funcall.R
-import com.milk.funcall.user.type.Gender
+import com.milk.funcall.user.status.Gender
 
 class GenderImageView : AppCompatImageView {
     constructor(ctx: Context) : super(ctx)
