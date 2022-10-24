@@ -1,4 +1,4 @@
-package com.milk.funcall.common.ad.ui
+package com.milk.funcall.common.ad.view
 
 import android.content.Context
 import android.text.TextUtils
@@ -13,7 +13,7 @@ import com.anythink.nativead.api.ATNativePrepareInfo
 import com.anythink.nativead.api.NativeAd
 import com.milk.funcall.R
 
-class TopNativeView : FrameLayout {
+class ListNativeView : FrameLayout {
     private var mClickView: MutableList<View> = ArrayList()
     internal var prepareInfo: ATNativePrepareInfo? = null
 

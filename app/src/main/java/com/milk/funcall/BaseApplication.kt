@@ -1,7 +1,7 @@
 package com.milk.funcall
 
 import android.app.Application
-import com.milk.funcall.common.ad.TopOnManager
+import com.milk.funcall.common.ad.AdManager
 import com.milk.funcall.common.author.FacebookAuth
 import com.milk.funcall.common.db.DataBaseManager
 import com.milk.funcall.common.media.loader.LoaderConfig
@@ -30,7 +30,7 @@ class BaseApplication : Application() {
             ApiErrorHandler.initialize(instance)
             DataBaseManager.initialize(instance)
             FacebookAuth.initializeSdk(instance)
-            TopOnManager.initialize(instance)
+            AdManager.initialize(instance)
             FireBaseManager.initialize(instance)
         }
     }

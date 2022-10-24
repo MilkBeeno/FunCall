@@ -19,7 +19,7 @@ import com.milk.funcall.app.ui.view.BottomNavigation
 import com.milk.funcall.chat.repo.MessageRepository
 import com.milk.funcall.chat.ui.frag.ConversationFragment
 import com.milk.funcall.common.ad.AdConfig
-import com.milk.funcall.common.ad.TopOnManager
+import com.milk.funcall.common.ad.AdManager
 import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.constrant.FirebaseKey
@@ -60,7 +60,7 @@ class MainActivity : AbstractActivity() {
             val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.MAIN_HOME_BOTTOM)
             if (adUnitId.isNotBlank() && AdConfig.adCancelType != 2) {
                 FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_4)
-                val adView = TopOnManager.loadBannerAd(
+                val adView = AdManager.loadBannerAd(
                     activity = this,
                     adUnitId = adUnitId,
                     loadFailureRequest = {

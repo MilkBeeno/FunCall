@@ -15,7 +15,7 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import com.milk.funcall.R
 import com.milk.funcall.app.ui.act.MainActivity
-import com.milk.funcall.common.author.AuthLoginManager
+import com.milk.funcall.common.author.LoginManager
 import com.milk.funcall.common.author.AuthType
 import com.milk.funcall.common.author.Device
 import com.milk.funcall.common.constrant.FirebaseKey
@@ -33,7 +33,7 @@ import com.milk.simple.ktx.*
 class LoginActivity : AbstractActivity() {
     private val binding by lazy { ActivityLoginBinding.inflate(layoutInflater) }
     private val loginViewModel by viewModels<LoginViewModel>()
-    private val authLoginManager by lazy { AuthLoginManager(this) }
+    private val authLoginManager by lazy { LoginManager(this) }
     private val loadingDialog by lazy { LoadingDialog(this, string(R.string.common_loading)) }
     private val maxClientDialog by lazy { MaxClientDialog(this) }
     private var isNotAuthorizing: Boolean = true

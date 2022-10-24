@@ -1,4 +1,4 @@
-package com.milk.funcall.common.ad.ui
+package com.milk.funcall.common.ad.view
 
 import android.content.Context
 import android.util.AttributeSet
@@ -11,7 +11,7 @@ import com.anythink.nativead.api.ATNativeDislikeListener
 import com.anythink.nativead.api.ATNativeEventListener
 import com.anythink.nativead.api.NativeAd
 import com.milk.funcall.common.ad.AdConfig
-import com.milk.funcall.common.ad.TopOnManager
+import com.milk.funcall.common.ad.AdManager
 import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.common.firebase.FireBaseManager
@@ -87,7 +87,7 @@ class ListAdView : FrameLayout {
                         }
                     }
                 })
-                val selfRender = TopNativeView(context)
+                val selfRender = ListNativeView(context)
                 selfRender.createView(it)
                 try {
                     it.renderAdContainer(anyThinkNativeAdView, selfRender)
@@ -126,7 +126,7 @@ class ListAdView : FrameLayout {
             FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_1)
             val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_FIRST)
             if (adUnitId.isNotBlank()) {
-                TopOnManager.loadNativeAd(
+                AdManager.loadNativeAd(
                     activity = activity,
                     adUnitId = adUnitId,
                     loadFailureRequest = {
@@ -148,7 +148,7 @@ class ListAdView : FrameLayout {
             val adUnitId =
                 AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_SECOND)
             if (adUnitId.isNotBlank()) {
-                TopOnManager.loadNativeAd(
+                AdManager.loadNativeAd(
                     activity = activity,
                     adUnitId = adUnitId,
                     loadFailureRequest = {
@@ -170,7 +170,7 @@ class ListAdView : FrameLayout {
             val adUnitId =
                 AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_THIRD)
             if (adUnitId.isNotBlank()) {
-                TopOnManager.loadNativeAd(
+                AdManager.loadNativeAd(
                     activity = activity,
                     adUnitId = adUnitId,
                     loadFailureRequest = {

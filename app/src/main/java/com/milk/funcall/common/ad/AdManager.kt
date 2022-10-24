@@ -20,7 +20,7 @@ import com.milk.simple.log.Logger
 /**
  * TopOn 广告聚合平台管理、目前只添加 Facebook 广告接入
  */
-object TopOnManager {
+object AdManager {
     private val atInitConfigs = arrayListOf<ATInitConfig>()
 
     internal fun initialize(application: Application) {

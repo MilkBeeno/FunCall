@@ -2,9 +2,10 @@ package com.milk.funcall.user.api
 
 import com.milk.funcall.common.response.ApiResponse
 import com.milk.funcall.user.data.UserInfoModel
+import com.milk.funcall.user.data.UserUnlockModel
 import retrofit2.http.*
 
-interface UserTotalInfoApiService {
+interface UserInfoApiService {
     @GET("/funcall/getUser")
     suspend fun getUserInfoByNetwork(
         @Query("userId") userId: Long
@@ -26,4 +27,11 @@ interface UserTotalInfoApiService {
     suspend fun blackUser(
         @Query("blackedUserId") targetId: Long
     ): ApiResponse<Any>
+
+    @GET("/funcall/getUnlockInfo")
+    suspend fun unlockInfo(
+        @Query("deviceUniqueCode") deviceUniqueCode: String,
+        @Query("limitUnlock") limitUnlock: Int,
+        @Query("unlockUserId") unlockUserId: Long,
+    ): ApiResponse<UserUnlockModel>
 }

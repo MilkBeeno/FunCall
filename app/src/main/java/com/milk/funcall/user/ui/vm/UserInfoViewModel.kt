@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import com.anythink.interstitial.api.ATInterstitial
 import com.milk.funcall.common.ad.AdConfig
-import com.milk.funcall.common.ad.TopOnManager
+import com.milk.funcall.common.ad.AdManager
 import com.milk.funcall.common.author.Device
 import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.constrant.FirebaseKey
@@ -101,7 +101,7 @@ class UserInfoViewModel : ViewModel() {
         val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_LINK)
         if (adUnitId.isNotBlank()) {
             FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_6)
-            TopOnManager.loadIncentiveVideoAd(
+            AdManager.loadIncentiveVideoAd(
                 activity = activity,
                 adUnitId = adUnitId,
                 loadFailureRequest = {
@@ -132,7 +132,7 @@ class UserInfoViewModel : ViewModel() {
         val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_IMAGE)
         var interstitial: ATInterstitial? = null
         if (adUnitId.isNotBlank()) {
-            interstitial = TopOnManager.loadInterstitial(
+            interstitial = AdManager.loadInterstitial(
                 activity = activity,
                 adUnitId = adUnitId,
                 loadFailureRequest = {

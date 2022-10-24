@@ -6,7 +6,7 @@ import com.milk.funcall.R
 import com.milk.simple.ktx.showToast
 import com.milk.simple.ktx.string
 
-class AuthLoginManager(activity: FragmentActivity) {
+class LoginManager(activity: FragmentActivity) {
     var success: ((AuthType, String) -> Unit)? = null
     var cancel: (() -> Unit)? = null
     var failed: (() -> Unit)? = null

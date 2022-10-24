@@ -7,8 +7,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import com.anythink.interstitial.api.ATInterstitial
 import com.milk.funcall.common.ad.AdConfig
-import com.milk.funcall.common.ad.TopOnManager
-import com.milk.funcall.common.ad.ui.AdLoadType
+import com.milk.funcall.common.ad.AdManager
+import com.milk.funcall.common.ad.type.AdLoadType
 import com.milk.funcall.common.author.AuthType
 import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.constrant.FirebaseKey
@@ -49,7 +49,7 @@ class LaunchViewModel : ViewModel() {
         val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.APP_START)
         if (adUnitId.isNotBlank() && AdConfig.adCancelType != 2) {
             FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST)
-            interstitial = TopOnManager.loadInterstitial(
+            interstitial = AdManager.loadInterstitial(
                 activity = activity,
                 adUnitId = adUnitId,
                 loadFailureRequest = {
