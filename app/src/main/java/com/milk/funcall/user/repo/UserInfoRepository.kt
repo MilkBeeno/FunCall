@@ -1,6 +1,7 @@
 package com.milk.funcall.user.repo
 
 import com.milk.funcall.account.Account
+import com.milk.funcall.app.AppConfig
 import com.milk.funcall.common.db.DataBaseManager
 import com.milk.funcall.common.db.table.UserInfoEntity
 import com.milk.funcall.common.net.retrofit
@@ -16,7 +17,7 @@ object UserInfoRepository {
 
     suspend fun getUserInfoByNetwork(userId: Long) = retrofit {
         val apiResponse =
-            ApiService.userTotalInfApiService.getUserInfoByNetwork(userId)
+            ApiService.userInfoApiService.getUserInfoByNetwork(userId)
         val apiResult = apiResponse.data
         if (apiResponse.success && apiResult != null && Account.userLogged)
             saveUserInfoToDB(apiResult)
@@ -25,7 +26,7 @@ object UserInfoRepository {
 
     suspend fun getNextUserInfoByNetwork() = retrofit {
         val apiResponse =
-            ApiService.userTotalInfApiService.getNextUserInfoByNetwork(Account.userGender)
+            ApiService.userInfoApiService.getNextUserInfoByNetwork(Account.userGender)
         val apiResult = apiResponse.data
         if (apiResponse.success && apiResult != null && Account.userLogged)
             saveUserInfoToDB(apiResult)
@@ -47,9 +48,19 @@ object UserInfoRepository {
         DataBaseManager.DB.userInfoTableDao().insert(userInfoEntity)
     }
 
+    internal suspend fun getUnlockInfo(deviceNumber: String, targetId: Long) =
+        retrofit {
+            ApiService.userInfoApiService.getUnlockInfo(
+                deviceNumber,
+                AppConfig.freeAdType,
+                AppConfig.viewAdUnlockTimes,
+                targetId
+            )
+        }
+
     suspend fun changeFollowedStatus(targetId: Long, isFollowed: Boolean) = retrofit {
         val apiResponse =
-            ApiService.userTotalInfApiService.changeFollowedStatus(targetId, isFollowed)
+            ApiService.userInfoApiService.changeFollowedStatus(targetId, isFollowed)
         if (apiResponse.success) {
             // 更新本地关注数量
             val lastFollows = Account.userFollows
@@ -64,6 +75,11 @@ object UserInfoRepository {
     }
 
     suspend fun blackUser(targetId: Long) = retrofit {
-        ApiService.userTotalInfApiService.blackUser(targetId)
+        ApiService.userInfoApiService.blackUser(targetId)
     }
+
+    suspend fun changeUnlockStatus(deviceId: String, unlockType: Int, unlockUserId: Long) =
+        retrofit {
+            ApiService.userInfoApiService.changeUnlockStatus(deviceId, unlockType, unlockUserId)
+        }
 }

@@ -29,7 +29,7 @@ class MediaLockedLayout : FrameLayout {
     }
 
     internal fun setMediaTimes(userInfo: UserInfoModel) {
-        val maxTimes = if (userInfo.unlockType == 1) {
+        val maxTimes = if (userInfo.unlockMethod == 1) {
             binding.ivMediaType
                 .setImageResource(R.drawable.user_info_media_locked_view)
             AppConfig.freeUnlockTimes
@@ -41,7 +41,7 @@ class MediaLockedLayout : FrameLayout {
         binding.tvMediaTimes.text =
             "(".plus(context.string(R.string.user_info_unlock_times))
                 .plus(" ")
-                .plus(userInfo.viewUnlockTimes)
+                .plus(userInfo.remainUnlockCount)
                 .plus("/")
                 .plus(maxTimes)
                 .plus(")")

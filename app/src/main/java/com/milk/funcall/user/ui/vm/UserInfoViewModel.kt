@@ -1,83 +1,77 @@
 package com.milk.funcall.user.ui.vm
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import com.anythink.interstitial.api.ATInterstitial
+import com.milk.funcall.account.Account
 import com.milk.funcall.common.ad.AdConfig
 import com.milk.funcall.common.ad.AdManager
-import com.milk.funcall.common.author.Device
 import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.constrant.FirebaseKey
-import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.user.data.UserInfoModel
 import com.milk.funcall.user.repo.UserInfoRepository
+import com.milk.funcall.user.type.UnlockType
 import com.milk.funcall.user.ui.act.UserInfoActivity
 import com.milk.simple.ktx.ioScope
-import com.milk.simple.mdr.KvManger
 import kotlinx.coroutines.flow.MutableSharedFlow
 
 class UserInfoViewModel : ViewModel() {
     private var userInfoModel: UserInfoModel? = null
     internal val loadUserInfoStatusFlow = MutableSharedFlow<Boolean>()
     internal val changeFollowedStatusFlow = MutableSharedFlow<Boolean>()
+    internal val changeUnlockStatusFlow = MutableSharedFlow<Boolean>()
 
-    private var deviceId: String = ""
-    private var targetId: Long = 0
-    internal var hasViewedLink: Boolean = false
-        set(value) {
-            if (targetId > 0) {
-                KvManger.put(KvKey.VIEW_OTHER_LINK.plus(deviceId).plus(targetId), value)
-            }
-            field = value
-        }
-        get() {
-            if (targetId > 0)
-                field =
-                    KvManger.getBoolean(KvKey.VIEW_OTHER_LINK.plus(deviceId).plus(targetId))
-            return field
-        }
-    internal var hasViewedVideo: Boolean = false
-        set(value) {
-            if (targetId > 0) {
-                KvManger.put(KvKey.VIEW_OTHER_VIDEO.plus(deviceId).plus(targetId), value)
-            }
-            field = value
-        }
-        get() {
-            if (targetId > 0)
-                field =
-                    KvManger.getBoolean(KvKey.VIEW_OTHER_VIDEO.plus(deviceId).plus(targetId))
-            return field
-        }
-    internal var hasViewedImage: Boolean = false
-        set(value) {
-            if (targetId > 0) {
-                KvManger.put(KvKey.VIEW_OTHER_IMAGE.plus(deviceId).plus(targetId), value)
-            }
-            field = value
-        }
-        get() {
-            if (targetId > 0)
-                field =
-                    KvManger.getBoolean(KvKey.VIEW_OTHER_IMAGE.plus(deviceId).plus(targetId))
-            return field
-        }
-
-    internal fun setDeviceId(context: Context) {
-        deviceId = Device.getDeviceUniqueId(context)
-    }
-
-    internal fun loadUserInfo(userId: Long) {
+    internal fun loadUserInfo(userId: Long, deviceId: String) {
         ioScope {
-            val apiResponse = if (userId > 0) {
+            val userInfoResponse = if (userId > 0) {
                 UserInfoRepository.getUserInfoByNetwork(userId)
             } else {
                 UserInfoRepository.getNextUserInfoByNetwork()
             }
-            userInfoModel = apiResponse.data
-            targetId = userInfoModel?.targetId ?: 0
-            loadUserInfoStatusFlow.emit(apiResponse.success && userInfoModel != null)
+            val userInfoResult = userInfoResponse.data
+            // 已经订阅的状态下、直接不请求免费解锁接口、直接免广告
+            if (Account.userSubscribe) {
+                userInfoModel = userInfoResult
+                loadUserInfoStatusFlow.emit(userInfoResponse.success && userInfoResult != null)
+            } else {
+                // 未订阅状态下、需要根据设备号查看是否需要展示解锁接口
+                val userUnlockResponse = UserInfoRepository.getUnlockInfo(deviceId, userId)
+                userUnlockResponse.success = true
+                val userUnlockResult = userUnlockResponse.data
+                if (userInfoResult != null && userUnlockResult != null) {
+                    userInfoResult.unlockMethod = userUnlockResult.unlockMethod
+                    userInfoResult.remainUnlockCount = userUnlockResult.remainUnlockCount
+                    // 解锁内容(1：联系方式，2：图片；3：视频)
+                    userInfoResult.linkUnlocked = userUnlockResult.unlockMedias.contains(1)
+                    userInfoResult.videoUnlocked = userUnlockResult.unlockMedias.contains(3)
+                    userInfoResult.imageUnlocked = userUnlockResult.unlockMedias.contains(2)
+                    userInfoModel = userInfoResult
+                }
+                loadUserInfoStatusFlow.emit(
+                    userInfoResponse.success && userInfoResult != null
+                        && userUnlockResponse.success && userUnlockResult != null
+                )
+            }
+        }
+    }
+
+    internal fun changeUnlockStatus(deviceId: String, unlockType: Int, unlockUserId: Long) {
+        ioScope {
+            val apiResponse =
+                UserInfoRepository.changeUnlockStatus(deviceId, unlockType, unlockUserId)
+            // 解锁成功信息同步到服务器中、修改本地剩余次数数据并更新 UI
+            if (apiResponse.success) {
+                val userInfo = getUserInfoModel()
+                val count = userInfo.remainUnlockCount - 1
+                userInfo.remainUnlockCount = if (count <= 0) 0 else count
+                when (unlockType) {
+                    UnlockType.Link.value ->
+                        userInfo.linkUnlocked = true
+                    UnlockType.Image.value ->
+                        userInfo.imageUnlocked = true
+                }
+            }
+            changeUnlockStatusFlow.emit(apiResponse.success)
         }
     }
 
@@ -117,7 +111,6 @@ class UserInfoViewModel : ViewModel() {
                 showSuccessRequest = {
                     FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_6)
                     success()
-                    hasViewedLink = true
                 },
                 clickRequest = {
                     FireBaseManager.logEvent(FirebaseKey.CLICK_AD_6)
@@ -150,7 +143,6 @@ class UserInfoViewModel : ViewModel() {
                 showSuccessRequest = {
                     FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_5)
                     success()
-                    hasViewedImage = true
                 },
                 clickRequest = {
                     FireBaseManager.logEvent(FirebaseKey.CLICK_AD_5)

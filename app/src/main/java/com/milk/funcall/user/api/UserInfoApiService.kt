@@ -29,9 +29,19 @@ interface UserInfoApiService {
     ): ApiResponse<Any>
 
     @GET("/funcall/getUnlockInfo")
-    suspend fun unlockInfo(
+    suspend fun getUnlockInfo(
         @Query("deviceUniqueCode") deviceUniqueCode: String,
-        @Query("limitUnlock") limitUnlock: Int,
+        @Query("limitUnlock") freeUnlockTimes: Int,
+        @Query("limitUnlock") viewAdUnlockTimes: Int,
         @Query("unlockUserId") unlockUserId: Long,
     ): ApiResponse<UserUnlockModel>
+
+    @FormUrlEncoded
+    @POST("/funcall/unlock/user")
+    suspend fun changeUnlockStatus(
+        @Field("deviceUniqueCode") deviceUniqueCode: String,
+        // 解锁内容(1：联系方式，2：图片；3：视频)
+        @Field("unLockContent") unlockType: Int,
+        @Field("unlockUserId") unlockUserId: Long
+    ): ApiResponse<Any>
 }
