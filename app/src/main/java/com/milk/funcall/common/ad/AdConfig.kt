@@ -2,6 +2,7 @@ package com.milk.funcall.common.ad
 
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.BuildConfig
+import com.milk.funcall.account.Account
 import com.milk.funcall.app.AppConfig
 import com.milk.funcall.common.ad.data.AdModel
 import com.milk.funcall.common.ad.data.AdPositionModel
@@ -20,8 +21,7 @@ object AdConfig {
     /** 是否展示广告判断：0->需要展示广告 1->免个人主页广告 2->免 app 所有广告 */
     internal var adCancelType: Int = 0
         get() {
-            // todo 需要判断是否是VIP的状态下
-            field = AppConfig.freeAdType
+            field = if (Account.userSubscribe) AppConfig.freeAdType else 0
             return field
         }
 

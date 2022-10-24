@@ -52,7 +52,7 @@ object UserInfoRepository {
         retrofit {
             ApiService.userInfoApiService.getUnlockInfo(
                 deviceNumber,
-                AppConfig.freeAdType,
+                AppConfig.freeUnlockTimes,
                 AppConfig.viewAdUnlockTimes,
                 targetId
             )

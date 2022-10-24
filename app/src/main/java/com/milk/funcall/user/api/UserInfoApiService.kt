@@ -31,8 +31,8 @@ interface UserInfoApiService {
     @GET("/funcall/getUnlockInfo")
     suspend fun getUnlockInfo(
         @Query("deviceUniqueCode") deviceUniqueCode: String,
-        @Query("limitUnlock") freeUnlockTimes: Int,
-        @Query("limitUnlock") viewAdUnlockTimes: Int,
+        @Query("freeLimitUnlock") freeUnlockTimes: Int,
+        @Query("viewAdLimitUnlock") viewAdUnlockTimes: Int,
         @Query("unlockUserId") unlockUserId: Long,
     ): ApiResponse<UserUnlockModel>
 
