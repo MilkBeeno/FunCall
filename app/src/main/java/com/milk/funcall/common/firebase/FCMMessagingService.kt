@@ -4,12 +4,19 @@ import android.content.Context
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.milk.funcall.BaseApplication
+import com.milk.funcall.common.firebase.api.RefreshApiService
+import com.milk.funcall.common.net.ApiClient
+import com.milk.funcall.common.net.retrofit
 import com.milk.funcall.common.util.BitmapUtil
 import com.milk.funcall.common.util.NotificationUtil
 import com.milk.simple.ktx.ioScope
 import com.milk.simple.log.Logger
 
 class FCMMessagingService : FirebaseMessagingService() {
+    private val refreshApiService by lazy {
+        ApiClient.obtainRetrofit().create(RefreshApiService::class.java)
+    }
+
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
         val notification = message.notification
@@ -55,5 +62,9 @@ class FCMMessagingService : FirebaseMessagingService() {
     override fun onNewToken(token: String) {
         super.onNewToken(token)
         Logger.d("当前存在的token是:$token", "FCMMessagingService")
+        ioScope {
+            val result = retrofit { refreshApiService.uploadToken(token) }
+            Logger.d("Token上传状态：${result.success}", "FCMMessagingService")
+        }
     }
 }
