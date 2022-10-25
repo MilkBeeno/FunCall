@@ -27,4 +27,7 @@ object AdCodeKey {
 
     /** 首页底部的横幅广告  */
     internal const val MAIN_HOME_BOTTOM = "87654326"
+
+    /** 充值页面自渲染广告 */
+    internal const val RECHARGE_NATIVE_AD = "87654329"
 }

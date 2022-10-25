@@ -41,9 +41,11 @@ class RechargeActivity : AbstractActivity() {
         binding.headerToolbar.statusBarPadding()
         binding.headerToolbar.setTitle(string(R.string.recharge_title), color(R.color.white))
         binding.headerToolbar.showArrowBack(R.drawable.common_arrow_back_white)
+        binding.rechargeAdView.showTopOnNativeAd()
     }
 
     companion object {
-        fun create(context: Context) = context.startActivity(Intent(context, RechargeActivity::class.java))
+        fun create(context: Context) =
+            context.startActivity(Intent(context, RechargeActivity::class.java))
     }
 }
