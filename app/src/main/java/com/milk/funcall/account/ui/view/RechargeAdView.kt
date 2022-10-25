@@ -13,6 +13,8 @@ import com.anythink.nativead.api.NativeAd
 import com.milk.funcall.common.ad.AdConfig
 import com.milk.funcall.common.ad.AdManager
 import com.milk.funcall.common.constrant.AdCodeKey
+import com.milk.funcall.common.constrant.FirebaseKey
+import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.user.ui.view.ListNativeView
 import com.milk.simple.ktx.ioScope
 
@@ -47,7 +49,7 @@ class RechargeAdView : FrameLayout {
                     }
 
                     override fun onAdClicked(view: ATNativeAdView, atAdInfo: ATAdInfo) {
-
+                        FireBaseManager.logEvent(FirebaseKey.CLICK_AD_7)
                     }
 
                     override fun onAdVideoStart(view: ATNativeAdView) {
@@ -87,13 +89,15 @@ class RechargeAdView : FrameLayout {
             if (context is FragmentActivity) {
                 val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.RECHARGE_NATIVE_AD)
                 if (adUnitId.isNotBlank()) {
+                    FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_7)
                     AdManager.loadNativeAd(
                         activity = context as FragmentActivity,
                         adUnitId = adUnitId,
                         loadFailureRequest = {
-
+                            FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_FAILED_7)
                         },
                         loadSuccessRequest = {
+                            FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_7)
                             action(it?.nativeAd)
                         }
                     )

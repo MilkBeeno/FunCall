@@ -3,7 +3,10 @@ package com.milk.funcall.account.ui.act
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import com.milk.funcall.R
+import com.milk.funcall.common.constrant.FirebaseKey
+import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.pay.GooglePlay
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityRechargeBinding
@@ -36,7 +39,20 @@ class RechargeActivity : AbstractActivity() {
         }
     }
 
+    override fun onClick(p0: View?) {
+        super.onClick(p0)
+        when (p0) {
+            binding.tvWeekPrice -> {
+                FireBaseManager.logEvent(FirebaseKey.CLICK_SUBSCRIBE_BY_WEEK)
+            }
+            binding.tvYearPrice -> {
+                FireBaseManager.logEvent(FirebaseKey.CLICK_SUBSCRIBE_BY_YEAR)
+            }
+        }
+    }
+
     private fun initializeView() {
+        FireBaseManager.logEvent(FirebaseKey.SUBSCRIPTIONS_PAGE_SHOW)
         immersiveStatusBar()
         binding.headerToolbar.statusBarPadding()
         binding.headerToolbar.setTitle(string(R.string.recharge_title), color(R.color.white))

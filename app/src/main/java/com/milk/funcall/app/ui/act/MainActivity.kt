@@ -165,6 +165,7 @@ class MainActivity : AbstractActivity() {
 
     private fun setNotificationConfig() {
         if (!NotificationUtil.isEnabled(this)) {
+            FireBaseManager.logEvent(FirebaseKey.OPEN_NOTIFICATION_REQUEST_POPUP_SHOW)
             val alreadySet = KvManger.getBoolean(KvKey.ALREADY_SET_NOTIFICATION)
             NotificationDialog(this) {
                 if (alreadySet) {

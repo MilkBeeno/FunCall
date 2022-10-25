@@ -213,4 +213,59 @@ object FirebaseKey {
 
     /** 进入登录页面 */
     const val OPEN_LOGINS_PAGE = "open_logins_page"
+
+    /** 发起广告请求的次数_订阅页面原生广告 */
+    const val MAKE_AN_AD_REQUEST_7 = "Make_an_ad_request_7"
+
+    /** 广告请求成功的次数_订阅页面原生广告 */
+    const val AD_REQUEST_SUCCEEDED_7 = "Ad_request_succeeded_7"
+
+    /** 广告请求失败的次数_订阅页面原生广告 */
+    const val AD_REQUEST_FAILED_7 = "Ad_request_failed_7"
+
+    /** 点击广告次数_订阅页面原生广告 */
+    const val CLICK_AD_7 = "click_ad_7"
+
+    /** 点击免费解锁按钮进行解锁联系方式 */
+    const val CLICK_FREE_UNLOCK_CONTACT = "Click_Free_Unlock_Contact"
+
+    /** 点击广告解锁按钮进行解锁联系方式 */
+    const val CLICK_AD_TO_UNLOCK_THE_CONTACT_INFORMATION =
+        "Click_ad_to_unlock_the_contact_information"
+
+    /** 点击免费解锁按钮进行解锁相册 */
+    const val CLICK_UNLOCK_PHOTO_ALBUM_FOR_FREE = "Click_unlock_photo_album_for_free"
+
+    /** 点击广告解锁按钮进行解锁相册 */
+    const val CLICK_THE_AD_TO_UNLOCK_THE_ALBUM = "Click_the_ad_to_unlock_the_album"
+
+    /** 点击我的页面的订阅入口 */
+    const val CLICK_THE_SUBSCRIPTION_PORTAL = "Click_the_subscription_portal"
+
+    /** 用户进入到订阅页面 */
+    const val SUBSCRIPTIONS_PAGE_SHOW = "Subscriptions_page_Show"
+
+    /** 用户选择使用按周订阅 */
+    const val CLICK_SUBSCRIBE_BY_WEEK = "Click_subscribe_by_week"
+
+    /** 用户选择使用按年订阅 */
+    const val CLICK_SUBSCRIBE_BY_YEAR = "Click_Subscribe_by_Year"
+
+    /** 用户订阅成功提示 */
+    const val SUBSCRIPTION_SUCCESS_SHOW = "Subscription_Success_Show"
+
+    /** 用户已经订阅后重复点击 */
+    const val SUBSCRIPTION_ALERTS_SHOW = "Subscription_Alerts_Show"
+
+    /** 用户点击率push后进入到某个女用户的个人主页，这里需要注意用户来源 */
+    const val CLICK_PROMOTE_PUSH = "Click_Promote_push"
+
+    /** 进入他人个人页面后弹出的申请开启个人主页的 */
+    const val OPEN_NOTIFICATION_REQUEST_POPUP_SHOW = "Open_notification_request_popup_Show"
+
+    /** 点击 开启通知弹窗 关闭按钮 */
+    const val CLICK_OPEN_NOTIFICATION_POPUP_CANCEL = "Click_open_notification_popup_cancel"
+
+    /** 点击 开启通知弹窗 确认按钮 */
+    const val CLICK_OPEN_NOTIFICATION_POPUP_CONFIRM = "Click_open_notification_popup_Confirm"
 }

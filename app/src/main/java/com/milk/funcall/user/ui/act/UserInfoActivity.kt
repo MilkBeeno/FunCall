@@ -299,6 +299,7 @@ class UserInfoActivity : AbstractActivity() {
                     userInfo.videoUnlocked || userInfo.imageUnlocked -> {
                         // 点击直接查看
                         if (userInfo.unlockMethod == 1) {
+                            FireBaseManager.logEvent(FirebaseKey.CLICK_FREE_UNLOCK_CONTACT)
                             binding.link.flLinkLocked.gone()
                             userInfoViewModel.changeUnlockStatus(
                                 Device.getDeviceUniqueId(this),
@@ -307,6 +308,8 @@ class UserInfoActivity : AbstractActivity() {
                             )
                         } else {
                             // 观看广告后可查看
+                            FireBaseManager
+                                .logEvent(FirebaseKey.CLICK_AD_TO_UNLOCK_THE_CONTACT_INFORMATION)
                             FireBaseManager
                                 .logEvent(FirebaseKey.SHOW_CONTACT_POPUP_DOUBLE_CHECK)
                             viewAdDialog.show()
@@ -351,6 +354,7 @@ class UserInfoActivity : AbstractActivity() {
                 RechargeActivity.create(this)
             }
             userInfo.unlockMethod == 1 -> {
+                FireBaseManager.logEvent(FirebaseKey.CLICK_UNLOCK_PHOTO_ALBUM_FOR_FREE)
                 binding.mlImage.gone()
                 userInfoViewModel.changeUnlockStatus(
                     Device.getDeviceUniqueId(this),
@@ -359,6 +363,7 @@ class UserInfoActivity : AbstractActivity() {
                 )
             }
             else -> {
+                FireBaseManager.logEvent(FirebaseKey.CLICK_THE_AD_TO_UNLOCK_THE_ALBUM)
                 loadingDialog.show()
                 userInfoViewModel.loadImageAd(
                     activity = this,

@@ -90,6 +90,7 @@ class MineFragment : AbstractFragment() {
                 EditProfileActivity.create(requireContext())
             }
             binding.recharge -> {
+                FireBaseManager.logEvent(FirebaseKey.CLICK_THE_SUBSCRIPTION_PORTAL)
                 RechargeActivity.create(requireContext())
             }
             binding.blackedList -> {
