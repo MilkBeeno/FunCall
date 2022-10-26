@@ -48,6 +48,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivWeek"
                     android:layout_width="23dp"
                     android:layout_height="23dp"
                     android:layout_marginStart="19dp"
@@ -88,7 +89,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/llWeek">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/ivStatue"
+                    android:id="@+id/ivYear"
                     android:layout_width="23dp"
                     android:layout_height="23dp"
                     android:layout_marginStart="19dp"
@@ -107,7 +108,7 @@
                     android:textColor="@color/FF232325"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toTopOf="@+id/tvYearDiscount"
-                    app:layout_constraintStart_toEndOf="@+id/ivStatue"
+                    app:layout_constraintStart_toEndOf="@+id/ivYear"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.5"
                     app:layout_constraintVertical_chainStyle="packed" />
@@ -121,9 +122,8 @@
                     android:textColor="@color/FF8A8C99"
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/ivStatue"
+                    app:layout_constraintStart_toEndOf="@+id/ivYear"
                     app:layout_constraintTop_toBottomOf="@+id/tvYear" />
-
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvYearPrice"

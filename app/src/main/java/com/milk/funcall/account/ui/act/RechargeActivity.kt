@@ -42,12 +42,32 @@ class RechargeActivity : AbstractActivity() {
     override fun onClick(p0: View?) {
         super.onClick(p0)
         when (p0) {
-            binding.tvWeekPrice -> {
+            binding.llWeek -> {
                 FireBaseManager.logEvent(FirebaseKey.CLICK_SUBSCRIBE_BY_WEEK)
+                updateUI(binding.llWeek)
             }
-            binding.tvYearPrice -> {
+            binding.clYear -> {
                 FireBaseManager.logEvent(FirebaseKey.CLICK_SUBSCRIBE_BY_YEAR)
+                updateUI(binding.clYear)
+                googlePlay.launchPurchase(this, "")
             }
+        }
+    }
+
+    private fun updateUI(clickView: View) {
+        if (clickView == binding.llWeek) {
+            binding.llWeek.setBackgroundResource(R.drawable.shape_recharge_options_background_select)
+            binding.ivWeek.setImageResource(R.drawable.recharge_options_select)
+        } else {
+            binding.llWeek.setBackgroundResource(R.drawable.shape_recharge_options_background)
+            binding.ivWeek.setImageResource(R.drawable.recharge_options)
+        }
+        if (clickView == binding.clYear) {
+            binding.ivYear.setImageResource(R.drawable.recharge_options_select)
+            binding.clYear.setBackgroundResource(R.drawable.shape_recharge_options_background_select)
+        } else {
+            binding.ivYear.setImageResource(R.drawable.recharge_options)
+            binding.clYear.setBackgroundResource(R.drawable.shape_recharge_options_background)
         }
     }
 
@@ -58,6 +78,8 @@ class RechargeActivity : AbstractActivity() {
         binding.headerToolbar.setTitle(string(R.string.recharge_title), color(R.color.white))
         binding.headerToolbar.showArrowBack(R.drawable.common_arrow_back_white)
         binding.rechargeAdView.showTopOnNativeAd()
+        binding.llWeek.setOnClickListener(this)
+        binding.clYear.setOnClickListener(this)
     }
 
     companion object {
