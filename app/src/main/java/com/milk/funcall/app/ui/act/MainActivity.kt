@@ -24,6 +24,7 @@ import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.common.constrant.KvKey
+import com.milk.funcall.common.firebase.FCMMessagingService
 import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.util.NotificationUtil
@@ -90,6 +91,7 @@ class MainActivity : AbstractActivity() {
         super.onNewIntent(intent)
         setTabSelection(homeFragment)
         binding.navigation.updateSelectNav(BottomNavigation.Type.Home)
+        FCMMessagingService.uploadNewToken(this)
     }
 
     private fun initializeView() {
@@ -164,6 +166,7 @@ class MainActivity : AbstractActivity() {
     }
 
     private fun setNotificationConfig() {
+        FCMMessagingService.uploadNewToken(this)
         if (!NotificationUtil.isEnabled(this)) {
             FireBaseManager.logEvent(FirebaseKey.OPEN_NOTIFICATION_REQUEST_POPUP_SHOW)
             val alreadySet = KvManger.getBoolean(KvKey.ALREADY_SET_NOTIFICATION)

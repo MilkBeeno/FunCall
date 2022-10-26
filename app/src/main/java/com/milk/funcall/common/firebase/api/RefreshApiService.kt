@@ -8,5 +8,8 @@ import retrofit2.http.POST
 interface RefreshApiService {
     @FormUrlEncoded
     @POST("/funcall/start/push")
-    suspend fun uploadToken(@Field("refreshToken") token: String): ApiResponse<Any>
+    suspend fun uploadToken(
+        @Field("refreshToken") token: String,
+        @Field("deviceUniqueCode") deviceUniqueCode: String
+    ): ApiResponse<Any>
 }
