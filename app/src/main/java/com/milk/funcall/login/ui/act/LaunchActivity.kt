@@ -34,8 +34,9 @@ class LaunchActivity : AbstractActivity() {
         initializeObserver()
         uploadDeviceInfo()
         checkIsNewClient()
-        AdConfig.obtain()
         AppConfig.obtain()
+        AppConfig.getSubscribeStatus()
+        AdConfig.obtain()
         Account.initialize()
     }
 

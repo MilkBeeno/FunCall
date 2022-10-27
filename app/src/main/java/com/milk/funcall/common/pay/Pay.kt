@@ -16,7 +16,7 @@ interface Pay {
     fun launchPurchase(activity: Activity, productDetails: Any)
 
     /** 购买成功 */
-    fun paySuccessListener(listener: () -> Unit)
+    fun paySuccessListener(listener: (String, String) -> Unit)
 
     /** 取消购买 */
     fun payCancelListener(listener: () -> Unit)

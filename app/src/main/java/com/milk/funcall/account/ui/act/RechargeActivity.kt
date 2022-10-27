@@ -4,8 +4,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import com.milk.funcall.R
 import com.milk.funcall.account.ui.dialog.RechargeDialog
+import com.milk.funcall.account.ui.vm.RechargeViewModel
 import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.pay.GooglePlay
@@ -19,6 +21,7 @@ class RechargeActivity : AbstractActivity() {
     private val googlePlay by lazy { GooglePlay() }
     private var productList = mutableListOf<ProductsModel>()
     private val successDialog by lazy { RechargeDialog(this) }
+    private val rechargeViewModel by viewModels<RechargeViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,9 +32,10 @@ class RechargeActivity : AbstractActivity() {
 
     private fun initializeRecharge() {
         googlePlay.initialize(this)
-        googlePlay.paySuccessListener {
+        googlePlay.paySuccessListener { orderId, purchaseToken ->
             FireBaseManager.logEvent(FirebaseKey.SUBSCRIPTION_SUCCESS_SHOW)
             successDialog.show()
+            rechargeViewModel.salesOrder(orderId, purchaseToken)
         }
         googlePlay.payCancelListener {
 

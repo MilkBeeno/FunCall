@@ -13,7 +13,7 @@ import java.util.*
 class GooglePlay : Pay {
     private var billingClient: BillingClient? = null
     private val currencyArrayMap = arrayMapOf<String, String>()
-    private var paySuccessListener: (() -> Unit)? = null
+    private var paySuccessListener: ((String, String) -> Unit)? = null
     private var payCancelListener: (() -> Unit)? = null
     private var payFailureListener: (() -> Unit)? = null
     internal val productList = MutableSharedFlow<MutableList<ProductsModel>>()
@@ -43,7 +43,7 @@ class GooglePlay : Pay {
                     purchases?.forEach {
                         Logger.d("谷歌商品订阅成功", "GooglePlay")
                         //不可重复购买的内购商品、订阅商品核销
-                        acknowledgedPurchase(it.purchaseToken)
+                        acknowledgedPurchase(it.orderId, it.purchaseToken)
                     }
                 }
                 BillingClient.BillingResponseCode.USER_CANCELED -> {
@@ -55,14 +55,6 @@ class GooglePlay : Pay {
                     payFailureListener?.invoke()
                 }
             }
-        }
-    }
-
-    /** 内购或订阅产品核销后回调 */
-    private val acknowledgePurchaseResponseListener by lazy {
-        AcknowledgePurchaseResponseListener {
-            Logger.d("谷歌商品订阅核销成功", "GooglePlay")
-            paySuccessListener?.invoke()
         }
     }
 
@@ -204,19 +196,19 @@ class GooglePlay : Pay {
     }
 
     /** 谷歌商品订阅成功，进行商品核销 */
-    private fun acknowledgedPurchase(purchaseToken: String) {
+    private fun acknowledgedPurchase(orderId: String, purchaseToken: String) {
         if (billingClient != null && billingClient?.isReady == true) {
             val builder = AcknowledgePurchaseParams.newBuilder()
             builder.setPurchaseToken(purchaseToken)
             val acknowledgePurchaseParams = builder.build()
-            billingClient?.acknowledgePurchase(
-                acknowledgePurchaseParams,
-                acknowledgePurchaseResponseListener
-            )
+            billingClient?.acknowledgePurchase(acknowledgePurchaseParams) {
+                Logger.d("谷歌商品订阅核销成功", "GooglePlay")
+                paySuccessListener?.invoke(orderId, purchaseToken)
+            }
         }
     }
 
-    override fun paySuccessListener(listener: () -> Unit) {
+    override fun paySuccessListener(listener: (String, String) -> Unit) {
         paySuccessListener = listener
     }
 
