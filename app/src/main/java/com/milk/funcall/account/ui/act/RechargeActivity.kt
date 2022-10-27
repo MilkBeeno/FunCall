@@ -30,6 +30,7 @@ class RechargeActivity : AbstractActivity() {
     private fun initializeRecharge() {
         googlePlay.initialize(this)
         googlePlay.paySuccessListener {
+            FireBaseManager.logEvent(FirebaseKey.SUBSCRIPTION_SUCCESS_SHOW)
             successDialog.show()
         }
         googlePlay.payCancelListener {
