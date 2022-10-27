@@ -32,7 +32,7 @@ interface UserInfoApiService {
     suspend fun getUnlockInfo(
         @Query("deviceUniqueCode") deviceUniqueCode: String,
         @Query("freeLimitUnlock") freeUnlockTimes: Int,
-        @Query("viewAdLimitUnlock") viewAdUnlockTimes: Int,
+        @Query("adLimitUnlock") viewAdUnlockTimes: Int,
         @Query("unlockUserId") unlockUserId: Long,
     ): ApiResponse<UserUnlockModel>
 
