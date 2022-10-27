@@ -5,7 +5,9 @@ import android.os.Handler
 import android.os.Looper
 import androidx.collection.arrayMapOf
 import com.android.billingclient.api.*
+import com.milk.simple.ktx.ioScope
 import com.milk.simple.log.Logger
+import kotlinx.coroutines.flow.MutableSharedFlow
 import java.util.*
 
 class GooglePlay : Pay {
@@ -14,6 +16,7 @@ class GooglePlay : Pay {
     private var paySuccessListener: (() -> Unit)? = null
     private var payCancelListener: (() -> Unit)? = null
     private var payFailureListener: (() -> Unit)? = null
+    internal val productList = MutableSharedFlow<MutableList<ProductsModel>>()
 
     /** 谷歌支付连接状态回调 */
     private val billingClientStateListener by lazy {
@@ -104,7 +107,8 @@ class GooglePlay : Pay {
             QueryProductDetailsParams.Product.newBuilder().setProductId("productId")
                 .setProductType(BillingClient.ProductType.SUBS).build()
         )
-        return QueryProductDetailsParams.newBuilder().setProductList(subscriptionProductInfo).build()
+        return QueryProductDetailsParams.newBuilder().setProductList(subscriptionProductInfo)
+            .build()
     }
 
     /** 获取谷歌内购或订阅产品价格、并进行货币转换 */
@@ -115,13 +119,20 @@ class GooglePlay : Pay {
                 currencyArrayMap[it.currencyCode] = it.symbol
             }
         }
+        val products = mutableListOf<ProductsModel>()
         productDetails.forEach {
             when {
                 BillingClient.ProductType.INAPP == it.productType && it.oneTimePurchaseOfferDetails != null -> {
-                    val googleProductPrice = it.oneTimePurchaseOfferDetails?.formattedPrice.toString()
-                    val googleCurrencyCode = it.oneTimePurchaseOfferDetails?.priceCurrencyCode.toString()
+                    val googleProductPrice =
+                        it.oneTimePurchaseOfferDetails?.formattedPrice.toString()
+                    val googleCurrencyCode =
+                        it.oneTimePurchaseOfferDetails?.priceCurrencyCode.toString()
                     val currencySymbol = currencyArrayMap[googleCurrencyCode] ?: googleCurrencyCode
-                    val replacePrice = replaceCurrencySymbol(googleProductPrice, googleCurrencyCode, currencySymbol)
+                    val replacePrice = replaceCurrencySymbol(
+                        googleProductPrice,
+                        googleCurrencyCode,
+                        currencySymbol
+                    )
                     Logger.d("当前订阅商品价格是:$replacePrice，INAPP 内购", "GooglePlay")
                 }
                 BillingClient.ProductType.SUBS == it.productType && it.subscriptionOfferDetails != null -> {
@@ -130,21 +141,32 @@ class GooglePlay : Pay {
                     val googleCurrencyCode =
                         it.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(0)?.priceCurrencyCode.toString()
                     val currencySymbol = currencyArrayMap[googleCurrencyCode] ?: googleCurrencyCode
-                    val replacePrice = replaceCurrencySymbol(googleProductPrice, googleCurrencyCode, currencySymbol)
+                    val replacePrice = replaceCurrencySymbol(
+                        googleProductPrice,
+                        googleCurrencyCode,
+                        currencySymbol
+                    )
+                    products.add(ProductsModel(it, replacePrice))
                     Logger.d("当前订阅商品价格是:$replacePrice，SUBS 订阅", "GooglePlay")
                 }
             }
         }
+        ioScope { productList.emit(products) }
     }
 
     /** 对谷歌内购或订阅产品进行货币转换 */
-    private fun replaceCurrencySymbol(priceStr: String, currencyCode: String, currencySymbol: String?): String {
+    private fun replaceCurrencySymbol(
+        priceStr: String,
+        currencyCode: String,
+        currencySymbol: String?
+    ): String {
         var resultPriceStr = priceStr
         if (resultPriceStr.startsWith("$")) {
             if (currencySymbol != null) {
                 when {
                     // 没有货币符号的情况，把货币码拼接到前面
-                    currencySymbol == currencyCode -> resultPriceStr = currencySymbol + resultPriceStr
+                    currencySymbol == currencyCode -> resultPriceStr =
+                        currencySymbol + resultPriceStr
                     !resultPriceStr.startsWith(currencySymbol) -> {
                         resultPriceStr = resultPriceStr.replace("$", currencySymbol)
                     }
@@ -160,14 +182,17 @@ class GooglePlay : Pay {
             val isSubs = BillingClient.ProductType.SUBS == productDetails.productType
             when {
                 isSubs && productDetails.subscriptionOfferDetails != null -> {
-                    val offerToken = productDetails.subscriptionOfferDetails?.get(0)?.offerToken.toString()
+                    val offerToken =
+                        productDetails.subscriptionOfferDetails?.get(0)?.offerToken.toString()
                     params.add(
-                        BillingFlowParams.ProductDetailsParams.newBuilder().setProductDetails(productDetails)
+                        BillingFlowParams.ProductDetailsParams.newBuilder()
+                            .setProductDetails(productDetails)
                             .setOfferToken(offerToken).build()
                     )
                 }
                 else -> params.add(
-                    BillingFlowParams.ProductDetailsParams.newBuilder().setProductDetails(productDetails).build()
+                    BillingFlowParams.ProductDetailsParams.newBuilder()
+                        .setProductDetails(productDetails).build()
                 )
             }
             val builder = BillingFlowParams.newBuilder()
@@ -184,7 +209,10 @@ class GooglePlay : Pay {
             val builder = AcknowledgePurchaseParams.newBuilder()
             builder.setPurchaseToken(purchaseToken)
             val acknowledgePurchaseParams = builder.build()
-            billingClient?.acknowledgePurchase(acknowledgePurchaseParams, acknowledgePurchaseResponseListener)
+            billingClient?.acknowledgePurchase(
+                acknowledgePurchaseParams,
+                acknowledgePurchaseResponseListener
+            )
         }
     }
 

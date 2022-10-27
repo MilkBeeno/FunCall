@@ -5,19 +5,20 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.milk.funcall.R
+import com.milk.funcall.account.ui.dialog.RechargeDialog
 import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.pay.GooglePlay
+import com.milk.funcall.common.pay.ProductsModel
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityRechargeBinding
-import com.milk.simple.ktx.color
-import com.milk.simple.ktx.immersiveStatusBar
-import com.milk.simple.ktx.statusBarPadding
-import com.milk.simple.ktx.string
+import com.milk.simple.ktx.*
 
 class RechargeActivity : AbstractActivity() {
     private val binding by lazy { ActivityRechargeBinding.inflate(layoutInflater) }
     private val googlePlay by lazy { GooglePlay() }
+    private var productList = mutableListOf<ProductsModel>()
+    private val successDialog by lazy { RechargeDialog(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,13 +30,22 @@ class RechargeActivity : AbstractActivity() {
     private fun initializeRecharge() {
         googlePlay.initialize(this)
         googlePlay.paySuccessListener {
-
+            successDialog.show()
         }
         googlePlay.payCancelListener {
 
         }
         googlePlay.payFailureListener {
 
+        }
+        googlePlay.productList.collectLatest(this) {
+            productList = it
+            if (it.isNotEmpty()) {
+                binding.tvWeekPrice.text = it.toList()[0].toString()
+            }
+            if (it.size > 1) {
+                binding.tvYearPrice.text = it.toList()[1].toString()
+            }
         }
     }
 
@@ -45,11 +55,20 @@ class RechargeActivity : AbstractActivity() {
             binding.llWeek -> {
                 FireBaseManager.logEvent(FirebaseKey.CLICK_SUBSCRIBE_BY_WEEK)
                 updateUI(binding.llWeek)
+                if (productList.isNotEmpty()) {
+                    productList[0].productDetails?.let {
+                        googlePlay.launchPurchase(this, it)
+                    }
+                }
             }
             binding.clYear -> {
                 FireBaseManager.logEvent(FirebaseKey.CLICK_SUBSCRIBE_BY_YEAR)
                 updateUI(binding.clYear)
-                googlePlay.launchPurchase(this, "")
+                if (productList.size > 1) {
+                    productList[1].productDetails?.let {
+                        googlePlay.launchPurchase(this, it)
+                    }
+                }
             }
         }
     }
