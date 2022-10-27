@@ -9,6 +9,7 @@ import com.milk.funcall.app.AppConfig
 import com.milk.funcall.app.ui.act.MainActivity
 import com.milk.funcall.common.ad.AdConfig
 import com.milk.funcall.common.author.Device
+import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.common.constrant.KvKey
@@ -73,8 +74,13 @@ class LaunchActivity : AbstractActivity() {
     /** 运用启动开始加载广告、若加载成功且达到展示条件、则展示广告 */
     private fun initializeObserver() {
         // launchViewModel.getHasKey(this)
-        LiveEventBus.get<Any?>(EventKey.UPDATE_START_AD_UNIT_ID).observe(this) {
+        val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.APP_START)
+        if (adUnitId.isNotBlank()) {
             launchViewModel.loadLaunchAd(this) { toMainOrGenderPage() }
+        } else {
+            LiveEventBus.get<Any?>(EventKey.UPDATE_START_AD_UNIT_ID).observe(this) {
+                launchViewModel.loadLaunchAd(this) { toMainOrGenderPage() }
+            }
         }
     }
 
