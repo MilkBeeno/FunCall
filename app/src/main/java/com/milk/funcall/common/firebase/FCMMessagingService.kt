@@ -38,7 +38,7 @@ class FCMMessagingService : FirebaseMessagingService() {
                 message.data["userId"].toString(),
                 message.data["title"].toString(),
                 message.data["body"].toString(),
-                message.data["icon"].toString()
+                message.data["imageUrl"].toString()
             )
         }
     }
