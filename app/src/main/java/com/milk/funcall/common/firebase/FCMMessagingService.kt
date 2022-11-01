@@ -87,7 +87,6 @@ class FCMMessagingService : FirebaseMessagingService() {
                 val refreshApiService =
                     ApiClient.obtainRetrofit().create(RefreshApiService::class.java)
                 FirebaseMessaging.getInstance().token.addOnCompleteListener {
-                    Logger.d("当前存在的token是:${it.result}", "FCMMessagingService")
                     if (it.isSuccessful) {
                         ioScope {
                             val deviceId = Device.getDeviceUniqueId(context)
