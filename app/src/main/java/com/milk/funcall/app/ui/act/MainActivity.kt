@@ -29,6 +29,7 @@ import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.util.NotificationUtil
 import com.milk.funcall.databinding.ActivityMainBinding
+import com.milk.funcall.user.ui.act.UserInfoActivity
 import com.milk.funcall.user.ui.frag.HomeFragment
 import com.milk.simple.ktx.*
 import com.milk.simple.log.Logger
@@ -61,8 +62,7 @@ class MainActivity : AbstractActivity() {
             val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.MAIN_HOME_BOTTOM)
             if (adUnitId.isNotBlank() && AdConfig.adCancelType != 2) {
                 FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_4)
-                val adView = AdManager.loadBannerAd(
-                    activity = this,
+                val adView = AdManager.loadBannerAd(activity = this,
                     adUnitId = adUnitId,
                     loadFailureRequest = {
                         FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_FAILED_4, adUnitId, it)
@@ -78,8 +78,7 @@ class MainActivity : AbstractActivity() {
                     },
                     clickRequest = {
                         FireBaseManager.logEvent(FirebaseKey.CLICK_AD_4)
-                    }
-                )
+                    })
                 binding.root.addView(adView)
             }
         } catch (e: Exception) {
@@ -122,6 +121,11 @@ class MainActivity : AbstractActivity() {
             setTabSelection(homeFragment)
             binding.navigation.updateSelectNav(BottomNavigation.Type.Home)
         }
+        LiveEventBus.get<Long?>(EventKey.TO_VIEW_USER_INFO_OF_WOMAN).observe(this) {
+            if (it != null && it > 0) {
+                UserInfoActivity.create(this, it)
+            }
+        }
     }
 
     private fun initializeService() {
@@ -140,8 +144,7 @@ class MainActivity : AbstractActivity() {
                         val timerTask = object : TimerTask() {
                             override fun run() {
                                 Logger.d(
-                                    "IM Okhttp 心跳包 当前时间=${System.currentTimeMillis()}",
-                                    "IM-Service"
+                                    "IM Okhttp 心跳包 当前时间=${System.currentTimeMillis()}", "IM-Service"
                                 )
                                 MessageRepository.heartBeat()
                             }
