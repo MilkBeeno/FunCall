@@ -96,7 +96,11 @@ class GooglePlay : Pay {
     private fun getSuBsProductDetailsParams(): QueryProductDetailsParams {
         val subscriptionProductInfo = arrayListOf<QueryProductDetailsParams.Product>()
         subscriptionProductInfo.add(
-            QueryProductDetailsParams.Product.newBuilder().setProductId("productId")
+            QueryProductDetailsParams.Product.newBuilder().setProductId("shangpin1")
+                .setProductType(BillingClient.ProductType.SUBS).build()
+        )
+        subscriptionProductInfo.add(
+            QueryProductDetailsParams.Product.newBuilder().setProductId("shangpin2")
                 .setProductType(BillingClient.ProductType.SUBS).build()
         )
         return QueryProductDetailsParams.newBuilder().setProductList(subscriptionProductInfo)
