@@ -23,4 +23,6 @@ interface Pay {
 
     /** 购买失败 */
     fun payFailureListener(listener: () -> Unit)
+
+    fun finishConnection()
 }
