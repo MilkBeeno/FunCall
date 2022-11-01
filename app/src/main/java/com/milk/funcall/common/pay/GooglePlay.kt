@@ -105,38 +105,38 @@ class GooglePlay : Pay {
 
     /** 获取谷歌内购或订阅产品价格、并进行货币转换 */
     private fun getProductPrice(productDetails: MutableList<ProductDetails>) {
+        Logger.d("当前查询1", "GooglePlay")
         if (currencyArrayMap.isEmpty) {
             // currencyCode 为 key ,货币符号为 value 对于没有特定符号的货币，symbol 与 currencyCode 相同
             Currency.getAvailableCurrencies().forEach {
                 currencyArrayMap[it.currencyCode] = it.symbol
             }
         }
+        Logger.d("当前查询2", "GooglePlay")
         val products = mutableListOf<ProductsModel>()
         productDetails.forEach {
             when {
                 BillingClient.ProductType.INAPP == it.productType && it.oneTimePurchaseOfferDetails != null -> {
+                    Logger.d("当前内购商品，INAPP 内购", "GooglePlay")
                     val googleProductPrice =
                         it.oneTimePurchaseOfferDetails?.formattedPrice.toString()
                     val googleCurrencyCode =
                         it.oneTimePurchaseOfferDetails?.priceCurrencyCode.toString()
                     val currencySymbol = currencyArrayMap[googleCurrencyCode] ?: googleCurrencyCode
                     val replacePrice = replaceCurrencySymbol(
-                        googleProductPrice,
-                        googleCurrencyCode,
-                        currencySymbol
+                        googleProductPrice, googleCurrencyCode, currencySymbol
                     )
                     Logger.d("当前订阅商品价格是:$replacePrice，INAPP 内购", "GooglePlay")
                 }
                 BillingClient.ProductType.SUBS == it.productType && it.subscriptionOfferDetails != null -> {
+                    Logger.d("当前订阅商品，SUBS 订阅", "GooglePlay")
                     val googleProductPrice =
                         it.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(0)?.formattedPrice.toString()
                     val googleCurrencyCode =
                         it.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(0)?.priceCurrencyCode.toString()
                     val currencySymbol = currencyArrayMap[googleCurrencyCode] ?: googleCurrencyCode
                     val replacePrice = replaceCurrencySymbol(
-                        googleProductPrice,
-                        googleCurrencyCode,
-                        currencySymbol
+                        googleProductPrice, googleCurrencyCode, currencySymbol
                     )
                     products.add(ProductsModel(it, replacePrice))
                     Logger.d("当前订阅商品价格是:$replacePrice，SUBS 订阅", "GooglePlay")
@@ -148,9 +148,7 @@ class GooglePlay : Pay {
 
     /** 对谷歌内购或订阅产品进行货币转换 */
     private fun replaceCurrencySymbol(
-        priceStr: String,
-        currencyCode: String,
-        currencySymbol: String?
+        priceStr: String, currencyCode: String, currencySymbol: String?
     ): String {
         var resultPriceStr = priceStr
         if (resultPriceStr.startsWith("$")) {
@@ -178,8 +176,7 @@ class GooglePlay : Pay {
                         productDetails.subscriptionOfferDetails?.get(0)?.offerToken.toString()
                     params.add(
                         BillingFlowParams.ProductDetailsParams.newBuilder()
-                            .setProductDetails(productDetails)
-                            .setOfferToken(offerToken).build()
+                            .setProductDetails(productDetails).setOfferToken(offerToken).build()
                     )
                 }
                 else -> params.add(
@@ -218,5 +215,13 @@ class GooglePlay : Pay {
 
     override fun payFailureListener(listener: () -> Unit) {
         payFailureListener = listener
+    }
+
+    override fun finishConnection() {
+        try {
+            billingClient?.endConnection()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }
