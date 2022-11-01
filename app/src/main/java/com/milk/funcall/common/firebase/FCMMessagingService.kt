@@ -1,10 +1,12 @@
 package com.milk.funcall.common.firebase
 
 import android.content.Context
+import androidx.core.graphics.drawable.toBitmap
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.milk.funcall.BaseApplication
+import com.milk.funcall.R
 import com.milk.funcall.account.Account
 import com.milk.funcall.common.author.Device
 import com.milk.funcall.common.firebase.api.RefreshApiService
@@ -51,12 +53,14 @@ class FCMMessagingService : FirebaseMessagingService() {
         imageUrl: String
     ) {
         Logger.d(
-            "UserId=$userId,MessageTitle=$messageTitle," +
-                "MessageBody=$messageBody,ImageUrl=$imageUrl",
+            "UserId=$userId,MessageTitle=$messageTitle,MessageBody=$messageBody,ImageUrl=$imageUrl",
             "FCMMessagingService"
         )
         ioScope {
-            val bitmap = BitmapUtil.obtain(imageUrl)
+            var bitmap = BitmapUtil.obtain(imageUrl)
+            if (bitmap == null) {
+                bitmap = context.getDrawable(R.drawable.common_default_woman)?.toBitmap()
+            }
             if (bitmap != null) {
                 NotificationUtil.show(context, userId, messageTitle, messageBody, bitmap)
             }
