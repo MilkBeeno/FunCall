@@ -22,7 +22,6 @@ import com.milk.simple.ktx.gone
 import com.milk.simple.ktx.immersiveStatusBar
 import com.milk.simple.ktx.navigationBarPadding
 import com.milk.simple.ktx.visible
-import com.milk.simple.log.Logger
 import com.milk.simple.mdr.KvManger
 
 class LaunchActivity : AbstractActivity() {
@@ -63,12 +62,12 @@ class LaunchActivity : AbstractActivity() {
 
     private fun initializeNotification() {
         var map = mutableMapOf<String, String>()
-        intent.extras?.let {
+        /*intent.extras?.let {
             for (key in it.keySet()) {
                 val value = intent.extras?.get(key)
                 Logger.d("Key: $key Value: $value", "MessagePayloadKeys")
             }
-        }
+        }*/
         intent.extras?.let {
             map = Constants.MessagePayloadKeys.extractDeveloperDefinedPayload(intent.extras)
         }
