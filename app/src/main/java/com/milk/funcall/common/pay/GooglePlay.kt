@@ -107,6 +107,7 @@ class GooglePlay : Pay {
             .build()
     }
 
+
     /** 获取谷歌内购或订阅产品价格、并进行货币转换 */
     private fun getProductPrice(productDetails: MutableList<ProductDetails>) {
         Logger.d("当前查询1", "GooglePlay")
