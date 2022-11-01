@@ -106,6 +106,11 @@ class RechargeActivity : AbstractActivity() {
         binding.clYear.setOnClickListener(this)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        googlePlay.finishConnection()
+    }
+
     companion object {
         fun create(context: Context) =
             context.startActivity(Intent(context, RechargeActivity::class.java))
