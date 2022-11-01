@@ -10,6 +10,5 @@ interface EditProfileApiService {
     @POST("/funcall/editProfile")
     suspend fun uploadProfile(
         @Body body: EditProfileBody
-
     ): ApiResponse<UserInfoModel>
 }
