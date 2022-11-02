@@ -109,14 +109,12 @@ class GooglePlay : Pay {
 
     /** 获取谷歌内购或订阅产品价格、并进行货币转换 */
     private fun getProductPrice(productDetails: MutableList<ProductDetails>) {
-        Logger.d("当前查询1", "GooglePlay")
         if (currencyArrayMap.isEmpty) {
             // currencyCode 为 key ,货币符号为 value 对于没有特定符号的货币，symbol 与 currencyCode 相同
             Currency.getAvailableCurrencies().forEach {
                 currencyArrayMap[it.currencyCode] = it.symbol
             }
         }
-        Logger.d("当前查询2", "GooglePlay")
         val products = mutableListOf<ProductsModel>()
         productDetails.forEach {
             when {
