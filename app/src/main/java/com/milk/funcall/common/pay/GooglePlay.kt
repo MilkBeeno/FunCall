@@ -130,7 +130,7 @@ class GooglePlay : Pay {
                     val replacePrice = replaceCurrencySymbol(
                         googleProductPrice, googleCurrencyCode, currencySymbol
                     )
-                    Logger.d("当前内购价格是:$replacePrice，INAPP 内购", "GooglePlay")
+                    Logger.d("当前内购商品价格是:$replacePrice，INAPP 内购", "GooglePlay")
                 }
                 BillingClient.ProductType.SUBS == it.productType && it.subscriptionOfferDetails != null -> {
                     Logger.d("当前订阅商品，SUBS 订阅", "GooglePlay")
