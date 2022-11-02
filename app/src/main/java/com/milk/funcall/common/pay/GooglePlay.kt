@@ -22,13 +22,13 @@ class GooglePlay : Pay {
     private val billingClientStateListener by lazy {
         object : BillingClientStateListener {
             override fun onBillingServiceDisconnected() {
-                Logger.d("谷歌支付连接失败", "GooglePlay")
+                Logger.d("谷歌支付连接失败", "谷歌订阅")
                 disconnect()
             }
 
             override fun onBillingSetupFinished(p0: BillingResult) {
                 if (p0.responseCode == BillingClient.BillingResponseCode.OK) {
-                    Logger.d("谷歌支付连接成功", "GooglePlay")
+                    Logger.d("谷歌支付连接成功", "谷歌订阅")
                     connected()
                 }
             }
@@ -41,17 +41,17 @@ class GooglePlay : Pay {
             when (p0.responseCode) {
                 BillingClient.BillingResponseCode.OK -> {
                     purchases?.forEach {
-                        Logger.d("谷歌商品订阅成功", "GooglePlay")
+                        Logger.d("谷歌商品订阅成功", "谷歌订阅")
                         //不可重复购买的内购商品、订阅商品核销
                         acknowledgedPurchase(it.orderId, it.purchaseToken)
                     }
                 }
                 BillingClient.BillingResponseCode.USER_CANCELED -> {
-                    Logger.d("谷歌商品取消订阅", "GooglePlay")
+                    Logger.d("谷歌商品取消订阅", "谷歌订阅")
                     payCancelListener?.invoke()
                 }
                 else -> {
-                    Logger.d("谷歌商品订阅失败", "GooglePlay")
+                    Logger.d("谷歌商品订阅失败", "谷歌订阅")
                     payFailureListener?.invoke()
                 }
             }
@@ -85,7 +85,7 @@ class GooglePlay : Pay {
         val subsParams = getSuBsProductDetailsParams()
         // 查询谷歌支持内购或订阅产品详细回调
         val responseListener = ProductDetailsResponseListener { _, productDetails ->
-            Logger.d("谷歌订阅查询成功", "GooglePlay")
+            Logger.d("谷歌订阅查询成功", "谷歌订阅")
             // 获取谷歌内购或订阅产品价格、并进行货币转换
             getProductPrice(productDetails)
         }
@@ -116,10 +116,11 @@ class GooglePlay : Pay {
             }
         }
         val products = mutableListOf<ProductsModel>()
+        Logger.d("查询当前商品列表信息，长度是${productDetails.size}", "谷歌订阅")
         productDetails.forEach {
             when {
                 BillingClient.ProductType.INAPP == it.productType && it.oneTimePurchaseOfferDetails != null -> {
-                    Logger.d("当前内购商品，INAPP 内购", "GooglePlay")
+                    Logger.d("当前内购商品，INAPP 内购", "谷歌订阅")
                     val googleProductPrice =
                         it.oneTimePurchaseOfferDetails?.formattedPrice.toString()
                     val googleCurrencyCode =
@@ -128,10 +129,10 @@ class GooglePlay : Pay {
                     val replacePrice = replaceCurrencySymbol(
                         googleProductPrice, googleCurrencyCode, currencySymbol
                     )
-                    Logger.d("当前内购商品价格是:$replacePrice，INAPP 内购", "GooglePlay")
+                    Logger.d("当前内购商品价格是:$replacePrice，INAPP 内购", "谷歌订阅")
                 }
                 BillingClient.ProductType.SUBS == it.productType && it.subscriptionOfferDetails != null -> {
-                    Logger.d("当前订阅商品，SUBS 订阅", "GooglePlay")
+                    Logger.d("当前订阅商品，SUBS 订阅", "谷歌订阅")
                     val googleProductPrice =
                         it.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(0)?.formattedPrice.toString()
                     val googleCurrencyCode =
@@ -141,7 +142,7 @@ class GooglePlay : Pay {
                         googleProductPrice, googleCurrencyCode, currencySymbol
                     )
                     products.add(ProductsModel(it, replacePrice))
-                    Logger.d("当前订阅商品价格是:$replacePrice，SUBS 订阅", "GooglePlay")
+                    Logger.d("当前订阅商品价格是:$replacePrice，SUBS 订阅", "谷歌订阅")
                 }
             }
         }
@@ -201,7 +202,7 @@ class GooglePlay : Pay {
             builder.setPurchaseToken(purchaseToken)
             val acknowledgePurchaseParams = builder.build()
             billingClient?.acknowledgePurchase(acknowledgePurchaseParams) {
-                Logger.d("谷歌商品订阅核销成功", "GooglePlay")
+                Logger.d("谷歌商品订阅核销成功", "谷歌订阅")
                 paySuccessListener?.invoke(orderId, purchaseToken)
             }
         }
