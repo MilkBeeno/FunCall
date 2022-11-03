@@ -84,10 +84,18 @@ class GooglePlay : Pay {
     override fun connected() {
         val subsParams = getSuBsProductDetailsParams()
         // 查询谷歌支持内购或订阅产品详细回调
-        val responseListener = ProductDetailsResponseListener { _, productDetails ->
-            Logger.d("谷歌订阅查询成功", "谷歌订阅")
-            // 获取谷歌内购或订阅产品价格、并进行货币转换
-            getProductPrice(productDetails)
+        val responseListener = ProductDetailsResponseListener { billingResult, productDetails ->
+
+            if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                Logger.d("谷歌商品查询成功", "谷歌订阅")
+                // 获取谷歌内购或订阅产品价格、并进行货币转换
+                getProductPrice(productDetails)
+            } else {
+                Logger.d(
+                    "谷歌商品查询失败," + "查询的 Code 是=${billingResult.responseCode}," + "查询的错误是=${billingResult.debugMessage}",
+                    "谷歌订阅"
+                )
+            }
         }
         billingClient?.queryProductDetailsAsync(subsParams, responseListener)
     }
