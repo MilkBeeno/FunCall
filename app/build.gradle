@@ -12,8 +12,8 @@ android {
         applicationId "com.milk.simplejustfuncall"
         minSdk 21
         targetSdk 32
-        versionCode 120
-        versionName "1.2.0"
+        versionCode 112
+        versionName "1.1.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -153,5 +153,6 @@ dependencies {
     implementation 'com.anythink.sdk:adapter-admob:5.9.98'
     implementation 'com.google.android.gms:play-services-ads:21.2.0'
     // Google 订阅
-    implementation("com.android.billingclient:billing:5.0.0")
+    implementation("com.android.billingclient:billing-ktx:5.0.0")
+    implementation("com.android.billingclient:billing-ktx:4.0.0")
 }
