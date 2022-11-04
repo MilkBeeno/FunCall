@@ -11,5 +11,5 @@ object AppConfigKey {
     const val FREE_UNLOCK_TIMES = "freeUnlockTimes"
 
     /** 订阅的折扣数值 */
-    const val SUBSCRIBE_DISCOUNT_VALUE="SUBSCRIBE_DISCOUNT_VALUE"
+    const val SUBSCRIBE_DISCOUNT_VALUE = "Annual_subscription_discount_rate"
 }
