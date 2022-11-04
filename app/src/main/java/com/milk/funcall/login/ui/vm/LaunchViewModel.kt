@@ -26,7 +26,7 @@ class LaunchViewModel : ViewModel() {
     /** 启动时上传设备信息 */
     internal fun uploadDeviceInfo(deviceId: String) {
         val loginRepository = LoginRepository()
-        ioScope { loginRepository.login(deviceId, AuthType.NULL, "") }
+        ioScope { loginRepository.login(deviceId, AuthType.NULL, deviceId) }
     }
 
     /** 加载广告并设置广告状态 */
