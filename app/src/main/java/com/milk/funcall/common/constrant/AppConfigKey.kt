@@ -9,4 +9,7 @@ object AppConfigKey {
 
     /** 查看个人资料免费解锁最大次数 */
     const val FREE_UNLOCK_TIMES = "freeUnlockTimes"
+
+    /** 订阅的折扣数值 */
+    const val SUBSCRIBE_DISCOUNT_VALUE="SUBSCRIBE_DISCOUNT_VALUE"
 }

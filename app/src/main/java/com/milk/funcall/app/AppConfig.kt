@@ -51,6 +51,16 @@ object AppConfig {
             return field
         }
 
+    internal var discountNumber: Int = 0
+        set(value) {
+            KvManger.put(AppConfigKey.FREE_UNLOCK_TIMES, value)
+            field = value
+        }
+        get() {
+            field = KvManger.getInt(AppConfigKey.FREE_UNLOCK_TIMES)
+            return field
+        }
+
     internal fun obtain() {
         ioScope {
             val apiResponse = AppRepository().getConfig(
@@ -69,6 +79,9 @@ object AppConfig {
                     }
                     apiResult[AppConfigKey.FREE_UNLOCK_TIMES]?.let {
                         freeUnlockTimes = it.toInt()
+                    }
+                    apiResult[AppConfigKey.SUBSCRIBE_DISCOUNT_VALUE]?.let {
+                        discountNumber = it.toInt()
                     }
                 } catch (e: NumberFormatException) {
                     Logger.d("类型转换错误信息:${e.message}", "AppConfig")

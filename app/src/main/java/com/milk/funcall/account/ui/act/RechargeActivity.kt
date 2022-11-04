@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import com.milk.funcall.R
 import com.milk.funcall.account.ui.dialog.RechargeDialog
 import com.milk.funcall.account.ui.vm.RechargeViewModel
+import com.milk.funcall.app.AppConfig
 import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.pay.GooglePlay
@@ -50,6 +51,11 @@ class RechargeActivity : AbstractActivity() {
             }
             if (it.size > 1) {
                 binding.tvYearPrice.text = it.toList()[1].productsNames
+                if (AppConfig.discountNumber > 0) {
+                    binding.tvDiscount.visible()
+                    binding.tvDiscount.text = AppConfig.discountNumber.toString()
+                        .plus(string(R.string.recharge_discount_number))
+                } else binding.tvDiscount.gone()
             }
         }
     }

@@ -135,4 +135,5 @@
     <string name="turn_on_notification_content">Make sure you receive new messages</string>
     <string name="turn_on_notification_desc">Please turn on the notification function</string>
     <string name="dialog_recharge_subscribed">You have also successfully subscribed to</string>
+    <string name="recharge_discount_number">% OFF</string>
 </resources>
