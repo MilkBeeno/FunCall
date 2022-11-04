@@ -8,7 +8,9 @@ import com.milk.funcall.R
 import com.milk.funcall.app.AppConfig
 import com.milk.funcall.databinding.LayoutMediaLockedBinding
 import com.milk.funcall.user.data.UserInfoModel
+import com.milk.simple.ktx.gone
 import com.milk.simple.ktx.string
+import com.milk.simple.ktx.visible
 
 class MediaLockedLayout : FrameLayout {
     private val binding = LayoutMediaLockedBinding
@@ -38,12 +40,15 @@ class MediaLockedLayout : FrameLayout {
                 .setImageResource(R.drawable.user_info_media_locked_view_ad)
             AppConfig.viewAdUnlockTimes
         }
-        binding.tvMediaTimes.text =
-            "(".plus(context.string(R.string.user_info_unlock_times))
-                .plus(" ")
-                .plus(userInfo.remainUnlockCount)
-                .plus("/")
-                .plus(maxTimes)
-                .plus(")")
+        if (maxTimes < 10) {
+            binding.tvMediaTimes.visible()
+            binding.tvMediaTimes.text =
+                "(".plus(context.string(R.string.user_info_unlock_times))
+                    .plus(" ")
+                    .plus(userInfo.remainUnlockCount)
+                    .plus("/")
+                    .plus(maxTimes)
+                    .plus(")")
+        } else binding.tvMediaTimes.gone()
     }
 }

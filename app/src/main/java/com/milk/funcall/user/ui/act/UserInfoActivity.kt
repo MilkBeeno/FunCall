@@ -183,13 +183,16 @@ class UserInfoActivity : AbstractActivity() {
                 .setImageResource(R.drawable.user_info_media_locked_view_ad)
             AppConfig.viewAdUnlockTimes
         }
-        binding.link.tvLinkTimes.text =
-            "(".plus(string(R.string.user_info_unlock_times))
-                .plus(" ")
-                .plus(userInfo.remainUnlockCount)
-                .plus("/")
-                .plus(maxTimes)
-                .plus(")")
+        if (maxTimes < 10) {
+            binding.link.tvLinkTimes.visible()
+            binding.link.tvLinkTimes.text =
+                "(".plus(string(R.string.user_info_unlock_times))
+                    .plus(" ")
+                    .plus(userInfo.remainUnlockCount)
+                    .plus("/")
+                    .plus(maxTimes)
+                    .plus(")")
+        } else binding.link.tvLinkTimes.gone()
     }
 
     private fun setUserVideo(): Boolean {
