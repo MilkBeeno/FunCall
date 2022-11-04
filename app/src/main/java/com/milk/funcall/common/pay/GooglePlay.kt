@@ -85,19 +85,36 @@ class GooglePlay : Pay {
         val subsParams = getSuBsProductDetailsParams()
         // 查询谷歌支持内购或订阅产品详细回调
         val responseListener = ProductDetailsResponseListener { billingResult, productDetails ->
-
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                Logger.d("谷歌商品查询成功", "谷歌 Pay")
-                // 获取谷歌内购或订阅产品价格、并进行货币转换
-                getProductPrice(productDetails)
+                ioScope {
+                    writeOffAnOrder()
+                    Logger.d("谷歌商品查询成功", "谷歌 Pay")
+                    // 获取谷歌内购或订阅产品价格、并进行货币转换
+                    getProductPrice(productDetails)
+                }
             } else {
                 Logger.d(
-                    "谷歌商品查询失败," + "查询的 Code 是=${billingResult.responseCode}," + "查询的错误是=${billingResult.debugMessage}",
+                    "谷歌商品查询失败," + "查询的 Code 是=${billingResult.responseCode},"
+                        + "查询的错误是=${billingResult.debugMessage}",
                     "谷歌 Pay"
                 )
             }
         }
         billingClient?.queryProductDetailsAsync(subsParams, responseListener)
+    }
+
+    /** 进入充值页面、核销上次未核销的订单 */
+    private suspend fun writeOffAnOrder() {
+        val params = QueryPurchasesParams.newBuilder()
+            .setProductType(BillingClient.ProductType.SUBS)
+            .build()
+        val result = billingClient?.queryPurchasesAsync(params)
+        val purchasesList = result?.purchasesList
+        purchasesList?.forEach {
+            if (it.purchaseState == Purchase.PurchaseState.PURCHASED && !it.isAcknowledged) {
+                acknowledgedPurchase(it.orderId, it.purchaseToken)
+            }
+        }
     }
 
     /** 查询谷歌订阅产品参数配置 */
@@ -116,7 +133,7 @@ class GooglePlay : Pay {
     }
 
     /** 获取谷歌内购或订阅产品价格、并进行货币转换 */
-    private fun getProductPrice(productDetails: MutableList<ProductDetails>) {
+    private suspend fun getProductPrice(productDetails: MutableList<ProductDetails>) {
         if (currencyArrayMap.isEmpty) {
             // currencyCode 为 key ,货币符号为 value 对于没有特定符号的货币，symbol 与 currencyCode 相同
             Currency.getAvailableCurrencies().forEach {
@@ -154,7 +171,7 @@ class GooglePlay : Pay {
                 }
             }
         }
-        ioScope { productList.emit(products) }
+        productList.emit(products)
     }
 
     /** 对谷歌内购或订阅产品进行货币转换 */
