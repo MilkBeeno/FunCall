@@ -46,10 +46,10 @@ class RechargeActivity : AbstractActivity() {
         googlePlay.productList.collectLatest(this) {
             productList = it
             if (it.isNotEmpty()) {
-                binding.tvWeekPrice.text = it.toList()[0].toString()
+                binding.tvWeekPrice.text = it.toList()[0].productsNames
             }
             if (it.size > 1) {
-                binding.tvYearPrice.text = it.toList()[1].toString()
+                binding.tvYearPrice.text = it.toList()[1].productsNames
             }
         }
     }
