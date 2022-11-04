@@ -246,10 +246,6 @@ class GooglePlay : Pay {
     }
 
     override fun finishConnection() {
-        try {
-            billingClient?.endConnection()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        billingClient?.endConnection()
     }
 }
