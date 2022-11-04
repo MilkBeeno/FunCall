@@ -162,7 +162,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="19dp"
                 android:paddingBottom="57dp"
-                android:text="@string/recharge_desc"
+                android:text="@string/recharge_year_desc"
                 android:textColor="@color/white"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"

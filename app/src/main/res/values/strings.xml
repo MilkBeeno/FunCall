@@ -128,7 +128,8 @@
     <string name="recharge_title">subscription</string>
     <string name="recharge_week">1 Week</string>
     <string name="recharge_year">1 Year</string>
-    <string name="recharge_desc">（Free to try, cancel at any time）</string>
+    <string name="recharge_week_desc">(Cancel at any time)</string>
+    <string name="recharge_year_desc">(Free to try, cancel at any time)</string>
     <!--打开系统通知翻译-->
     <string name="turn_on_notification_title">Turn on notification function</string>
     <string name="turn_on_notification_content">Make sure you receive new messages</string>

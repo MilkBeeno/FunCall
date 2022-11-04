@@ -82,6 +82,7 @@ class RechargeActivity : AbstractActivity() {
         if (clickView == binding.llWeek) {
             binding.llWeek.setBackgroundResource(R.drawable.shape_recharge_options_background_select)
             binding.ivWeek.setImageResource(R.drawable.recharge_options_select)
+            binding.tvFree.text = string(R.string.recharge_week_desc)
         } else {
             binding.llWeek.setBackgroundResource(R.drawable.shape_recharge_options_background)
             binding.ivWeek.setImageResource(R.drawable.recharge_options)
@@ -89,6 +90,7 @@ class RechargeActivity : AbstractActivity() {
         if (clickView == binding.clYear) {
             binding.ivYear.setImageResource(R.drawable.recharge_options_select)
             binding.clYear.setBackgroundResource(R.drawable.shape_recharge_options_background_select)
+            binding.tvFree.text = string(R.string.recharge_year_desc)
         } else {
             binding.ivYear.setImageResource(R.drawable.recharge_options)
             binding.clYear.setBackgroundResource(R.drawable.shape_recharge_options_background)
