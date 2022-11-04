@@ -51,13 +51,14 @@ object AppConfig {
             return field
         }
 
+    /** 订阅 VIP 折扣数量 */
     internal var discountNumber: Int = 0
         set(value) {
-            KvManger.put(AppConfigKey.FREE_UNLOCK_TIMES, value)
+            KvManger.put(AppConfigKey.SUBSCRIBE_DISCOUNT_VALUE, value)
             field = value
         }
         get() {
-            field = KvManger.getInt(AppConfigKey.FREE_UNLOCK_TIMES)
+            field = KvManger.getInt(AppConfigKey.SUBSCRIBE_DISCOUNT_VALUE)
             return field
         }
 
