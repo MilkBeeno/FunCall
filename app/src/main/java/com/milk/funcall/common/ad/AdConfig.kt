@@ -88,4 +88,10 @@ object AdConfig {
         val position = positionMap[key]
         return if (position?.isNotEmpty() == true) return position else ""
     }
+
+    /** Home 页面获取广告配置信息 */
+    fun checkAdIsLoaded() {
+        val isEmptyOfStartAd = getAdvertiseUnitId(AdCodeKey.APP_START).isEmpty()
+        if (isEmptyOfStartAd) obtain()
+    }
 }
