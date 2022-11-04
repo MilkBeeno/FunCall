@@ -45,6 +45,7 @@ object AdConfig {
                         ?.result?.let { updateAdUnitId(it) }
                 }
             }
+            LiveEventBus.get<Any?>(EventKey.UPDATE_START_AD_UNIT_ID).post(null)
         }
     }
 
@@ -73,7 +74,6 @@ object AdConfig {
                     savePositionId(AdCodeKey.RECHARGE_NATIVE_AD, it.positionList)
             }
         }
-        LiveEventBus.get<Any?>(EventKey.UPDATE_START_AD_UNIT_ID).post(null)
     }
 
     /** 将广告 ID 保存在 Map 中 */
