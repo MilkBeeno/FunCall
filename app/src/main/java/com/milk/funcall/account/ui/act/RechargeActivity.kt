@@ -10,6 +10,7 @@ import com.milk.funcall.account.ui.dialog.RechargeDialog
 import com.milk.funcall.account.ui.vm.RechargeViewModel
 import com.milk.funcall.app.AppConfig
 import com.milk.funcall.common.constrant.FirebaseKey
+import com.milk.funcall.common.constrant.ProductKey
 import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.pay.GooglePlay
 import com.milk.funcall.common.pay.ProductsModel
@@ -20,7 +21,7 @@ import com.milk.simple.ktx.*
 class RechargeActivity : AbstractActivity() {
     private val binding by lazy { ActivityRechargeBinding.inflate(layoutInflater) }
     private val googlePlay by lazy { GooglePlay() }
-    private var productList = mutableListOf<ProductsModel>()
+    private var productList = mutableMapOf<String, ProductsModel>()
     private val successDialog by lazy { RechargeDialog(this) }
     private val rechargeViewModel by viewModels<RechargeViewModel>()
 
@@ -46,16 +47,18 @@ class RechargeActivity : AbstractActivity() {
         }
         googlePlay.productList.collectLatest(this) {
             productList = it
-            if (it.isNotEmpty()) {
-                binding.tvWeekPrice.text = it.toList()[0].productsNames
-            }
-            if (it.size > 1) {
-                binding.tvYearPrice.text = it.toList()[1].productsNames
-                if (AppConfig.discountNumber > 0) {
-                    binding.tvDiscount.visible()
-                    binding.tvDiscount.text = AppConfig.discountNumber.toString()
-                        .plus(string(R.string.recharge_discount_number))
-                } else binding.tvDiscount.gone()
+            productList.forEach { _ ->
+                if (productList.containsKey(ProductKey.SUBSCRIBE_WEEK)) {
+                    binding.tvWeekPrice.text = productList[ProductKey.SUBSCRIBE_WEEK]?.productsNames
+                }
+                if (productList.containsKey(ProductKey.SUBSCRIBE_YEAR)) {
+                    binding.tvYearPrice.text = productList[ProductKey.SUBSCRIBE_YEAR]?.productsNames
+                    if (AppConfig.discountNumber > 0) {
+                        binding.tvDiscount.visible()
+                        binding.tvDiscount.text = AppConfig.discountNumber.toString()
+                            .plus(string(R.string.recharge_discount_number))
+                    } else binding.tvDiscount.gone()
+                }
             }
         }
     }
@@ -66,19 +69,15 @@ class RechargeActivity : AbstractActivity() {
             binding.llWeek -> {
                 FireBaseManager.logEvent(FirebaseKey.CLICK_SUBSCRIBE_BY_WEEK)
                 updateUI(binding.llWeek)
-                if (productList.isNotEmpty()) {
-                    productList[0].productDetails?.let {
-                        googlePlay.launchPurchase(this, it)
-                    }
+                productList[ProductKey.SUBSCRIBE_WEEK]?.productDetails?.let {
+                    googlePlay.launchPurchase(this, it)
                 }
             }
             binding.clYear -> {
                 FireBaseManager.logEvent(FirebaseKey.CLICK_SUBSCRIBE_BY_YEAR)
                 updateUI(binding.clYear)
-                if (productList.size > 1) {
-                    productList[1].productDetails?.let {
-                        googlePlay.launchPurchase(this, it)
-                    }
+                productList[ProductKey.SUBSCRIBE_YEAR]?.productDetails?.let {
+                    googlePlay.launchPurchase(this, it)
                 }
             }
         }
