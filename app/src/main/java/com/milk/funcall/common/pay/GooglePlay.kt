@@ -51,7 +51,7 @@ class GooglePlay : Pay {
                     payCancelListener?.invoke()
                 }
                 else -> {
-                    Logger.d("谷歌商品购买失败", "谷歌 Pay")
+                    Logger.d("谷歌商品购买失败，Code = ${p0.responseCode}", "谷歌 Pay")
                     payFailureListener?.invoke()
                 }
             }
@@ -94,8 +94,7 @@ class GooglePlay : Pay {
                 }
             } else {
                 Logger.d(
-                    "谷歌商品查询失败," + "查询的 Code 是=${billingResult.responseCode},"
-                        + "查询的错误是=${billingResult.debugMessage}",
+                    "谷歌商品查询失败," + "查询的 Code 是=${billingResult.responseCode}," + "查询的错误是=${billingResult.debugMessage}",
                     "谷歌 Pay"
                 )
             }
@@ -105,9 +104,8 @@ class GooglePlay : Pay {
 
     /** 进入充值页面、核销上次未核销的订单 */
     private suspend fun writeOffAnOrder() {
-        val params = QueryPurchasesParams.newBuilder()
-            .setProductType(BillingClient.ProductType.SUBS)
-            .build()
+        val params =
+            QueryPurchasesParams.newBuilder().setProductType(BillingClient.ProductType.SUBS).build()
         val result = billingClient?.queryPurchasesAsync(params)
         val purchasesList = result?.purchasesList
         purchasesList?.forEach {
@@ -121,7 +119,7 @@ class GooglePlay : Pay {
     private fun getSuBsProductDetailsParams(): QueryProductDetailsParams {
         val subscriptionProductInfo = arrayListOf<QueryProductDetailsParams.Product>()
         subscriptionProductInfo.add(
-            QueryProductDetailsParams.Product.newBuilder().setProductId("shangpin1")
+            QueryProductDetailsParams.Product.newBuilder().setProductId("shangping1")
                 .setProductType(BillingClient.ProductType.SUBS).build()
         )
         subscriptionProductInfo.add(
