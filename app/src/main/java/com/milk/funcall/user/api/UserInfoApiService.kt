@@ -41,7 +41,7 @@ interface UserInfoApiService {
     suspend fun changeUnlockStatus(
         @Field("deviceUniqueCode") deviceUniqueCode: String,
         // 解锁内容(1：联系方式，2：图片；3：视频)
-        @Field("unLockContent") unlockType: Int,
+        @Field("unlockContent") unlockType: Int,
         @Field("unlockUserId") unlockUserId: Long
     ): ApiResponse<Any>
 }
