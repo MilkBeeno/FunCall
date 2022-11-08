@@ -105,9 +105,10 @@ object AppConfig {
                         (apiResult.subscriptionState == SUBSCRIPTION_STATE_CANCELED
                             || apiResult.subscriptionState == SUBSCRIPTION_STATE_ACTIVE) &&
                             apiResult.acknowledgementState == ACKNOWLEDGEMENT_STATE_ACKNOWLEDGED
-                    if (productId.isNotBlank()) {
-                        LiveEventBus.get<Boolean>(EventKey.SUBSCRIBE_SUCCESSFUL).post(true)
-                    }
+                }
+                if (productId.isNotBlank()) {
+                    LiveEventBus.get<Boolean>(EventKey.SUBSCRIBE_SUCCESSFUL)
+                        .post(apiResponse.success && apiResult != null)
                 }
             }
         }
