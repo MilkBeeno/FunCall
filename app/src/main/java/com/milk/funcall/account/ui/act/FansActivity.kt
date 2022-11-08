@@ -25,7 +25,7 @@ class FansActivity : AbstractActivity() {
     private val binding by lazy { ActivityFansBinding.inflate(layoutInflater) }
     private val fansViewModel by viewModels<FansViewModel>()
     private val fansAdapter by lazy { FansOrFollowsAdapter() }
-    private val loadingDialog by lazy { LoadingDialog(this, string(R.string.common_loading)) }
+    private val loadingDialog by lazy { LoadingDialog(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

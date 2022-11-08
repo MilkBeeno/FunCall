@@ -26,9 +26,7 @@ class HomeFragment : AbstractFragment() {
     private val binding by lazy { FragmentHomeBinding.inflate(layoutInflater) }
     private val homeViewModel by viewModels<HomeViewModel>()
     private val adapter by lazy { HomeAdapter() }
-    private val loadingDialog by lazy {
-        LoadingDialog(requireActivity(), requireActivity().string(R.string.common_loading))
-    }
+    private val loadingDialog by lazy { LoadingDialog(requireActivity()) }
 
     override fun getRootView(): View = binding.root
 

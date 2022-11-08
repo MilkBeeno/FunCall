@@ -18,4 +18,7 @@ object EventKey {
 
     /** 查看女用户信息 */
     const val TO_VIEW_USER_INFO_OF_WOMAN = "TO_VIEW_USER_INFO_OF_WOMAN"
+
+    /** 订阅成功提示 */
+    const val SUBSCRIBE_SUCCESSFUL = "SUBSCRIBE_SUCCESSFUL"
 }

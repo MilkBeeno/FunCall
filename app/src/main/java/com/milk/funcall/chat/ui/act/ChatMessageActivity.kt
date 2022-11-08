@@ -28,7 +28,7 @@ class ChatMessageActivity : AbstractActivity() {
     private val chatMessageViewModel by viewModels<ChatMessageViewModel>()
     private val chatMessageAdapter by lazy { ChatMessageAdapter() }
     private val targetId by lazy { intent.getLongExtra(TARGET_ID, 0) }
-    private val loadingDialog by lazy { LoadingDialog(this, string(R.string.common_loading)) }
+    private val loadingDialog by lazy { LoadingDialog(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

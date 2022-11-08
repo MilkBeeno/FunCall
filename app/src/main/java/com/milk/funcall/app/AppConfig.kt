@@ -1,8 +1,10 @@
 package com.milk.funcall.app
 
+import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.BuildConfig
 import com.milk.funcall.account.Account
 import com.milk.funcall.common.constrant.AppConfigKey
+import com.milk.funcall.common.constrant.EventKey
 import com.milk.simple.ktx.ioScope
 import com.milk.simple.log.Logger
 import com.milk.simple.mdr.KvManger
@@ -103,6 +105,9 @@ object AppConfig {
                         (apiResult.subscriptionState == SUBSCRIPTION_STATE_CANCELED
                             || apiResult.subscriptionState == SUBSCRIPTION_STATE_ACTIVE) &&
                             apiResult.acknowledgementState == ACKNOWLEDGEMENT_STATE_ACKNOWLEDGED
+                    if (productId.isNotBlank()) {
+                        LiveEventBus.get<Boolean>(EventKey.SUBSCRIBE_SUCCESSFUL).post(true)
+                    }
                 }
             }
         }

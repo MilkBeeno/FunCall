@@ -21,7 +21,7 @@ class BlackedListActivity : AbstractActivity() {
     private val binding by lazy { ActivityBlackedListBinding.inflate(layoutInflater) }
     private val blackedViewModel by viewModels<BlackedViewModel>()
     private val blackedListAdapter by lazy { BlackedListAdapter() }
-    private val loadingDialog by lazy { LoadingDialog(this, string(R.string.common_loading)) }
+    private val loadingDialog by lazy { LoadingDialog(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

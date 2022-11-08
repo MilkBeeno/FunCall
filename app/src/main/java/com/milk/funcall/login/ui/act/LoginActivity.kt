@@ -34,7 +34,7 @@ class LoginActivity : AbstractActivity() {
     private val binding by lazy { ActivityLoginBinding.inflate(layoutInflater) }
     private val loginViewModel by viewModels<LoginViewModel>()
     private val authLoginManager by lazy { LoginManager(this) }
-    private val loadingDialog by lazy { LoadingDialog(this, string(R.string.common_loading)) }
+    private val loadingDialog by lazy { LoadingDialog(this) }
     private val maxClientDialog by lazy { MaxClientDialog(this) }
     private var isNotAuthorizing: Boolean = true
 
