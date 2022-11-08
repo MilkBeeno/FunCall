@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
+import android.view.View
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -46,6 +47,7 @@ class MainActivity : AbstractActivity() {
     private var serviceIntent: Intent? = null
     private var connection: ServiceConnection? = null
     private var timer: Timer? = null
+    private var adView: View? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +64,7 @@ class MainActivity : AbstractActivity() {
             val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.MAIN_HOME_BOTTOM)
             if (adUnitId.isNotBlank() && AdConfig.adCancelType != 2) {
                 FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_4)
-                val adView = AdManager.loadBannerAd(activity = this,
+                adView = AdManager.loadBannerAd(activity = this,
                     adUnitId = adUnitId,
                     loadFailureRequest = {
                         FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_FAILED_4, adUnitId, it)
@@ -124,6 +126,11 @@ class MainActivity : AbstractActivity() {
         LiveEventBus.get<Long?>(EventKey.TO_VIEW_USER_INFO_OF_WOMAN).observe(this) {
             if (it != null && it > 0) {
                 UserInfoActivity.create(this, it)
+            }
+        }
+        LiveEventBus.get<Boolean>(EventKey.SUBSCRIBE_SUCCESSFUL).observe(this) {
+            if (adView?.parent != null) {
+                binding.root.removeView(adView)
             }
         }
     }

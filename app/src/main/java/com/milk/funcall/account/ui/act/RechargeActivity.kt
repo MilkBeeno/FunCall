@@ -52,6 +52,7 @@ class RechargeActivity : AbstractActivity() {
         LiveEventBus.get<Boolean>(EventKey.SUBSCRIBE_SUCCESSFUL).observe(this) {
             loadingDialog.dismiss()
             successDialog.show()
+            binding.rechargeAdView.gone()
         }
     }
 

@@ -19,10 +19,9 @@ object AdConfig {
     private val positionMap = mutableMapOf<String, String>()
 
     /** 是否展示广告判断：0->需要展示广告 1->免个人主页广告 2->免 app 所有广告 */
-    internal var adCancelType: Int = 0
+    internal val adCancelType: Int
         get() {
-            field = if (Account.userSubscribe) AppConfig.freeAdType else 0
-            return field
+            return if (Account.userSubscribe) AppConfig.freeAdType else 0
         }
 
     /** 获取网络中最新的广告信息 */
