@@ -10,6 +10,9 @@ import com.milk.funcall.R
 import com.milk.funcall.account.ui.dialog.RechargeDialog
 import com.milk.funcall.account.ui.vm.RechargeViewModel
 import com.milk.funcall.app.AppConfig
+import com.milk.funcall.common.ad.AdConfig
+import com.milk.funcall.common.ad.AdManager
+import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.common.constrant.ProductKey
@@ -28,11 +31,13 @@ class RechargeActivity : AbstractActivity() {
     private val loadingDialog by lazy { LoadingDialog(this) }
     private val successDialog by lazy { RechargeDialog(this) }
     private val rechargeViewModel by viewModels<RechargeViewModel>()
+    private var adView: View? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         initializeView()
+        initializeAdView()
         initializeObserver()
         initializeRecharge()
     }
@@ -43,9 +48,37 @@ class RechargeActivity : AbstractActivity() {
         binding.headerToolbar.statusBarPadding()
         binding.headerToolbar.setTitle(string(R.string.recharge_title), color(R.color.white))
         binding.headerToolbar.showArrowBack(R.drawable.common_arrow_back_white)
-        binding.rechargeAdView.showTopOnNativeAd()
         binding.llWeek.setOnClickListener(this)
         binding.clYear.setOnClickListener(this)
+    }
+
+    private fun initializeAdView() {
+        try {
+            val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.RECHARGE_BOTTOM_AD)
+            if (adUnitId.isNotBlank() && AdConfig.adCancelType != 2) {
+                FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_7)
+                adView = AdManager.loadBannerAd(activity = this,
+                    adUnitId = adUnitId,
+                    loadFailureRequest = {
+                        FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_FAILED_7, adUnitId, it)
+                    },
+                    loadSuccessRequest = {
+                        FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_7)
+                    },
+                    showFailureRequest = {
+                        FireBaseManager.logEvent(FirebaseKey.AD_SHOW_FAILED_7, adUnitId, it)
+                    },
+                    showSuccessRequest = {
+                        FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_7)
+                    },
+                    clickRequest = {
+                        FireBaseManager.logEvent(FirebaseKey.CLICK_AD_4)
+                    })
+                binding.root.addView(adView)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     private fun initializeObserver() {
@@ -53,7 +86,7 @@ class RechargeActivity : AbstractActivity() {
             loadingDialog.dismiss()
             if (it) {
                 successDialog.show()
-                binding.rechargeAdView.gone()
+                adView?.gone()
             }
         }
     }

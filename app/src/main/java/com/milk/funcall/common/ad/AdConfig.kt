@@ -69,8 +69,8 @@ object AdConfig {
                     savePositionId(AdCodeKey.VIEW_USER_IMAGE, it.positionList)
                 AdCodeKey.MAIN_HOME_BOTTOM ->
                     savePositionId(AdCodeKey.MAIN_HOME_BOTTOM, it.positionList)
-                AdCodeKey.RECHARGE_NATIVE_AD ->
-                    savePositionId(AdCodeKey.RECHARGE_NATIVE_AD, it.positionList)
+                AdCodeKey.RECHARGE_BOTTOM_AD ->
+                    savePositionId(AdCodeKey.RECHARGE_BOTTOM_AD, it.positionList)
             }
         }
     }

@@ -223,6 +223,12 @@ object FirebaseKey {
     /** 广告请求失败的次数_订阅页面原生广告 */
     const val AD_REQUEST_FAILED_7 = "Ad_request_failed_7"
 
+    /**  广告请求成功的次数_订阅页面原生广告 */
+    const val THE_AD_SHOW_SUCCESS_7 = "The_ad_show_success_7"
+
+    /** 广告展示失败的次数_订阅页面原生广告 */
+    const val AD_SHOW_FAILED_7 = "Ad_show_failed_7"
+
     /** 点击广告次数_订阅页面原生广告 */
     const val CLICK_AD_7 = "click_ad_7"
 
