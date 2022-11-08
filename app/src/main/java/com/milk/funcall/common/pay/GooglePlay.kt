@@ -94,10 +94,7 @@ class GooglePlay : Pay {
                     getProductPrice(productDetails)
                 }
             } else {
-                Logger.d(
-                    "谷歌商品查询失败," + "查询的 Code 是=${billingResult.responseCode}," + "查询的错误是=${billingResult.debugMessage}",
-                    "谷歌 Pay"
-                )
+                Logger.d("谷歌商品查询失败," + "查询的 Code 是=${billingResult.responseCode}", "谷歌 Pay")
             }
         }
         billingClient?.queryProductDetailsAsync(subsParams, responseListener)

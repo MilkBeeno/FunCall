@@ -129,7 +129,9 @@ class MainActivity : AbstractActivity() {
             }
         }
         LiveEventBus.get<Boolean>(EventKey.SUBSCRIBE_SUCCESSFUL).observe(this) {
-            if (it && adView?.parent != null) binding.root.removeView(adView)
+            if (it && AdConfig.adCancelType == 2 && adView?.parent != null) {
+                binding.root.removeView(adView)
+            }
         }
     }
 

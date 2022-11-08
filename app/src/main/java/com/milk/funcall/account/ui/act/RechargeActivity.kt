@@ -84,9 +84,9 @@ class RechargeActivity : AbstractActivity() {
     private fun initializeObserver() {
         LiveEventBus.get<Boolean>(EventKey.SUBSCRIBE_SUCCESSFUL).observe(this) {
             loadingDialog.dismiss()
-            if (it) {
-                successDialog.show()
-                adView?.gone()
+            if (it) successDialog.show()
+            if (it && AdConfig.adCancelType == 2 && adView?.parent != null) {
+                binding.root.removeView(adView)
             }
         }
     }
@@ -98,12 +98,8 @@ class RechargeActivity : AbstractActivity() {
             mainScope { loadingDialog.show() }
             rechargeViewModel.salesOrder(orderId, purchaseToken)
         }
-        googlePlay.payCancelListener {
-
-        }
-        googlePlay.payFailureListener {
-
-        }
+        googlePlay.payCancelListener { updateUI(null) }
+        googlePlay.payFailureListener { updateUI(null) }
         googlePlay.productList.collectLatest(this) {
             productList = it
             productList.forEach { _ ->
@@ -142,7 +138,7 @@ class RechargeActivity : AbstractActivity() {
         }
     }
 
-    private fun updateUI(clickView: View) {
+    private fun updateUI(clickView: View?) {
         if (clickView == binding.llWeek) {
             binding.llWeek.setBackgroundResource(R.drawable.shape_recharge_options_background_select)
             binding.ivWeek.setImageResource(R.drawable.recharge_options_select)
