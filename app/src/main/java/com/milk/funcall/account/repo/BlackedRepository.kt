@@ -8,7 +8,7 @@ class BlackedRepository {
     private val blackApiService =
         ApiClient.obtainRetrofit().create(BlackedApiService::class.java)
 
-    suspend fun getBlackedList(index: Int) = retrofit {
+    internal suspend fun getBlackedList(index: Int) = retrofit {
         blackApiService.getBlackedList(index)
     }
 }

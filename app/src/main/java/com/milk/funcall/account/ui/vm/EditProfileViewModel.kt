@@ -16,18 +16,18 @@ class EditProfileViewModel : ViewModel() {
     private val editProfileRepository by lazy { EditProfileRepository() }
 
     /** 本地相册或拍照选择的头像 */
-    var localAvatarPath: String = ""
+    internal var localAvatarPath: String = ""
 
     /** 本地相册或录像选择的个人视频 */
-    var localVideoPath = ""
+    internal var localVideoPath = ""
 
     /** 本地相册或拍照选择的个人图片 */
-    val localImageListPath = mutableListOf<String>()
+    internal val localImageListPath = mutableListOf<String>()
 
     /** 当前用户更新信息的状态、用户控制用户信息弹窗和请求结果提示 */
-    var uploadResult = MutableSharedFlow<Boolean>()
+    internal var uploadResult = MutableSharedFlow<Boolean>()
 
-    fun uploadProfile(name: String, bio: String, link: String) {
+    internal fun uploadProfile(name: String, bio: String, link: String) {
         ioScope {
             val avatarUrl = uploadAvatarProfile()
             val imageList = uploadImageListProfile()

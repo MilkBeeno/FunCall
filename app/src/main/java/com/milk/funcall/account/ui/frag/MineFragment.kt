@@ -2,10 +2,12 @@ package com.milk.funcall.account.ui.frag
 
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.milk.funcall.R
 import com.milk.funcall.account.Account
 import com.milk.funcall.account.ui.act.*
 import com.milk.funcall.account.ui.dialog.LogoutDialog
+import com.milk.funcall.app.ui.MainViewModel
 import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.media.loader.ImageLoader
@@ -13,13 +15,16 @@ import com.milk.funcall.common.ui.AbstractFragment
 import com.milk.funcall.databinding.FragmentMineBinding
 import com.milk.funcall.login.ui.act.GenderActivity
 import com.milk.funcall.login.ui.act.LoginActivity
+import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.user.ui.config.AvatarImage
 import com.milk.simple.ktx.*
 
 class MineFragment : AbstractFragment() {
+    private val mainViewModel by activityViewModels<MainViewModel>()
     private val binding by lazy { FragmentMineBinding.inflate(layoutInflater) }
     private val defaultAvatar by lazy { AvatarImage().obtain(Account.userGender) }
     private val logoutDialog by lazy { LogoutDialog(requireActivity()) }
+    private val loadingDialog by lazy { LoadingDialog(requireActivity()) }
 
     override fun getRootView(): View = binding.root
 
@@ -40,8 +45,9 @@ class MineFragment : AbstractFragment() {
         binding.signOut.setOption(R.drawable.mine_sign_out, R.string.mine_sign_out, showLine = false)
         logoutDialog.setOnConfirmListener {
             FireBaseManager.logEvent(FirebaseKey.LOG_OUT_SUCCESS)
+            loadingDialog.show()
             Account.logout()
-            GenderActivity.create(requireActivity())
+            mainViewModel.uploadDeviceInfo()
         }
     }
 
@@ -71,6 +77,10 @@ class MineFragment : AbstractFragment() {
         }
         Account.userFollowsFlow.collectLatest(this) {
             binding.tvFollows.text = it.toString()
+        }
+        mainViewModel.logOutFlow.collectLatest(this) {
+            loadingDialog.dismiss()
+            if (it) GenderActivity.create(requireActivity())
         }
     }
 
@@ -113,7 +123,7 @@ class MineFragment : AbstractFragment() {
     }
 
     companion object {
-        fun create(): Fragment {
+        internal fun create(): Fragment {
             return MineFragment()
         }
     }

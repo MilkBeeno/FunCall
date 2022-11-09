@@ -12,7 +12,7 @@ object AccountRepository {
     private val accountApiService =
         ApiClient.obtainRetrofit().create(AccountApiService::class.java)
 
-    fun getAccountInfo(registered: Boolean) {
+    internal fun getAccountInfo(registered: Boolean) {
         ioScope {
             val apiResponse = retrofit { accountApiService.getUserInfo() }
             val apiResult = apiResponse.data

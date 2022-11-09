@@ -25,8 +25,8 @@ class BaseApplication : Application() {
 
     private fun initializeLibrary() {
         ioScope {
-            DeviceManager.initialize(instance)
             KvManger.initialize(instance)
+            DeviceManager.initialize(instance)
             LoaderConfig.initialize(instance)
             Logger.initialize(BuildConfig.DEBUG)
             ApiErrorHandler.initialize(instance)

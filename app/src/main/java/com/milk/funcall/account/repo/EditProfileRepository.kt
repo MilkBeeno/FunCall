@@ -9,7 +9,7 @@ class EditProfileRepository {
     private val editProfileApiService =
         ApiClient.obtainRetrofit().create(EditProfileApiService::class.java)
 
-    suspend fun uploadProfile(
+    internal suspend fun uploadProfile(
         avatarUrl: String,
         userName: String,
         userBio: String,

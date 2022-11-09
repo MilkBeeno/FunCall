@@ -47,12 +47,12 @@ class EditProfileImageAdapter :
         return imageList.size
     }
 
-    fun setItemOnClickListener(clickListener: ((Int, String) -> Unit)) {
+    internal fun setItemOnClickListener(clickListener: ((Int, String) -> Unit)) {
         this.clickListener = clickListener
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setNewData(images: MutableList<String>) {
+    internal fun setNewData(images: MutableList<String>) {
         imageList.clear()
         images.forEach { imageList.add(it) }
         if (images.size < 6) imageList.add("")

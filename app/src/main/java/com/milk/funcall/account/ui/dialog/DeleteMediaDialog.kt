@@ -29,7 +29,7 @@ class DeleteMediaDialog(activity: FragmentActivity) :
         return DialogDoubleConfirmBinding.inflate(LayoutInflater.from(activity))
     }
 
-    fun setOnConfirmListener(clickRequest: () -> Unit) {
+    internal fun setOnConfirmListener(clickRequest: () -> Unit) {
         this.clickRequest = clickRequest
     }
 }

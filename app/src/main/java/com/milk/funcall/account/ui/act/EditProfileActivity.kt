@@ -292,7 +292,7 @@ class EditProfileActivity : AbstractActivity() {
     }
 
     companion object {
-        fun create(context: Context) {
+        internal fun create(context: Context) {
             context.startActivity(Intent(context, EditProfileActivity::class.java))
         }
     }

@@ -10,7 +10,7 @@ import com.milk.funcall.common.response.ApiPagingResponse
 
 class FollowsViewModel : ViewModel() {
     private val fansOrFollowsRepository by lazy { FansOrFollowsRepository() }
-    val pagingSource = Pager(
+    internal val pagingSource = Pager(
         config = PagingConfig(
             pageSize = 8,
             prefetchDistance = 2,

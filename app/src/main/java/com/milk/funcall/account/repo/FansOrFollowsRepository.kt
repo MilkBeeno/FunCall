@@ -8,11 +8,11 @@ class FansOrFollowsRepository {
     private val fansOrFollowsApiService =
         ApiClient.obtainRetrofit().create(FansOrFollowsApiService::class.java)
 
-    suspend fun getFans(pageIndex: Int) = retrofit {
+    internal suspend fun getFans(pageIndex: Int) = retrofit {
         fansOrFollowsApiService.getFans(pageIndex)
     }
 
-    suspend fun getFollows(pageIndex: Int) = retrofit {
+    internal suspend fun getFollows(pageIndex: Int) = retrofit {
         fansOrFollowsApiService.getFollows(pageIndex)
     }
 }
