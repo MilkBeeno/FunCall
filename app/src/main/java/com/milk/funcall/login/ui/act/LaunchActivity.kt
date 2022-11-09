@@ -14,6 +14,7 @@ import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.common.firebase.FireBaseManager
+import com.milk.funcall.common.pay.PayManager
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityLaunchBinding
 import com.milk.funcall.login.ui.vm.LaunchViewModel
@@ -34,11 +35,11 @@ class LaunchActivity : AbstractActivity() {
         initializeNotification()
         initializeObserver()
         uploadDeviceInfo()
-        checkIsNewClient()
+        PayManager.getPayStatus()
         AppConfig.obtain()
-        AppConfig.getSubscribeStatus()
         AdConfig.obtain()
         Account.initialize()
+        checkIsNewClient()
     }
 
     private fun initializeView() {
