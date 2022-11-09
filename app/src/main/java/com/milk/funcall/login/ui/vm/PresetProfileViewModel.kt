@@ -19,7 +19,7 @@ class PresetProfileViewModel : ViewModel() {
     val uploadImage = MutableSharedFlow<Boolean>()
     val presetProfile = MutableSharedFlow<Boolean>()
 
-    fun getUserAvatarName() {
+    internal fun getUserAvatarName() {
         ioScope {
             val apiResponse =
                 presetProfileRepository.getUserAvatarName(Account.userGender)
@@ -29,7 +29,7 @@ class PresetProfileViewModel : ViewModel() {
         }
     }
 
-    fun updateUserProfile(name: String) {
+    internal fun updateUserProfile(name: String) {
         if (localAvatarPath.isNotBlank()) ioScope {
             val apiResponse = mediaUploadRepository.uploadSinglePicture(localAvatarPath)
             uploadAvatarUrl = apiResponse.data.toString()
@@ -37,7 +37,7 @@ class PresetProfileViewModel : ViewModel() {
         } else presetProfile(name)
     }
 
-    fun presetProfile(name: String) {
+    internal fun presetProfile(name: String) {
         val finalUrl = uploadAvatarUrl.ifBlank { avatar.value }
         ioScope {
             val apiResponse = presetProfileRepository.updateUserProfile(name, finalUrl)

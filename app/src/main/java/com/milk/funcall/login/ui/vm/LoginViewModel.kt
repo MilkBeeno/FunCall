@@ -17,7 +17,7 @@ class LoginViewModel : ViewModel() {
     var registerRequest: (() -> Unit)? = null
     var failedRequest: ((Int) -> Unit)? = null
 
-    fun login(authType: AuthType, accessToken: String) {
+    internal fun login(authType: AuthType, accessToken: String) {
         ioScope {
             val apiResponse =
                 loginRepository.login(currentDeviceId, authType, accessToken)

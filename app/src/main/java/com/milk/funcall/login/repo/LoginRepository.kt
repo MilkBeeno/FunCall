@@ -5,7 +5,7 @@ import com.milk.funcall.common.net.retrofit
 import com.milk.funcall.login.api.ApiService
 
 class LoginRepository {
-    suspend fun login(deviceNum: String, authType: AuthType, accessToken: String) = retrofit {
+   internal suspend fun login(deviceNum: String, authType: AuthType, accessToken: String) = retrofit {
         ApiService.loginApiService.login(deviceNum, authType.value, accessToken)
     }
 }

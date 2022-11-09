@@ -5,11 +5,11 @@ import com.milk.funcall.common.net.retrofit
 import com.milk.funcall.login.api.ApiService
 
 class PresetProfileRepository {
-    suspend fun getUserAvatarName(gender: String) = retrofit {
+    internal suspend fun getUserAvatarName(gender: String) = retrofit {
         ApiService.loginApiService.getUserAvatarName(gender)
     }
 
-    suspend fun updateUserProfile(name: String, imageUrl: String) = retrofit {
+    internal suspend fun updateUserProfile(name: String, imageUrl: String) = retrofit {
         ApiService.loginApiService.updateUserProfile(name, imageUrl, Account.userGender)
     }
 }
