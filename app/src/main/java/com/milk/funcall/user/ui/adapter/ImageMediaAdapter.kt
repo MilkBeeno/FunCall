@@ -32,18 +32,18 @@ class ImageMediaAdapter : RecyclerView.Adapter<ImageMediaAdapter.ImageMediaViewH
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setNewData(images: MutableList<String>) {
+    internal fun setNewData(images: MutableList<String>) {
         imageList.clear()
         images.forEach { imageList.add(it) }
         notifyDataSetChanged()
     }
 
-    fun removeItem(position: Int) {
+    internal fun removeItem(position: Int) {
         imageList.removeAt(position)
         notifyItemRemoved(position)
     }
 
-    fun getItem(position: Int) = imageList[position]
+    internal fun getItem(position: Int) = imageList[position]
 
     class ImageMediaViewHolder(view: View) : RecyclerView.ViewHolder(view)
 }

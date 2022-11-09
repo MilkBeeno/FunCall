@@ -27,7 +27,7 @@ class ViewAdDialog(activity: FragmentActivity) : SimpleDialog<DialogViewAdBindin
         }
     }
 
-    fun setOnConfirmRequest(confirmRequest: () -> Unit) {
+    internal fun setOnConfirmRequest(confirmRequest: () -> Unit) {
         this.confirmRequest = confirmRequest
     }
 

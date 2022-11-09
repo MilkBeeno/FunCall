@@ -385,7 +385,7 @@ class UserInfoActivity : AbstractActivity() {
 
     companion object {
         private const val USER_ID = "USER_ID"
-        fun create(context: Context, userId: Long = 0) {
+        internal fun create(context: Context, userId: Long = 0) {
             val intent = Intent(context, UserInfoActivity::class.java)
             intent.putExtra(USER_ID, userId)
             context.startActivity(intent)

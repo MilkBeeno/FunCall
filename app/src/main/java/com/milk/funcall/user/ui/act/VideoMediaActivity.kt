@@ -97,7 +97,7 @@ class VideoMediaActivity : AbstractActivity() {
         private const val VIDEO_URL = "VIDEO_URL"
         private const val TARGET_ID = "TARGET_ID"
         private const val IS_BLACKED = "IS_BLACKED"
-        fun create(
+        internal fun create(
             context: Context,
             videoUrl: String,
             targetId: Long = 0,

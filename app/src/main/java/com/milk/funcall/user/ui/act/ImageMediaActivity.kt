@@ -112,7 +112,7 @@ class ImageMediaActivity : AbstractActivity() {
     companion object {
         private const val TARGET_ID = "TARGET_ID"
         private const val IS_BLACKED = "IS_BLACKED"
-        fun create(context: Context, targetId: Long = 0, isBlacked: Boolean = false) {
+        internal fun create(context: Context, targetId: Long = 0, isBlacked: Boolean = false) {
             val intent = Intent(context, ImageMediaActivity::class.java)
             intent.putExtra(TARGET_ID, targetId)
             intent.putExtra(IS_BLACKED, isBlacked)

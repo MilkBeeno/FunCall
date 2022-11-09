@@ -28,7 +28,7 @@ class ListAdView : FrameLayout {
     private var anyThinkNativeAdView: ATNativeAdView? = null
     private var mNativeAdTop: NativeAd? = null
 
-    fun showTopOnNativeAd(itemAdType: ItemAdType) {
+   internal fun showTopOnNativeAd(itemAdType: ItemAdType) {
         removeAllViews()
         visibility = VISIBLE
         anyThinkNativeAdView?.removeAllViews()

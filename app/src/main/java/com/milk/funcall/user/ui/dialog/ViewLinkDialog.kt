@@ -19,7 +19,7 @@ class ViewLinkDialog(activity: FragmentActivity) : SimpleDialog<DialogViewLinkBi
         }
     }
 
-    fun setOnConfirmRequest(confirmRequest: () -> Unit) {
+    internal fun setOnConfirmRequest(confirmRequest: () -> Unit) {
         this.confirmRequest = confirmRequest
     }
 

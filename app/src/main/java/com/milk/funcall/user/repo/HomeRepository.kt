@@ -5,7 +5,7 @@ import com.milk.funcall.common.net.retrofit
 import com.milk.funcall.user.api.ApiService
 
 class HomeRepository {
-    suspend fun getHomeList(pageIndex: Int, groupNumber: Int) = retrofit {
+    internal suspend fun getHomeList(pageIndex: Int, groupNumber: Int) = retrofit {
         ApiService.homeApiService.getHomeList(pageIndex, Account.userGender, groupNumber)
     }
 }

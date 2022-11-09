@@ -98,6 +98,6 @@ class HomeFragment : AbstractFragment() {
     }
 
     companion object {
-        fun create() = HomeFragment()
+        internal fun create() = HomeFragment()
     }
 }

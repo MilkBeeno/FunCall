@@ -15,7 +15,7 @@ object UserInfoRepository {
         return DataBaseManager.DB.userInfoTableDao().query(targetId)
     }
 
-    suspend fun getUserInfoByNetwork(userId: Long) = retrofit {
+    internal suspend fun getUserInfoByNetwork(userId: Long) = retrofit {
         val apiResponse =
             ApiService.userInfoApiService.getUserInfoByNetwork(userId)
         val apiResult = apiResponse.data
@@ -24,7 +24,7 @@ object UserInfoRepository {
         apiResponse
     }
 
-    suspend fun getNextUserInfoByNetwork() = retrofit {
+    internal suspend fun getNextUserInfoByNetwork() = retrofit {
         val apiResponse =
             ApiService.userInfoApiService.getNextUserInfoByNetwork(Account.userGender)
         val apiResult = apiResponse.data
@@ -58,7 +58,7 @@ object UserInfoRepository {
             )
         }
 
-    suspend fun changeFollowedStatus(targetId: Long, isFollowed: Boolean) = retrofit {
+    internal suspend fun changeFollowedStatus(targetId: Long, isFollowed: Boolean) = retrofit {
         val apiResponse =
             ApiService.userInfoApiService.changeFollowedStatus(targetId, isFollowed)
         if (apiResponse.success) {
@@ -74,11 +74,11 @@ object UserInfoRepository {
         apiResponse
     }
 
-    suspend fun blackUser(targetId: Long) = retrofit {
+    internal suspend fun blackUser(targetId: Long) = retrofit {
         ApiService.userInfoApiService.blackUser(targetId)
     }
 
-    suspend fun changeUnlockStatus(deviceId: String, unlockType: Int, unlockUserId: Long) =
+    internal suspend fun changeUnlockStatus(deviceId: String, unlockType: Int, unlockUserId: Long) =
         retrofit {
             ApiService.userInfoApiService.changeUnlockStatus(deviceId, unlockType, unlockUserId)
         }
