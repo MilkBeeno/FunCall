@@ -9,7 +9,7 @@ class LocalPagingSource<Key : Any, Value : Any>(
     private val prefetchDistance: Int = 1,
     private val pagingSourceFactory: () -> PagingSource<Key, Value>
 ) {
-    val pager: Pager<Key, Value>
+    internal val pager: Pager<Key, Value>
         get() = Pager(
             PagingConfig(
                 pageSize = pageSize,

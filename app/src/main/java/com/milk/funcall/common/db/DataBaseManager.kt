@@ -9,7 +9,7 @@ object DataBaseManager {
     lateinit var DB: AppDataBase
     private const val DATA_BASE_NAME = "funcall.db"
 
-    fun initialize(context: Application) {
+    internal fun initialize(context: Application) {
         DB = Room.databaseBuilder(context, AppDataBase::class.java, DATA_BASE_NAME)
             //.addMigrations(MIGRATION_1_2)
             .build()

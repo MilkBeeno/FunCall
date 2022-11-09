@@ -11,7 +11,7 @@ import java.net.URL
 
 object BitmapUtil {
     /** 将图片地址转成 bitmap */
-    fun obtain(imageUrl: String): Bitmap? {
+    internal fun obtain(imageUrl: String): Bitmap? {
         var inputStream: InputStream? = null
         var outputStream: ByteArrayOutputStream? = null
         var url: URL? = null

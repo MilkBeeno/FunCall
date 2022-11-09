@@ -49,36 +49,36 @@ class VideoLoader(
         private var errorDrawable: Drawable? = null
         private var targetView: AppCompatImageView? = null
 
-        fun request(data: Any?) = apply {
+        internal fun request(data: Any?) = apply {
             this.data = data
         }
 
-        fun placeholder(@DrawableRes drawableResId: Int) = apply {
+        internal fun placeholder(@DrawableRes drawableResId: Int) = apply {
             this.placeholderResId = drawableResId
             this.placeholderDrawable = null
 
         }
 
-        fun placeholder(drawable: Drawable?) = apply {
+        internal fun placeholder(drawable: Drawable?) = apply {
             this.placeholderDrawable = drawable
             this.placeholderResId = 0
         }
 
-        fun error(@DrawableRes drawableResId: Int) = apply {
+        internal fun error(@DrawableRes drawableResId: Int) = apply {
             this.errorResId = drawableResId
             this.errorDrawable = null
         }
 
-        fun error(drawable: Drawable?) = apply {
+        internal fun error(drawable: Drawable?) = apply {
             this.errorDrawable = drawable
             this.errorResId = 0
         }
 
-        fun target(targetView: AppCompatImageView) = apply {
+        internal fun target(targetView: AppCompatImageView) = apply {
             this.targetView = targetView
         }
 
-        fun build(): VideoLoader {
+        internal fun build(): VideoLoader {
             return VideoLoader(
                 data = checkNotNull(data),
                 placeholderResId = placeholderResId,

@@ -35,7 +35,7 @@ object ApiClient {
                 .build()
         }
 
-    fun obtainRetrofit(): Retrofit {
+    internal fun obtainRetrofit(): Retrofit {
         if (mainRetrofit == null)
             mainRetrofit = Retrofit.Builder()
                 .baseUrl(MainHost().realUrl)
@@ -45,7 +45,7 @@ object ApiClient {
         return checkNotNull(mainRetrofit)
     }
 
-    fun obtainUploadRetrofit(): Retrofit {
+    internal fun obtainUploadRetrofit(): Retrofit {
         if (uploadRetrofit == null)
             uploadRetrofit = Retrofit.Builder()
                 .baseUrl(MainHost().realUrl)

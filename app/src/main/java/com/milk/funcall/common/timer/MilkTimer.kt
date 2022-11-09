@@ -8,14 +8,14 @@ class MilkTimer(private val builder: Builder) {
     private var milkCountDownTimer: MilkCountDownTimer? = null
     private var timeLeft: Long = 0
 
-    fun start() {
+    internal fun start() {
         if (milkCountDownTimer == null) {
             milkCountDownTimer = MilkCountDownTimer()
         }
         milkCountDownTimer?.start()
     }
 
-    fun finish() {
+    internal fun finish() {
         mainScope { milkCountDownTimer?.onFinish() }
     }
 
@@ -40,27 +40,27 @@ class MilkTimer(private val builder: Builder) {
         internal var onTickListener: ((MilkTimer, Long) -> Unit)? = null
         internal var onFinishedListener: (() -> Unit)? = null
 
-        fun setMillisInFuture(millisInFuture: Long): Builder {
+        internal fun setMillisInFuture(millisInFuture: Long): Builder {
             this.millisInFuture = millisInFuture
             return this
         }
 
-        fun setCountDownInterval(countDownInterval: Long): Builder {
+        internal fun setCountDownInterval(countDownInterval: Long): Builder {
             this.countDownInterval = countDownInterval
             return this
         }
 
-        fun setOnTickListener(onTickListener: (MilkTimer, Long) -> Unit): Builder {
+        internal fun setOnTickListener(onTickListener: (MilkTimer, Long) -> Unit): Builder {
             this.onTickListener = onTickListener
             return this
         }
 
-        fun setOnFinishedListener(onFinishedListener: () -> Unit): Builder {
+        internal fun setOnFinishedListener(onFinishedListener: () -> Unit): Builder {
             this.onFinishedListener = onFinishedListener
             return this
         }
 
-        fun build(): MilkTimer {
+        internal fun build(): MilkTimer {
             return MilkTimer(this)
         }
     }

@@ -47,7 +47,7 @@ class WebActivity : AbstractActivity() {
     companion object {
         private const val WEB_VIEW_TYPE = "WEB_VIEW_TYPE"
         private const val WEB_VIEW_URL = "WEB_VIEW_URL"
-        fun create(context: Context, type: String, url: String) {
+        internal fun create(context: Context, type: String, url: String) {
             val intent = Intent(context, WebActivity::class.java)
             intent.putExtra(WEB_VIEW_TYPE, type)
             intent.putExtra(WEB_VIEW_URL, url)

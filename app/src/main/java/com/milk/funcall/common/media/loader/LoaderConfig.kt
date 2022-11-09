@@ -13,7 +13,7 @@ import java.io.File
 object LoaderConfig {
     private const val MAX_FACTORY_CACHE = 10 * 1024 * 1024L
 
-    fun initialize(application: Application) {
+    internal fun initialize(application: Application) {
         Coil.setImageLoader(
             ImageLoader.Builder(application)
                 .memoryCachePolicy(CachePolicy.ENABLED)

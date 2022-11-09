@@ -149,11 +149,11 @@ class ImageLoader(
         private var bottomRightRadius: Float = 0f
         private var targetView: AppCompatImageView? = null
 
-        fun request(data: Any?) = apply {
+        internal fun request(data: Any?) = apply {
             this.data = data
         }
 
-        fun loadAvatar(data: Any?, gender: String = Account.userGender) = apply {
+        internal fun loadAvatar(data: Any?, gender: String = Account.userGender) = apply {
             request(data)
             isCircle = true
             placeholderResId = if (gender == Gender.Woman.value)
@@ -162,54 +162,54 @@ class ImageLoader(
                 R.drawable.common_default_man
         }
 
-        fun placeholder(@DrawableRes drawableResId: Int) = apply {
+        internal fun placeholder(@DrawableRes drawableResId: Int) = apply {
             this.placeholderResId = drawableResId
             this.placeholderDrawable = null
         }
 
-        fun placeholder(drawable: Drawable?) = apply {
+        internal fun placeholder(drawable: Drawable?) = apply {
             this.placeholderDrawable = drawable
             this.placeholderResId = 0
         }
 
-        fun error(@DrawableRes drawableResId: Int) = apply {
+        internal fun error(@DrawableRes drawableResId: Int) = apply {
             this.errorResId = drawableResId
             this.errorDrawable = null
         }
 
-        fun error(drawable: Drawable?) = apply {
+        internal fun error(drawable: Drawable?) = apply {
             this.errorDrawable = drawable
             this.errorResId = 0
         }
 
 
-        fun isCircle(isCircle: Boolean) = apply {
+        internal fun isCircle(isCircle: Boolean) = apply {
             this.isCircle = isCircle
         }
 
-        fun isRoundCorner(isRoundCorner: Boolean) = apply {
+        internal fun isRoundCorner(isRoundCorner: Boolean) = apply {
             this.isRoundCorner = isRoundCorner
         }
 
-        fun roundRadius(roundRadius: Float) = apply {
+        internal fun roundRadius(roundRadius: Float) = apply {
             this.roundRadius = roundRadius
         }
 
-        fun roundTopRadius(topLeftRadius: Float, topRightRadius: Float) = apply {
+        internal fun roundTopRadius(topLeftRadius: Float, topRightRadius: Float) = apply {
             this.topLeftRadius = topLeftRadius
             this.topRightRadius = topRightRadius
         }
 
-        fun roundBottomRadius(bottomLeftRadius: Float, bottomRightRadius: Float) = apply {
+        internal fun roundBottomRadius(bottomLeftRadius: Float, bottomRightRadius: Float) = apply {
             this.bottomLeftRadius = bottomLeftRadius
             this.bottomRightRadius = bottomRightRadius
         }
 
-        fun target(targetView: AppCompatImageView) = apply {
+        internal fun target(targetView: AppCompatImageView) = apply {
             this.targetView = targetView
         }
 
-        fun build(): ImageLoader {
+        internal fun build(): ImageLoader {
             return ImageLoader(
                 targetView = checkNotNull(targetView),
                 data = checkRequestEffectivity(data),

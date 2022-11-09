@@ -9,7 +9,7 @@ import com.google.gson.stream.JsonWriter
 import java.lang.reflect.Type
 
 object JsonConvert {
-    val gson: Gson by lazy {
+    internal val gson: Gson by lazy {
         GsonBuilder()
             .registerTypeAdapter(Boolean::class.java, BooleanTypeAdapter())
             .registerTypeAdapter(String::class.java, StringTypeAdapter())
@@ -19,15 +19,15 @@ object JsonConvert {
             .create()
     }
 
-    fun <T> toModel(json: String, type: Class<T>): T? {
+    internal fun <T> toModel(json: String, type: Class<T>): T? {
         return gson.fromJson(json, type)
     }
 
-    fun <T> toModel(json: String, type: Type): T? {
+    internal fun <T> toModel(json: String, type: Type): T? {
         return gson.fromJson(json, type)
     }
 
-    inline fun <reified T> toJson(model: T): String {
+    internal inline fun <reified T> toJson(model: T): String {
         return gson.toJson(model) ?: ""
     }
 

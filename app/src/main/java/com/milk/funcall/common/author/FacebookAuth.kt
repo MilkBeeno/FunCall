@@ -73,7 +73,7 @@ class FacebookAuth(private val activity: FragmentActivity) : Auth {
     }
 
     companion object {
-        fun initializeSdk(application: Application) {
+        internal fun initializeSdk(application: Application) {
             FacebookSdk.sdkInitialize(application)
             AppEventsLogger.activateApp(application)
             FacebookSdk.setIsDebugEnabled(BuildConfig.DEBUG)

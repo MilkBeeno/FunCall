@@ -12,7 +12,7 @@ class MediaUploadRepository {
         ApiClient.obtainUploadRetrofit().create(MediaUploadApiService::class.java)
 
     /** 图片上传、单图上传 */
-    suspend fun uploadSinglePicture(filePath: String) = retrofit {
+    internal suspend fun uploadSinglePicture(filePath: String) = retrofit {
         // 1.创建MultipartBody.Builder对象
         val builder = MultipartBody.Builder().setType(MultipartBody.FORM)
         // 2.获取图片，创建请求体
@@ -30,7 +30,7 @@ class MediaUploadRepository {
     }
 
     /** 图片上传、多图上传 */
-    suspend fun uploadMultiplePicture(filePathList: MutableList<String>) = retrofit {
+    internal suspend fun uploadMultiplePicture(filePathList: MutableList<String>) = retrofit {
         val parts = mutableListOf<MultipartBody.Part>()
         filePathList.forEach { filePath ->
             val file = File(filePath)
@@ -44,7 +44,7 @@ class MediaUploadRepository {
     }
 
     /** 视频上传、单个上传 */
-    suspend fun uploadSingleVideo(filePath: String) = retrofit {
+    internal suspend fun uploadSingleVideo(filePath: String) = retrofit {
         val builder = MultipartBody.Builder().setType(MultipartBody.FORM)
         val file = File(filePath)
         val body = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())

@@ -4,7 +4,7 @@ import com.milk.funcall.common.response.ApiResponse
 import com.milk.funcall.common.net.error.ApiErrorCode
 import com.milk.funcall.common.net.error.ApiErrorHandler
 
-suspend fun <T> retrofit(
+internal suspend fun <T> retrofit(
     unifiedProcessing: Boolean = true,
     action: suspend () -> ApiResponse<T>
 ): ApiResponse<T> {
