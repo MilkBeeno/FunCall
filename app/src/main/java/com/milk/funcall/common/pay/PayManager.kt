@@ -1,9 +1,7 @@
 package com.milk.funcall.common.pay
 
-import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.account.Account
 import com.milk.funcall.app.AppRepository
-import com.milk.funcall.common.constrant.EventKey
 import com.milk.simple.ktx.ioScope
 
 object PayManager {
@@ -23,16 +21,11 @@ object PayManager {
                 val apiResponse =
                     AppRepository().getSubscribeStatus(productId, purchaseToken)
                 val apiResult = apiResponse.data
-                if (apiResponse.success && apiResult != null) {
-                    Account.userSubscribe =
-                        (apiResult.subscriptionState == SUBSCRIPTION_STATE_CANCELED
-                            || apiResult.subscriptionState == SUBSCRIPTION_STATE_ACTIVE) &&
-                            apiResult.acknowledgementState == ACKNOWLEDGEMENT_STATE_ACKNOWLEDGED
-                }
-                if (productId.isNotBlank()) {
-                    LiveEventBus.get<Boolean>(EventKey.SUBSCRIBE_SUCCESSFUL)
-                        .post(apiResponse.success && apiResult != null)
-                }
+                val state = (apiResult?.subscriptionState == SUBSCRIPTION_STATE_CANCELED
+                    || apiResult?.subscriptionState == SUBSCRIPTION_STATE_ACTIVE) &&
+                    apiResult.acknowledgementState == ACKNOWLEDGEMENT_STATE_ACKNOWLEDGED
+                Account.userSubscribe = state
+                Account.userSubscribeFlow.emit(state)
             }
         }
     }

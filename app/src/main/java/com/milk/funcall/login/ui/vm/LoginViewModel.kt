@@ -6,6 +6,7 @@ import com.milk.funcall.account.repo.AccountRepository
 import com.milk.funcall.common.author.AuthType
 import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.constrant.FirebaseKey
+import com.milk.funcall.common.pay.PayManager
 import com.milk.funcall.login.repo.LoginRepository
 import com.milk.simple.ktx.ioScope
 
@@ -37,6 +38,8 @@ class LoginViewModel : ViewModel() {
                     loginRequest?.invoke()
                     // 登录成功后 1.老用户直接获取用户信息 2.新用户去预设头像名字信息后获取用户信息
                     AccountRepository.getAccountInfo(true)
+                    // 登录之后去获取 vip 的状态
+                    PayManager.getPayStatus()
                 } else registerRequest?.invoke()
             } else {
                 when (authType) {

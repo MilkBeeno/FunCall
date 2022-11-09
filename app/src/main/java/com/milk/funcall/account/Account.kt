@@ -172,6 +172,7 @@ object Account {
         }
 
     /** 当前账号是否属于订阅状态 */
+    internal var userSubscribeFlow = MutableStateFlow(false)
     internal var userSubscribe: Boolean = false
         set(value) {
             KvManger.put(KvKey.USER_SUBSCRIBE_TO_VIEW_OTHER_FREE.plus(userId), value)
@@ -226,6 +227,8 @@ object Account {
             userImageListFlow.emit(mutableListOf())
             userVideo = ""
             userVideoFlow.emit("")
+            userSubscribe = false
+            userSubscribeFlow.emit(false)
         }
     }
 

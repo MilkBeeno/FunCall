@@ -52,7 +52,6 @@ class MainActivity : AbstractActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        initializeAdView()
         initializeView()
         initializeObserver()
         initializeService()
@@ -61,6 +60,7 @@ class MainActivity : AbstractActivity() {
 
     private fun initializeAdView() {
         try {
+            if (adView?.parent != null) return
             val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.MAIN_HOME_BOTTOM)
             if (adUnitId.isNotBlank() && AdConfig.adCancelType != 2) {
                 FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_4)
@@ -128,10 +128,10 @@ class MainActivity : AbstractActivity() {
                 UserInfoActivity.create(this, it)
             }
         }
-        LiveEventBus.get<Boolean>(EventKey.SUBSCRIBE_SUCCESSFUL).observe(this) {
+        Account.userSubscribeFlow.collectLatest(this) {
             if (it && AdConfig.adCancelType == 2 && adView?.parent != null) {
                 binding.root.removeView(adView)
-            }
+            } else initializeAdView()
         }
     }
 

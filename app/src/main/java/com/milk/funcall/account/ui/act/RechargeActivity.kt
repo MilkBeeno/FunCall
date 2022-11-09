@@ -5,15 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
-import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
+import com.milk.funcall.account.Account
 import com.milk.funcall.account.ui.dialog.RechargeSuccessDialog
 import com.milk.funcall.account.ui.vm.RechargeViewModel
 import com.milk.funcall.app.AppConfig
 import com.milk.funcall.common.ad.AdConfig
 import com.milk.funcall.common.ad.AdManager
 import com.milk.funcall.common.constrant.AdCodeKey
-import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.common.constrant.ProductKey
 import com.milk.funcall.common.firebase.FireBaseManager
@@ -37,7 +36,6 @@ class RechargeActivity : AbstractActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         initializeView()
-        initializeAdView()
         initializeObserver()
         initializeRecharge()
     }
@@ -54,6 +52,7 @@ class RechargeActivity : AbstractActivity() {
 
     private fun initializeAdView() {
         try {
+            if (adView?.parent != null) return
             val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.RECHARGE_BOTTOM_AD)
             if (adUnitId.isNotBlank() && AdConfig.adCancelType != 2) {
                 FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_7)
@@ -82,12 +81,12 @@ class RechargeActivity : AbstractActivity() {
     }
 
     private fun initializeObserver() {
-        LiveEventBus.get<Boolean>(EventKey.SUBSCRIBE_SUCCESSFUL).observe(this) {
+        Account.userSubscribeFlow.collectLatest(this) {
             loadingDialog.dismiss()
             if (it) rechargeSuccessDialog.show()
             if (it && AdConfig.adCancelType == 2 && adView?.parent != null) {
                 binding.root.removeView(adView)
-            }
+            } else initializeAdView()
         }
     }
 
