@@ -1,17 +1,27 @@
 package com.milk.funcall.common.author
 
-import android.content.Context
+import android.app.Application
 import android.provider.Settings
 import com.milk.funcall.common.constrant.EventKey
+import com.milk.funcall.common.constrant.KvKey
 import com.milk.simple.mdr.KvManger
 import java.util.*
 
-object Device {
-    /** 获取设备的唯一 ID */
-    internal fun getDeviceUniqueId(context: Context): String {
+object DeviceManager {
+    internal var number: String = ""
+        set(value) {
+            KvManger.put(KvKey.PLATFORM_DEVICE_NUMBER, value)
+            field = value
+        }
+        get() {
+            field = KvManger.getString(KvKey.PLATFORM_DEVICE_NUMBER)
+            return field
+        }
+
+    internal fun initialize(application: Application) {
         val androidId =
-            Settings.System.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
-        return androidId.ifBlank { getGeneratedUniqueId() }
+            Settings.System.getString(application.contentResolver, Settings.Secure.ANDROID_ID)
+        number = androidId.ifBlank { getGeneratedUniqueId() }
     }
 
     /** 随机生成的ID */
@@ -44,23 +54,4 @@ object Device {
         }
         return value
     }
-
-    /*internal fun obtain(context: Context, resultRequest: (Boolean, String) -> Unit) {
-       if (AdvertisingIdClient.isAdvertisingIdProviderAvailable(context)) {
-           val advertisingIdInfoListenableFuture =
-               AdvertisingIdClient.getAdvertisingIdInfo(context)
-           Futures.addCallback(
-               advertisingIdInfoListenableFuture,
-               object : FutureCallback<AdvertisingIdInfo> {
-                   override fun onSuccess(adInfo: AdvertisingIdInfo?) {
-                       resultRequest(true, adInfo?.id.toString())
-                   }
-
-                   override fun onFailure(t: Throwable) {
-                       resultRequest(true, getGeneratedUniqueId())
-                   }
-               }, Executors.newSingleThreadExecutor()
-           )
-       } else resultRequest(true, getGeneratedUniqueId())
-   }*/
 }

@@ -15,9 +15,9 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import com.milk.funcall.R
 import com.milk.funcall.app.ui.act.MainActivity
-import com.milk.funcall.common.author.LoginManager
 import com.milk.funcall.common.author.AuthType
-import com.milk.funcall.common.author.Device
+import com.milk.funcall.common.author.DeviceManager
+import com.milk.funcall.common.author.LoginManager
 import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.net.error.ApiErrorCode
@@ -150,7 +150,7 @@ class LoginActivity : AbstractActivity() {
 
     private fun checkIsAllowedToLoginAuth(request: (String) -> Unit) {
         if (loginViewModel.agreementPrivacy) {
-            val deviceId = Device.getDeviceUniqueId(this)
+            val deviceId = DeviceManager.number
             if (deviceId.isNotBlank()) {
                 mainScope { request(deviceId) }
             } else {

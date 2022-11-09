@@ -7,9 +7,10 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import com.anythink.interstitial.api.ATInterstitial
 import com.milk.funcall.common.ad.AdConfig
-import com.milk.funcall.common.ad.AdManager
 import com.milk.funcall.common.ad.AdLoadType
+import com.milk.funcall.common.ad.AdManager
 import com.milk.funcall.common.author.AuthType
+import com.milk.funcall.common.author.DeviceManager
 import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.common.firebase.FireBaseManager
@@ -24,7 +25,8 @@ class LaunchViewModel : ViewModel() {
     private var adLoadStatus = AdLoadType.Loading
 
     /** 启动时上传设备信息 */
-    internal fun uploadDeviceInfo(deviceId: String) {
+    internal fun uploadDeviceInfo() {
+        val deviceId = DeviceManager.number
         val loginRepository = LoginRepository()
         ioScope { loginRepository.login(deviceId, AuthType.NULL, deviceId) }
     }

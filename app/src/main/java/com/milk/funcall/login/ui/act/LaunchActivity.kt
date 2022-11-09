@@ -9,7 +9,7 @@ import com.milk.funcall.account.Account
 import com.milk.funcall.app.AppConfig
 import com.milk.funcall.app.ui.act.MainActivity
 import com.milk.funcall.common.ad.AdConfig
-import com.milk.funcall.common.author.Device
+import com.milk.funcall.common.author.DeviceManager
 import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.common.constrant.KvKey
@@ -86,8 +86,7 @@ class LaunchActivity : AbstractActivity() {
     }
 
     private fun uploadDeviceInfo() {
-        val deviceId = Device.getDeviceUniqueId(this)
-        launchViewModel.uploadDeviceInfo(deviceId)
+        launchViewModel.uploadDeviceInfo()
     }
 
     private fun checkIsNewClient() {

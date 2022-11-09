@@ -16,7 +16,7 @@ import com.milk.funcall.account.ui.act.RechargeActivity
 import com.milk.funcall.app.AppConfig
 import com.milk.funcall.chat.ui.act.ChatMessageActivity
 import com.milk.funcall.common.ad.AdConfig
-import com.milk.funcall.common.author.Device
+import com.milk.funcall.common.author.DeviceManager
 import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.constrant.FirebaseKey
@@ -243,7 +243,7 @@ class UserInfoActivity : AbstractActivity() {
 
     private fun loadUserInfo() {
         binding.lvLoading.visible()
-        userInfoViewModel.loadUserInfo(userId, Device.getDeviceUniqueId(this))
+        userInfoViewModel.loadUserInfo(userId, DeviceManager.number)
     }
 
     override fun onMultipleClick(view: View) {
@@ -305,7 +305,7 @@ class UserInfoActivity : AbstractActivity() {
                             FireBaseManager.logEvent(FirebaseKey.CLICK_FREE_UNLOCK_CONTACT)
                             binding.link.flLinkLocked.gone()
                             userInfoViewModel.changeUnlockStatus(
-                                Device.getDeviceUniqueId(this),
+                                DeviceManager.number,
                                 UnlockType.Link.value,
                                 userInfo.targetId
                             )
@@ -341,7 +341,7 @@ class UserInfoActivity : AbstractActivity() {
                 loadingDialog.dismiss()
                 binding.link.flLinkLocked.gone()
                 userInfoViewModel.changeUnlockStatus(
-                    Device.getDeviceUniqueId(this),
+                    DeviceManager.number,
                     UnlockType.Link.value,
                     userInfo.targetId
                 )
@@ -360,7 +360,7 @@ class UserInfoActivity : AbstractActivity() {
                 FireBaseManager.logEvent(FirebaseKey.CLICK_UNLOCK_PHOTO_ALBUM_FOR_FREE)
                 binding.mlImage.gone()
                 userInfoViewModel.changeUnlockStatus(
-                    Device.getDeviceUniqueId(this),
+                    DeviceManager.number,
                     UnlockType.Image.value,
                     userInfo.targetId
                 )
@@ -374,7 +374,7 @@ class UserInfoActivity : AbstractActivity() {
                     success = {
                         binding.mlImage.gone()
                         userInfoViewModel.changeUnlockStatus(
-                            Device.getDeviceUniqueId(this),
+                            DeviceManager.number,
                             UnlockType.Image.value,
                             userInfo.targetId
                         )

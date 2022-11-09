@@ -8,7 +8,7 @@ import com.google.firebase.messaging.RemoteMessage
 import com.milk.funcall.BaseApplication
 import com.milk.funcall.R
 import com.milk.funcall.account.Account
-import com.milk.funcall.common.author.Device
+import com.milk.funcall.common.author.DeviceManager
 import com.milk.funcall.common.firebase.api.RefreshApiService
 import com.milk.funcall.common.net.ApiClient
 import com.milk.funcall.common.net.retrofit
@@ -73,8 +73,7 @@ class FCMMessagingService : FirebaseMessagingService() {
         if (Account.userGender == Gender.Man.value) {
             ioScope {
                 val result = retrofit {
-                    val deviceId = Device.getDeviceUniqueId(this@FCMMessagingService.baseContext)
-                    refreshApiService.uploadToken(token, deviceId)
+                    refreshApiService.uploadToken(token, DeviceManager.number)
                 }
                 Logger.d("Token上传状态：${result.success}", "FCMMessagingService")
             }
@@ -89,9 +88,8 @@ class FCMMessagingService : FirebaseMessagingService() {
                 FirebaseMessaging.getInstance().token.addOnCompleteListener {
                     if (it.isSuccessful) {
                         ioScope {
-                            val deviceId = Device.getDeviceUniqueId(context)
                             val result = retrofit {
-                                refreshApiService.uploadToken(it.result, deviceId)
+                                refreshApiService.uploadToken(it.result, DeviceManager.number)
                             }
                             Logger.d("Token上传状态：${result.success}", "FCMMessagingService")
                         }

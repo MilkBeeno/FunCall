@@ -8,7 +8,6 @@ import androidx.fragment.app.FragmentActivity
 import com.milk.funcall.common.ui.dialog.SimpleDialog
 import com.milk.funcall.databinding.DialogRechargeSubscribedBinding
 
-/** 已经订阅后，重复订阅弹窗 */
 class SubscribedDialog(activity: FragmentActivity) :
     SimpleDialog<DialogRechargeSubscribedBinding>(activity) {
     private val handler = Handler(Looper.myLooper() ?: Looper.getMainLooper())

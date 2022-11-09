@@ -72,4 +72,7 @@ object KvKey {
 
     /** 是否已经设置过通知权限 */
     const val ALREADY_SET_NOTIFICATION = "ALREADY_SET_NOTIFICATION"
+
+    /** 当前设备的设备 ID */
+    const val PLATFORM_DEVICE_NUMBER = "PLATFORM_DEVICE_NUMBER"
 }

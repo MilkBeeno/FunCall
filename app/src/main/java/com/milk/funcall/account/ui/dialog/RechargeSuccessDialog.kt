@@ -8,8 +8,7 @@ import androidx.fragment.app.FragmentActivity
 import com.milk.funcall.common.ui.dialog.SimpleDialog
 import com.milk.funcall.databinding.DialogRechargeSuccessBinding
 
-/** 充值页面、订阅成功弹窗 */
-class RechargeDialog(activity: FragmentActivity) :
+class RechargeSuccessDialog(activity: FragmentActivity) :
     SimpleDialog<DialogRechargeSuccessBinding>(activity) {
     private val handler = Handler(Looper.myLooper() ?: Looper.getMainLooper())
 

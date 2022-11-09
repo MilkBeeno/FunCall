@@ -7,7 +7,7 @@ import android.view.View
 import androidx.activity.viewModels
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
-import com.milk.funcall.account.ui.dialog.RechargeDialog
+import com.milk.funcall.account.ui.dialog.RechargeSuccessDialog
 import com.milk.funcall.account.ui.vm.RechargeViewModel
 import com.milk.funcall.app.AppConfig
 import com.milk.funcall.common.ad.AdConfig
@@ -29,7 +29,7 @@ class RechargeActivity : AbstractActivity() {
     private val googlePlay by lazy { GooglePlay() }
     private var productList = mutableMapOf<String, ProductsModel>()
     private val loadingDialog by lazy { LoadingDialog(this) }
-    private val successDialog by lazy { RechargeDialog(this) }
+    private val rechargeSuccessDialog by lazy { RechargeSuccessDialog(this) }
     private val rechargeViewModel by viewModels<RechargeViewModel>()
     private var adView: View? = null
 
@@ -84,7 +84,7 @@ class RechargeActivity : AbstractActivity() {
     private fun initializeObserver() {
         LiveEventBus.get<Boolean>(EventKey.SUBSCRIBE_SUCCESSFUL).observe(this) {
             loadingDialog.dismiss()
-            if (it) successDialog.show()
+            if (it) rechargeSuccessDialog.show()
             if (it && AdConfig.adCancelType == 2 && adView?.parent != null) {
                 binding.root.removeView(adView)
             }

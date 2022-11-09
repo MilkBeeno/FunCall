@@ -8,7 +8,6 @@ import com.milk.simple.mdr.KvManger
 import kotlinx.coroutines.flow.MutableStateFlow
 
 object Account {
-
     /** 获取本地保存当前用户的登录状态或更新登录状态 */
     internal val userLoggedFlow = MutableStateFlow(false)
     internal var userLogged: Boolean = false
