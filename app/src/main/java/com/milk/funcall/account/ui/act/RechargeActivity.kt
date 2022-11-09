@@ -31,6 +31,7 @@ class RechargeActivity : AbstractActivity() {
     private val rechargeSuccessDialog by lazy { RechargeSuccessDialog(this) }
     private val rechargeViewModel by viewModels<RechargeViewModel>()
     private var adView: View? = null
+    private var rechargePageInitialized: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,11 +83,14 @@ class RechargeActivity : AbstractActivity() {
 
     private fun initializeObserver() {
         Account.userSubscribeFlow.collectLatest(this) {
-            loadingDialog.dismiss()
-            if (it) rechargeSuccessDialog.show()
-            if (it && AdConfig.adCancelType == 2 && adView?.parent != null) {
-                binding.root.removeView(adView)
+            if (rechargePageInitialized) {
+                loadingDialog.dismiss()
+                if (it) rechargeSuccessDialog.show()
+                if (it && AdConfig.adCancelType == 2 && adView?.parent != null) {
+                    binding.root.removeView(adView)
+                } else initializeAdView()
             } else initializeAdView()
+            rechargePageInitialized = true
         }
     }
 
