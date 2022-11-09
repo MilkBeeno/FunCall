@@ -9,10 +9,18 @@
       "client_info": {
         "mobilesdk_app_id": "1:1099275750316:android:49cca945a8656262360809",
         "android_client_info": {
-          "package_name": "com.milk.funcall"
+          "package_name": "com.milk.simplejustfuncall"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "1099275750316-m8nkc122cfhu7v11070gs03lhtckjvci.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.milk.simplejustfuncall",
+            "certificate_hash": "a77e3cee87e54113c973a5a5b52a7421adafdf24"
+          }
+        },
         {
           "client_id": "1099275750316-t77bb86i03r32mfq8omsm0ha2bqu7mpq.apps.googleusercontent.com",
           "client_type": 3
@@ -32,7 +40,8 @@
             }
           ]
         }
-      }
+      },
+      "admob_app_id": "ca-app-pub-9835209825468303~6826154181"
     }
   ],
   "configuration_version": "1"

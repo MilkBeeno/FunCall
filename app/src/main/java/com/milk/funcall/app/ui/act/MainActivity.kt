@@ -92,7 +92,7 @@ class MainActivity : AbstractActivity() {
         super.onNewIntent(intent)
         setTabSelection(homeFragment)
         binding.navigation.updateSelectNav(BottomNavigation.Type.Home)
-        FCMMessagingService.uploadNewToken(this)
+        FCMMessagingService.uploadNewToken()
     }
 
     private fun initializeView() {
@@ -176,7 +176,7 @@ class MainActivity : AbstractActivity() {
     }
 
     private fun setNotificationConfig() {
-        FCMMessagingService.uploadNewToken(this)
+        FCMMessagingService.uploadNewToken()
         if (!NotificationUtil.isEnabled(this)) {
             FireBaseManager.logEvent(FirebaseKey.OPEN_NOTIFICATION_REQUEST_POPUP_SHOW)
             val alreadySet = KvManger.getBoolean(KvKey.ALREADY_SET_NOTIFICATION)

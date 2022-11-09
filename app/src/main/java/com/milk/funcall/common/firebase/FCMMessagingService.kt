@@ -81,7 +81,7 @@ class FCMMessagingService : FirebaseMessagingService() {
     }
 
     companion object {
-        internal fun uploadNewToken(context: Context) {
+        internal fun uploadNewToken() {
             if (Account.userGender == Gender.Man.value) {
                 val refreshApiService =
                     ApiClient.obtainRetrofit().create(RefreshApiService::class.java)
