@@ -17,7 +17,7 @@ class MessageRedDotView : FrameLayout {
     constructor(ctx: Context, attrs: AttributeSet) : super(ctx, attrs)
     constructor(ctx: Context, attrs: AttributeSet, defAttr: Int) : super(ctx, attrs, defAttr)
 
-    fun updateMessageCount(count: Int, maxCount: Int = 99) {
+    internal fun updateMessageCount(count: Int, maxCount: Int = 99) {
         when {
             count in 1..maxCount -> {
                 val params = layoutParams as ViewGroup.LayoutParams

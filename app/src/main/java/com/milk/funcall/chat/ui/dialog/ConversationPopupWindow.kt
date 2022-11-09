@@ -67,32 +67,32 @@ class ConversationPopupWindow(
         private var putTopRequest: (() -> Unit)? = null
         private var deleteRequest: (() -> Unit)? = null
 
-        fun applyView(applyView: View) = apply {
+        internal fun applyView(applyView: View) = apply {
             this.applyView = applyView
         }
 
-        fun setGravity(gravity: Int) = apply {
+        internal fun setGravity(gravity: Int) = apply {
             this.gravity = gravity
         }
 
-        fun setOffsetX(offsetX: Int) = apply {
+        internal fun setOffsetX(offsetX: Int) = apply {
             this.offsetX = offsetX
         }
 
-        fun setOffsetY(offsetY: Int) = apply {
+        internal fun setOffsetY(offsetY: Int) = apply {
             this.offsetY = offsetY
         }
 
-        fun setPutTopRequest(isPutTopped: Boolean, putTopRequest: () -> Unit) = apply {
+        internal fun setPutTopRequest(isPutTopped: Boolean, putTopRequest: () -> Unit) = apply {
             this.isPutTopped = isPutTopped
             this.putTopRequest = putTopRequest
         }
 
-        fun setDeleteRequest(deleteRequest: () -> Unit) = apply {
+        internal fun setDeleteRequest(deleteRequest: () -> Unit) = apply {
             this.deleteRequest = deleteRequest
         }
 
-        fun builder(): ConversationPopupWindow {
+        internal fun build(): ConversationPopupWindow {
             return ConversationPopupWindow(
                 context = context,
                 applyView = checkNotNull(applyView),

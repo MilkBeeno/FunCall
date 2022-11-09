@@ -37,7 +37,7 @@ private fun Long.timeCalibration(): Long {
 }
 
 /** 将时间转为 IM 通用消息 */
-fun Long.convertMessageTime(): String {
+internal fun Long.convertMessageTime(): String {
     val finalTime: String
     val localTime = System.currentTimeMillis()
     val calibrationValue = timeCalibration()

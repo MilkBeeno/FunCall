@@ -81,37 +81,37 @@ class ChatMessagePopupWindow(
         private var followRequest: (() -> Unit)? = null
         private var blackRequest: (() -> Unit)? = null
 
-        fun applyView(applyView: View) = apply {
+        internal fun applyView(applyView: View) = apply {
             this.applyView = applyView
         }
 
-        fun setGravity(gravity: Int) = apply {
+        internal fun setGravity(gravity: Int) = apply {
             this.gravity = gravity
         }
 
-        fun setOffsetX(offsetX: Int) = apply {
+        internal fun setOffsetX(offsetX: Int) = apply {
             this.offsetX = offsetX
         }
 
-        fun setOffsetY(offsetY: Int) = apply {
+        internal fun setOffsetY(offsetY: Int) = apply {
             this.offsetY = offsetY
         }
 
-        fun setPutTopRequest(isPutTopped: Boolean, putTopRequest: () -> Unit) = apply {
+        internal fun setPutTopRequest(isPutTopped: Boolean, putTopRequest: () -> Unit) = apply {
             this.isPutTopped = isPutTopped
             this.putTopRequest = putTopRequest
         }
 
-        fun setFollowRequest(isFollowed: Boolean, followRequest: () -> Unit) = apply {
+        internal fun setFollowRequest(isFollowed: Boolean, followRequest: () -> Unit) = apply {
             this.isFollowed = isFollowed
             this.followRequest = followRequest
         }
 
-        fun setBlackRequest(blackRequest: () -> Unit) = apply {
+        internal fun setBlackRequest(blackRequest: () -> Unit) = apply {
             this.blackRequest = blackRequest
         }
 
-        fun builder(): ChatMessagePopupWindow {
+        internal fun build(): ChatMessagePopupWindow {
             return ChatMessagePopupWindow(
                 context = context,
                 applyView = checkNotNull(applyView),

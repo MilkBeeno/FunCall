@@ -74,7 +74,7 @@ class ConversationFragment : AbstractFragment() {
                     FireBaseManager.logEvent(FirebaseKey.CLICK_THE_DELETE)
                     conversationViewModel.deleteChatMessage(conversation.targetId)
                 }
-                .builder()
+                .build()
             true
         }
         binding.tvChatWithOther.setOnClickListener(this)
@@ -95,6 +95,6 @@ class ConversationFragment : AbstractFragment() {
     }
 
     companion object {
-        fun create() = ConversationFragment()
+        internal fun create() = ConversationFragment()
     }
 }

@@ -166,7 +166,7 @@ class ChatMessageActivity : AbstractActivity() {
                 loadingDialog.show()
                 chatMessageViewModel.blackUser()
             }
-            .builder()
+            .build()
     }
 
     override fun onPause() {
@@ -176,7 +176,7 @@ class ChatMessageActivity : AbstractActivity() {
 
     companion object {
         private const val TARGET_ID = "TARGET_ID"
-        fun create(context: Context, targetId: Long) {
+        internal fun create(context: Context, targetId: Long) {
             val intent = Intent(context, ChatMessageActivity::class.java)
             intent.putExtra(TARGET_ID, targetId)
             context.startActivity(intent)
