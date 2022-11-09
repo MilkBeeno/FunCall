@@ -237,7 +237,7 @@ class MainActivity : AbstractActivity() {
     override fun onInterceptKeyDownEvent(): Boolean = true
 
     companion object {
-        fun create(context: Context) =
+        internal fun create(context: Context) =
             context.startActivity(Intent(context, MainActivity::class.java))
     }
 }
