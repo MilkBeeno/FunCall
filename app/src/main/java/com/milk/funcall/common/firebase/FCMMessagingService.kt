@@ -32,7 +32,7 @@ class FCMMessagingService : FirebaseMessagingService() {
                 message.data["userId"].toString(),
                 notification.title.toString(),
                 notification.body.toString(),
-                notification.imageUrl?.path.toString(),
+                notification.imageUrl.toString(),
             )
         } else {
             sendNotification(
@@ -91,7 +91,10 @@ class FCMMessagingService : FirebaseMessagingService() {
                             val result = retrofit {
                                 refreshApiService.uploadToken(it.result, DeviceManager.number)
                             }
-                            Logger.d("Token上传状态：${result.success}", "FCMMessagingService")
+                            Logger.d(
+                                "Token 的值是=${it.result},Token上传状态：${result.success}",
+                                "FCMMessagingService"
+                            )
                         }
                     }
                 }
