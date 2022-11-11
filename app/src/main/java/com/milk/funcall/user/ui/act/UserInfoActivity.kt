@@ -57,7 +57,7 @@ class UserInfoActivity : AbstractActivity() {
 
     private fun initializeView() {
         immersiveStatusBar()
-        binding.root.statusBarPadding()
+        binding.flHeader.statusBarPadding()
         binding.root.navigationBarPadding()
         binding.headerToolbar.showArrowBack()
         binding.ivReport.setOnClickListener(this)
