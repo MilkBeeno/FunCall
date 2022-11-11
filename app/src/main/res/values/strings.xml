@@ -26,6 +26,7 @@
     <string name="common_up_top">Put on top</string>
     <string name="common_un_pin">Up pin</string>
     <string name="common_black">Pull black</string>
+    <string name="common_report">Report</string>
     <string name="common_report_successful">Report successful,thanks for your report.</string>
     <!--启动页面翻译-->
     <string name="launch_bottom_tips"><![CDATA[Messaging & Chat App]]></string>

@@ -20,7 +20,8 @@ class ChatMessagePopupWindow(
     private val isFollowed: Boolean,
     private var putTopRequest: (() -> Unit)? = null,
     private var followRequest: (() -> Unit)? = null,
-    private var blackRequest: (() -> Unit)? = null
+    private var blackRequest: (() -> Unit)? = null,
+    private var reportRequest: (() -> Unit)? = null
 ) {
     private var popupWindow: PopupWindow? = null
 
@@ -68,6 +69,10 @@ class ChatMessagePopupWindow(
             popupWindow?.dismiss()
             blackRequest?.invoke()
         }
+        targetLayout.findViewById<AppCompatTextView>(R.id.tvReport).setOnClickListener {
+            popupWindow?.dismiss()
+            reportRequest?.invoke()
+        }
     }
 
     class Builder(private val context: Context) {
@@ -80,6 +85,7 @@ class ChatMessagePopupWindow(
         private var putTopRequest: (() -> Unit)? = null
         private var followRequest: (() -> Unit)? = null
         private var blackRequest: (() -> Unit)? = null
+        private var reportRequest: (() -> Unit)? = null
 
         internal fun applyView(applyView: View) = apply {
             this.applyView = applyView
@@ -111,6 +117,10 @@ class ChatMessagePopupWindow(
             this.blackRequest = blackRequest
         }
 
+        internal fun setReportRequest(reportRequest: () -> Unit) = apply {
+            this.reportRequest = reportRequest
+        }
+
         internal fun build(): ChatMessagePopupWindow {
             return ChatMessagePopupWindow(
                 context = context,
@@ -122,7 +132,8 @@ class ChatMessagePopupWindow(
                 isFollowed = isFollowed,
                 putTopRequest = putTopRequest,
                 followRequest = followRequest,
-                blackRequest = blackRequest
+                blackRequest = blackRequest,
+                reportRequest = reportRequest
             )
         }
     }

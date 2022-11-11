@@ -56,4 +56,23 @@
         android:text="@string/common_black"
         android:textColor="@color/FF8E58FB"
         android:textSize="14sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="14dp"
+        android:background="@color/black_05" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvReport"
+        android:layout_width="wrap_content"
+        android:layout_height="46dp"
+        android:gravity="center"
+        android:minWidth="142dp"
+        android:paddingStart="19dp"
+        android:paddingEnd="19dp"
+        android:text="@string/common_report"
+        android:textColor="@color/FF8E58FB"
+        android:textSize="14sp" />
 </androidx.appcompat.widget.LinearLayoutCompat>

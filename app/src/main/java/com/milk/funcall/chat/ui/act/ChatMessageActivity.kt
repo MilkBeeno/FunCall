@@ -20,6 +20,7 @@ import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityMessageBinding
 import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.user.ui.act.UserInfoActivity
+import com.milk.funcall.user.ui.dialog.ReportDialog
 import com.milk.simple.keyboard.KeyBoardUtil
 import com.milk.simple.ktx.*
 
@@ -29,6 +30,7 @@ class ChatMessageActivity : AbstractActivity() {
     private val chatMessageAdapter by lazy { ChatMessageAdapter() }
     private val targetId by lazy { intent.getLongExtra(TARGET_ID, 0) }
     private val loadingDialog by lazy { LoadingDialog(this) }
+    private val reportDialog by lazy { ReportDialog(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,6 +91,10 @@ class ChatMessageActivity : AbstractActivity() {
         binding.ivSayHiCancel.setOnClickListener(this)
         binding.tvSayHiSend.setOnClickListener(this)
         binding.ivMore.setOnClickListener(this)
+        reportDialog.setReportListener {
+            loadingDialog.show()
+            chatMessageViewModel.report(targetId, it)
+        }
     }
 
     private fun updateSendState() {
@@ -115,6 +121,10 @@ class ChatMessageActivity : AbstractActivity() {
         chatMessageViewModel.blackUserFlow.collectLatest(this) {
             loadingDialog.dismiss()
             if (it) finish()
+        }
+        chatMessageViewModel.reportFlow.collectLatest(this) {
+            loadingDialog.dismiss()
+            if (it) showLongToast(string(R.string.common_report_successful))
         }
     }
 
@@ -165,6 +175,9 @@ class ChatMessageActivity : AbstractActivity() {
                 FireBaseManager.logEvent(FirebaseKey.CLICK_BLACKOUT_ON_CHAT_PAGE)
                 loadingDialog.show()
                 chatMessageViewModel.blackUser()
+            }
+            .setReportRequest {
+                reportDialog.show()
             }
             .build()
     }

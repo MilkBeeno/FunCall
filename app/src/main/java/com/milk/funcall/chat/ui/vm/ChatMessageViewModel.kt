@@ -9,7 +9,9 @@ import com.milk.funcall.common.db.table.ChatMessageEntity
 import com.milk.funcall.common.db.table.UserInfoEntity
 import com.milk.funcall.common.paging.LocalPagingSource
 import com.milk.funcall.user.data.UserInfoModel
+import com.milk.funcall.user.repo.ReportRepository
 import com.milk.funcall.user.repo.UserInfoRepository
+import com.milk.funcall.user.status.ReportType
 import com.milk.simple.ktx.ioScope
 import com.milk.simple.ktx.safeToLong
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -19,6 +21,7 @@ class ChatMessageViewModel : ViewModel() {
     internal var userPutTopStatus: Boolean = false
     internal val followedStatusFlow = MutableSharedFlow<Any?>()
     internal val blackUserFlow = MutableSharedFlow<Boolean>()
+    internal val reportFlow = MutableSharedFlow<Boolean>()
 
     /** 私聊列表数据 */
     internal val pagingSource: LocalPagingSource<Int, ChatMessageEntity>
@@ -128,6 +131,13 @@ class ChatMessageViewModel : ViewModel() {
         ioScope {
             MessageRepository.unPinChatMessage(userInfoEntity?.targetId.safeToLong())
             getConversationPutTopTime()
+        }
+    }
+
+    internal fun report(userId: Long, type: ReportType) {
+        ioScope {
+            val response = ReportRepository.report(userId, type)
+            reportFlow.emit(response.success)
         }
     }
 }
