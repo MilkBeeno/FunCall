@@ -30,7 +30,6 @@ import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.util.NotificationUtil
 import com.milk.funcall.databinding.ActivityMainBinding
-import com.milk.funcall.user.ui.act.UserInfoActivity
 import com.milk.funcall.user.ui.frag.HomeFragment
 import com.milk.simple.ktx.*
 import com.milk.simple.log.Logger
@@ -122,11 +121,6 @@ class MainActivity : AbstractActivity() {
         LiveEventBus.get<Any?>(EventKey.JUMP_TO_THE_HOME_PAGE).observe(this) {
             setTabSelection(homeFragment)
             binding.navigation.updateSelectNav(BottomNavigation.Type.Home)
-        }
-        LiveEventBus.get<Long?>(EventKey.TO_VIEW_USER_INFO_OF_WOMAN).observe(this) {
-            if (it != null && it > 0) {
-                UserInfoActivity.create(this, it)
-            }
         }
         Account.userSubscribeFlow.collectLatest(this) {
             if (it && AdConfig.adCancelType == 2 && adView?.parent != null) {

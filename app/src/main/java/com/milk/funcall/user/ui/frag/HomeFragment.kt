@@ -88,7 +88,7 @@ class HomeFragment : AbstractFragment() {
         binding.rvHome.adapter = adapter.withLoadStateFooterAdapter()
         binding.refresh.setRefreshHeader(binding.refreshHeader)
         binding.refresh.setOnRefreshListener {
-            AdConfig.checkAdIsLoaded()
+            if (!AdConfig.isLoadedAds()) AdConfig.obtain()
             adapter.refresh()
         }
         adapter.setOnItemClickListener { adapter, _, position ->

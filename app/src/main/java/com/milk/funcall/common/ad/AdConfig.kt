@@ -26,7 +26,7 @@ object AdConfig {
 
     /** 获取网络中最新的广告信息 */
     internal fun obtain() {
-        if (positionMap.isNotEmpty()) return
+        positionMap.clear()
         ioScope {
             val apiResult = AdRepository().getAdConfig(
                 BuildConfig.AD_APP_ID,
@@ -88,9 +88,8 @@ object AdConfig {
         return if (position?.isNotEmpty() == true) return position else ""
     }
 
-    /** Home 页面获取广告配置信息 */
-    internal fun checkAdIsLoaded() {
-        val isEmptyOfStartAd = getAdvertiseUnitId(AdCodeKey.APP_START).isEmpty()
-        if (isEmptyOfStartAd) obtain()
+    /** 判断当前是否加载过配置信息 */
+    internal fun isLoadedAds(): Boolean {
+        return positionMap.isNotEmpty()
     }
 }

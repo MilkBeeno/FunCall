@@ -15,7 +15,4 @@ object EventKey {
 
     /** 登录的唯一 ID 、 代替设备 ID 的 KEY */
     const val LOGIN_DEVICE_UNIQUE_ID = "LOGIN_DEVICE_UNIQUE_ID"
-
-    /** 查看女用户信息 */
-    const val TO_VIEW_USER_INFO_OF_WOMAN = "TO_VIEW_USER_INFO_OF_WOMAN"
 }

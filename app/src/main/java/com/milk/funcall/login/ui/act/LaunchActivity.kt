@@ -9,7 +9,6 @@ import com.milk.funcall.account.Account
 import com.milk.funcall.app.AppConfig
 import com.milk.funcall.app.ui.act.MainActivity
 import com.milk.funcall.common.ad.AdConfig
-import com.milk.funcall.common.author.DeviceManager
 import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.common.constrant.KvKey
@@ -18,6 +17,7 @@ import com.milk.funcall.common.pay.PayManager
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityLaunchBinding
 import com.milk.funcall.login.ui.vm.LaunchViewModel
+import com.milk.funcall.user.ui.act.UserInfoActivity
 import com.milk.simple.ktx.gone
 import com.milk.simple.ktx.immersiveStatusBar
 import com.milk.simple.ktx.navigationBarPadding
@@ -27,6 +27,7 @@ import com.milk.simple.mdr.KvManger
 class LaunchActivity : AbstractActivity() {
     private val binding by lazy { ActivityLaunchBinding.inflate(layoutInflater) }
     private val launchViewModel by viewModels<LaunchViewModel>()
+    private var isNotLoaded = !AdConfig.isLoadedAds()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,12 +35,14 @@ class LaunchActivity : AbstractActivity() {
         initializeView()
         initializeNotification()
         initializeObserver()
-        uploadDeviceInfo()
-        PayManager.getPayStatus()
-        AppConfig.obtain()
-        AdConfig.obtain()
-        Account.initialize()
-        checkIsNewClient()
+        if (isNotLoaded) {
+            uploadDeviceInfo()
+            PayManager.getPayStatus()
+            AppConfig.obtain()
+            AdConfig.obtain()
+            Account.initialize()
+            checkIsNewClient()
+        }
     }
 
     private fun initializeView() {
@@ -62,18 +65,15 @@ class LaunchActivity : AbstractActivity() {
 
     private fun initializeNotification() {
         var map = mutableMapOf<String, String>()
-        /*intent.extras?.let {
-            for (key in it.keySet()) {
-                val value = intent.extras?.get(key)
-                Logger.d("Key: $key Value: $value", "MessagePayloadKeys")
-            }
-        }*/
         intent.extras?.let {
             map = Constants.MessagePayloadKeys.extractDeveloperDefinedPayload(intent.extras)
         }
         if (map.containsKey("userId")) {
-            LiveEventBus.get<Long?>(EventKey.TO_VIEW_USER_INFO_OF_WOMAN)
-                .post(map["userId"]?.toLong())
+            val userId = map["userId"]?.toLong()
+            if (userId != null && userId > 0) {
+                UserInfoActivity.create(this, userId)
+                finish()
+            }
         }
     }
 
