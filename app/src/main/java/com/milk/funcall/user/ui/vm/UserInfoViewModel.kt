@@ -9,7 +9,9 @@ import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.user.data.UserInfoModel
+import com.milk.funcall.user.repo.ReportRepository
 import com.milk.funcall.user.repo.UserInfoRepository
+import com.milk.funcall.user.status.ReportType
 import com.milk.funcall.user.status.UnlockType
 import com.milk.funcall.user.ui.act.UserInfoActivity
 import com.milk.simple.ktx.ioScope
@@ -20,6 +22,7 @@ class UserInfoViewModel : ViewModel() {
     internal val loadUserInfoStatusFlow = MutableSharedFlow<Boolean>()
     internal val changeFollowedStatusFlow = MutableSharedFlow<Boolean>()
     internal val changeUnlockStatusFlow = MutableSharedFlow<Boolean>()
+    internal val reportFlow = MutableSharedFlow<Boolean>()
 
     internal fun loadUserInfo(userId: Long, deviceId: String) {
         ioScope {
@@ -148,5 +151,12 @@ class UserInfoViewModel : ViewModel() {
                     FireBaseManager.logEvent(FirebaseKey.CLICK_AD_5)
                 })
         } else failure()
+    }
+
+    internal fun report(userId: Long, type: ReportType) {
+        ioScope {
+            val response = ReportRepository.report(userId, type)
+            reportFlow.emit(response.success)
+        }
     }
 }

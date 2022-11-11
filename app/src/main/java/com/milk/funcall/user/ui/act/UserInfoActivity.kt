@@ -32,6 +32,7 @@ import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.user.data.UserInfoModel
 import com.milk.funcall.user.status.UnlockType
 import com.milk.funcall.user.ui.adapter.UserImageAdapter
+import com.milk.funcall.user.ui.dialog.ReportDialog
 import com.milk.funcall.user.ui.dialog.ViewAdDialog
 import com.milk.funcall.user.ui.dialog.ViewLinkDialog
 import com.milk.funcall.user.ui.vm.UserInfoViewModel
@@ -44,6 +45,7 @@ class UserInfoActivity : AbstractActivity() {
     private val loadingDialog by lazy { LoadingDialog(this) }
     private val viewAdDialog by lazy { ViewAdDialog(this) }
     private val viewLinkDialog by lazy { ViewLinkDialog(this) }
+    private val reportDialog by lazy { ReportDialog(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +60,7 @@ class UserInfoActivity : AbstractActivity() {
         binding.headerToolbar.statusBarPadding()
         binding.root.navigationBarPadding()
         binding.headerToolbar.showArrowBack()
+        binding.ivReport.setOnClickListener(this)
         binding.link.tvCopy.setOnClickListener(this)
         binding.ivUserNext.setOnClickListener(this)
         binding.basic.llMessage.setOnClickListener(this)
@@ -67,6 +70,10 @@ class UserInfoActivity : AbstractActivity() {
         binding.link.flLinkLocked.setOnClickListener(this)
         binding.link.llViewLink.setOnClickListener(this)
         binding.mlImage.setOnClickRequest { loadImages() }
+        reportDialog.setReportListener {
+            loadingDialog.show()
+            userInfoViewModel.report(userId, it)
+        }
     }
 
     private fun initializeObserver() {
@@ -114,6 +121,10 @@ class UserInfoActivity : AbstractActivity() {
                     setUserFollow()
                 }
             }
+        userInfoViewModel.reportFlow.collectLatest(this) {
+            loadingDialog.dismiss()
+            if (it) showLongToast(string(R.string.common_report_successful))
+        }
     }
 
     private fun setUserFollow() {
@@ -249,6 +260,7 @@ class UserInfoActivity : AbstractActivity() {
     override fun onMultipleClick(view: View) {
         super.onMultipleClick(view)
         when (view) {
+            binding.ivReport -> reportDialog.show()
             binding.basic.llFollow -> {
                 if (Account.userLogged) {
                     loadingDialog.show()

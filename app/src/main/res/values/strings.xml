@@ -26,6 +26,7 @@
     <string name="common_up_top">Put on top</string>
     <string name="common_un_pin">Up pin</string>
     <string name="common_black">Pull black</string>
+    <string name="common_report_successful">Report successful,thanks for your report.</string>
     <!--启动页面翻译-->
     <string name="launch_bottom_tips"><![CDATA[Messaging & Chat App]]></string>
     <!--选择性别页面翻译-->
@@ -136,4 +137,9 @@
     <string name="turn_on_notification_desc">Please turn on the notification function</string>
     <string name="dialog_recharge_subscribed">You have also successfully subscribed to</string>
     <string name="recharge_discount_number">% OFF</string>
+    <string name="dialog_report_title">Block and Report</string>
+    <string name="dialog_report_desc">What\'s the problem ?</string>
+    <string name="dialog_report_options_first">Harassment</string>
+    <string name="dialog_report_options_second">Bilk</string>
+    <string name="dialog_report_options_third">Nudity</string>
 </resources>
