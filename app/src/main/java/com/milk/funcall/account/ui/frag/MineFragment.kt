@@ -39,7 +39,7 @@ class MineFragment : AbstractFragment() {
         binding.tvLogin.setOnClickListener(this)
         binding.flNotSigned.setOnClickListener(this)
         binding.editProfile.setOption(R.drawable.mine_edit_profile, R.string.mine_edit_profile)
-        binding.recharge.setOption(R.drawable.mine_recharge, R.string.mine_edit_profile, requireContext().color(R.color.FF744311))
+        binding.recharge.setOption(R.drawable.mine_recharge, R.string.mine_recharge, requireContext().color(R.color.FF744311))
         binding.blackedList.setOption(R.drawable.mine_blacked_list, R.string.mine_blacked_list)
         binding.aboutUs.setOption(R.drawable.mine_about_us, R.string.mine_about_us)
         binding.signOut.setOption(R.drawable.mine_sign_out, R.string.mine_sign_out, showLine = false)
