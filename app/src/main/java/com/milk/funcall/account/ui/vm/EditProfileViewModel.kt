@@ -76,17 +76,17 @@ class EditProfileViewModel : ViewModel() {
     /** 更新照片信息 */
     private suspend fun uploadImageListProfile(): ArrayList<String> {
         val resultImageList = arrayListOf<String>()
-        val alreadyExistsImage = mutableListOf<String>()
+        val existsImageList = mutableListOf<String>()
         val uploadImageList = mutableListOf<String>()
         // 遍历当前选择图片并把要上传的图片添加到集合中
         localImageListPath.forEach { cache ->
             if (Account.userImageList.contains(cache)) {
-                alreadyExistsImage.add(cache)
+                existsImageList.add(cache)
             } else {
                 uploadImageList.add(cache)
             }
         }
-        resultImageList.addAll(alreadyExistsImage)
+        resultImageList.addAll(existsImageList)
         if (uploadImageList.isNotEmpty()) {
             val apiResponse =
                 mediaUploadRepository.uploadMultiplePicture(uploadImageList)
