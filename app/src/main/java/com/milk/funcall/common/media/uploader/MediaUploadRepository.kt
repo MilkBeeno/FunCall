@@ -45,11 +45,9 @@ class MediaUploadRepository {
 
     /** 视频上传、单个上传 */
     internal suspend fun uploadSingleVideo(filePath: String) = retrofit {
-        val builder = MultipartBody.Builder().setType(MultipartBody.FORM)
         val file = File(filePath)
         val body = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-        builder.addFormDataPart("file", file.name, body)
-        val parts = builder.build().parts
-        mediaUploadApiService.uploadSingleVideo(parts)
+        val part = MultipartBody.Part.createFormData("file", file.name, body)
+        mediaUploadApiService.uploadSingleVideo(part)
     }
 }

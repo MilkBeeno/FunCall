@@ -15,9 +15,9 @@ object ApiClient {
         get() {
             return OkHttpClient.Builder()
                 .callTimeout(15, TimeUnit.SECONDS)
-                .connectTimeout(5, TimeUnit.SECONDS)
-                .readTimeout(8, TimeUnit.SECONDS)
-                .writeTimeout(8, TimeUnit.SECONDS)
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
                 .addInterceptor(ApiParamsInterceptor())
                 .addInterceptor(ApiLogInterceptor())
                 .build()
@@ -27,8 +27,8 @@ object ApiClient {
     private val uploadClient: OkHttpClient
         get() {
             return OkHttpClient.Builder()
-                .callTimeout(15, TimeUnit.SECONDS)
-                .connectTimeout(5, TimeUnit.SECONDS)
+                .callTimeout(45, TimeUnit.SECONDS)
+                .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(300, TimeUnit.SECONDS)
                 .writeTimeout(300, TimeUnit.SECONDS)
                 .addInterceptor(ApiLogInterceptor())
