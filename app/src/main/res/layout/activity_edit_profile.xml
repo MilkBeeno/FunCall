@@ -154,16 +154,14 @@
                 android:text="@string/common_video"
                 android:textColor="@color/FF1E1E21"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:visibility="gone" />
+                android:textStyle="bold" />
 
             <FrameLayout
                 android:id="@+id/flVideo"
                 android:layout_width="106dp"
                 android:layout_height="106dp"
                 android:layout_gravity="start"
-                android:layout_marginTop="10dp"
-                android:visibility="gone">
+                android:layout_marginTop="10dp">
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/ivVideo"

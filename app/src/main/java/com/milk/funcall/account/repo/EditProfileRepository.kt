@@ -7,7 +7,7 @@ import com.milk.funcall.common.net.retrofit
 
 class EditProfileRepository {
     private val editProfileApiService =
-        ApiClient.obtainRetrofit().create(EditProfileApiService::class.java)
+        ApiClient.getMainRetrofit().create(EditProfileApiService::class.java)
 
     internal suspend fun uploadProfile(
         avatarUrl: String,

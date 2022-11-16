@@ -9,7 +9,7 @@ import java.io.File
 
 class MediaUploadRepository {
     private val mediaUploadApiService: MediaUploadApiService =
-        ApiClient.obtainUploadRetrofit().create(MediaUploadApiService::class.java)
+        ApiClient.getUploadRetrofit().create(MediaUploadApiService::class.java)
 
     /** 图片上传、单图上传 */
     internal suspend fun uploadSinglePicture(filePath: String) = retrofit {

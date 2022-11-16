@@ -15,7 +15,7 @@ import com.milk.simple.log.Logger
 
 object MessageRepository {
     private val chatApiService: ChatApiService =
-        ApiClient.obtainRetrofit().create(ChatApiService::class.java)
+        ApiClient.getMainRetrofit().create(ChatApiService::class.java)
     private val chatMessageRepository by lazy { ChatMessageRepository() }
     private val conversationRepository by lazy { ConversationRepository() }
 

@@ -6,7 +6,7 @@ import com.milk.funcall.common.net.retrofit
 
 class BlackedRepository {
     private val blackApiService =
-        ApiClient.obtainRetrofit().create(BlackedApiService::class.java)
+        ApiClient.getMainRetrofit().create(BlackedApiService::class.java)
 
     internal suspend fun getBlackedList(index: Int) = retrofit {
         blackApiService.getBlackedList(index)

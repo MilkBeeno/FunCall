@@ -7,7 +7,7 @@ import com.milk.funcall.user.status.ReportType
 
 object ReportRepository {
     private val reportApiService =
-        ApiClient.obtainRetrofit().create(ReportApiService::class.java)
+        ApiClient.getMainRetrofit().create(ReportApiService::class.java)
 
     internal suspend fun report(userId: Long, type: ReportType) = retrofit {
         reportApiService.report(userId, type.value)

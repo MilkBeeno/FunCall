@@ -20,7 +20,7 @@ import com.milk.simple.log.Logger
 
 class FCMMessagingService : FirebaseMessagingService() {
     private val refreshApiService by lazy {
-        ApiClient.obtainRetrofit().create(RefreshApiService::class.java)
+        ApiClient.getMainRetrofit().create(RefreshApiService::class.java)
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
@@ -84,7 +84,7 @@ class FCMMessagingService : FirebaseMessagingService() {
         internal fun uploadNewToken() {
             if (Account.userGender == Gender.Man.value) {
                 val refreshApiService =
-                    ApiClient.obtainRetrofit().create(RefreshApiService::class.java)
+                    ApiClient.getMainRetrofit().create(RefreshApiService::class.java)
                 FirebaseMessaging.getInstance().token.addOnCompleteListener {
                     if (it.isSuccessful) {
                         ioScope {

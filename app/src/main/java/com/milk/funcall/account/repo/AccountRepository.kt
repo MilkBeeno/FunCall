@@ -10,7 +10,7 @@ import com.milk.simple.ktx.ioScope
 
 object AccountRepository {
     private val accountApiService =
-        ApiClient.obtainRetrofit().create(AccountApiService::class.java)
+        ApiClient.getMainRetrofit().create(AccountApiService::class.java)
 
     internal fun getAccountInfo(registered: Boolean) {
         ioScope {

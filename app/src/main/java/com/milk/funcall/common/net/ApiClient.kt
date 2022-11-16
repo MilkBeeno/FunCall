@@ -29,13 +29,13 @@ object ApiClient {
             return OkHttpClient.Builder()
                 .callTimeout(15, TimeUnit.SECONDS)
                 .connectTimeout(5, TimeUnit.SECONDS)
-                .readTimeout(8, TimeUnit.SECONDS)
-                .writeTimeout(8, TimeUnit.SECONDS)
+                .readTimeout(300, TimeUnit.SECONDS)
+                .writeTimeout(300, TimeUnit.SECONDS)
                 .addInterceptor(ApiLogInterceptor())
                 .build()
         }
 
-    internal fun obtainRetrofit(): Retrofit {
+    internal fun getMainRetrofit(): Retrofit {
         if (mainRetrofit == null)
             mainRetrofit = Retrofit.Builder()
                 .baseUrl(MainHost().realUrl)
@@ -45,7 +45,7 @@ object ApiClient {
         return checkNotNull(mainRetrofit)
     }
 
-    internal fun obtainUploadRetrofit(): Retrofit {
+    internal fun getUploadRetrofit(): Retrofit {
         if (uploadRetrofit == null)
             uploadRetrofit = Retrofit.Builder()
                 .baseUrl(MainHost().realUrl)
