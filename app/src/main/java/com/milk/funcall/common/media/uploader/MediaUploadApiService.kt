@@ -15,7 +15,7 @@ interface MediaUploadApiService {
     @Multipart
     @POST("/funcall/uploadCDNImg")
     suspend fun uploadSinglePicture(
-        @Part partLis: List<MultipartBody.Part>
+        @Part partList: List<MultipartBody.Part>
     ): ApiResponse<String>
 
     /**
@@ -26,7 +26,7 @@ interface MediaUploadApiService {
     @Multipart
     @POST("/funcall/uploadImgList")
     suspend fun uploadMultiplePicture(
-        @Part partLis: List<MultipartBody.Part>
+        @Part partList: List<MultipartBody.Part>
     ): ApiResponse<MutableList<String>>
 
     /**
@@ -37,6 +37,6 @@ interface MediaUploadApiService {
     @Multipart
     @POST("/funcall/uploadVideo")
     suspend fun uploadSingleVideo(
-        @Part partLis: List<MultipartBody.Part>
+        @Part partList: List<MultipartBody.Part>
     ): ApiResponse<String>
 }
