@@ -64,7 +64,7 @@ class EditProfileActivity : AbstractActivity() {
         Account.userLinkFlow.collectLatest(this) { binding.etLink.setText(it) }
         Account.userVideoFlow.collectLatest(this) { updateVideo(it) }
         Account.userImageListFlow.collectLatest(this) { updateImageList(it) }
-        editProfileViewModel.uploadResult.collectLatest(this) {
+        editProfileViewModel.uploadResultFlow.collectLatest(this) {
             uploadDialog.dismiss()
             if (it) showToast(string(R.string.edit_profile_success))
         }
@@ -84,7 +84,7 @@ class EditProfileActivity : AbstractActivity() {
             avatar.isBlank() ->
                 binding.ivUserAvatar.setImageResource(defaultAvatar)
             localUpdate ||
-                editProfileViewModel.localAvatarPath.isBlank() -> {
+                editProfileViewModel.editAvatarPath.isBlank() -> {
                 ImageLoader.Builder()
                     .loadAvatar(avatar)
                     .target(binding.ivUserAvatar)
@@ -100,12 +100,12 @@ class EditProfileActivity : AbstractActivity() {
                 binding.ivVideo.setImageResource(R.drawable.common_media_add)
             }
             localUpdate ||
-                editProfileViewModel.localVideoPath.isBlank() -> {
+                editProfileViewModel.editVideoPath.isBlank() -> {
                 binding.ivVideoMask.visible()
                 VideoLoader.Builder()
                     .target(binding.ivVideo)
                     .placeholder(R.drawable.common_default_media_image)
-                    .request(editProfileViewModel.localVideoPath)
+                    .request(editProfileViewModel.editVideoPath)
                     .build()
             }
         }
@@ -118,18 +118,18 @@ class EditProfileActivity : AbstractActivity() {
     ) {
         when {
             newImageList.isNotEmpty() -> {
-                editProfileViewModel.localImageListPath.clear()
-                newImageList.forEach { editProfileViewModel.localImageListPath.add(it) }
+                editProfileViewModel.editImageListPath.clear()
+                newImageList.forEach { editProfileViewModel.editImageListPath.add(it) }
             }
             appendImageList.isNotEmpty() -> {
                 appendImageList
-                    .forEach { editProfileViewModel.localImageListPath.add(it.availablePath) }
+                    .forEach { editProfileViewModel.editImageListPath.add(it.availablePath) }
             }
             removeImage.isNotBlank() -> {
-                editProfileViewModel.localImageListPath.remove(removeImage)
+                editProfileViewModel.editImageListPath.remove(removeImage)
             }
         }
-        imageAdapter.setNewData(editProfileViewModel.localImageListPath)
+        imageAdapter.setNewData(editProfileViewModel.editImageListPath)
     }
 
     private fun initializeView() {
@@ -157,7 +157,7 @@ class EditProfileActivity : AbstractActivity() {
             if (imageUrl.isNotBlank()) {
                 ImageMediaActivity.create(this)
                 LiveEventBus.get<Pair<Int, MutableList<String>>>(KvKey.DISPLAY_IMAGE_MEDIA_LIST)
-                    .post(Pair(position, editProfileViewModel.localImageListPath))
+                    .post(Pair(position, editProfileViewModel.editImageListPath))
             } else {
                 FireBaseManager
                     .logEvent(FirebaseKey.CLICK_UPLOAD_IMAGE_ICON)
@@ -226,7 +226,7 @@ class EditProfileActivity : AbstractActivity() {
                 override fun onResult(result: ArrayList<LocalMedia>?) {
                     if (result != null && result.size > 0) {
                         val avatarPath = result[0].availablePath
-                        editProfileViewModel.localAvatarPath = avatarPath
+                        editProfileViewModel.editAvatarPath = avatarPath
                         updateAvatar(avatarPath, true)
                         MediaLogger
                             .analyticalSelectResults(this@EditProfileActivity, result)
@@ -237,7 +237,7 @@ class EditProfileActivity : AbstractActivity() {
 
     /** 选择视频资源 */
     private fun toSelectVideo() {
-        if (editProfileViewModel.localVideoPath.isBlank()) {
+        if (editProfileViewModel.editVideoPath.isBlank()) {
             PictureSelector.create(this)
                 .openGallery(SelectMimeType.ofVideo())
                 .setLanguage(LanguageConfig.ENGLISH)
@@ -254,19 +254,19 @@ class EditProfileActivity : AbstractActivity() {
                     override fun onResult(result: ArrayList<LocalMedia>?) {
                         if (result != null && result.size > 0) {
                             val videoPath = result[0].availablePath
-                            editProfileViewModel.localVideoPath = videoPath
+                            editProfileViewModel.editVideoPath = videoPath
                             updateVideo(videoPath, true)
                             MediaLogger
                                 .analyticalSelectResults(this@EditProfileActivity, result)
                         }
                     }
                 })
-        } else VideoMediaActivity.create(this, editProfileViewModel.localVideoPath)
+        } else VideoMediaActivity.create(this, editProfileViewModel.editVideoPath)
     }
 
     /** 最多可以选择六张图片 */
     private fun toSelectImage() {
-        val num = 6 - editProfileViewModel.localImageListPath.size
+        val num = 6 - editProfileViewModel.editImageListPath.size
         PictureSelector.create(this)
             .openGallery(SelectMimeType.ofImage())
             .setImageEngine(CoilEngine.current)

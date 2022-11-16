@@ -15,33 +15,37 @@ class EditProfileViewModel : ViewModel() {
     private val mediaUploadRepository by lazy { MediaUploadRepository() }
     private val editProfileRepository by lazy { EditProfileRepository() }
 
-    /** 本地相册或拍照选择的头像 */
-    internal var localAvatarPath: String = ""
+    /** 编辑页面--本地相册或拍照选择的头像地址 */
+    internal var editAvatarPath: String = ""
 
-    /** 本地相册或录像选择的个人视频 */
-    internal var localVideoPath = ""
+    /** 编辑页面--本地相册或录像选择的视频封面地址 */
+    internal var editVideoImagePath = ""
 
-    /** 本地相册或拍照选择的个人图片 */
-    internal val localImageListPath = mutableListOf<String>()
+    /** 编辑页面--本地相册或录像选择的视频地址 */
+    internal var editVideoPath = ""
+
+    /** 编辑页面--本地相册或拍照选择的个人图片地址 */
+    internal val editImageListPath = mutableListOf<String>()
 
     /** 当前用户更新信息的状态、用户控制用户信息弹窗和请求结果提示 */
-    internal var uploadResult = MutableSharedFlow<Boolean>()
+    internal var uploadResultFlow = MutableSharedFlow<Boolean>()
 
     internal fun uploadProfile(name: String, bio: String, link: String) {
         ioScope {
             val avatarUrl = uploadAvatarProfile()
-            val imageList = uploadImageListProfile()
+            val videoImageUrl = uploadAvatarProfile()
             val videoUrl = uploadVideoProfile()
+            val imageList = uploadImageListProfile()
             val apiResponse = editProfileRepository
-                .uploadProfile(avatarUrl, name, bio, link, videoUrl, imageList)
+                .uploadProfile(avatarUrl, name, bio, link, videoImageUrl, videoUrl, imageList)
             val apiResult = apiResponse.data
             if (apiResponse.success && apiResult != null) {
-                uploadResult.emit(true)
+                uploadResultFlow.emit(true)
                 Account.saveAccountInfo(apiResult)
                 LiveEventBus.get<Boolean>(EventKey.REFRESH_HOME_LIST)
                     .post(true)
             } else {
-                uploadResult.emit(false)
+                uploadResultFlow.emit(false)
             }
         }
     }
@@ -49,12 +53,12 @@ class EditProfileViewModel : ViewModel() {
     /** 更新头像信息 */
     private suspend fun uploadAvatarProfile(): String {
         val avatar = Account.userAvatar
-        return if (localAvatarPath.isNotBlank() && localAvatarPath != avatar) {
+        return if (editAvatarPath.isNotBlank() && editAvatarPath != avatar) {
             val apiResponse =
-                mediaUploadRepository.uploadSinglePicture(localAvatarPath)
+                mediaUploadRepository.uploadSinglePicture(editAvatarPath)
             val apiResult = apiResponse.data
             if (apiResponse.success && !apiResult.isNullOrEmpty()) {
-                localAvatarPath = apiResult
+                editAvatarPath = apiResult
                 apiResult
             } else avatar
         } else avatar
@@ -62,12 +66,12 @@ class EditProfileViewModel : ViewModel() {
 
     private suspend fun uploadVideoProfile(): String {
         val avatar = Account.userVideo
-        return if (localVideoPath.isNotBlank() && localVideoPath != avatar) {
+        return if (editVideoPath.isNotBlank() && editVideoPath != avatar) {
             val apiResponse =
-                mediaUploadRepository.uploadSingleVideo(localVideoPath)
+                mediaUploadRepository.uploadSingleVideo(editVideoPath)
             val apiResult = apiResponse.data
             if (apiResponse.success && !apiResult.isNullOrEmpty()) {
-                localVideoPath = apiResult
+                editVideoPath = apiResult
                 apiResult
             } else avatar
         } else avatar
@@ -79,7 +83,7 @@ class EditProfileViewModel : ViewModel() {
         val existsImageList = mutableListOf<String>()
         val uploadImageList = mutableListOf<String>()
         // 遍历当前选择图片并把要上传的图片添加到集合中
-        localImageListPath.forEach { cache ->
+        editImageListPath.forEach { cache ->
             if (Account.userImageList.contains(cache)) {
                 existsImageList.add(cache)
             } else {

@@ -14,10 +14,19 @@ class EditProfileRepository {
         userName: String,
         userBio: String,
         userLink: String,
+        videoImageUrl: String,
         videoUrl: String,
         imgList: ArrayList<String>,
     ) = retrofit {
-        val body = EditProfileBody(avatarUrl, userName, userBio, userLink, videoUrl, imgList)
+        val body = EditProfileBody(
+            avatarUrl,
+            userName,
+            userBio,
+            userLink,
+            videoImageUrl,
+            videoUrl,
+            imgList
+        )
         editProfileApiService.uploadProfile(body)
     }
 }
