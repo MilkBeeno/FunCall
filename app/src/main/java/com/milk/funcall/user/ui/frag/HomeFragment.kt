@@ -78,6 +78,7 @@ class HomeFragment : AbstractFragment() {
     }
 
     override fun initializeView() {
+        FireBaseManager.logEvent(FirebaseKey.THE_HOME_PAGE_SHOW)
         binding.headerToolbar.setTitle(R.string.home_title)
         binding.rvHome.itemAnimator = null
         binding.rvHome.layoutManager =
@@ -92,6 +93,7 @@ class HomeFragment : AbstractFragment() {
             adapter.refresh()
         }
         adapter.setOnItemClickListener { adapter, _, position ->
+            FireBaseManager.logEvent(FirebaseKey.CLICK_THE_AVATAR)
             val user = adapter.getNoNullItem(position)
             if (user.targetId > 0) UserInfoActivity.create(requireContext(), user.targetId)
         }

@@ -274,4 +274,16 @@ object FirebaseKey {
 
     /** 点击 开启通知弹窗 确认按钮 */
     const val CLICK_OPEN_NOTIFICATION_POPUP_CONFIRM = "Click_open_notification_popup_Confirm"
+
+    /** 点击进入Home_Page */
+    const val THE_HOME_PAGE_SHOW = "the_home_page_show"
+
+    /** 点击首页用户头像 */
+    const val CLICK_THE_AVATAR = "Click_the_avatar"
+
+    /** 进入对话页面 */
+    const val CHAT_PAGE_SHOW = "chat_page_show"
+
+    /** 进入他人的个人主页 */
+    const val THE_PROFILE_PAGE_SHOW = "the_Profile_page_show"
 }

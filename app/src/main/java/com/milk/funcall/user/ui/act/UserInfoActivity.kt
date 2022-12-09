@@ -56,6 +56,7 @@ class UserInfoActivity : AbstractActivity() {
     }
 
     private fun initializeView() {
+        FireBaseManager.logEvent(FirebaseKey.THE_PROFILE_PAGE_SHOW)
         immersiveStatusBar()
         binding.flHeader.statusBarPadding()
         binding.root.navigationBarPadding()

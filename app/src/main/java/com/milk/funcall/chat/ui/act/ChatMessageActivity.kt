@@ -41,6 +41,7 @@ class ChatMessageActivity : AbstractActivity() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initializeView() {
+        FireBaseManager.logEvent(FirebaseKey.CHAT_PAGE_SHOW)
         setStatusBarDark()
         setStatusBarColor(color(R.color.white))
         binding.headerToolbar.showArrowBack()
