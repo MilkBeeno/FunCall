@@ -50,15 +50,18 @@ object NotificationUtil {
     ) {
         val finalChannelId = createChannel(context, CHANNEL_ID, CHANNEL_NAME)
         val intent = Intent(context, UserInfoActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         try {
             intent.putExtra("USER_ID", userId.toLong())
         } catch (e: NumberFormatException) {
             Logger.d("类型转换错误信息:${e.message}", "NotificationUtil")
             e.printStackTrace()
         }
-
-        val flag = PendingIntent.FLAG_UPDATE_CURRENT
+        val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
+        } else {
+            PendingIntent.FLAG_UPDATE_CURRENT
+        }
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, flag)
         val notification = NotificationCompat.Builder(context, finalChannelId)
             .setContentTitle(title)
