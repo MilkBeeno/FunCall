@@ -7,9 +7,12 @@ import com.milk.funcall.common.ad.AdConfig
 import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.paging.NetworkPagingSource
 import com.milk.funcall.common.response.ApiPagingResponse
+import com.milk.funcall.user.data.SayHiModel
 import com.milk.funcall.user.data.UserSimpleInfoModel
 import com.milk.funcall.user.repo.HomeRepository
 import com.milk.funcall.user.status.ItemAdType
+import com.milk.simple.ktx.ioScope
+import kotlinx.coroutines.flow.MutableSharedFlow
 
 class HomeViewModel : ViewModel() {
     private val homeRepository by lazy { HomeRepository() }
@@ -25,7 +28,7 @@ class HomeViewModel : ViewModel() {
     private val homeListThird: Boolean
         get() = AdConfig.getAdvertiseUnitId(AdCodeKey.HOME_LIST_THIRD)
             .isNotBlank() && AdConfig.adCancelType != 2
-
+    internal val sayHiFlow = MutableSharedFlow<MutableList<SayHiModel>>()
     internal val pagingSource = Pager(
         config = PagingConfig(
             pageSize = 8,
@@ -36,6 +39,16 @@ class HomeViewModel : ViewModel() {
             NetworkPagingSource { getHomeList(it) }
         }
     )
+
+    internal fun getSayHiList() {
+        ioScope {
+            val apiResponse = homeRepository.getSayHiList()
+            val apiResult = apiResponse.data
+            if (apiResponse.success && apiResult != null) {
+                sayHiFlow.emit(apiResult)
+            }
+        }
+    }
 
     private suspend fun getHomeList(index: Int): ApiPagingResponse<UserSimpleInfoModel> {
         val apiResponse = homeRepository.getHomeList(index, groupNumber)

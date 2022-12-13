@@ -143,4 +143,5 @@
     <string name="dialog_report_options_first">Harassment</string>
     <string name="dialog_report_options_second">False Gender</string>
     <string name="dialog_report_options_third">Nudity</string>
+    <string name="dialog_say_hi_title">Say Hi</string>
 </resources>

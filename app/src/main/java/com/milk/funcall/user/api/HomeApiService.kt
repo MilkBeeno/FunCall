@@ -2,8 +2,10 @@ package com.milk.funcall.user.api
 
 import com.milk.funcall.common.response.ApiResponse
 import com.milk.funcall.user.data.HomModel
+import com.milk.funcall.user.data.SayHiModel
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface HomeApiService {
@@ -15,4 +17,7 @@ interface HomeApiService {
         @Field("groupNumber") groupNumber: Int,
         @Field("size") size: Int = 8,
     ): ApiResponse<HomModel>
+
+    @GET("/funcall/oneKeySayHi")
+    suspend fun getSayHiList(): ApiResponse<MutableList<SayHiModel>>
 }

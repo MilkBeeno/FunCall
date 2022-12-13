@@ -8,4 +8,6 @@ class HomeRepository {
     internal suspend fun getHomeList(pageIndex: Int, groupNumber: Int) = retrofit {
         ApiService.homeApiService.getHomeList(pageIndex, Account.userGender, groupNumber)
     }
+
+    internal suspend fun getSayHiList() = retrofit { ApiService.homeApiService.getSayHiList() }
 }

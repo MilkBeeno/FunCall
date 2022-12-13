@@ -18,6 +18,7 @@ import com.milk.funcall.databinding.FragmentHomeBinding
 import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.user.ui.act.UserInfoActivity
 import com.milk.funcall.user.ui.adapter.HomeAdapter
+import com.milk.funcall.user.ui.dialog.SayHiDialog
 import com.milk.funcall.user.ui.vm.HomeViewModel
 import com.milk.simple.ktx.*
 import com.milk.simple.mdr.KvManger
@@ -27,6 +28,7 @@ class HomeFragment : AbstractFragment() {
     private val homeViewModel by viewModels<HomeViewModel>()
     private val adapter by lazy { HomeAdapter() }
     private val loadingDialog by lazy { LoadingDialog(requireActivity()) }
+    private val sayHiDialog by lazy { SayHiDialog(requireActivity()) }
 
     override fun getRootView(): View = binding.root
 
@@ -35,6 +37,7 @@ class HomeFragment : AbstractFragment() {
         super.initializeData()
         checkNewClientOnHome()
         loadingDialog.show()
+        homeViewModel.getSayHiList()
         adapter.addRefreshedListener {
             loadingDialog.dismiss()
             binding.refresh.finishRefresh(1500)
@@ -69,12 +72,21 @@ class HomeFragment : AbstractFragment() {
 
     override fun initializeObserver() {
         super.initializeObserver()
-        LiveEventBus.get<Boolean>(EventKey.REFRESH_HOME_LIST)
-            .observe(this) {
-                if (adapter.itemCount > 0)
-                    binding.rvHome.smoothScrollToPosition(0)
-                binding.refresh.autoRefresh()
+        LiveEventBus.get<Boolean>(EventKey.REFRESH_HOME_LIST).observe(this) {
+            if (adapter.itemCount > 0) {
+                binding.rvHome.smoothScrollToPosition(0)
             }
+            binding.refresh.autoRefresh()
+        }
+        homeViewModel.sayHiFlow.collectLatest(this) {
+            if (it.isNotEmpty()) {
+                sayHiDialog.show()
+                sayHiDialog.setUserList(it)
+                sayHiDialog.setOnConfirmListener {
+                    // 点击确认
+                }
+            }
+        }
     }
 
     override fun initializeView() {
