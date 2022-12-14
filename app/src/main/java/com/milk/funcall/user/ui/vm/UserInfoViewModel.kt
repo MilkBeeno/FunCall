@@ -58,16 +58,17 @@ class UserInfoViewModel : ViewModel() {
         }
     }
 
-    internal fun changeUnlockStatus(deviceId: String, unlockType: Int, unlockUserId: Long) {
+    internal fun changeUnlockStatus(deviceId: String, unlockType: UnlockType, targetId: Long) {
+        ioScope { UserInfoRepository.finishAd(unlockType, targetId) }
         ioScope {
             val apiResponse =
-                UserInfoRepository.changeUnlockStatus(deviceId, unlockType, unlockUserId)
+                UserInfoRepository.changeUnlockStatus(deviceId, unlockType, targetId)
             // 解锁成功信息同步到服务器中、修改本地剩余次数数据并更新 UI
             if (apiResponse.success) {
                 val userInfo = getUserInfoModel()
                 val count = userInfo.remainUnlockCount - 1
                 userInfo.remainUnlockCount = if (count <= 0) 0 else count
-                when (unlockType) {
+                when (unlockType.value) {
                     UnlockType.Link.value ->
                         userInfo.linkUnlocked = true
                     UnlockType.Image.value ->

@@ -7,6 +7,7 @@ import com.milk.funcall.common.db.table.UserInfoEntity
 import com.milk.funcall.common.net.retrofit
 import com.milk.funcall.user.api.ApiService
 import com.milk.funcall.user.data.UserInfoModel
+import com.milk.funcall.user.status.UnlockType
 import kotlinx.coroutines.flow.Flow
 
 object UserInfoRepository {
@@ -78,8 +79,15 @@ object UserInfoRepository {
         ApiService.userInfoApiService.blackUser(targetId)
     }
 
-    internal suspend fun changeUnlockStatus(deviceId: String, unlockType: Int, unlockUserId: Long) =
-        retrofit {
-            ApiService.userInfoApiService.changeUnlockStatus(deviceId, unlockType, unlockUserId)
-        }
+    internal suspend fun changeUnlockStatus(
+        deviceId: String,
+        unlockType: UnlockType,
+        targetId: Long
+    ) = retrofit {
+        ApiService.userInfoApiService.changeUnlockStatus(deviceId, unlockType.value, targetId)
+    }
+
+    internal suspend fun finishAd(unlockType: UnlockType, targetId: Long) = retrofit {
+        ApiService.userInfoApiService.finisAd(unlockType.key, targetId)
+    }
 }

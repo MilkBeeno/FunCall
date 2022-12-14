@@ -319,7 +319,7 @@ class UserInfoActivity : AbstractActivity() {
                             binding.link.flLinkLocked.gone()
                             userInfoViewModel.changeUnlockStatus(
                                 DeviceManager.number,
-                                UnlockType.Link.value,
+                                UnlockType.Link,
                                 userInfo.targetId
                             )
                         } else {
@@ -355,7 +355,7 @@ class UserInfoActivity : AbstractActivity() {
                 binding.link.flLinkLocked.gone()
                 userInfoViewModel.changeUnlockStatus(
                     DeviceManager.number,
-                    UnlockType.Link.value,
+                    UnlockType.Link,
                     userInfo.targetId
                 )
             }
@@ -374,7 +374,7 @@ class UserInfoActivity : AbstractActivity() {
                 binding.mlImage.gone()
                 userInfoViewModel.changeUnlockStatus(
                     DeviceManager.number,
-                    UnlockType.Image.value,
+                    UnlockType.Image,
                     userInfo.targetId
                 )
             }
@@ -388,7 +388,7 @@ class UserInfoActivity : AbstractActivity() {
                         binding.mlImage.gone()
                         userInfoViewModel.changeUnlockStatus(
                             DeviceManager.number,
-                            UnlockType.Image.value,
+                            UnlockType.Image,
                             userInfo.targetId
                         )
                     })

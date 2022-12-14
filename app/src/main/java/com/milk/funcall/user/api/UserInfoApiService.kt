@@ -44,4 +44,10 @@ interface UserInfoApiService {
         @Field("unlockContent") unlockType: Int,
         @Field("unlockUserId") unlockUserId: Long
     ): ApiResponse<Any>
+
+    @GET("/funcall/finishAd")
+    suspend fun finisAd(
+        @Query("tagType") tagType: String,
+        @Query("faceUserId") faceUserId: Long
+    ): ApiResponse<Any>
 }
