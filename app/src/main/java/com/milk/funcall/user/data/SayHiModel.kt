@@ -10,7 +10,7 @@ data class SayHiModel(
     @SerializedName("gender")
     val userGender: String = "",
     @SerializedName("id")
-    val userId: String = "",
+    val userId: Long = 0,
     @SerializedName("nickname")
     val userName: String = ""
 )

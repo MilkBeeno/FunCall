@@ -1,8 +1,11 @@
 package com.milk.funcall.user.ui.vm
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import com.milk.funcall.R
+import com.milk.funcall.chat.repo.MessageRepository
 import com.milk.funcall.common.ad.AdConfig
 import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.paging.NetworkPagingSource
@@ -12,6 +15,7 @@ import com.milk.funcall.user.data.UserSimpleInfoModel
 import com.milk.funcall.user.repo.HomeRepository
 import com.milk.funcall.user.status.ItemAdType
 import com.milk.simple.ktx.ioScope
+import com.milk.simple.ktx.string
 import kotlinx.coroutines.flow.MutableSharedFlow
 
 class HomeViewModel : ViewModel() {
@@ -46,6 +50,19 @@ class HomeViewModel : ViewModel() {
             val apiResult = apiResponse.data
             if (apiResponse.success && apiResult != null) {
                 sayHiFlow.emit(apiResult)
+            }
+        }
+    }
+
+    internal fun sendTextMessage(context: Context, sayHiModels: MutableList<SayHiModel>) {
+        ioScope {
+            sayHiModels.forEach { sayHiModel ->
+                MessageRepository.sendTextChatMessage(
+                    sayHiModel.userId,
+                    sayHiModel.userName,
+                    sayHiModel.userAvatar,
+                    context.string(R.string.chat_message_say_hi_title)
+                )
             }
         }
     }

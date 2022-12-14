@@ -83,7 +83,7 @@ class HomeFragment : AbstractFragment() {
                 sayHiDialog.show()
                 sayHiDialog.setUserList(it)
                 sayHiDialog.setOnConfirmListener {
-                    // 点击确认
+                    homeViewModel.sendTextMessage(requireContext(), it)
                 }
             }
         }
