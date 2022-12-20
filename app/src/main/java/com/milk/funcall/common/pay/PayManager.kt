@@ -5,6 +5,10 @@ import com.milk.funcall.app.AppRepository
 import com.milk.simple.ktx.ioScope
 
 object PayManager {
+
+    // 谷歌支付服务实例
+    val googlePay by lazy { GooglePlay.GoogleFactory.INSTANCE.create() as GooglePlay }
+
     /** 订阅已取消，但尚未到期。仅当订阅是自动续订方案时，这个状态才可用。*/
     private const val SUBSCRIPTION_STATE_CANCELED = "SUBSCRIPTION_STATE_CANCELED"
 

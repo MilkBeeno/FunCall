@@ -12,4 +12,22 @@ object AppConfigKey {
 
     /** 订阅的折扣数值 */
     const val SUBSCRIBE_DISCOUNT_VALUE = "Annual_subscription_discount_rate"
+
+    /** 年订阅商品 ID */
+    const val PRODUCT_ID_OF_YEAR = "Subscribe_product_info_year_id"
+
+    /** 周订阅商品 ID */
+    const val PRODUCT_ID_OF_WEEK = "Subscribe_product_info_week_id"
+
+    /** 年订阅折扣商品 ID */
+    const val PRODUCT_ID_OF_YEAR_DISCOUNT = "Promotional_product_info_year_discount_id"
+
+    /** 年订阅折扣商品百分比 */
+    const val PRODUCT_SCALE_OF_YEAR_DISCOUNT = "Promotional_product_info_year_discount_number"
+
+    /** 年订阅折扣商品 -- 原商品 ID */
+    const val PRODUCT_ID_OF_YEAR_ORIGIN = "Promotional_product_info_year_origin_id"
+
+    /** 是否展示折扣商品弹窗 1—>展示  0—>不展示 默认是展示的 */
+    const val SHOW_DISCOUNT_PRODUCT_DIALOG = "Subscribe_to_open_promotions"
 }

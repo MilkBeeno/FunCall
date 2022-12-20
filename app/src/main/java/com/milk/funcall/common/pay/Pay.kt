@@ -1,28 +1,38 @@
 package com.milk.funcall.common.pay
 
 import android.app.Activity
+import android.content.Context
 
 interface Pay {
-    /** SDK 初始化 */
-    fun initialize(activity: Activity)
+    /** 支付服务初始化 */
+    fun initialize(context: Context)
 
-    /** 支付断开连接 */
+    /** 支付服务连接失败 */
+    fun connectFailed()
+
+    /** 支付服务连接成功 */
+    fun connectSucceeded()
+
+    /** 断开谷歌支付连接 */
     fun disconnect()
 
-    /** 支付连接成功 */
-    fun connected()
+    /** 查询商品详情 */
+    fun queryProducts()
 
-    /** 进行购买 */
-    fun launchPurchase(activity: Activity, productDetails: Any)
-
-    /** 购买成功 */
-    fun paySuccessListener(listener: (String, String) -> Unit)
-
-    /** 取消购买 */
-    fun payCancelListener(listener: () -> Unit)
+    /** 进行商品购买 */
+    fun payProduct(activity: Activity, productDetails: Any)
 
     /** 购买失败 */
-    fun payFailureListener(listener: () -> Unit)
+    fun payFailed(request: () -> Unit)
 
-    fun finishConnection()
+    /** 取消购买 */
+    fun payCanceled(request: () -> Unit)
+
+    /** 购买成功 */
+    fun paySucceeded(request: (String, String) -> Unit)
+
+    /** 获取支付对象工厂 */
+    abstract class Factory {
+        abstract fun create(): Pay
+    }
 }

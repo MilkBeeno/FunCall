@@ -1,6 +1,7 @@
 package com.milk.funcall.common.pay
 
 import android.app.Activity
+import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import androidx.collection.arrayMapOf
@@ -13,24 +14,33 @@ import java.util.*
 
 class GooglePlay : Pay {
     private var billingClient: BillingClient? = null
+
+    /** 查询商品的 ID */
+    private val productIds = mutableListOf<String>()
+
+    /** 货币符号转换对应地区和汇率 */
     private val currencyArrayMap = arrayMapOf<String, String>()
-    private var paySuccessListener: ((String, String) -> Unit)? = null
-    private var payCancelListener: (() -> Unit)? = null
-    private var payFailureListener: (() -> Unit)? = null
-    internal val productList = MutableSharedFlow<MutableMap<String, ProductsModel>>()
+
+    /** 查询到的商品列表 */
+    internal val products = MutableSharedFlow<MutableMap<String, ProductsModel>>()
+
+    /** 支付结果状态回调 */
+    private var payFailed: (() -> Unit)? = null
+    private var payCanceled: (() -> Unit)? = null
+    private var paySucceeded: ((String, String) -> Unit)? = null
 
     /** 谷歌支付连接状态回调 */
     private val billingClientStateListener by lazy {
         object : BillingClientStateListener {
             override fun onBillingServiceDisconnected() {
-                Logger.d("谷歌支付连接失败", "谷歌 Pay")
-                disconnect()
+                Logger.d("谷歌支付连接失败", TAG)
+                connectFailed()
             }
 
             override fun onBillingSetupFinished(p0: BillingResult) {
                 if (p0.responseCode == BillingClient.BillingResponseCode.OK) {
-                    Logger.d("谷歌支付连接成功", "谷歌 Pay")
-                    connected()
+                    Logger.d("谷歌支付连接成功", TAG)
+                    connectSucceeded()
                 }
             }
         }
@@ -42,18 +52,18 @@ class GooglePlay : Pay {
             when (p0.responseCode) {
                 BillingClient.BillingResponseCode.OK -> {
                     purchases?.forEach {
-                        Logger.d("谷歌商品购买成功", "谷歌 Pay")
-                        //不可重复购买的内购商品、订阅商品核销
+                        Logger.d("谷歌商品购买成功", TAG)
+                        // 不可重复购买的内购商品、订阅商品核销
                         acknowledgedPurchase(it.orderId, it.purchaseToken)
                     }
                 }
                 BillingClient.BillingResponseCode.USER_CANCELED -> {
-                    Logger.d("谷歌商品取消购买", "谷歌 Pay")
-                    payCancelListener?.invoke()
+                    Logger.d("谷歌商品取消购买", TAG)
+                    payCanceled?.invoke()
                 }
                 else -> {
-                    Logger.d("谷歌商品购买失败，Code = ${p0.responseCode}", "谷歌 Pay")
-                    payFailureListener?.invoke()
+                    Logger.d("谷歌商品购买失败，Code = ${p0.responseCode}", TAG)
+                    payFailed?.invoke()
                 }
             }
         }
@@ -67,9 +77,9 @@ class GooglePlay : Pay {
     private val handler = Handler(Looper.myLooper() ?: Looper.getMainLooper())
     private val runnable = Runnable { billingClient?.startConnection(billingClientStateListener) }
 
-    override fun initialize(activity: Activity) {
+    override fun initialize(context: Context) {
         if (billingClient == null) {
-            val builder = BillingClient.newBuilder(activity)
+            val builder = BillingClient.newBuilder(context)
             builder.setListener(purchasesUpdatedListener)
             builder.enablePendingPurchases()
             billingClient = builder.build()
@@ -77,24 +87,35 @@ class GooglePlay : Pay {
         billingClient?.startConnection(billingClientStateListener)
     }
 
-    /** 谷歌支付断开连接时重新进行连接 */
-    override fun disconnect() {
+    override fun connectFailed() {
         handler.postDelayed(runnable, 1000)
     }
 
-    override fun connected() {
-        val subsParams = getSuBsProductDetailsParams()
+    override fun connectSucceeded() {
+        // 连接成功、Google Play 直接去查商品得状态
+        queryProducts()
+    }
+
+    override fun disconnect() {
+        billingClient?.endConnection()
+    }
+
+    override fun queryProducts() {
+        val subsParams = getSubsProductDetailsParams()
         // 查询谷歌支持内购或订阅产品详细回调
         val responseListener = ProductDetailsResponseListener { billingResult, productDetails ->
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
                 ioScope {
                     writeOffAnOrder()
-                    Logger.d("谷歌商品查询成功", "谷歌 Pay")
+                    Logger.d("谷歌商品查询成功", TAG)
                     // 获取谷歌内购或订阅产品价格、并进行货币转换
                     getProductPrice(productDetails)
                 }
             } else {
-                Logger.d("谷歌商品查询失败," + "查询的 Code 是=${billingResult.responseCode}", "谷歌 Pay")
+                Logger.d(
+                    "谷歌商品查询失败," + "查询的 Code 是=${billingResult.responseCode}",
+                    TAG
+                )
             }
         }
         billingClient?.queryProductDetailsAsync(subsParams, responseListener)
@@ -114,17 +135,19 @@ class GooglePlay : Pay {
     }
 
     /** 查询谷歌订阅产品参数配置 */
-    private fun getSuBsProductDetailsParams(): QueryProductDetailsParams {
+    private fun getSubsProductDetailsParams(): QueryProductDetailsParams {
         val subscriptionProductInfo = arrayListOf<QueryProductDetailsParams.Product>()
-        subscriptionProductInfo.add(
-            QueryProductDetailsParams.Product.newBuilder().setProductId(ProductKey.SUBSCRIBE_WEEK)
-                .setProductType(BillingClient.ProductType.SUBS).build()
-        )
-        subscriptionProductInfo.add(
-            QueryProductDetailsParams.Product.newBuilder().setProductId(ProductKey.SUBSCRIBE_YEAR)
-                .setProductType(BillingClient.ProductType.SUBS).build()
-        )
-        return QueryProductDetailsParams.newBuilder().setProductList(subscriptionProductInfo)
+        productIds.forEach {
+            subscriptionProductInfo.add(
+                QueryProductDetailsParams.Product.newBuilder()
+                    .setProductId(it)
+                    .setProductType(BillingClient.ProductType.SUBS)
+                    .build()
+            )
+        }
+        Logger.d("查询产品ID的长度是: ${productIds.size}", TAG)
+        return QueryProductDetailsParams.newBuilder()
+            .setProductList(subscriptionProductInfo)
             .build()
     }
 
@@ -137,11 +160,11 @@ class GooglePlay : Pay {
             }
         }
         val products = mutableMapOf<String, ProductsModel>()
-        Logger.d("查询当前商品列表信息，长度是${productDetails.size}", "谷歌 Pay")
+        Logger.d("查询当前商品列表信息，长度是${productDetails.size}", TAG)
         productDetails.forEach {
             when {
                 BillingClient.ProductType.INAPP == it.productType && it.oneTimePurchaseOfferDetails != null -> {
-                    Logger.d("当前内购商品，INAPP 内购", "谷歌 Pay")
+                    Logger.d("当前内购商品，INAPP 内购", TAG)
                     val googleProductPrice =
                         it.oneTimePurchaseOfferDetails?.formattedPrice.toString()
                     val googleCurrencyCode =
@@ -150,10 +173,10 @@ class GooglePlay : Pay {
                     val replacePrice = replaceCurrencySymbol(
                         googleProductPrice, googleCurrencyCode, currencySymbol
                     )
-                    Logger.d("当前内购商品价格是:$replacePrice，INAPP 内购", "谷歌 Pay")
+                    Logger.d("当前内购商品价格是:$replacePrice，INAPP 内购", TAG)
                 }
                 BillingClient.ProductType.SUBS == it.productType && it.subscriptionOfferDetails != null -> {
-                    Logger.d("当前订阅商品，SUBS 订阅", "谷歌 Pay")
+                    Logger.d("当前订阅商品，SUBS 订阅", TAG)
                     val googleProductPrice =
                         it.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(0)?.formattedPrice.toString()
                     val googleCurrencyCode =
@@ -170,16 +193,18 @@ class GooglePlay : Pay {
                             products[ProductKey.SUBSCRIBE_YEAR] = ProductsModel(it, replacePrice)
                         }
                     }
-                    Logger.d("当前订阅商品详情是:$it，SUBS 订阅", "谷歌 Pay")
+                    Logger.d("当前订阅商品详情是:$it，SUBS 订阅", TAG)
                 }
             }
         }
-        productList.emit(products)
+        this.products.emit(products)
     }
 
     /** 对谷歌内购或订阅产品进行货币转换 */
     private fun replaceCurrencySymbol(
-        priceStr: String, currencyCode: String, currencySymbol: String?
+        priceStr: String,
+        currencyCode: String,
+        currencySymbol: String?
     ): String {
         var resultPriceStr = priceStr
         if (resultPriceStr.startsWith("$")) {
@@ -197,7 +222,7 @@ class GooglePlay : Pay {
         return resultPriceStr
     }
 
-    override fun launchPurchase(activity: Activity, productDetails: Any) {
+    override fun payProduct(activity: Activity, productDetails: Any) {
         if (productDetails is ProductDetails) {
             val params = arrayListOf<BillingFlowParams.ProductDetailsParams>()
             val isSubs = BillingClient.ProductType.SUBS == productDetails.productType
@@ -223,6 +248,18 @@ class GooglePlay : Pay {
         }
     }
 
+    override fun payFailed(request: () -> Unit) {
+        payFailed = request
+    }
+
+    override fun payCanceled(request: () -> Unit) {
+        payCanceled = request
+    }
+
+    override fun paySucceeded(request: (String, String) -> Unit) {
+        paySucceeded = request
+    }
+
     /** 谷歌商品订阅成功，进行商品核销 */
     private fun acknowledgedPurchase(orderId: String, purchaseToken: String) {
         if (billingClient != null && billingClient?.isReady == true) {
@@ -230,25 +267,34 @@ class GooglePlay : Pay {
             builder.setPurchaseToken(purchaseToken)
             val acknowledgePurchaseParams = builder.build()
             billingClient?.acknowledgePurchase(acknowledgePurchaseParams) {
-                Logger.d("谷歌商品订阅核销成功", "谷歌 Pay")
-                paySuccessListener?.invoke(orderId, purchaseToken)
+                Logger.d("谷歌商品订阅核销成功", TAG)
+                paySucceeded?.invoke(orderId, purchaseToken)
             }
         }
     }
 
-    override fun paySuccessListener(listener: (String, String) -> Unit) {
-        paySuccessListener = listener
+    /** 当服务器接口响应后、需要先设置到此处 */
+    fun addProduct(productId: String) {
+        if (!productIds.contains(productId)) {
+            productIds.add(productId)
+        }
     }
 
-    override fun payCancelListener(listener: () -> Unit) {
-        payCancelListener = listener
+    /** 工厂模式便于后续添加其他方式进行支付模板设计 */
+    class GoogleFactory : Pay.Factory() {
+        private var googlePlay: GooglePlay? = null
+
+        override fun create(): Pay {
+            if (googlePlay == null) GooglePlay()
+            return checkNotNull(googlePlay)
+        }
+
+        companion object {
+            val INSTANCE = GoogleFactory()
+        }
     }
 
-    override fun payFailureListener(listener: () -> Unit) {
-        payFailureListener = listener
-    }
-
-    override fun finishConnection() {
-        billingClient?.endConnection()
+    companion object {
+        private const val TAG = "谷歌 Pay"
     }
 }

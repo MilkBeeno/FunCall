@@ -38,7 +38,6 @@ class LaunchActivity : AbstractActivity() {
         if (isNotLoaded) {
             uploadDeviceInfo()
             PayManager.getPayStatus()
-            AppConfig.obtain()
             AdConfig.obtain()
             Account.initialize()
             checkIsNewClient()

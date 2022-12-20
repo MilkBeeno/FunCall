@@ -16,7 +16,7 @@ import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.common.constrant.ProductKey
 import com.milk.funcall.common.firebase.FireBaseManager
-import com.milk.funcall.common.pay.GooglePlay
+import com.milk.funcall.common.pay.PayManager
 import com.milk.funcall.common.pay.ProductsModel
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityRechargeBinding
@@ -25,7 +25,6 @@ import com.milk.simple.ktx.*
 
 class RechargeActivity : AbstractActivity() {
     private val binding by lazy { ActivityRechargeBinding.inflate(layoutInflater) }
-    private val googlePlay by lazy { GooglePlay() }
     private var productList = mutableMapOf<String, ProductsModel>()
     private val loadingDialog by lazy { LoadingDialog(this) }
     private val rechargeSuccessDialog by lazy { RechargeSuccessDialog(this) }
@@ -95,21 +94,20 @@ class RechargeActivity : AbstractActivity() {
     }
 
     private fun initializeRecharge() {
-        googlePlay.initialize(this)
-        googlePlay.paySuccessListener { orderId, purchaseToken ->
+        PayManager.googlePay.paySucceeded { orderId, purchaseToken ->
             FireBaseManager.logEvent(FirebaseKey.SUBSCRIPTION_SUCCESS_SHOW)
             mainScope { loadingDialog.show() }
             rechargeViewModel.salesOrder(orderId, purchaseToken)
         }
-        googlePlay.payCancelListener { updateUI(null) }
-        googlePlay.payFailureListener { updateUI(null) }
-        googlePlay.productList.collectLatest(this) {
+        PayManager.googlePay.payCanceled { updateUI(null) }
+        PayManager.googlePay.payFailed { updateUI(null) }
+        PayManager.googlePay.products.collectLatest(this) {
             productList = it
             productList.forEach { _ ->
-                if (productList.containsKey(ProductKey.SUBSCRIBE_WEEK)) {
+                if (productList.containsKey(AppConfig.subsWeekId)) {
                     binding.tvWeekPrice.text = productList[ProductKey.SUBSCRIBE_WEEK]?.productsNames
                 }
-                if (productList.containsKey(ProductKey.SUBSCRIBE_YEAR)) {
+                if (productList.containsKey(AppConfig.subsYearId)) {
                     binding.tvYearPrice.text = productList[ProductKey.SUBSCRIBE_YEAR]?.productsNames
                     if (AppConfig.discountNumber > 0) {
                         binding.tvDiscount.visible()
@@ -128,14 +126,14 @@ class RechargeActivity : AbstractActivity() {
                 FireBaseManager.logEvent(FirebaseKey.CLICK_SUBSCRIBE_BY_WEEK)
                 updateUI(binding.llWeek)
                 productList[ProductKey.SUBSCRIBE_WEEK]?.productDetails?.let {
-                    googlePlay.launchPurchase(this, it)
+                    PayManager.googlePay.payProduct(this, it)
                 }
             }
             binding.clYear -> {
                 FireBaseManager.logEvent(FirebaseKey.CLICK_SUBSCRIBE_BY_YEAR)
                 updateUI(binding.clYear)
                 productList[ProductKey.SUBSCRIBE_YEAR]?.productDetails?.let {
-                    googlePlay.launchPurchase(this, it)
+                    PayManager.googlePay.payProduct(this, it)
                 }
             }
         }
@@ -158,11 +156,6 @@ class RechargeActivity : AbstractActivity() {
             binding.ivYear.setImageResource(R.drawable.recharge_options)
             binding.clYear.setBackgroundResource(R.drawable.shape_recharge_options_background)
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        googlePlay.finishConnection()
     }
 
     companion object {
