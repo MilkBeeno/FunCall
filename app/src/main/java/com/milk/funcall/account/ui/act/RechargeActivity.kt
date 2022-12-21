@@ -13,8 +13,8 @@ import com.milk.funcall.app.AppConfig
 import com.milk.funcall.common.ad.AdConfig
 import com.milk.funcall.common.ad.AdManager
 import com.milk.funcall.common.constrant.AdCodeKey
+import com.milk.funcall.common.constrant.AppConfigKey
 import com.milk.funcall.common.constrant.FirebaseKey
-import com.milk.funcall.common.constrant.ProductKey
 import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.pay.PayManager
 import com.milk.funcall.common.pay.ProductsModel
@@ -105,10 +105,12 @@ class RechargeActivity : AbstractActivity() {
             productList = it
             productList.forEach { _ ->
                 if (productList.containsKey(AppConfig.subsWeekId)) {
-                    binding.tvWeekPrice.text = productList[ProductKey.SUBSCRIBE_WEEK]?.productsNames
+                    binding.tvWeekPrice.text =
+                        productList[AppConfigKey.PRODUCT_ID_OF_WEEK]?.productsNames
                 }
                 if (productList.containsKey(AppConfig.subsYearId)) {
-                    binding.tvYearPrice.text = productList[ProductKey.SUBSCRIBE_YEAR]?.productsNames
+                    binding.tvYearPrice.text =
+                        productList[AppConfigKey.PRODUCT_ID_OF_YEAR]?.productsNames
                     if (AppConfig.discountNumber > 0) {
                         binding.tvDiscount.visible()
                         binding.tvDiscount.text = AppConfig.discountNumber.toString()
@@ -125,14 +127,14 @@ class RechargeActivity : AbstractActivity() {
             binding.llWeek -> {
                 FireBaseManager.logEvent(FirebaseKey.CLICK_SUBSCRIBE_BY_WEEK)
                 updateUI(binding.llWeek)
-                productList[ProductKey.SUBSCRIBE_WEEK]?.productDetails?.let {
+                productList[AppConfigKey.PRODUCT_ID_OF_WEEK]?.productDetails?.let {
                     PayManager.googlePay.payProduct(this, it)
                 }
             }
             binding.clYear -> {
                 FireBaseManager.logEvent(FirebaseKey.CLICK_SUBSCRIBE_BY_YEAR)
                 updateUI(binding.clYear)
-                productList[ProductKey.SUBSCRIBE_YEAR]?.productDetails?.let {
+                productList[AppConfigKey.PRODUCT_ID_OF_YEAR]?.productDetails?.let {
                     PayManager.googlePay.payProduct(this, it)
                 }
             }

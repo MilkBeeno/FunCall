@@ -6,7 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import androidx.collection.arrayMapOf
 import com.android.billingclient.api.*
-import com.milk.funcall.common.constrant.ProductKey
+import com.milk.funcall.common.constrant.AppConfigKey
 import com.milk.simple.ktx.ioScope
 import com.milk.simple.log.Logger
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -186,11 +186,13 @@ class GooglePlay : Pay {
                         googleProductPrice, googleCurrencyCode, currencySymbol
                     )
                     when (it.productId) {
-                        ProductKey.SUBSCRIBE_WEEK -> {
-                            products[ProductKey.SUBSCRIBE_WEEK] = ProductsModel(it, replacePrice)
+                        AppConfigKey.PRODUCT_ID_OF_WEEK -> {
+                            products[AppConfigKey.PRODUCT_ID_OF_WEEK] =
+                                ProductsModel(it, replacePrice)
                         }
-                        ProductKey.SUBSCRIBE_YEAR -> {
-                            products[ProductKey.SUBSCRIBE_YEAR] = ProductsModel(it, replacePrice)
+                        AppConfigKey.PRODUCT_ID_OF_YEAR -> {
+                            products[AppConfigKey.PRODUCT_ID_OF_YEAR] =
+                                ProductsModel(it, replacePrice)
                         }
                     }
                     Logger.d("当前订阅商品详情是:$it，SUBS 订阅", TAG)
@@ -285,7 +287,7 @@ class GooglePlay : Pay {
         private var googlePlay: GooglePlay? = null
 
         override fun create(): Pay {
-            if (googlePlay == null) GooglePlay()
+            if (googlePlay == null) googlePlay = GooglePlay()
             return checkNotNull(googlePlay)
         }
 
