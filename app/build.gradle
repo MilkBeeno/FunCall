@@ -9,7 +9,7 @@ android {
     compileSdk 32
     defaultConfig {
         // 正式包名: com.milk.simplejustfuncall  测试包名:com.milk.funcall
-        applicationId "com.milk.simplejustfuncall"
+        applicationId "com.milk.funcall"
         minSdk 21
         targetSdk 32
         versionCode 122
@@ -75,7 +75,7 @@ android {
 
 dependencies {
     // 自定义组件库
-    implementation 'com.github.MilkBeeno:Library:1.2.8'
+    implementation 'com.github.MilkBeeno:Library:1.2.9'
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'com.google.android.material:material:1.6.1'

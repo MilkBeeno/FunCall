@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivClose"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="-5dp"
+        android:layout_marginBottom="87dp"
+        android:padding="7dp"
+        android:src="@drawable/login_max_client_number"
+        app:layout_constraintBottom_toTopOf="@+id/ivBackground"
+        app:layout_constraintEnd_toEndOf="@+id/ivBackground" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivBackground"
+        android:layout_width="302dp"
+        android:layout_height="380dp"
+        android:src="@drawable/dialog_subscribe_discount"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="222dp"
+        android:layout_height="107dp"
+        android:layout_marginTop="-56dp"
+        android:src="@drawable/dialog_subscribe_discount_title"
+        app:layout_constraintEnd_toEndOf="@+id/ivBackground"
+        app:layout_constraintStart_toStartOf="@+id/ivBackground"
+        app:layout_constraintTop_toTopOf="@+id/ivBackground" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:textColor="@color/white"
+        android:textSize="29sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/ivBackground"
+        app:layout_constraintStart_toStartOf="@+id/ivBackground"
+        app:layout_constraintTop_toTopOf="@+id/ivBackground"
+        tools:text="50%" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/llTime"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="34dp"
+        android:layout_marginEnd="29dp"
+        android:gravity="center"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="@+id/ivBackground"
+        app:layout_constraintStart_toStartOf="@+id/ivBackground"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitle">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTimeHour"
+            android:layout_width="62dp"
+            android:layout_height="70dp"
+            android:background="@drawable/shape_dialog_subscribe_discount_number"
+            android:gravity="center"
+            android:text="02"
+            android:textColor="@color/FFFF466C"
+            android:textSize="38sp"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="9dp"
+            android:layout_marginEnd="11dp"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="7dp"
+                android:layout_height="7dp"
+                android:background="@drawable/shape_dialog_subscribe_discount_number_circle" />
+
+            <View
+                android:layout_width="7dp"
+                android:layout_height="7dp"
+                android:layout_marginTop="9dp"
+                android:background="@drawable/shape_dialog_subscribe_discount_number_circle" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTimeMinute"
+            android:layout_width="62dp"
+            android:layout_height="70dp"
+            android:background="@drawable/shape_dialog_subscribe_discount_number"
+            android:gravity="center"
+            android:text="00"
+            android:textColor="@color/FFFF466C"
+            android:textSize="38sp"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="11dp"
+            android:layout_marginEnd="9dp"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="7dp"
+                android:layout_height="7dp"
+                android:background="@drawable/shape_dialog_subscribe_discount_number_circle" />
+
+            <View
+                android:layout_width="7dp"
+                android:layout_height="7dp"
+                android:layout_marginTop="9dp"
+                android:background="@drawable/shape_dialog_subscribe_discount_number_circle" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTimeSecond"
+            android:layout_width="62dp"
+            android:layout_height="70dp"
+            android:background="@drawable/shape_dialog_subscribe_discount_number"
+            android:gravity="center"
+            android:text="00"
+            android:textColor="@color/FFFF466C"
+            android:textSize="38sp"
+            android:textStyle="bold" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvTimeDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="@string/dialog_subscribe_discount_time_desc"
+        android:textColor="@color/FF555665"
+        android:textSize="14sp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="@+id/ivBackground"
+        app:layout_constraintStart_toStartOf="@+id/ivBackground"
+        app:layout_constraintTop_toBottomOf="@+id/llTime" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clOriginPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="19dp"
+        app:layout_constraintEnd_toEndOf="@+id/ivBackground"
+        app:layout_constraintStart_toStartOf="@+id/ivBackground"
+        app:layout_constraintTop_toBottomOf="@+id/tvTimeDesc">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvOriginPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="7dp"
+            android:paddingEnd="7dp"
+            android:textColor="@color/FF060926"
+            android:textSize="29sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="$59" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="3dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_dialog_subscribe_discount_line"
+            app:layout_constraintBottom_toBottomOf="@+id/tvOriginPrice"
+            app:layout_constraintEnd_toEndOf="@+id/tvOriginPrice"
+            app:layout_constraintStart_toStartOf="@+id/tvOriginPrice"
+            app:layout_constraintTop_toTopOf="@+id/tvOriginPrice" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvDiscountPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/FF060926"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/ivBackground"
+        app:layout_constraintStart_toStartOf="@+id/ivBackground"
+        app:layout_constraintTop_toBottomOf="@+id/clOriginPrice"
+        tools:text="Just $29.9 /year" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="@string/dialog_subscribe_discount_desc"
+        android:textColor="@color/FF555665"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/ivBackground"
+        app:layout_constraintStart_toStartOf="@+id/ivBackground"
+        app:layout_constraintTop_toBottomOf="@+id/tvDiscountPrice" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvPay"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/shape_dialog_subscribe_discount_confirm"
+        android:gravity="center"
+        android:text="@string/dialog_subscribe_confirm"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@+id/ivBackground"
+        app:layout_constraintEnd_toEndOf="@+id/ivBackground"
+        app:layout_constraintStart_toStartOf="@+id/ivBackground" />
+</androidx.constraintlayout.widget.ConstraintLayout>

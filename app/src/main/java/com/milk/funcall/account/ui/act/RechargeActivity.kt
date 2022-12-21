@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
+import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
 import com.milk.funcall.account.Account
 import com.milk.funcall.account.ui.dialog.RechargeSuccessDialog
@@ -13,10 +14,12 @@ import com.milk.funcall.app.AppConfig
 import com.milk.funcall.common.ad.AdConfig
 import com.milk.funcall.common.ad.AdManager
 import com.milk.funcall.common.constrant.AdCodeKey
+import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.pay.PayManager
 import com.milk.funcall.common.ui.AbstractActivity
+import com.milk.funcall.common.ui.dialog.SubsDiscountDialog
 import com.milk.funcall.databinding.ActivityRechargeBinding
 import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.simple.ktx.*
@@ -25,6 +28,7 @@ class RechargeActivity : AbstractActivity() {
     private val binding by lazy { ActivityRechargeBinding.inflate(layoutInflater) }
     private val loadingDialog by lazy { LoadingDialog(this) }
     private val rechargeSuccessDialog by lazy { RechargeSuccessDialog(this) }
+    private val subsDiscountDialog by lazy { SubsDiscountDialog(this) }
     private val rechargeViewModel by viewModels<RechargeViewModel>()
     private var adView: View? = null
     private var rechargePageInitialized: Boolean = false
@@ -45,6 +49,9 @@ class RechargeActivity : AbstractActivity() {
         binding.headerToolbar.showArrowBack(R.drawable.common_arrow_back_white)
         binding.llWeek.setOnClickListener(this)
         binding.clYear.setOnClickListener(this)
+        subsDiscountDialog.setOnConfirmListener {
+            PayManager.googlePay.payProduct(this, AppConfig.subsYearDiscountOriginId)
+        }
     }
 
     private fun initializeAdView() {
@@ -88,6 +95,12 @@ class RechargeActivity : AbstractActivity() {
             } else initializeAdView()
             rechargePageInitialized = true
         }
+        // 当超过两个小时自动恢复到元价格上
+        LiveEventBus.get<Long>(EventKey.UPDATE_SUBSCRIBE_DISCOUNT_TIME).observe(this) {
+            if (it == 0L) PayManager.googlePay.getProduct(AppConfig.subsYearId)?.let {
+                binding.tvYearPrice.text = it.productPrice
+            }
+        }
     }
 
     private fun initializeRecharge() {
@@ -103,7 +116,12 @@ class RechargeActivity : AbstractActivity() {
                 PayManager.googlePay.getProduct(AppConfig.subsWeekId)?.let {
                     binding.tvWeekPrice.text = it.productPrice
                 }
-                PayManager.googlePay.getProduct(AppConfig.subsYearId)?.let {
+                val productId = if (PayManager.isSubscribeDiscountPeriod) {
+                    AppConfig.subsYearDiscountId
+                } else {
+                    AppConfig.subsYearId
+                }
+                PayManager.googlePay.getProduct(productId)?.let {
                     binding.tvYearPrice.text = it.productPrice
                     if (AppConfig.discountNumber > 0) {
                         binding.tvDiscount.visible()
@@ -126,7 +144,12 @@ class RechargeActivity : AbstractActivity() {
             binding.clYear -> {
                 FireBaseManager.logEvent(FirebaseKey.CLICK_SUBSCRIBE_BY_YEAR)
                 updateUI(binding.clYear)
-                PayManager.googlePay.payProduct(this, AppConfig.subsYearId)
+                val productId = if (PayManager.isSubscribeDiscountPeriod) {
+                    AppConfig.subsYearDiscountId
+                } else {
+                    AppConfig.subsYearId
+                }
+                PayManager.googlePay.payProduct(this, productId)
             }
         }
     }
@@ -148,6 +171,17 @@ class RechargeActivity : AbstractActivity() {
             binding.ivYear.setImageResource(R.drawable.recharge_options)
             binding.clYear.setBackgroundResource(R.drawable.shape_recharge_options_background)
         }
+    }
+
+    override fun onBackPressed() {
+        if (AppConfig.showSubsYearDiscountDialog && !PayManager.isSubscribeDiscountPeriod) {
+            PayManager.timer.start()
+            PayManager.subscribeDiscountProductTime = System.currentTimeMillis()
+            subsDiscountDialog.show()
+            PayManager.googlePay.getProduct(AppConfig.subsYearDiscountId)?.let {
+                binding.tvYearPrice.text = it.productPrice
+            }
+        } else super.onBackPressed()
     }
 
     companion object {

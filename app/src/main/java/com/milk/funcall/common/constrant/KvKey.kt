@@ -75,4 +75,7 @@ object KvKey {
 
     /** 当前设备的设备 ID */
     const val PLATFORM_DEVICE_NUMBER = "PLATFORM_DEVICE_NUMBER"
+
+    /** 订阅商品折扣期开始时间 */
+    const val SUBSCRIBE_DISCOUNT_PRODUCT_START = "SUBSCRIBE_DISCOUNT_PRODUCT_START"
 }

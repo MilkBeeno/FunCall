@@ -144,4 +144,8 @@
     <string name="dialog_report_options_second">False Gender</string>
     <string name="dialog_report_options_third">Nudity</string>
     <string name="dialog_say_hi_title">Say Hi</string>
+    <string name="dialog_subscribe_discount_time_desc">Auto re-newable, cancel anytime</string>
+    <string name="dialog_subscribe_discount_desc"><![CDATA[Remove ads & unlock all features]]></string>
+    <string name="dialog_subscribe_discount_price_desc">Just XX /year</string>
+    <string name="dialog_subscribe_confirm">CONFIRM</string>
 </resources>

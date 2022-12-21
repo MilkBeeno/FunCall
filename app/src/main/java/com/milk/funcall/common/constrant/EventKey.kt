@@ -15,4 +15,7 @@ object EventKey {
 
     /** 登录的唯一 ID 、 代替设备 ID 的 KEY */
     const val LOGIN_DEVICE_UNIQUE_ID = "LOGIN_DEVICE_UNIQUE_ID"
+
+    /** 更新优惠折扣剩余时间 */
+    const val UPDATE_SUBSCRIBE_DISCOUNT_TIME = "UPDATE_SUBSCRIBE_DISCOUNT_TIME"
 }
