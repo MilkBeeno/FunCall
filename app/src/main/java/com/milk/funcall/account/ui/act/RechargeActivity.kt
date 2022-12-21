@@ -13,11 +13,9 @@ import com.milk.funcall.app.AppConfig
 import com.milk.funcall.common.ad.AdConfig
 import com.milk.funcall.common.ad.AdManager
 import com.milk.funcall.common.constrant.AdCodeKey
-import com.milk.funcall.common.constrant.AppConfigKey
 import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.pay.PayManager
-import com.milk.funcall.common.pay.ProductsModel
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityRechargeBinding
 import com.milk.funcall.login.ui.dialog.LoadingDialog
@@ -25,7 +23,6 @@ import com.milk.simple.ktx.*
 
 class RechargeActivity : AbstractActivity() {
     private val binding by lazy { ActivityRechargeBinding.inflate(layoutInflater) }
-    private var productList = mutableMapOf<String, ProductsModel>()
     private val loadingDialog by lazy { LoadingDialog(this) }
     private val rechargeSuccessDialog by lazy { RechargeSuccessDialog(this) }
     private val rechargeViewModel by viewModels<RechargeViewModel>()
@@ -101,16 +98,13 @@ class RechargeActivity : AbstractActivity() {
         }
         PayManager.googlePay.payCanceled { updateUI(null) }
         PayManager.googlePay.payFailed { updateUI(null) }
-        PayManager.googlePay.products.collectLatest(this) {
-            productList = it
-            productList.forEach { _ ->
-                if (productList.containsKey(AppConfig.subsWeekId)) {
-                    binding.tvWeekPrice.text =
-                        productList[AppConfigKey.PRODUCT_ID_OF_WEEK]?.productsNames
+        PayManager.googlePay.queryProductStatus.collectLatest(this) { success ->
+            if (success) {
+                PayManager.googlePay.getProduct(AppConfig.subsWeekId)?.let {
+                    binding.tvWeekPrice.text = it.productPrice
                 }
-                if (productList.containsKey(AppConfig.subsYearId)) {
-                    binding.tvYearPrice.text =
-                        productList[AppConfigKey.PRODUCT_ID_OF_YEAR]?.productsNames
+                PayManager.googlePay.getProduct(AppConfig.subsYearId)?.let {
+                    binding.tvYearPrice.text = it.productPrice
                     if (AppConfig.discountNumber > 0) {
                         binding.tvDiscount.visible()
                         binding.tvDiscount.text = AppConfig.discountNumber.toString()
@@ -127,16 +121,12 @@ class RechargeActivity : AbstractActivity() {
             binding.llWeek -> {
                 FireBaseManager.logEvent(FirebaseKey.CLICK_SUBSCRIBE_BY_WEEK)
                 updateUI(binding.llWeek)
-                productList[AppConfigKey.PRODUCT_ID_OF_WEEK]?.productDetails?.let {
-                    PayManager.googlePay.payProduct(this, it)
-                }
+                PayManager.googlePay.payProduct(this, AppConfig.subsWeekId)
             }
             binding.clYear -> {
                 FireBaseManager.logEvent(FirebaseKey.CLICK_SUBSCRIBE_BY_YEAR)
                 updateUI(binding.clYear)
-                productList[AppConfigKey.PRODUCT_ID_OF_YEAR]?.productDetails?.let {
-                    PayManager.googlePay.payProduct(this, it)
-                }
+                PayManager.googlePay.payProduct(this, AppConfig.subsYearId)
             }
         }
     }

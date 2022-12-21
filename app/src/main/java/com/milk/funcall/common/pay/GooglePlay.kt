@@ -6,23 +6,26 @@ import android.os.Handler
 import android.os.Looper
 import androidx.collection.arrayMapOf
 import com.android.billingclient.api.*
-import com.milk.funcall.common.constrant.AppConfigKey
+import com.milk.funcall.app.AppConfig
 import com.milk.simple.ktx.ioScope
 import com.milk.simple.log.Logger
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import java.util.*
 
 class GooglePlay : Pay {
     private var billingClient: BillingClient? = null
 
-    /** 查询商品的 ID */
+    /** 查询商品的 ID 集合 */
     private val productIds = mutableListOf<String>()
+
+    /** 查询到的商品列表 */
+    private val products = mutableMapOf<String, ProductModel>()
 
     /** 货币符号转换对应地区和汇率 */
     private val currencyArrayMap = arrayMapOf<String, String>()
 
-    /** 查询到的商品列表 */
-    internal val products = MutableSharedFlow<MutableMap<String, ProductsModel>>()
+    /** 查询到商品列表结果的状态 */
+    internal val queryProductStatus = MutableStateFlow(false)
 
     /** 支付结果状态回调 */
     private var payFailed: (() -> Unit)? = null
@@ -153,53 +156,65 @@ class GooglePlay : Pay {
 
     /** 获取谷歌内购或订阅产品价格、并进行货币转换 */
     private suspend fun getProductPrice(productDetails: MutableList<ProductDetails>) {
+        products.clear()
         if (currencyArrayMap.isEmpty) {
             // currencyCode 为 key ,货币符号为 value 对于没有特定符号的货币，symbol 与 currencyCode 相同
             Currency.getAvailableCurrencies().forEach {
                 currencyArrayMap[it.currencyCode] = it.symbol
             }
         }
-        val products = mutableMapOf<String, ProductsModel>()
         Logger.d("查询当前商品列表信息，长度是${productDetails.size}", TAG)
         productDetails.forEach {
             when {
-                BillingClient.ProductType.INAPP == it.productType && it.oneTimePurchaseOfferDetails != null -> {
+                BillingClient.ProductType.INAPP == it.productType
+                    && it.oneTimePurchaseOfferDetails != null -> {
                     Logger.d("当前内购商品，INAPP 内购", TAG)
                     val googleProductPrice =
                         it.oneTimePurchaseOfferDetails?.formattedPrice.toString()
                     val googleCurrencyCode =
                         it.oneTimePurchaseOfferDetails?.priceCurrencyCode.toString()
-                    val currencySymbol = currencyArrayMap[googleCurrencyCode] ?: googleCurrencyCode
+                    val currencySymbol =
+                        currencyArrayMap[googleCurrencyCode] ?: googleCurrencyCode
                     val replacePrice = replaceCurrencySymbol(
-                        googleProductPrice, googleCurrencyCode, currencySymbol
+                        googleProductPrice,
+                        googleCurrencyCode,
+                        currencySymbol
                     )
                     Logger.d("当前内购商品价格是:$replacePrice，INAPP 内购", TAG)
                 }
-                BillingClient.ProductType.SUBS == it.productType && it.subscriptionOfferDetails != null -> {
+                BillingClient.ProductType.SUBS == it.productType
+                    && it.subscriptionOfferDetails != null -> {
                     Logger.d("当前订阅商品，SUBS 订阅", TAG)
                     val googleProductPrice =
-                        it.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(0)?.formattedPrice.toString()
+                        it.subscriptionOfferDetails?.get(0)
+                            ?.pricingPhases?.pricingPhaseList?.get(0)?.formattedPrice.toString()
                     val googleCurrencyCode =
-                        it.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(0)?.priceCurrencyCode.toString()
-                    val currencySymbol = currencyArrayMap[googleCurrencyCode] ?: googleCurrencyCode
-                    val replacePrice = replaceCurrencySymbol(
-                        googleProductPrice, googleCurrencyCode, currencySymbol
+                        it.subscriptionOfferDetails?.get(0)
+                            ?.pricingPhases?.pricingPhaseList?.get(0)?.priceCurrencyCode.toString()
+                    val currencySymbol =
+                        currencyArrayMap[googleCurrencyCode] ?: googleCurrencyCode
+                    val formatPrice = replaceCurrencySymbol(
+                        googleProductPrice,
+                        googleCurrencyCode,
+                        currencySymbol
                     )
+                    // 用 Map 保存 key 为商品 ID 、value 是商品详情和商品转换后显示的价格
                     when (it.productId) {
-                        AppConfigKey.PRODUCT_ID_OF_WEEK -> {
-                            products[AppConfigKey.PRODUCT_ID_OF_WEEK] =
-                                ProductsModel(it, replacePrice)
+                        AppConfig.subsWeekId -> {
+                            products[AppConfig.subsWeekId] = ProductModel(it, formatPrice)
                         }
-                        AppConfigKey.PRODUCT_ID_OF_YEAR -> {
-                            products[AppConfigKey.PRODUCT_ID_OF_YEAR] =
-                                ProductsModel(it, replacePrice)
+                        AppConfig.subsYearId -> {
+                            products[AppConfig.subsYearId] = ProductModel(it, formatPrice)
+                        }
+                        AppConfig.subsYearDiscountId -> {
+                            products[AppConfig.subsYearDiscountId] = ProductModel(it, formatPrice)
                         }
                     }
                     Logger.d("当前订阅商品详情是:$it，SUBS 订阅", TAG)
                 }
             }
         }
-        this.products.emit(products)
+        queryProductStatus.emit(products.isNotEmpty())
     }
 
     /** 对谷歌内购或订阅产品进行货币转换 */
@@ -224,22 +239,22 @@ class GooglePlay : Pay {
         return resultPriceStr
     }
 
-    override fun payProduct(activity: Activity, productDetails: Any) {
-        if (productDetails is ProductDetails) {
+    override fun payProduct(activity: Activity, productId: String) {
+        products[productId]?.productDetails?.let {
             val params = arrayListOf<BillingFlowParams.ProductDetailsParams>()
-            val isSubs = BillingClient.ProductType.SUBS == productDetails.productType
+            val isSubs = BillingClient.ProductType.SUBS == it.productType
             when {
-                isSubs && productDetails.subscriptionOfferDetails != null -> {
+                isSubs && it.subscriptionOfferDetails != null -> {
                     val offerToken =
-                        productDetails.subscriptionOfferDetails?.get(0)?.offerToken.toString()
+                        it.subscriptionOfferDetails?.get(0)?.offerToken.toString()
                     params.add(
                         BillingFlowParams.ProductDetailsParams.newBuilder()
-                            .setProductDetails(productDetails).setOfferToken(offerToken).build()
+                            .setProductDetails(it).setOfferToken(offerToken).build()
                     )
                 }
                 else -> params.add(
                     BillingFlowParams.ProductDetailsParams.newBuilder()
-                        .setProductDetails(productDetails).build()
+                        .setProductDetails(it).build()
                 )
             }
             val builder = BillingFlowParams.newBuilder()
@@ -277,9 +292,14 @@ class GooglePlay : Pay {
 
     /** 当服务器接口响应后、需要先设置到此处 */
     fun addProduct(productId: String) {
-        if (!productIds.contains(productId)) {
+        if (!productIds.contains(productId) && productId.isNotBlank()) {
             productIds.add(productId)
         }
+    }
+
+    /** 根据传入的商品 ID 来获取商品价格详情 */
+    fun getProduct(productId: String): ProductModel? {
+        return products[productId]
     }
 
     /** 工厂模式便于后续添加其他方式进行支付模板设计 */

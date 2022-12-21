@@ -20,7 +20,7 @@ interface Pay {
     fun queryProducts()
 
     /** 进行商品购买 */
-    fun payProduct(activity: Activity, productDetails: Any)
+    fun payProduct(activity: Activity, productId: String)
 
     /** 购买失败 */
     fun payFailed(request: () -> Unit)
