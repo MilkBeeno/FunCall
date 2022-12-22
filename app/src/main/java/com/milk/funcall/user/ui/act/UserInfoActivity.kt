@@ -35,7 +35,6 @@ import com.milk.funcall.user.status.UnlockType
 import com.milk.funcall.user.ui.adapter.UserImageAdapter
 import com.milk.funcall.user.ui.dialog.ReportDialog
 import com.milk.funcall.user.ui.dialog.ViewAdDialog
-import com.milk.funcall.user.ui.dialog.ViewLinkDialog
 import com.milk.funcall.user.ui.vm.UserInfoViewModel
 import com.milk.simple.ktx.*
 
@@ -45,7 +44,6 @@ class UserInfoActivity : AbstractActivity() {
     private val userId by lazy { intent.getLongExtra(USER_ID, 0) }
     private val loadingDialog by lazy { LoadingDialog(this) }
     private val viewAdDialog by lazy { ViewAdDialog(this) }
-    private val viewLinkDialog by lazy { ViewLinkDialog(this) }
     private val reportDialog by lazy { ReportDialog(this) }
     private val subsDiscountDialog by lazy { SubsDiscountDialog(this) }
     private var cancelRecharge: Boolean = false
@@ -352,8 +350,7 @@ class UserInfoActivity : AbstractActivity() {
                     else -> {
                         FireBaseManager
                             .logEvent(FirebaseKey.SHOW_FIRST_UNLOCK_VIDEO_OR_PICTURE)
-                        viewLinkDialog.show()
-                        viewLinkDialog.setOnConfirmRequest { loadImages() }
+                        loadImages()
                     }
                 }
             }
@@ -397,18 +394,21 @@ class UserInfoActivity : AbstractActivity() {
             }
             else -> {
                 FireBaseManager.logEvent(FirebaseKey.CLICK_THE_AD_TO_UNLOCK_THE_ALBUM)
-                loadingDialog.show()
-                userInfoViewModel.loadImageAd(
-                    activity = this,
-                    failure = { loadingDialog.dismiss() },
-                    success = {
-                        binding.mlImage.gone()
-                        userInfoViewModel.changeUnlockStatus(
-                            DeviceManager.number,
-                            UnlockType.Image,
-                            userInfo.targetId
-                        )
-                    })
+                viewAdDialog.show()
+                viewAdDialog.setOnConfirmRequest {
+                    loadingDialog.show()
+                    userInfoViewModel.loadImageAd(
+                        activity = this,
+                        failure = { loadingDialog.dismiss() },
+                        success = {
+                            binding.mlImage.gone()
+                            userInfoViewModel.changeUnlockStatus(
+                                DeviceManager.number,
+                                UnlockType.Image,
+                                userInfo.targetId
+                            )
+                        })
+                }
             }
         }
     }
