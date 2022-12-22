@@ -18,25 +18,27 @@
         android:orientation="vertical">
 
         <FrameLayout
-            android:layout_width="77dp"
-            android:layout_height="77dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="31dp">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/ivUserAvatar"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="77dp"
+                android:layout_height="77dp"
+                android:layout_gravity="center"
                 android:scaleType="centerCrop"
                 android:src="@drawable/common_default_man"
                 app:shapeAppearanceOverlay="@style/circleStyle" />
 
-            <com.milk.funcall.common.ui.view.GenderImageView
-                android:id="@+id/ivUserGender"
-                android:layout_width="19dp"
-                android:layout_height="19dp"
-                android:layout_gravity="bottom|end"
-                android:layout_marginEnd="4dp"
-                tools:src="@drawable/common_gender_man" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivUserAvatarFrame"
+                android:layout_width="114dp"
+                android:layout_height="102dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/mine_subscribe_avatar_frame"
+                android:visibility="gone"
+                tools:visibility="visible" />
         </FrameLayout>
 
         <androidx.appcompat.widget.AppCompatTextView

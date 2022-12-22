@@ -39,10 +39,18 @@ class MineFragment : AbstractFragment() {
         binding.tvLogin.setOnClickListener(this)
         binding.flNotSigned.setOnClickListener(this)
         binding.editProfile.setOption(R.drawable.mine_edit_profile, R.string.mine_edit_profile)
-        binding.recharge.setOption(R.drawable.mine_recharge, R.string.mine_recharge, requireContext().color(R.color.FF744311))
+        binding.recharge.setOption(
+            R.drawable.mine_recharge,
+            R.string.mine_recharge,
+            requireContext().color(R.color.FF744311)
+        )
         binding.blackedList.setOption(R.drawable.mine_blacked_list, R.string.mine_blacked_list)
         binding.aboutUs.setOption(R.drawable.mine_about_us, R.string.mine_about_us)
-        binding.signOut.setOption(R.drawable.mine_sign_out, R.string.mine_sign_out, showLine = false)
+        binding.signOut.setOption(
+            R.drawable.mine_sign_out,
+            R.string.mine_sign_out,
+            showLine = false
+        )
         logoutDialog.setOnConfirmListener {
             FireBaseManager.logEvent(FirebaseKey.LOG_OUT_SUCCESS)
             loadingDialog.show()
@@ -66,11 +74,16 @@ class MineFragment : AbstractFragment() {
                 binding.ivUserAvatar.setImageResource(defaultAvatar)
             }
         }
-        Account.userGenderFlow.collectLatest(this) {
-            binding.ivUserGender.updateGender(it)
+        Account.userSubscribeFlow.collectLatest(this) {
+            if (it) {
+                binding.ivUserAvatarFrame.visible()
+            } else {
+                binding.ivUserAvatarFrame.gone()
+            }
         }
         Account.userNameFlow.collectLatest(this) {
-            binding.tvUserName.text = it.ifBlank { requireActivity().string(R.string.mine_default_user_name) }
+            binding.tvUserName.text =
+                it.ifBlank { requireActivity().string(R.string.mine_default_user_name) }
         }
         Account.userFansFlow.collectLatest(this) {
             binding.tvFans.text = it.toString()
@@ -80,7 +93,9 @@ class MineFragment : AbstractFragment() {
         }
         mainViewModel.logOutFlow.collectLatest(this) {
             loadingDialog.dismiss()
-            if (it) GenderActivity.create(requireActivity())
+            if (it) {
+                GenderActivity.create(requireActivity())
+            }
         }
     }
 
