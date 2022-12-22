@@ -32,6 +32,7 @@ class RechargeActivity : AbstractActivity() {
     private val rechargeViewModel by viewModels<RechargeViewModel>()
     private var adView: View? = null
     private var rechargePageInitialized: Boolean = false
+    private var cancelRecharge: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,7 +110,10 @@ class RechargeActivity : AbstractActivity() {
             mainScope { loadingDialog.show() }
             rechargeViewModel.salesOrder(orderId, purchaseToken)
         }
-        PayManager.googlePay.payCanceled { updateUI(null) }
+        PayManager.googlePay.payCanceled {
+            cancelRecharge = true
+            updateUI(null)
+        }
         PayManager.googlePay.payFailed { updateUI(null) }
         PayManager.googlePay.queryProductStatus.collectLatest(this) { success ->
             if (success) {
@@ -174,7 +178,10 @@ class RechargeActivity : AbstractActivity() {
     }
 
     override fun onBackPressed() {
-        if (AppConfig.showSubsYearDiscountDialog && !PayManager.isSubscribeDiscountPeriod) {
+        if (AppConfig.showSubsYearDiscountDialog
+            && !PayManager.isSubscribeDiscountPeriod
+            && cancelRecharge
+        ) {
             PayManager.timer.start()
             PayManager.subscribeDiscountProductTime = System.currentTimeMillis()
             subsDiscountDialog.show()
