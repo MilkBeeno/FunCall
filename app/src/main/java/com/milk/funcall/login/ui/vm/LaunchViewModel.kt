@@ -3,9 +3,11 @@ package com.milk.funcall.login.ui.vm
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.util.Base64
+import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
-import com.anythink.interstitial.api.ATInterstitial
+import androidx.viewpager.widget.ViewPager.DecorView
+import com.anythink.splashad.api.ATSplashAd
 import com.milk.funcall.common.ad.AdConfig
 import com.milk.funcall.common.ad.AdLoadType
 import com.milk.funcall.common.ad.AdManager
@@ -32,8 +34,12 @@ class LaunchViewModel : ViewModel() {
     }
 
     /** 加载广告并设置广告状态 */
-    internal fun loadLaunchAd(activity: FragmentActivity, finished: () -> Unit) {
-        var interstitial: ATInterstitial? = null
+    internal fun loadLaunchAd(
+        activity: FragmentActivity,
+        viewGroup: ViewGroup,
+        finished: () -> Unit
+    ) {
+        var splashAd: ATSplashAd? = null
         MilkTimer.Builder()
             .setMillisInFuture(13000)
             .setOnTickListener { t, it ->
@@ -41,7 +47,7 @@ class LaunchViewModel : ViewModel() {
             }
             .setOnFinishedListener {
                 if (adLoadStatus == AdLoadType.Success) {
-                    interstitial?.show(activity)
+                    splashAd?.show(activity,viewGroup )
                 } else {
                     finished()
                 }
@@ -51,7 +57,7 @@ class LaunchViewModel : ViewModel() {
         val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.APP_START)
         if (adUnitId.isNotBlank() && AdConfig.adCancelType != 2) {
             FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST)
-            interstitial = AdManager.loadInterstitial(
+            splashAd = AdManager.loadOpenAd(
                 activity = activity,
                 adUnitId = adUnitId,
                 loadFailureRequest = {

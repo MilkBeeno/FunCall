@@ -13,6 +13,9 @@ import com.anythink.nativead.api.ATNative
 import com.anythink.nativead.api.ATNativeNetworkListener
 import com.anythink.rewardvideo.api.ATRewardVideoAd
 import com.anythink.rewardvideo.api.ATRewardVideoListener
+import com.anythink.splashad.api.ATSplashAd
+import com.anythink.splashad.api.ATSplashAdExtraInfo
+import com.anythink.splashad.api.ATSplashAdListener
 import com.milk.funcall.BuildConfig
 import com.milk.simple.log.Logger
 
@@ -40,6 +43,47 @@ object AdManager {
                 Logger.d("deviceInfo: $deviceInfo", "TopOnManager")
             }
         }
+    }
+
+    /** 加载开屏广告 */
+    internal fun loadOpenAd(
+        activity: FragmentActivity,
+        adUnitId: String,
+        loadFailureRequest: (String) -> Unit = {},
+        loadSuccessRequest: () -> Unit = {},
+        showFailureRequest: (String) -> Unit = {},
+        showSuccessRequest: () -> Unit = {},
+        finishedRequest: () -> Unit = {},
+        clickRequest: () -> Unit = {}
+    ): ATSplashAd {
+        val splashAd = ATSplashAd(activity, adUnitId, object : ATSplashAdListener {
+            override fun onAdLoaded(p0: Boolean) {
+                loadSuccessRequest()
+            }
+
+            override fun onAdLoadTimeout() {
+                loadFailureRequest("加载广告超时了")
+            }
+
+            override fun onNoAdError(p0: AdError?) {
+                showFailureRequest(p0?.desc.toString())
+            }
+
+            override fun onAdShow(p0: ATAdInfo?) {
+                // ATAdInfo 可区分广告平台以及获取广告平台的广告位ID等
+                showSuccessRequest()
+            }
+
+            override fun onAdClick(p0: ATAdInfo?) {
+                clickRequest()
+            }
+
+            override fun onAdDismiss(p0: ATAdInfo?, p1: ATSplashAdExtraInfo?) {
+                finishedRequest()
+            }
+        })
+        splashAd.loadAd()
+        return splashAd
     }
 
     /** 加载插页广告 */

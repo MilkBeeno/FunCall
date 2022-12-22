@@ -6,7 +6,6 @@ import androidx.activity.viewModels
 import com.google.firebase.messaging.Constants
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.account.Account
-import com.milk.funcall.app.AppConfig
 import com.milk.funcall.app.ui.act.MainActivity
 import com.milk.funcall.common.ad.AdConfig
 import com.milk.funcall.common.constrant.EventKey
@@ -80,7 +79,9 @@ class LaunchActivity : AbstractActivity() {
     private fun initializeObserver() {
         // launchViewModel.getHasKey(this)
         LiveEventBus.get<Any?>(EventKey.UPDATE_START_AD_UNIT_ID).observe(this) {
-            launchViewModel.loadLaunchAd(this) { toMainOrGenderPage() }
+            launchViewModel.loadLaunchAd(this, binding.root) {
+                toMainOrGenderPage()
+            }
         }
     }
 
