@@ -4,12 +4,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.activity.viewModels
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
 import com.milk.funcall.account.Account
 import com.milk.funcall.account.ui.dialog.RechargeSuccessDialog
-import com.milk.funcall.account.ui.vm.RechargeViewModel
 import com.milk.funcall.app.AppConfig
 import com.milk.funcall.common.ad.AdConfig
 import com.milk.funcall.common.ad.AdManager
@@ -29,7 +27,6 @@ class RechargeActivity : AbstractActivity() {
     private val loadingDialog by lazy { LoadingDialog(this) }
     private val rechargeSuccessDialog by lazy { RechargeSuccessDialog(this) }
     private val subsDiscountDialog by lazy { SubsDiscountDialog(this) }
-    private val rechargeViewModel by viewModels<RechargeViewModel>()
     private var adView: View? = null
     private var rechargePageInitialized: Boolean = false
     private var cancelRecharge: Boolean = false
@@ -111,7 +108,7 @@ class RechargeActivity : AbstractActivity() {
         PayManager.googlePay.paySucceeded { orderId, purchaseToken ->
             FireBaseManager.logEvent(FirebaseKey.SUBSCRIPTION_SUCCESS_SHOW)
             mainScope { loadingDialog.show() }
-            rechargeViewModel.salesOrder(orderId, purchaseToken)
+            PayManager.getPayStatus(orderId, purchaseToken)
         }
         PayManager.googlePay.payCanceled {
             cancelRecharge = true

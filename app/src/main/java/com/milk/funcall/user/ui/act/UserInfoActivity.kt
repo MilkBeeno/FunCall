@@ -12,7 +12,6 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
 import com.milk.funcall.account.Account
-import com.milk.funcall.account.ui.act.RechargeActivity
 import com.milk.funcall.app.AppConfig
 import com.milk.funcall.chat.ui.act.ChatMessageActivity
 import com.milk.funcall.common.ad.AdConfig
@@ -24,7 +23,9 @@ import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.media.loader.ImageLoader
 import com.milk.funcall.common.paging.SimpleGridDecoration
+import com.milk.funcall.common.pay.PayManager
 import com.milk.funcall.common.ui.AbstractActivity
+import com.milk.funcall.common.ui.dialog.SubsDiscountDialog
 import com.milk.funcall.common.ui.manager.NoScrollGridLayoutManager
 import com.milk.funcall.databinding.ActivityUserInfoBinding
 import com.milk.funcall.login.ui.act.LoginActivity
@@ -46,11 +47,14 @@ class UserInfoActivity : AbstractActivity() {
     private val viewAdDialog by lazy { ViewAdDialog(this) }
     private val viewLinkDialog by lazy { ViewLinkDialog(this) }
     private val reportDialog by lazy { ReportDialog(this) }
+    private val subsDiscountDialog by lazy { SubsDiscountDialog(this) }
+    private var cancelRecharge: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         initializeView()
+        initializeRecharge()
         initializeObserver()
         loadUserInfo()
     }
@@ -74,6 +78,16 @@ class UserInfoActivity : AbstractActivity() {
         reportDialog.setReportListener {
             loadingDialog.show()
             userInfoViewModel.report(userId, it)
+        }
+    }
+
+    private fun initializeRecharge() {
+        PayManager.googlePay.paySucceeded { orderId, purchaseToken ->
+            mainScope { loadingDialog.show() }
+            PayManager.getPayStatus(orderId, purchaseToken)
+        }
+        PayManager.googlePay.payCanceled {
+            cancelRecharge = true
         }
     }
 
@@ -125,6 +139,9 @@ class UserInfoActivity : AbstractActivity() {
         userInfoViewModel.reportFlow.collectLatest(this) {
             loadingDialog.dismiss()
             if (it) showLongToast(string(R.string.common_report_successful))
+        }
+        LiveEventBus.get<Long>(EventKey.UPDATE_SUBSCRIBE_DISCOUNT_TIME).observe(this) {
+            if (it == 0L) cancelRecharge = false
         }
     }
 
@@ -310,7 +327,7 @@ class UserInfoActivity : AbstractActivity() {
                 val userInfo = userInfoViewModel.getUserInfoModel()
                 when {
                     userInfo.remainUnlockCount <= 0 -> {
-                        RechargeActivity.create(this)
+                        PayManager.googlePay.payProduct(this, AppConfig.subsWeekId)
                     }
                     userInfo.videoUnlocked || userInfo.imageUnlocked -> {
                         // 点击直接查看
@@ -367,7 +384,7 @@ class UserInfoActivity : AbstractActivity() {
         val userInfo = userInfoViewModel.getUserInfoModel()
         when {
             userInfo.remainUnlockCount <= 0 -> {
-                RechargeActivity.create(this)
+                PayManager.googlePay.payProduct(this, AppConfig.subsWeekId)
             }
             userInfo.unlockMethod == 1 -> {
                 FireBaseManager.logEvent(FirebaseKey.CLICK_UNLOCK_PHOTO_ALBUM_FOR_FREE)
@@ -394,6 +411,17 @@ class UserInfoActivity : AbstractActivity() {
                     })
             }
         }
+    }
+
+    override fun onBackPressed() {
+        if (AppConfig.showSubsYearDiscountDialog
+            && !PayManager.isSubscribeDiscountPeriod
+            && cancelRecharge
+        ) {
+            PayManager.timer.start()
+            PayManager.subscribeDiscountProductTime = System.currentTimeMillis()
+            subsDiscountDialog.show()
+        } else super.onBackPressed()
     }
 
     companion object {

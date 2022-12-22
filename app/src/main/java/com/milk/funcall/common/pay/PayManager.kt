@@ -28,7 +28,7 @@ object PayManager {
     /** 判断是否在折扣期内 */
     val isSubscribeDiscountPeriod: Boolean
         get() {
-            return System.currentTimeMillis() - subscribeDiscountProductTime > 2 * 60 * 60 * 1000
+            return System.currentTimeMillis() - subscribeDiscountProductTime < 2 * 60 * 60 * 1000
                 && subscribeDiscountProductTime > 0
         }
 
