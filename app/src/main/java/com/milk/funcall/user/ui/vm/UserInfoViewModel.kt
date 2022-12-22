@@ -1,7 +1,6 @@
 package com.milk.funcall.user.ui.vm
 
 import androidx.lifecycle.ViewModel
-import com.anythink.interstitial.api.ATInterstitial
 import com.milk.funcall.account.Account
 import com.milk.funcall.common.ad.AdConfig
 import com.milk.funcall.common.ad.AdManager
@@ -127,9 +126,8 @@ class UserInfoViewModel : ViewModel() {
     internal fun loadImageAd(activity: UserInfoActivity, failure: () -> Unit, success: () -> Unit) {
         FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_5)
         val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_IMAGE)
-        var interstitial: ATInterstitial? = null
         if (adUnitId.isNotBlank()) {
-            interstitial = AdManager.loadInterstitial(
+            AdManager.loadIncentiveVideoAd(
                 activity = activity,
                 adUnitId = adUnitId,
                 loadFailureRequest = {
@@ -137,7 +135,6 @@ class UserInfoViewModel : ViewModel() {
                     failure()
                 },
                 loadSuccessRequest = {
-                    interstitial?.show(activity)
                     FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_5)
                 },
                 showFailureRequest = {
@@ -150,7 +147,8 @@ class UserInfoViewModel : ViewModel() {
                 },
                 clickRequest = {
                     FireBaseManager.logEvent(FirebaseKey.CLICK_AD_5)
-                })
+                }
+            )
         } else failure()
     }
 

@@ -22,8 +22,8 @@ object AdCodeKey {
     /** 个人主页查看用户视频插页广告  */
     internal const val VIEW_USER_VIDEO = "87654324"
 
-    /** 个人主页查看更多照片插页广告  */
-    internal const val VIEW_USER_IMAGE = "87654325"
+    /** 个人主页查看更多照片激励视频广告  */
+    internal const val VIEW_USER_IMAGE = "87654333"
 
     /** 首页底部的横幅广告  */
     internal const val MAIN_HOME_BOTTOM = "87654326"
