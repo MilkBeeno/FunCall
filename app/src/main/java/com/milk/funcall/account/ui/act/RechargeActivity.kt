@@ -98,8 +98,11 @@ class RechargeActivity : AbstractActivity() {
         }
         // 当超过两个小时自动恢复到元价格上
         LiveEventBus.get<Long>(EventKey.UPDATE_SUBSCRIBE_DISCOUNT_TIME).observe(this) {
-            if (it == 0L) PayManager.googlePay.getProduct(AppConfig.subsYearId)?.let {
-                binding.tvYearPrice.text = it.productPrice
+            if (it == 0L) {
+                cancelRecharge = false
+                PayManager.googlePay.getProduct(AppConfig.subsYearId)?.let {
+                    binding.tvYearPrice.text = it.productPrice
+                }
             }
         }
     }
