@@ -80,7 +80,11 @@ class LaunchActivity : AbstractActivity() {
         // launchViewModel.getHasKey(this)
         LiveEventBus.get<Any?>(EventKey.UPDATE_START_AD_UNIT_ID).observe(this) {
             launchViewModel.loadLaunchAd(this, binding.root) {
-                toMainOrGenderPage()
+                if (Account.userLogged || Account.userGender.isNotBlank()) {
+                    MainActivity.create(this)
+                } else {
+                    GenderActivity.create(this)
+                }
             }
         }
     }
@@ -95,12 +99,6 @@ class LaunchActivity : AbstractActivity() {
             KvManger.put(KvKey.CHECK_IS_NEW_CLIENT, false)
             FireBaseManager.logEvent(FirebaseKey.FIRST_OPEN)
         }
-    }
-
-    private fun toMainOrGenderPage() {
-        finish()
-        if (Account.userLogged || Account.userGender.isNotBlank()) MainActivity.create(this)
-        else GenderActivity.create(this)
     }
 
     private fun showNextAnimation() {

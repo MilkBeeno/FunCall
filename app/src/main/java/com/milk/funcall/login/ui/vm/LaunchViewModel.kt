@@ -6,7 +6,6 @@ import android.util.Base64
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
-import androidx.viewpager.widget.ViewPager.DecorView
 import com.anythink.splashad.api.ATSplashAd
 import com.milk.funcall.common.ad.AdConfig
 import com.milk.funcall.common.ad.AdLoadType
@@ -47,7 +46,8 @@ class LaunchViewModel : ViewModel() {
             }
             .setOnFinishedListener {
                 if (adLoadStatus == AdLoadType.Success) {
-                    splashAd?.show(activity,viewGroup )
+                    splashAd?.show(activity, viewGroup)
+                    activity.finish()
                 } else {
                     finished()
                 }
