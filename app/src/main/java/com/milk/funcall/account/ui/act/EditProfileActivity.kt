@@ -266,7 +266,7 @@ class EditProfileActivity : AbstractActivity() {
 
     /** 最多可以选择六张图片 */
     private fun toSelectImage() {
-        val num = 6 - editProfileViewModel.editImageListPath.size
+        val num = 9 - editProfileViewModel.editImageListPath.size
         PictureSelector.create(this)
             .openGallery(SelectMimeType.ofImage())
             .setImageEngine(CoilEngine.current)

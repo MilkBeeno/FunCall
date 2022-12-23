@@ -55,7 +55,7 @@ class EditProfileImageAdapter :
     internal fun setNewData(images: MutableList<String>) {
         imageList.clear()
         images.forEach { imageList.add(it) }
-        if (images.size < 6) imageList.add("")
+        if (images.size < 9) imageList.add("")
         notifyDataSetChanged()
     }
 
