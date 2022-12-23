@@ -82,9 +82,11 @@ class HomeFragment : AbstractFragment() {
         }
         homeViewModel.sayHiFlow.collectLatest(this) {
             if (it.isNotEmpty()) {
+                FireBaseManager.logEvent(FirebaseKey.SAY_HI_PAGE_SHOW)
                 sayHiDialog.show()
                 sayHiDialog.setUserList(it)
                 sayHiDialog.setOnConfirmListener {
+                    FireBaseManager.logEvent(FirebaseKey.ENTER_SAY_HI)
                     viewAdDialog.show()
                     viewAdDialog.setOnConfirmRequest {
                         homeViewModel.showSayHiAd(requireActivity())

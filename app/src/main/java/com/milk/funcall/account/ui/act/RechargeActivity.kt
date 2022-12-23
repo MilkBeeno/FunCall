@@ -26,7 +26,9 @@ class RechargeActivity : AbstractActivity() {
     private val binding by lazy { ActivityRechargeBinding.inflate(layoutInflater) }
     private val loadingDialog by lazy { LoadingDialog(this) }
     private val rechargeSuccessDialog by lazy { RechargeSuccessDialog(this) }
-    private val subsDiscountDialog by lazy { SubsDiscountDialog(this) }
+    private val subsDiscountDialog by lazy {
+        SubsDiscountDialog(this, SubsDiscountDialog.Source.Recharge)
+    }
     private var adView: View? = null
     private var rechargePageInitialized: Boolean = false
     private var cancelRecharge: Boolean = false

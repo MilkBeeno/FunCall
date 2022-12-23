@@ -45,7 +45,9 @@ class UserInfoActivity : AbstractActivity() {
     private val loadingDialog by lazy { LoadingDialog(this) }
     private val viewAdDialog by lazy { ViewAdDialog(this) }
     private val reportDialog by lazy { ReportDialog(this) }
-    private val subsDiscountDialog by lazy { SubsDiscountDialog(this) }
+    private val subsDiscountDialog by lazy {
+        SubsDiscountDialog(this, SubsDiscountDialog.Source.UserInfo)
+    }
     private var cancelRecharge: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -394,6 +396,8 @@ class UserInfoActivity : AbstractActivity() {
             }
             else -> {
                 FireBaseManager.logEvent(FirebaseKey.CLICK_THE_AD_TO_UNLOCK_THE_ALBUM)
+                FireBaseManager
+                    .logEvent(FirebaseKey.UNLOCK_ALBUM_INCENTIVE_VIDEO_AD_SECONDARY_CONFIRMATION)
                 viewAdDialog.show()
                 viewAdDialog.setOnConfirmRequest {
                     loadingDialog.show()

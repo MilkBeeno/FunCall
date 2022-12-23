@@ -7,6 +7,8 @@ import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
 import com.milk.funcall.app.AppConfig
 import com.milk.funcall.common.constrant.EventKey
+import com.milk.funcall.common.constrant.FirebaseKey
+import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.pay.PayManager
 import com.milk.funcall.databinding.DialogSubscribeDiscountBinding
 import com.milk.simple.ktx.color
@@ -14,13 +16,22 @@ import com.milk.simple.ktx.replaceString
 import com.milk.simple.ktx.setSpannableColor
 import com.milk.simple.ktx.string
 
-class SubsDiscountDialog(activity: FragmentActivity) :
+class SubsDiscountDialog(activity: FragmentActivity, val source: Source) :
     SimpleDialog<DialogSubscribeDiscountBinding>(activity) {
     private var clickRequest: (() -> Unit)? = null
 
     init {
+        when (source) {
+            Source.UserInfo -> {
+                FireBaseManager.logEvent(FirebaseKey.SHOW_PROMOTION_ON_PERSONAL)
+            }
+            Source.Recharge -> {
+                FireBaseManager.logEvent(FirebaseKey.SHOW_PROMOTION_WINDOW_ON_SUBSCRIPTION)
+            }
+        }
         setGravity(Gravity.CENTER)
         setWidthMatchParent(true)
+        setCanceledOnTouchOutside(false)
         binding.tvTitle.text =
             AppConfig.subsYearDiscountScale.toString().plus("%")
         binding.tvOriginPrice.text =
@@ -37,8 +48,29 @@ class SubsDiscountDialog(activity: FragmentActivity) :
                 activity.color(R.color.FFFF466C)
             )
         )
-        binding.ivClose.setOnClickListener { dismiss() }
+        binding.ivClose.setOnClickListener {
+            when (source) {
+                Source.UserInfo -> {
+                    FireBaseManager.logEvent(FirebaseKey.CLOSE_THE_PROMOTIONAL_ON_PERSONAL)
+                }
+                Source.Recharge -> {
+                    FireBaseManager
+                        .logEvent(FirebaseKey.CLOSE_THE_PROMOTIONAL_WINDOW_ON_THE_SUBSCRIPTION)
+                }
+            }
+            dismiss()
+        }
         binding.tvPay.setOnClickListener {
+            when (source) {
+                Source.UserInfo -> {
+                    FireBaseManager.logEvent(FirebaseKey.ERSONAL_HOME_PAGE_ANNUAL_PAYMENT_SHOW)
+                }
+                Source.Recharge -> {
+                    val tag =
+                        FirebaseKey.SUBSCRIPTION_SHOWING_PAYMENT_ANNUAL_SUBSCRIPTION_PROMOTIONAL_VERSION
+                    FireBaseManager.logEvent(tag)
+                }
+            }
             clickRequest?.invoke()
             dismiss()
         }
@@ -63,4 +95,6 @@ class SubsDiscountDialog(activity: FragmentActivity) :
     override fun getViewBinding(): DialogSubscribeDiscountBinding {
         return DialogSubscribeDiscountBinding.inflate(LayoutInflater.from(activity))
     }
+
+    enum class Source { UserInfo, Recharge }
 }

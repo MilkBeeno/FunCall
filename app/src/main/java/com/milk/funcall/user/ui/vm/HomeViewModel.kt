@@ -11,6 +11,8 @@ import com.milk.funcall.chat.repo.MessageRepository
 import com.milk.funcall.common.ad.AdConfig
 import com.milk.funcall.common.ad.AdManager
 import com.milk.funcall.common.constrant.AdCodeKey
+import com.milk.funcall.common.constrant.FirebaseKey
+import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.paging.NetworkPagingSource
 import com.milk.funcall.common.response.ApiPagingResponse
 import com.milk.funcall.user.data.SayHiModel
@@ -54,12 +56,15 @@ class HomeViewModel : ViewModel() {
     internal fun loadSayHiAd(activity: FragmentActivity) {
         val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.SAY_HI_USER_AD)
         if (adUnitId.isNotBlank()) {
+            FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_12)
             rewardVideoAd = AdManager.getIncentiveVideoAd(
                 activity = activity,
                 adUnitId = adUnitId,
                 loadFailureRequest = {
+                    FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_FAILED_12, it)
                 },
                 loadSuccessRequest = {
+                    FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_12)
                     ioScope {
                         val apiResponse = homeRepository.getSayHiList()
                         val apiResult = apiResponse.data
@@ -69,11 +74,14 @@ class HomeViewModel : ViewModel() {
                     }
                 },
                 showFailureRequest = {
+                    FireBaseManager.logEvent(FirebaseKey.AD_SHOW_FAILED_12, it)
                 },
                 showSuccessRequest = {
+                    FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_12)
                     mainScope { activity.showToast(activity.string(R.string.common_success)) }
                 },
                 clickRequest = {
+                    FireBaseManager.logEvent(FirebaseKey.CLICK_AD_12)
                 }
             )
         }

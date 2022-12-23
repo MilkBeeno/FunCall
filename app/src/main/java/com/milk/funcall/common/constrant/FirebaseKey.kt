@@ -286,4 +286,52 @@ object FirebaseKey {
 
     /** 进入他人的个人主页 */
     const val THE_PROFILE_PAGE_SHOW = "the_Profile_page_show"
+
+    /** 点击say hi按钮 */
+    const val ENTER_SAY_HI = "enter_say_hi"
+
+    /** 弹出一键打招呼弹窗 */
+    const val SAY_HI_PAGE_SHOW = "say_hi_page_show"
+
+    /** 订阅页面显示促销弹窗 */
+    const val SHOW_PROMOTION_WINDOW_ON_SUBSCRIPTION = "Show_promotion_window_on_subscription"
+
+    /** 关闭订阅页面促销弹窗 */
+    const val CLOSE_THE_PROMOTIONAL_WINDOW_ON_THE_SUBSCRIPTION =
+        "Close_the_promotional_window_on_the_subscription"
+
+    /** 订阅页面调起年订阅（促销版）支付弹窗 */
+    const val SUBSCRIPTION_SHOWING_PAYMENT_ANNUAL_SUBSCRIPTION_PROMOTIONAL_VERSION =
+        "Subscription_showing_payment_annual_subscription_promotional_version"
+
+    /** 个人主页显示促销弹窗 */
+    const val SHOW_PROMOTION_ON_PERSONAL = "Show_promotion_on_personal"
+
+    /** 关闭个人主页促销弹窗 */
+    const val CLOSE_THE_PROMOTIONAL_ON_PERSONAL = "Close_the_promotional_on_personal"
+
+    /** 个人主页内调起年订阅支付弹窗 */
+    const val ERSONAL_HOME_PAGE_ANNUAL_PAYMENT_SHOW = "ersonal_home_page_Annual_payment_show"
+
+    /** 弹出解锁相册播放激励视频确认弹窗 */
+    const val UNLOCK_ALBUM_INCENTIVE_VIDEO_AD_SECONDARY_CONFIRMATION =
+        "Unlock_album_Incentive_video_ad_secondary_confirmation"
+
+    /** 发起广告请求_个人主页查看更多照片激励视频广告 */
+    const val MAKE_AN_AD_REQUEST_12 = "Make_an_ad_request_12"
+
+    /** 广告请求成功_个人主页查看更多照片激励视频广告 */
+    const val AD_REQUEST_SUCCEEDED_12 = "Ad_request_succeeded_12"
+
+    /** 广告请求失败（需要统计原因）_个人主页查看更多照片激励视频广告 */
+    const val AD_REQUEST_FAILED_12 = "Ad_request_failed_12"
+
+    /** 广告展示成功_个人主页查看更多照片激励视频广告 */
+    const val THE_AD_SHOW_SUCCESS_12 = "The_ad_show_success_12"
+
+    /** 广告展示失败（需要统计原因）_个人主页查看更多照片激励视频广告 */
+    const val AD_SHOW_FAILED_12 = "Ad_show_failed_12"
+
+    /** 点击广告_个人主页查看更多照片激励视频广告 */
+    const val CLICK_AD_12 = "click_ad_12"
 }
