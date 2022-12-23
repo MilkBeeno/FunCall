@@ -290,6 +290,32 @@ class GooglePlay : Pay {
         }
     }
 
+    /** 谷歌通知跟新订阅状态 todo hlc 需要测试 */
+    fun updateSubscribeStatus(activity: Activity) {
+        val inAppMessageParams = InAppMessageParams.newBuilder()
+            .addInAppMessageCategoryToShow(InAppMessageParams.InAppMessageCategoryId.TRANSACTIONAL)
+            .build()
+        billingClient?.showInAppMessages(
+            activity,
+            inAppMessageParams
+        ) { inAppMessageResult ->
+            if (inAppMessageResult.responseCode ==
+                InAppMessageResult.InAppMessageResponseCode.NO_ACTION_NEEDED
+            ) {
+                // The flow has finished and there is no action needed from developers.
+            } else if (inAppMessageResult.responseCode
+                == InAppMessageResult.InAppMessageResponseCode.SUBSCRIPTION_STATUS_UPDATED
+            ) {
+                // The subscription status changed. For example, a subscription
+                // has been recovered from a suspend state. Developers should
+                // expect the purchase token to be returned with this response
+                // code and use the purchase token with the Google Play
+                // Developer API.
+                PayManager.getPayStatus()
+            }
+        }
+    }
+
     /** 当服务器接口响应后、需要先设置到此处 */
     fun addProduct(productId: String) {
         if (!productIds.contains(productId) && productId.isNotBlank()) {

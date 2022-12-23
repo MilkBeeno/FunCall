@@ -27,6 +27,7 @@ import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.common.firebase.FCMMessagingService
 import com.milk.funcall.common.firebase.FireBaseManager
+import com.milk.funcall.common.pay.PayManager
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.util.NotificationUtil
 import com.milk.funcall.databinding.ActivityMainBinding
@@ -170,6 +171,7 @@ class MainActivity : AbstractActivity() {
     }
 
     private fun setNotificationConfig() {
+        PayManager.googlePay.updateSubscribeStatus(this)
         FCMMessagingService.uploadNewToken()
         if (!NotificationUtil.isEnabled(this)) {
             FireBaseManager.logEvent(FirebaseKey.OPEN_NOTIFICATION_REQUEST_POPUP_SHOW)
