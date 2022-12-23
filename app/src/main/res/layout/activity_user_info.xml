@@ -151,10 +151,37 @@
                     android:visibility="gone"
                     tools:visibility="visible" />
 
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/llImagePreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:layout_marginEnd="14dp">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/ivUserImageFirst"
+                        android:layout_width="161dp"
+                        android:layout_height="161dp"
+                        android:scaleType="centerCrop"
+                        android:visibility="gone"
+                        app:shapeAppearanceOverlay="@style/roundCornerStyle_10"
+                        tools:visibility="visible" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/ivUserImageSecond"
+                        android:layout_width="161dp"
+                        android:layout_height="161dp"
+                        android:layout_marginStart="9dp"
+                        android:scaleType="centerCrop"
+                        android:visibility="gone"
+                        app:shapeAppearanceOverlay="@style/roundCornerStyle_10"
+                        tools:visibility="visible" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="9dp"
                     android:layout_marginBottom="10dp">
 
                     <androidx.recyclerview.widget.RecyclerView

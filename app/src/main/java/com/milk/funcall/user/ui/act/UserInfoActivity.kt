@@ -74,6 +74,8 @@ class UserInfoActivity : AbstractActivity() {
         binding.mlImage.setOnClickListener(this)
         binding.link.flLinkLocked.setOnClickListener(this)
         binding.link.llViewLink.setOnClickListener(this)
+        binding.ivUserImageFirst.setOnClickListener(this)
+        binding.ivUserImageSecond.setOnClickListener(this)
         binding.mlImage.setOnClickRequest { loadImages() }
         reportDialog.setReportListener {
             loadingDialog.show()
@@ -245,29 +247,54 @@ class UserInfoActivity : AbstractActivity() {
         when {
             userImageList.isNotEmpty() -> {
                 binding.tvImage.visible()
-                binding.rvImage.visible()
-                binding.mlImage.gone()
-                if (!Account.userSubscribe) {
-                    val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_IMAGE)
-                    if (adUnitId.isNotBlank() && !userInfo.imageUnlocked) {
-                        binding.mlImage.visible()
-                        binding.mlImage.setMediaTimes(userInfo)
-                    }
+                binding.ivUserImageFirst.visible()
+                ImageLoader.Builder()
+                    .request(userImageList[0])
+                    .target(binding.ivUserImageFirst)
+                    .placeholder(R.drawable.common_list_default_medium)
+                    .build()
+                if (userImageList.size > 1) {
+                    binding.ivUserImageSecond.visible()
+                    ImageLoader.Builder()
+                        .request(userImageList[1])
+                        .target(binding.ivUserImageSecond)
+                        .placeholder(R.drawable.common_list_default_medium)
+                        .build()
                 }
-                binding.rvImage.layoutManager = NoScrollGridLayoutManager(this, 2)
-                binding.rvImage.addItemDecoration(SimpleGridDecoration(this))
-                binding.rvImage.adapter = UserImageAdapter(userImageList) { position ->
-                    FireBaseManager.logEvent(FirebaseKey.CLICK_PHOTO)
-                    ImageMediaActivity
-                        .create(this, userInfo.targetId, userInfo.targetIsBlacked)
-                    LiveEventBus
-                        .get<Pair<Int, MutableList<String>>>(KvKey.DISPLAY_IMAGE_MEDIA_LIST)
-                        .post(Pair(position, userImageList))
+                if (userImageList.size > 2) {
+                    binding.rvImage.visible()
+                    binding.mlImage.gone()
+                    if (!Account.userSubscribe) {
+                        val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_IMAGE)
+                        if (adUnitId.isNotBlank() && !userInfo.imageUnlocked) {
+                            binding.mlImage.visible()
+                            binding.mlImage.setMediaTimes(userInfo)
+                        }
+                    }
+                    binding.rvImage.layoutManager = NoScrollGridLayoutManager(this, 2)
+                    binding.rvImage.addItemDecoration(SimpleGridDecoration(this))
+                    val current = mutableListOf<String>()
+                    userImageList.forEachIndexed { p, v ->
+                        if (p != 0 && p != 1) current.add(v)
+                    }
+                    binding.rvImage.adapter = UserImageAdapter(current) { position ->
+                        viewImageMedia(position + 2)
+                    }
                 }
             }
             else -> binding.mlImage.gone()
         }
         return userImageList.isEmpty()
+    }
+
+    private fun viewImageMedia(position: Int) {
+        FireBaseManager.logEvent(FirebaseKey.CLICK_PHOTO)
+        val userInfo = userInfoViewModel.getUserInfoModel()
+        val userImageList = userInfo.imageListConvert()
+        ImageMediaActivity.create(this, userInfo.targetId, userInfo.targetIsBlacked)
+        LiveEventBus
+            .get<Pair<Int, MutableList<String>>>(KvKey.DISPLAY_IMAGE_MEDIA_LIST)
+            .post(Pair(position, userImageList))
     }
 
     private fun loadUserInfo() {
@@ -355,6 +382,12 @@ class UserInfoActivity : AbstractActivity() {
                         loadImages()
                     }
                 }
+            }
+            binding.ivUserImageFirst -> {
+                viewImageMedia(0)
+            }
+            binding.ivUserImageSecond -> {
+                viewImageMedia(1)
             }
         }
     }
