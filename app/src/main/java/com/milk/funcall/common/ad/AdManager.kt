@@ -234,6 +234,54 @@ object AdManager {
         rewardVideoAd.load()
     }
 
+    /** 激励视频广告对象 */
+    internal fun getIncentiveVideoAd(
+        activity: FragmentActivity,
+        adUnitId: String,
+        loadFailureRequest: (String) -> Unit = {},
+        loadSuccessRequest: () -> Unit = {},
+        showFailureRequest: (String) -> Unit = {},
+        showSuccessRequest: () -> Unit = {},
+        clickRequest: () -> Unit = {},
+    ): ATRewardVideoAd {
+        val rewardVideoAd = ATRewardVideoAd(activity, adUnitId)
+        rewardVideoAd.setAdListener(object : ATRewardVideoListener {
+            override fun onRewardedVideoAdLoaded() {
+                loadSuccessRequest()
+            }
+
+            override fun onRewardedVideoAdFailed(p0: AdError?) {
+                // 注意：禁止在此回调中执行广告的加载方法进行重试，否则会引起很多无用请求且可能会导致应用卡顿
+                loadFailureRequest(p0?.desc.toString())
+            }
+
+            override fun onRewardedVideoAdPlayStart(p0: ATAdInfo?) {
+                // ATAdInfo可区分广告平台以及获取广告平台的广告位ID等
+                showSuccessRequest()
+            }
+
+            override fun onRewardedVideoAdPlayEnd(p0: ATAdInfo?) {
+            }
+
+            override fun onRewardedVideoAdPlayFailed(p0: AdError?, p1: ATAdInfo?) {
+                showFailureRequest(p0?.desc.toString())
+            }
+
+            override fun onRewardedVideoAdClosed(p0: ATAdInfo?) {
+            }
+
+            override fun onRewardedVideoAdPlayClicked(p0: ATAdInfo?) {
+                clickRequest()
+            }
+
+            override fun onReward(p0: ATAdInfo?) {
+                // 建议在此回调中下发奖励，一般在onRewardedVideoAdClosed之前回调
+            }
+        })
+        rewardVideoAd.load()
+        return rewardVideoAd
+    }
+
     /** 加载原生广告 */
     internal fun loadNativeAd(
         activity: FragmentActivity,

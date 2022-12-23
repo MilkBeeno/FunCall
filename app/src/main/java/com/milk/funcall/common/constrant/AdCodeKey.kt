@@ -30,4 +30,7 @@ object AdCodeKey {
 
     /** 充值页面横幅广告 */
     internal const val RECHARGE_BOTTOM_AD = "87654329"
+
+    /** 一键打招呼激励视频广告 */
+    internal const val SAY_HI_USER_AD = "87654331"
 }

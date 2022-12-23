@@ -19,6 +19,7 @@ import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.user.ui.act.UserInfoActivity
 import com.milk.funcall.user.ui.adapter.HomeAdapter
 import com.milk.funcall.user.ui.dialog.SayHiDialog
+import com.milk.funcall.user.ui.dialog.ViewAdDialog
 import com.milk.funcall.user.ui.vm.HomeViewModel
 import com.milk.simple.ktx.*
 import com.milk.simple.mdr.KvManger
@@ -29,6 +30,7 @@ class HomeFragment : AbstractFragment() {
     private val adapter by lazy { HomeAdapter() }
     private val loadingDialog by lazy { LoadingDialog(requireActivity()) }
     private val sayHiDialog by lazy { SayHiDialog(requireActivity()) }
+    private val viewAdDialog by lazy { ViewAdDialog(requireActivity()) }
 
     override fun getRootView(): View = binding.root
 
@@ -37,7 +39,7 @@ class HomeFragment : AbstractFragment() {
         super.initializeData()
         checkNewClientOnHome()
         loadingDialog.show()
-        homeViewModel.getSayHiList()
+        homeViewModel.loadSayHiAd(requireActivity())
         adapter.addRefreshedListener {
             loadingDialog.dismiss()
             binding.refresh.finishRefresh(1500)
@@ -83,7 +85,11 @@ class HomeFragment : AbstractFragment() {
                 sayHiDialog.show()
                 sayHiDialog.setUserList(it)
                 sayHiDialog.setOnConfirmListener {
-                    homeViewModel.sendTextMessage(requireContext(), it)
+                    viewAdDialog.show()
+                    viewAdDialog.setOnConfirmRequest {
+                        homeViewModel.showSayHiAd(requireActivity())
+                        homeViewModel.sendTextMessage(requireContext(), it)
+                    }
                 }
             }
         }

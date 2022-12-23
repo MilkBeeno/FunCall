@@ -1,12 +1,15 @@
 package com.milk.funcall.user.ui.vm
 
 import android.content.Context
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import com.anythink.rewardvideo.api.ATRewardVideoAd
 import com.milk.funcall.R
 import com.milk.funcall.chat.repo.MessageRepository
 import com.milk.funcall.common.ad.AdConfig
+import com.milk.funcall.common.ad.AdManager
 import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.paging.NetworkPagingSource
 import com.milk.funcall.common.response.ApiPagingResponse
@@ -15,6 +18,8 @@ import com.milk.funcall.user.data.UserSimpleInfoModel
 import com.milk.funcall.user.repo.HomeRepository
 import com.milk.funcall.user.status.ItemAdType
 import com.milk.simple.ktx.ioScope
+import com.milk.simple.ktx.mainScope
+import com.milk.simple.ktx.showToast
 import com.milk.simple.ktx.string
 import kotlinx.coroutines.flow.MutableSharedFlow
 
@@ -43,15 +48,39 @@ class HomeViewModel : ViewModel() {
             NetworkPagingSource { getHomeList(it) }
         }
     )
+    private var rewardVideoAd: ATRewardVideoAd? = null
 
-    internal fun getSayHiList() {
-        ioScope {
-            val apiResponse = homeRepository.getSayHiList()
-            val apiResult = apiResponse.data
-            if (apiResponse.success && apiResult != null) {
-                sayHiFlow.emit(apiResult)
-            }
+    /** 一键打招呼激励视频广告 */
+    internal fun loadSayHiAd(activity: FragmentActivity) {
+        val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.SAY_HI_USER_AD)
+        if (adUnitId.isNotBlank()) {
+            rewardVideoAd = AdManager.getIncentiveVideoAd(
+                activity = activity,
+                adUnitId = adUnitId,
+                loadFailureRequest = {
+                },
+                loadSuccessRequest = {
+                    ioScope {
+                        val apiResponse = homeRepository.getSayHiList()
+                        val apiResult = apiResponse.data
+                        if (apiResponse.success && apiResult != null) {
+                            sayHiFlow.emit(apiResult)
+                        }
+                    }
+                },
+                showFailureRequest = {
+                },
+                showSuccessRequest = {
+                    mainScope { activity.showToast(activity.string(R.string.common_success)) }
+                },
+                clickRequest = {
+                }
+            )
         }
+    }
+
+    internal fun showSayHiAd(activity: FragmentActivity) {
+        rewardVideoAd?.show(activity)
     }
 
     internal fun sendTextMessage(context: Context, sayHiModels: MutableList<SayHiModel>) {
