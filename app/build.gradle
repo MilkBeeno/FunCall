@@ -9,11 +9,11 @@ android {
     compileSdk 32
     defaultConfig {
         // 正式包名: com.milk.simplejustfuncall  测试包名:com.milk.funcall
-        applicationId "com.milk.funcall"
+        applicationId "com.milk.simplejustfuncall"
         minSdk 21
         targetSdk 32
-        versionCode 122
-        versionName "1.2.2"
+        versionCode 130
+        versionName "1.3.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
