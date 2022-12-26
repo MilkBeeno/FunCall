@@ -32,7 +32,7 @@ import com.milk.funcall.login.ui.act.LoginActivity
 import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.user.data.UserInfoModel
 import com.milk.funcall.user.status.UnlockType
-import com.milk.funcall.user.ui.adapter.UserImageAdapter
+import com.milk.funcall.user.ui.adapter.PictureAdapter
 import com.milk.funcall.user.ui.dialog.ReportDialog
 import com.milk.funcall.user.ui.dialog.ViewAdDialog
 import com.milk.funcall.user.ui.vm.UserInfoViewModel
@@ -277,7 +277,7 @@ class UserInfoActivity : AbstractActivity() {
                     userImageList.forEachIndexed { p, v ->
                         if (p != 0 && p != 1) current.add(v)
                     }
-                    binding.rvImage.adapter = UserImageAdapter(current) { position ->
+                    binding.rvImage.adapter = PictureAdapter(current) { position ->
                         viewImageMedia(position + 2)
                     }
                 }
@@ -291,7 +291,7 @@ class UserInfoActivity : AbstractActivity() {
         FireBaseManager.logEvent(FirebaseKey.CLICK_PHOTO)
         val userInfo = userInfoViewModel.getUserInfoModel()
         val userImageList = userInfo.imageListConvert()
-        ImageMediaActivity.create(this, userInfo.targetId, userInfo.targetIsBlacked)
+        PictureMediaActivity.create(this, userInfo.targetId, userInfo.targetIsBlacked)
         LiveEventBus
             .get<Pair<Int, MutableList<String>>>(KvKey.DISPLAY_IMAGE_MEDIA_LIST)
             .post(Pair(position, userImageList))

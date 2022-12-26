@@ -8,14 +8,14 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.milk.funcall.R
 import com.milk.funcall.common.media.loader.ImageLoader
 
-class UserImageAdapter(
+class PictureAdapter(
     private val imageList: MutableList<String>,
     private val clickRequest: (Int) -> Unit = {}
-) : RecyclerView.Adapter<UserImageAdapter.ImagesViewHolder>() {
+) : RecyclerView.Adapter<PictureAdapter.ImagesViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImagesViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_user_info_image, parent, false)
+            .inflate(R.layout.item_user_info_picture, parent, false)
         return ImagesViewHolder(view)
     }
 

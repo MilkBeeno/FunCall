@@ -7,7 +7,7 @@
     android:background="@color/black"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context=".user.ui.act.ImageMediaActivity">
+    tools:context=".user.ui.act.PictureMediaActivity">
 
     <FrameLayout
         android:layout_width="match_parent"

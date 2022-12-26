@@ -8,23 +8,27 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.milk.funcall.R
 import com.milk.funcall.common.media.loader.ImageLoader
+import com.milk.funcall.user.ui.view.MediaLockedLayout
 
-class ImageMediaAdapter : RecyclerView.Adapter<ImageMediaAdapter.ImageMediaViewHolder>() {
+class PictureMediaAdapter : RecyclerView.Adapter<PictureMediaAdapter.ImageMediaViewHolder>() {
     private val imageList: MutableList<String> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageMediaViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_image_media, parent, false)
+            .inflate(R.layout.item_picture_media, parent, false)
         return ImageMediaViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ImageMediaViewHolder, position: Int) {
-        val targetView = holder.itemView as AppCompatImageView
+        val targetView =
+            holder.itemView.findViewById<AppCompatImageView>(R.id.ivUserImage)
         ImageLoader.Builder()
             .request(imageList[position])
             .target(targetView)
             .placeholder(R.drawable.common_list_default_medium)
             .build()
+        val mlImage =
+            holder.itemView.findViewById<MediaLockedLayout>(R.id.mlImage)
     }
 
     override fun getItemCount(): Int {

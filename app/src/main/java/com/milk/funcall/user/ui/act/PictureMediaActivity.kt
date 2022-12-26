@@ -10,23 +10,23 @@ import com.milk.funcall.R
 import com.milk.funcall.account.Account
 import com.milk.funcall.account.ui.dialog.DeleteMediaDialog
 import com.milk.funcall.chat.ui.act.ChatMessageActivity
+import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.common.constrant.KvKey
+import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.ui.manager.HorizontalLinearLayoutManager
-import com.milk.funcall.databinding.ActivityImageMediaBinding
-import com.milk.funcall.common.firebase.FireBaseManager
-import com.milk.funcall.common.constrant.FirebaseKey
+import com.milk.funcall.databinding.ActivityPictureMediaBinding
 import com.milk.funcall.login.ui.act.LoginActivity
-import com.milk.funcall.user.ui.adapter.ImageMediaAdapter
-import com.milk.funcall.user.ui.dialog.ImageMediaGuideDialog
+import com.milk.funcall.user.ui.adapter.PictureMediaAdapter
+import com.milk.funcall.user.ui.dialog.PictureMediaGuideDialog
 import com.milk.simple.ktx.*
 
-class ImageMediaActivity : AbstractActivity() {
-    private val binding by lazy { ActivityImageMediaBinding.inflate(layoutInflater) }
-    private val guideDialog by lazy { ImageMediaGuideDialog(this) }
+class PictureMediaActivity : AbstractActivity() {
+    private val binding by lazy { ActivityPictureMediaBinding.inflate(layoutInflater) }
+    private val guideDialog by lazy { PictureMediaGuideDialog(this) }
     private val targetId by lazy { intent.getLongExtra(TARGET_ID, 0) }
     private val isBlacked by lazy { intent.getBooleanExtra(IS_BLACKED, false) }
-    private val imageMediaAdapter by lazy { ImageMediaAdapter() }
+    private val imageMediaAdapter by lazy { PictureMediaAdapter() }
     private val pagerSnapHelper by lazy { PagerSnapHelper() }
     private val layoutManager by lazy { HorizontalLinearLayoutManager(this) }
     private val deleteDialog by lazy { DeleteMediaDialog(this) }
@@ -113,7 +113,7 @@ class ImageMediaActivity : AbstractActivity() {
         private const val TARGET_ID = "TARGET_ID"
         private const val IS_BLACKED = "IS_BLACKED"
         internal fun create(context: Context, targetId: Long = 0, isBlacked: Boolean = false) {
-            val intent = Intent(context, ImageMediaActivity::class.java)
+            val intent = Intent(context, PictureMediaActivity::class.java)
             intent.putExtra(TARGET_ID, targetId)
             intent.putExtra(IS_BLACKED, isBlacked)
             context.startActivity(intent)
