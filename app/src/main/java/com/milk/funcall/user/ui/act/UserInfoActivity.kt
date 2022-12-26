@@ -19,7 +19,6 @@ import com.milk.funcall.common.author.DeviceManager
 import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.constrant.FirebaseKey
-import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.media.loader.ImageLoader
 import com.milk.funcall.common.paging.SimpleGridDecoration
@@ -30,6 +29,7 @@ import com.milk.funcall.common.ui.manager.NoScrollGridLayoutManager
 import com.milk.funcall.databinding.ActivityUserInfoBinding
 import com.milk.funcall.login.ui.act.LoginActivity
 import com.milk.funcall.login.ui.dialog.LoadingDialog
+import com.milk.funcall.user.data.PictureMediaModel
 import com.milk.funcall.user.data.UserInfoModel
 import com.milk.funcall.user.status.UnlockType
 import com.milk.funcall.user.ui.adapter.PictureAdapter
@@ -65,6 +65,7 @@ class UserInfoActivity : AbstractActivity() {
         binding.flHeader.statusBarPadding()
         binding.root.navigationBarPadding()
         binding.headerToolbar.showArrowBack()
+        binding.mlImage.setBackgroundDrawable()
         binding.ivReport.setOnClickListener(this)
         binding.link.tvCopy.setOnClickListener(this)
         binding.ivUserNext.setOnClickListener(this)
@@ -127,7 +128,10 @@ class UserInfoActivity : AbstractActivity() {
                     setLinkTimes(userInfo)
                 }
                 if (!userInfo.imageUnlocked) {
-                    binding.mlImage.setMediaTimes(userInfo)
+                    binding.mlImage.setMediaTimes(
+                        userInfo.unlockMethod,
+                        userInfo.remainUnlockCount
+                    )
                 }
             }
         }
@@ -268,7 +272,10 @@ class UserInfoActivity : AbstractActivity() {
                         val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_IMAGE)
                         if (adUnitId.isNotBlank() && !userInfo.imageUnlocked) {
                             binding.mlImage.visible()
-                            binding.mlImage.setMediaTimes(userInfo)
+                            binding.mlImage.setMediaTimes(
+                                userInfo.unlockMethod,
+                                userInfo.remainUnlockCount
+                            )
                         }
                     }
                     binding.rvImage.layoutManager = NoScrollGridLayoutManager(this, 2)
@@ -291,10 +298,15 @@ class UserInfoActivity : AbstractActivity() {
         FireBaseManager.logEvent(FirebaseKey.CLICK_PHOTO)
         val userInfo = userInfoViewModel.getUserInfoModel()
         val userImageList = userInfo.imageListConvert()
-        PictureMediaActivity.create(this, userInfo.targetId, userInfo.targetIsBlacked)
-        LiveEventBus
-            .get<Pair<Int, MutableList<String>>>(KvKey.DISPLAY_IMAGE_MEDIA_LIST)
-            .post(Pair(position, userImageList))
+        val pictureMediaModel = PictureMediaModel()
+        pictureMediaModel.targetId = userInfo.targetId
+        pictureMediaModel.position = position
+        pictureMediaModel.isBlacked = userInfo.targetIsBlacked
+        pictureMediaModel.imageUnlocked = userInfo.imageUnlocked
+        pictureMediaModel.unlockMethod = userInfo.unlockMethod
+        pictureMediaModel.remainUnlockCount = userInfo.remainUnlockCount
+        pictureMediaModel.pictureUrls = userImageList
+        PictureMediaActivity.create(this, pictureMediaModel)
     }
 
     private fun loadUserInfo() {

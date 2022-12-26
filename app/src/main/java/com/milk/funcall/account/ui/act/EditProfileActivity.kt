@@ -33,6 +33,7 @@ import com.milk.funcall.common.ui.manager.NoScrollGridLayoutManager
 import com.milk.funcall.common.ui.view.BanEnterInputFilter
 import com.milk.funcall.databinding.ActivityEditProfileBinding
 import com.milk.funcall.login.ui.dialog.LoadingDialog
+import com.milk.funcall.user.data.PictureMediaModel
 import com.milk.funcall.user.ui.act.PictureMediaActivity
 import com.milk.funcall.user.ui.act.VideoMediaActivity
 import com.milk.funcall.user.ui.config.AvatarImage
@@ -155,9 +156,11 @@ class EditProfileActivity : AbstractActivity() {
         binding.rvPicture.adapter = imageAdapter
         imageAdapter.setItemOnClickListener { position, imageUrl ->
             if (imageUrl.isNotBlank()) {
-                PictureMediaActivity.create(this)
-                LiveEventBus.get<Pair<Int, MutableList<String>>>(KvKey.DISPLAY_IMAGE_MEDIA_LIST)
-                    .post(Pair(position, editProfileViewModel.editImageListPath))
+                val pictureMediaModel = PictureMediaModel()
+                pictureMediaModel.targetId = Account.userId
+                pictureMediaModel.position = position
+                pictureMediaModel.pictureUrls = editProfileViewModel.editImageListPath
+                PictureMediaActivity.create(this, pictureMediaModel)
             } else {
                 FireBaseManager
                     .logEvent(FirebaseKey.CLICK_UPLOAD_IMAGE_ICON)

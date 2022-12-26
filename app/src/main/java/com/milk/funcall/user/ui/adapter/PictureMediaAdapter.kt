@@ -7,10 +7,16 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.milk.funcall.R
+import com.milk.funcall.account.Account
+import com.milk.funcall.common.ad.AdConfig
+import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.media.loader.ImageLoader
+import com.milk.funcall.user.data.PictureMediaModel
 import com.milk.funcall.user.ui.view.MediaLockedLayout
+import com.milk.simple.ktx.visible
 
 class PictureMediaAdapter : RecyclerView.Adapter<PictureMediaAdapter.ImageMediaViewHolder>() {
+    private var pictureMediaModel: PictureMediaModel? = null
     private val imageList: MutableList<String> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageMediaViewHolder {
@@ -29,6 +35,16 @@ class PictureMediaAdapter : RecyclerView.Adapter<PictureMediaAdapter.ImageMediaV
             .build()
         val mlImage =
             holder.itemView.findViewById<MediaLockedLayout>(R.id.mlImage)
+        pictureMediaModel?.let {
+            if (!Account.userSubscribe && position in 2 until imageList.size) {
+                val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_IMAGE)
+                if (adUnitId.isNotBlank() && !it.imageUnlocked) {
+                    mlImage.visible()
+                    mlImage.setBackgroundColor()
+                    mlImage.setMediaTimes(it.unlockMethod, it.remainUnlockCount)
+                }
+            }
+        }
     }
 
     override fun getItemCount(): Int {
@@ -36,9 +52,10 @@ class PictureMediaAdapter : RecyclerView.Adapter<PictureMediaAdapter.ImageMediaV
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    internal fun setNewData(images: MutableList<String>) {
+    internal fun setNewData(pictureMediaModel: PictureMediaModel) {
         imageList.clear()
-        images.forEach { imageList.add(it) }
+        this.pictureMediaModel = pictureMediaModel
+        pictureMediaModel.pictureUrls.forEach { imageList.add(it) }
         notifyDataSetChanged()
     }
 

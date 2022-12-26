@@ -7,7 +7,7 @@ import android.widget.FrameLayout
 import com.milk.funcall.R
 import com.milk.funcall.app.AppConfig
 import com.milk.funcall.databinding.LayoutMediaLockedBinding
-import com.milk.funcall.user.data.UserInfoModel
+import com.milk.simple.ktx.color
 import com.milk.simple.ktx.gone
 import com.milk.simple.ktx.string
 import com.milk.simple.ktx.visible
@@ -30,8 +30,18 @@ class MediaLockedLayout : FrameLayout {
         this.clickRequest = clickRequest
     }
 
-    internal fun setMediaTimes(userInfo: UserInfoModel) {
-        val maxTimes = if (userInfo.unlockMethod == 1) {
+    internal fun setBackgroundDrawable() {
+        binding.root.setBackgroundResource(
+            R.drawable.shape_user_info_media_locked_background
+        )
+    }
+
+    internal fun setBackgroundColor() {
+        binding.root.setBackgroundColor(context.color(R.color.white))
+    }
+
+    internal fun setMediaTimes(unlockMethod: Int, remainUnlockCount: Int) {
+        val maxTimes = if (unlockMethod == 1) {
             binding.ivMediaType
                 .setImageResource(R.drawable.user_info_media_locked_view)
             AppConfig.freeUnlockTimes
@@ -45,7 +55,7 @@ class MediaLockedLayout : FrameLayout {
             binding.tvMediaTimes.text =
                 "(".plus(context.string(R.string.user_info_unlock_times))
                     .plus(" ")
-                    .plus(userInfo.remainUnlockCount)
+                    .plus(remainUnlockCount)
                     .plus("/")
                     .plus(maxTimes)
                     .plus(")")

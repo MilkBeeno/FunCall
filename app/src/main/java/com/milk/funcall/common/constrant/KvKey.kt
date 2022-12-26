@@ -43,23 +43,11 @@ object KvKey {
     /** 当前用户是否观看过他人个人资料页面图片 */
     const val USER_VIEW_OTHER = "ACCOUNT_NEW_USER_VIEW_OTHER"
 
-    /** 查看用户图片媒体列表 */
-    const val DISPLAY_IMAGE_MEDIA_LIST = "DISPLAY_IMAGE_MEDIA_LIST"
-
     /** 更新个人资料时、删除一张预览图片 */
     const val EDIT_PROFILE_DELETE_IMAGE = "EDIT_PROFILE_DELETE_IMAGE"
 
     /** 更新个人资料时、删除一个视频 */
     const val EDIT_PROFILE_DELETE_VIDEO = "EDIT_PROFILE_DELETE_VIDEO"
-
-    /** 看过他人联系方式激励视频广告 */
-    const val VIEW_OTHER_LINK = "VIEW_OTHER_LINK"
-
-    /** 看过他人视频激励视频广告 */
-    const val VIEW_OTHER_VIDEO = "VIEW_OTHER_VIDEO"
-
-    /** 看过他人照片插页广告 */
-    const val VIEW_OTHER_IMAGE = "VIEW_OTHER_IMAGE"
 
     /** 判断当前是否是新客户端安装 */
     const val CHECK_IS_NEW_CLIENT = "CHECK_IS_NEW_CLIENT"

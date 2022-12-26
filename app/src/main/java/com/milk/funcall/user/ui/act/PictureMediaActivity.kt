@@ -17,6 +17,7 @@ import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.ui.manager.HorizontalLinearLayoutManager
 import com.milk.funcall.databinding.ActivityPictureMediaBinding
 import com.milk.funcall.login.ui.act.LoginActivity
+import com.milk.funcall.user.data.PictureMediaModel
 import com.milk.funcall.user.ui.adapter.PictureMediaAdapter
 import com.milk.funcall.user.ui.dialog.PictureMediaGuideDialog
 import com.milk.simple.ktx.*
@@ -24,8 +25,9 @@ import com.milk.simple.ktx.*
 class PictureMediaActivity : AbstractActivity() {
     private val binding by lazy { ActivityPictureMediaBinding.inflate(layoutInflater) }
     private val guideDialog by lazy { PictureMediaGuideDialog(this) }
-    private val targetId by lazy { intent.getLongExtra(TARGET_ID, 0) }
-    private val isBlacked by lazy { intent.getBooleanExtra(IS_BLACKED, false) }
+    private val pictureMediaModel by lazy {
+        intent.getSerializableExtra(PICTURE_MEDIA_MODEL) as PictureMediaModel
+    }
     private val imageMediaAdapter by lazy { PictureMediaAdapter() }
     private val pagerSnapHelper by lazy { PagerSnapHelper() }
     private val layoutManager by lazy { HorizontalLinearLayoutManager(this) }
@@ -42,7 +44,9 @@ class PictureMediaActivity : AbstractActivity() {
         setStatusBarDark(false)
         setStatusBarColor(color(R.color.black))
         binding.headerToolbar.showArrowBack(R.drawable.common_cancle_white)
-        if (targetId > 0) {
+        binding.ivCancel.setOnClickListener(this)
+        binding.llMessage.setOnClickListener(this)
+        if (pictureMediaModel.targetId != Account.userId) {
             binding.ivCancel.gone()
             binding.llMessage.visible()
         } else {
@@ -57,8 +61,18 @@ class PictureMediaActivity : AbstractActivity() {
                 if (imageMediaAdapter.itemCount <= 0) finish()
             }
         }
-        binding.ivCancel.setOnClickListener(this)
-        binding.llMessage.setOnClickListener(this)
+        if (pictureMediaModel.pictureUrls.isNotEmpty()) {
+            binding.rvImage.layoutManager = layoutManager
+            binding.rvImage.adapter = imageMediaAdapter
+            pagerSnapHelper.attachToRecyclerView(binding.rvImage)
+            binding.rvImage.scrollToPosition(pictureMediaModel.position)
+            imageMediaAdapter.setNewData(pictureMediaModel)
+            binding.clIndicator.attachToRecyclerView(binding.rvImage, pagerSnapHelper)
+            binding.clIndicator.changeIndicatorResource(
+                R.drawable.shape_image_media_indicator_background_select,
+                R.drawable.shape_image_media_indicator_background
+            )
+        }
     }
 
     private fun initializeObserver() {
@@ -73,20 +87,6 @@ class PictureMediaActivity : AbstractActivity() {
                 }
             }
         }
-        LiveEventBus.get<Pair<Int, MutableList<String>>>(KvKey.DISPLAY_IMAGE_MEDIA_LIST)
-            .observeSticky(this) {
-                if (it.second.isEmpty()) return@observeSticky
-                binding.rvImage.layoutManager = layoutManager
-                binding.rvImage.adapter = imageMediaAdapter
-                pagerSnapHelper.attachToRecyclerView(binding.rvImage)
-                imageMediaAdapter.setNewData(it.second)
-                binding.rvImage.scrollToPosition(it.first)
-                binding.clIndicator.attachToRecyclerView(binding.rvImage, pagerSnapHelper)
-                binding.clIndicator.changeIndicatorResource(
-                    R.drawable.shape_image_media_indicator_background_select,
-                    R.drawable.shape_image_media_indicator_background
-                )
-            }
     }
 
     override fun onMultipleClick(view: View) {
@@ -98,9 +98,9 @@ class PictureMediaActivity : AbstractActivity() {
             binding.llMessage -> {
                 FireBaseManager
                     .logEvent(FirebaseKey.CLICK_MESSAGE_VIEW_IMAGE_PAGE)
-                if (isBlacked) return
+                if (pictureMediaModel.isBlacked) return
                 if (Account.userLogged)
-                    ChatMessageActivity.create(this, targetId)
+                    ChatMessageActivity.create(this, pictureMediaModel.targetId)
                 else {
                     showToast(string(R.string.common_place_to_login_first))
                     LoginActivity.create(this)
@@ -110,12 +110,10 @@ class PictureMediaActivity : AbstractActivity() {
     }
 
     companion object {
-        private const val TARGET_ID = "TARGET_ID"
-        private const val IS_BLACKED = "IS_BLACKED"
-        internal fun create(context: Context, targetId: Long = 0, isBlacked: Boolean = false) {
+        private const val PICTURE_MEDIA_MODEL = "PICTURE_MEDIA_MODEL"
+        internal fun create(context: Context, pictureMediaModel: PictureMediaModel) {
             val intent = Intent(context, PictureMediaActivity::class.java)
-            intent.putExtra(TARGET_ID, targetId)
-            intent.putExtra(IS_BLACKED, isBlacked)
+            intent.putExtra(PICTURE_MEDIA_MODEL, pictureMediaModel)
             context.startActivity(intent)
         }
     }
