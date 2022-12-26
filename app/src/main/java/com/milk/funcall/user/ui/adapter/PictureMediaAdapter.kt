@@ -13,11 +13,13 @@ import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.media.loader.ImageLoader
 import com.milk.funcall.user.data.PictureMediaModel
 import com.milk.funcall.user.ui.view.MediaLockedLayout
+import com.milk.simple.ktx.gone
 import com.milk.simple.ktx.visible
 
 class PictureMediaAdapter : RecyclerView.Adapter<PictureMediaAdapter.ImageMediaViewHolder>() {
     private var pictureMediaModel: PictureMediaModel? = null
     private val imageList: MutableList<String> = mutableListOf()
+    private var onClickListener: ((Int) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageMediaViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -36,15 +38,20 @@ class PictureMediaAdapter : RecyclerView.Adapter<PictureMediaAdapter.ImageMediaV
         val mlImage =
             holder.itemView.findViewById<MediaLockedLayout>(R.id.mlImage)
         pictureMediaModel?.let {
-            if (!Account.userSubscribe && position in 2 until imageList.size) {
+            if (!Account.userSubscribe && holder.layoutPosition in 2 until imageList.size) {
                 val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.VIEW_USER_IMAGE)
                 if (adUnitId.isNotBlank() && !it.imageUnlocked) {
                     mlImage.visible()
                     mlImage.setBackgroundColor()
                     mlImage.setMediaTimes(it.unlockMethod, it.remainUnlockCount)
-                }
-            }
+                } else mlImage.gone()
+            } else mlImage.gone()
         }
+        mlImage.setOnClickRequest { onClickListener?.invoke(position) }
+    }
+
+    internal fun setOnClickListener(listener: (Int) -> Unit) {
+        onClickListener = listener
     }
 
     override fun getItemCount(): Int {

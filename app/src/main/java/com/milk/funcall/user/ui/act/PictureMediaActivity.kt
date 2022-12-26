@@ -4,22 +4,29 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
 import com.milk.funcall.account.Account
 import com.milk.funcall.account.ui.dialog.DeleteMediaDialog
+import com.milk.funcall.app.AppConfig
 import com.milk.funcall.chat.ui.act.ChatMessageActivity
+import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.common.constrant.KvKey
 import com.milk.funcall.common.firebase.FireBaseManager
+import com.milk.funcall.common.pay.PayManager
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.ui.manager.HorizontalLinearLayoutManager
 import com.milk.funcall.databinding.ActivityPictureMediaBinding
 import com.milk.funcall.login.ui.act.LoginActivity
+import com.milk.funcall.login.ui.dialog.LoadingDialog
 import com.milk.funcall.user.data.PictureMediaModel
 import com.milk.funcall.user.ui.adapter.PictureMediaAdapter
 import com.milk.funcall.user.ui.dialog.PictureMediaGuideDialog
+import com.milk.funcall.user.ui.dialog.ViewAdDialog
+import com.milk.funcall.user.ui.vm.PictureViewModel
 import com.milk.simple.ktx.*
 
 class PictureMediaActivity : AbstractActivity() {
@@ -32,6 +39,10 @@ class PictureMediaActivity : AbstractActivity() {
     private val pagerSnapHelper by lazy { PagerSnapHelper() }
     private val layoutManager by lazy { HorizontalLinearLayoutManager(this) }
     private val deleteDialog by lazy { DeleteMediaDialog(this) }
+    private val viewAdDialog by lazy { ViewAdDialog(this) }
+    private val loadingDialog by lazy { LoadingDialog(this) }
+    private val pictureViewModel by viewModels<PictureViewModel>()
+    private var currentPosition: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,6 +78,10 @@ class PictureMediaActivity : AbstractActivity() {
             pagerSnapHelper.attachToRecyclerView(binding.rvImage)
             binding.rvImage.scrollToPosition(pictureMediaModel.position)
             imageMediaAdapter.setNewData(pictureMediaModel)
+            imageMediaAdapter.setOnClickListener {
+                currentPosition = it
+                loadImages()
+            }
             binding.clIndicator.attachToRecyclerView(binding.rvImage, pagerSnapHelper)
             binding.clIndicator.changeIndicatorResource(
                 R.drawable.shape_image_media_indicator_background_select,
@@ -84,6 +99,44 @@ class PictureMediaActivity : AbstractActivity() {
                         Account.userViewOther = true
                         Account.userViewOtherFlow.emit(true)
                     }
+                }
+            }
+        }
+        pictureViewModel.changeUnlockStatusFlow.collectLatest(this) {
+            loadingDialog.dismiss()
+            if (it) {
+                pictureMediaModel.imageUnlocked = true
+                imageMediaAdapter.setNewData(pictureMediaModel)
+                binding.rvImage.scrollToPosition(currentPosition)
+                LiveEventBus.get<String>(EventKey.UPDATE_UNLOCK_PICTURE_STATUS).post(null)
+            }
+        }
+    }
+
+    /** 获取个人相册插页广告 */
+    private fun loadImages() {
+        when {
+            pictureMediaModel.remainUnlockCount <= 0 -> {
+                PayManager.googlePay.payProduct(this, AppConfig.subsWeekId)
+            }
+            pictureMediaModel.unlockMethod == 1 -> {
+                FireBaseManager.logEvent(FirebaseKey.CLICK_UNLOCK_PHOTO_ALBUM_FOR_FREE)
+                pictureMediaModel.imageUnlocked = true
+                pictureViewModel.changeUnlockStatus(pictureMediaModel.targetId)
+            }
+            else -> {
+                FireBaseManager.logEvent(FirebaseKey.CLICK_THE_AD_TO_UNLOCK_THE_ALBUM)
+                FireBaseManager
+                    .logEvent(FirebaseKey.UNLOCK_ALBUM_INCENTIVE_VIDEO_AD_SECONDARY_CONFIRMATION)
+                viewAdDialog.show()
+                viewAdDialog.setOnConfirmRequest {
+                    loadingDialog.show()
+                    pictureViewModel.loadImageAd(
+                        activity = this,
+                        failure = { loadingDialog.dismiss() },
+                        success = {
+                            pictureViewModel.changeUnlockStatus(pictureMediaModel.targetId)
+                        })
                 }
             }
         }

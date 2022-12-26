@@ -18,4 +18,7 @@ object EventKey {
 
     /** 更新优惠折扣剩余时间 */
     const val UPDATE_SUBSCRIBE_DISCOUNT_TIME = "UPDATE_SUBSCRIBE_DISCOUNT_TIME"
+
+    /** 更新照片解锁后的状态 */
+    const val UPDATE_UNLOCK_PICTURE_STATUS = "UPDATE_UNLOCK_PICTURE_STATUS"
 }

@@ -15,7 +15,7 @@ object DeviceManager {
         }
         get() {
             field = KvManger.getString(KvKey.PLATFORM_DEVICE_NUMBER)
-            return field
+            return "sadfafaff4165435463"
         }
 
     internal fun initialize(application: Application) {

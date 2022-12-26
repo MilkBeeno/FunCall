@@ -149,6 +149,9 @@ class UserInfoActivity : AbstractActivity() {
         LiveEventBus.get<Long>(EventKey.UPDATE_SUBSCRIBE_DISCOUNT_TIME).observe(this) {
             if (it == 0L) cancelRecharge = false
         }
+        LiveEventBus.get<String>(EventKey.UPDATE_UNLOCK_PICTURE_STATUS).observe(this) {
+            userInfoViewModel.loadUserInfo(userId, DeviceManager.number)
+        }
     }
 
     private fun setUserFollow() {
