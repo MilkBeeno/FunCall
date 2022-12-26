@@ -88,6 +88,7 @@ class UserInfoActivity : AbstractActivity() {
         PayManager.googlePay.paySucceeded { orderId, purchaseToken ->
             mainScope { loadingDialog.show() }
             PayManager.getPayStatus(orderId, purchaseToken)
+            loadUserInfo()
         }
         PayManager.googlePay.payCanceled {
             cancelRecharge = true
@@ -150,7 +151,7 @@ class UserInfoActivity : AbstractActivity() {
             if (it == 0L) cancelRecharge = false
         }
         LiveEventBus.get<String>(EventKey.UPDATE_UNLOCK_PICTURE_STATUS).observe(this) {
-            userInfoViewModel.loadUserInfo(userId, DeviceManager.number)
+            loadUserInfo()
         }
     }
 

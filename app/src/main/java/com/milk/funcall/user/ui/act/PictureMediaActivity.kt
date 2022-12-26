@@ -48,6 +48,7 @@ class PictureMediaActivity : AbstractActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         initializeView()
+        initializeRecharge()
         initializeObserver()
     }
 
@@ -90,6 +91,16 @@ class PictureMediaActivity : AbstractActivity() {
         }
     }
 
+    private fun initializeRecharge() {
+        PayManager.googlePay.paySucceeded { orderId, purchaseToken ->
+            mainScope { loadingDialog.show() }
+            PayManager.getPayStatus(orderId, purchaseToken)
+            pictureMediaModel.imageUnlocked = true
+            imageMediaAdapter.setNewData(pictureMediaModel)
+            LiveEventBus.get<String>(EventKey.UPDATE_UNLOCK_PICTURE_STATUS).post(null)
+        }
+    }
+
     private fun initializeObserver() {
         Account.userViewOtherFlow.collectLatest(this) {
             if (!it) {
@@ -107,7 +118,6 @@ class PictureMediaActivity : AbstractActivity() {
             if (it) {
                 pictureMediaModel.imageUnlocked = true
                 imageMediaAdapter.setNewData(pictureMediaModel)
-                binding.rvImage.scrollToPosition(currentPosition)
                 LiveEventBus.get<String>(EventKey.UPDATE_UNLOCK_PICTURE_STATUS).post(null)
             }
         }
