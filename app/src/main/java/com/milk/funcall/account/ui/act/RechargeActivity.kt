@@ -50,7 +50,7 @@ class RechargeActivity : AbstractActivity() {
         binding.llWeek.setOnClickListener(this)
         binding.clYear.setOnClickListener(this)
         subsDiscountDialog.setOnConfirmListener {
-            PayManager.googlePay.payProduct(this, AppConfig.subsYearDiscountOriginId)
+            PayManager.googlePay.payProduct(this, AppConfig.subsYearDiscountId)
         }
     }
 
