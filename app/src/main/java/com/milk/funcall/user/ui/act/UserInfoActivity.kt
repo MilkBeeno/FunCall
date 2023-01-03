@@ -370,6 +370,7 @@ class UserInfoActivity : AbstractActivity() {
                 val userInfo = userInfoViewModel.getUserInfoModel()
                 when {
                     userInfo.remainUnlockCount <= 0 -> {
+                        FireBaseManager.logEvent(FirebaseKey.WEEK_SHOW_THE_PROMOTIONAL)
                         PayManager.googlePay.payProduct(this, AppConfig.subsWeekId)
                     }
                     userInfo.videoUnlocked || userInfo.imageUnlocked -> {
@@ -432,6 +433,7 @@ class UserInfoActivity : AbstractActivity() {
         val userInfo = userInfoViewModel.getUserInfoModel()
         when {
             userInfo.remainUnlockCount <= 0 -> {
+                FireBaseManager.logEvent(FirebaseKey.WEEK_SHOW_THE_PROMOTIONAL)
                 PayManager.googlePay.payProduct(this, AppConfig.subsWeekId)
             }
             userInfo.unlockMethod == 1 -> {

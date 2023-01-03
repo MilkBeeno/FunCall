@@ -334,4 +334,25 @@ object FirebaseKey {
 
     /** 点击广告_个人主页查看更多照片激励视频广告 */
     const val CLICK_AD_12 = "click_ad_12"
+
+    /** 个人主页内调起周订阅支付弹窗 */
+    const val WEEK_SHOW_THE_PROMOTIONAL = "week_show_the_promotional"
+
+    /** 发起广告请求_app开屏广告 */
+    const val MAKE_AN_AD_REQUEST_13 = "Make_an_ad_request_13"
+
+    /** 广告请求成功_app开屏广告 */
+    const val AD_REQUEST_SUCCEEDED_13 = "Ad_request_succeeded_13"
+
+    /** 广告请求失败（需要统计原因）_app开屏广告 */
+    const val AD_REQUEST_FAILED_13 = "Ad_request_failed_13"
+
+    /** 广告展示成功_app开屏广告 */
+    const val THE_AD_SHOW_SUCCESS_13 = "The_ad_show_success_13"
+
+    /** 广告展示失败（需要统计原因）_app开屏广告 */
+    const val AD_SHOW_FAILED_13 = "Ad_show_failed_13"
+
+    /** 点击广告_app开屏广告 */
+    const val CLICK_AD_13 = "click_ad_13"
 }

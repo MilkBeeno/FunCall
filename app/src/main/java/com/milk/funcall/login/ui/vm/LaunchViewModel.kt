@@ -56,30 +56,30 @@ class LaunchViewModel : ViewModel() {
             .start()
         val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.APP_START)
         if (adUnitId.isNotBlank() && AdConfig.adCancelType != 2) {
-            FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST)
+            FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_13)
             splashAd = AdManager.loadOpenAd(
                 activity = activity,
                 adUnitId = adUnitId,
                 loadFailureRequest = {
                     FireBaseManager
-                        .logEvent(FirebaseKey.AD_REQUEST_FAILED, adUnitId, it)
+                        .logEvent(FirebaseKey.AD_REQUEST_FAILED_13, adUnitId, it)
                     adLoadStatus = AdLoadType.Failure
                 },
                 loadSuccessRequest = {
-                    FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED)
+                    FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_13)
                     adLoadStatus = AdLoadType.Success
                 },
                 showFailureRequest = {
-                    FireBaseManager.logEvent(FirebaseKey.AD_SHOW_FAILED)
+                    FireBaseManager.logEvent(FirebaseKey.AD_SHOW_FAILED_13)
                 },
                 showSuccessRequest = {
-                    FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS)
+                    FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_13)
                 },
                 finishedRequest = {
                     finished()
                 },
                 clickRequest = {
-                    FireBaseManager.logEvent(FirebaseKey.CLICK_AD)
+                    FireBaseManager.logEvent(FirebaseKey.CLICK_AD_13)
                 })
         } else adLoadStatus = AdLoadType.Failure
     }
