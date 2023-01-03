@@ -22,4 +22,10 @@ interface AppService {
         @Field("productId") productId: String,
         @Field("purchaseToken") purchaseToken: String,
     ): ApiResponse<GoogleSubsModel>
+
+    @FormUrlEncoded
+    @POST("/funcall/countPayAlert")
+    suspend fun updateCountPayAlert(
+        @Field("productId") productId: String
+    ): ApiResponse<Any?>
 }

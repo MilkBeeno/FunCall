@@ -128,6 +128,7 @@ class PictureMediaActivity : AbstractActivity() {
         when {
             pictureMediaModel.remainUnlockCount <= 0 -> {
                 PayManager.googlePay.payProduct(this, AppConfig.subsWeekId)
+                PayManager.updateCountPayAlert(AppConfig.subsWeekId)
             }
             pictureMediaModel.unlockMethod == 1 -> {
                 FireBaseManager.logEvent(FirebaseKey.CLICK_UNLOCK_PHOTO_ALBUM_FOR_FREE)

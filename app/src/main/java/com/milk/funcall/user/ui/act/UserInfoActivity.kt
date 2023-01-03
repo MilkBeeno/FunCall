@@ -372,6 +372,7 @@ class UserInfoActivity : AbstractActivity() {
                     userInfo.remainUnlockCount <= 0 -> {
                         FireBaseManager.logEvent(FirebaseKey.WEEK_SHOW_THE_PROMOTIONAL)
                         PayManager.googlePay.payProduct(this, AppConfig.subsWeekId)
+                        PayManager.updateCountPayAlert(AppConfig.subsWeekId)
                     }
                     userInfo.videoUnlocked || userInfo.imageUnlocked -> {
                         // 点击直接查看
@@ -435,6 +436,7 @@ class UserInfoActivity : AbstractActivity() {
             userInfo.remainUnlockCount <= 0 -> {
                 FireBaseManager.logEvent(FirebaseKey.WEEK_SHOW_THE_PROMOTIONAL)
                 PayManager.googlePay.payProduct(this, AppConfig.subsWeekId)
+                PayManager.updateCountPayAlert(AppConfig.subsWeekId)
             }
             userInfo.unlockMethod == 1 -> {
                 FireBaseManager.logEvent(FirebaseKey.CLICK_UNLOCK_PHOTO_ALBUM_FOR_FREE)

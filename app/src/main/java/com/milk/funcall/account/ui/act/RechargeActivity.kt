@@ -51,6 +51,7 @@ class RechargeActivity : AbstractActivity() {
         binding.clYear.setOnClickListener(this)
         subsDiscountDialog.setOnConfirmListener {
             PayManager.googlePay.payProduct(this, AppConfig.subsYearDiscountId)
+            PayManager.updateCountPayAlert(AppConfig.subsYearDiscountId)
         }
     }
 
@@ -146,6 +147,7 @@ class RechargeActivity : AbstractActivity() {
                 FireBaseManager.logEvent(FirebaseKey.CLICK_SUBSCRIBE_BY_WEEK)
                 updateUI(binding.llWeek)
                 PayManager.googlePay.payProduct(this, AppConfig.subsWeekId)
+                PayManager.updateCountPayAlert(AppConfig.subsWeekId)
             }
             binding.clYear -> {
                 FireBaseManager.logEvent(FirebaseKey.CLICK_SUBSCRIBE_BY_YEAR)
@@ -156,6 +158,7 @@ class RechargeActivity : AbstractActivity() {
                     AppConfig.subsYearId
                 }
                 PayManager.googlePay.payProduct(this, productId)
+                PayManager.updateCountPayAlert(productId)
             }
         }
     }

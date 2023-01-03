@@ -10,6 +10,8 @@ import com.milk.simple.ktx.ioScope
 import com.milk.simple.mdr.KvManger
 
 object PayManager {
+    private val appRepository by lazy { AppRepository() }
+
     /** 全部弹窗计时器 */
     val timer by lazy {
         MilkTimer.Builder()
@@ -59,8 +61,7 @@ object PayManager {
     internal fun getPayStatus(productId: String = "", purchaseToken: String = "") {
         if (Account.userLogged) {
             ioScope {
-                val apiResponse =
-                    AppRepository().getSubscribeStatus(productId, purchaseToken)
+                val apiResponse = appRepository.getSubscribeStatus(productId, purchaseToken)
                 val apiResult = apiResponse.data
                 val state = (apiResult?.subscriptionState == SUBSCRIPTION_STATE_CANCELED
                     || apiResult?.subscriptionState == SUBSCRIPTION_STATE_ACTIVE) &&
@@ -68,6 +69,12 @@ object PayManager {
                 Account.userSubscribe = state
                 Account.userSubscribeFlow.emit(state)
             }
+        }
+    }
+
+    internal fun updateCountPayAlert(productId: String) {
+        if (Account.userLogged) {
+            ioScope { appRepository.updateCountPayAlert(productId) }
         }
     }
 }

@@ -18,4 +18,8 @@ class AppRepository {
             purchaseToken
         )
     }
+
+    internal suspend fun updateCountPayAlert(productId: String) = retrofit {
+        appService.updateCountPayAlert(productId)
+    }
 }
