@@ -12,7 +12,8 @@
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:id="@+id/refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
 
         <com.milk.funcall.common.ui.view.RefreshHeader
             android:id="@+id/refreshHeader"

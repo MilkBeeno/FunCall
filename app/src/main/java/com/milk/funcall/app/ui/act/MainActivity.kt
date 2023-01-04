@@ -47,7 +47,6 @@ class MainActivity : AbstractActivity() {
     private var serviceIntent: Intent? = null
     private var connection: ServiceConnection? = null
     private var timer: Timer? = null
-    private var adView: View? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,36 +55,6 @@ class MainActivity : AbstractActivity() {
         initializeObserver()
         initializeService()
         setNotificationConfig()
-    }
-
-    private fun initializeAdView() {
-        try {
-            if (adView?.parent != null) return
-            val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.MAIN_HOME_BOTTOM)
-            if (adUnitId.isNotBlank() && AdConfig.adCancelType != 2) {
-                FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_4)
-                adView = AdManager.loadBannerAd(activity = this,
-                    adUnitId = adUnitId,
-                    loadFailureRequest = {
-                        FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_FAILED_4, adUnitId, it)
-                    },
-                    loadSuccessRequest = {
-                        FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_4)
-                    },
-                    showFailureRequest = {
-                        FireBaseManager.logEvent(FirebaseKey.AD_SHOW_FAILED_4, adUnitId, it)
-                    },
-                    showSuccessRequest = {
-                        FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_4)
-                    },
-                    clickRequest = {
-                        FireBaseManager.logEvent(FirebaseKey.CLICK_AD_4)
-                    })
-                binding.root.addView(adView)
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -122,11 +91,6 @@ class MainActivity : AbstractActivity() {
         LiveEventBus.get<Any?>(EventKey.JUMP_TO_THE_HOME_PAGE).observe(this) {
             setTabSelection(homeFragment)
             binding.navigation.updateSelectNav(BottomNavigation.Type.Home)
-        }
-        Account.userSubscribeFlow.collectLatest(this) {
-            if (it && AdConfig.adCancelType == 2 && adView?.parent != null) {
-                binding.root.removeView(adView)
-            } else initializeAdView()
         }
     }
 

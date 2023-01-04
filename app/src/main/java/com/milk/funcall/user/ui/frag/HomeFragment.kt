@@ -6,7 +6,10 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.milk.funcall.R
+import com.milk.funcall.account.Account
 import com.milk.funcall.common.ad.AdConfig
+import com.milk.funcall.common.ad.AdManager
+import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.common.constrant.KvKey
@@ -31,6 +34,7 @@ class HomeFragment : AbstractFragment() {
     private val loadingDialog by lazy { LoadingDialog(requireActivity()) }
     private val sayHiDialog by lazy { SayHiDialog(requireActivity()) }
     private val viewAdDialog by lazy { ViewAdDialog(requireActivity()) }
+    private var adView: View? = null
 
     override fun getRootView(): View = binding.root
 
@@ -95,6 +99,11 @@ class HomeFragment : AbstractFragment() {
                 }
             }
         }
+        Account.userSubscribeFlow.collectLatest(this) {
+            if (it && AdConfig.adCancelType == 2 && adView?.parent != null) {
+                binding.root.removeView(adView)
+            } else initializeAdView()
+        }
     }
 
     override fun initializeView() {
@@ -116,6 +125,37 @@ class HomeFragment : AbstractFragment() {
             FireBaseManager.logEvent(FirebaseKey.CLICK_THE_AVATAR)
             val user = adapter.getNoNullItem(position)
             if (user.targetId > 0) UserInfoActivity.create(requireContext(), user.targetId)
+        }
+    }
+
+    private fun initializeAdView() {
+        try {
+            if (adView?.parent != null) return
+            val adUnitId = AdConfig.getAdvertiseUnitId(AdCodeKey.MAIN_HOME_BOTTOM)
+            if (adUnitId.isNotBlank() && AdConfig.adCancelType != 2) {
+                FireBaseManager.logEvent(FirebaseKey.MAKE_AN_AD_REQUEST_4)
+                adView = AdManager.loadBannerAd(
+                    activity = requireActivity(),
+                    adUnitId = adUnitId,
+                    loadFailureRequest = {
+                        FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_FAILED_4, adUnitId, it)
+                    },
+                    loadSuccessRequest = {
+                        FireBaseManager.logEvent(FirebaseKey.AD_REQUEST_SUCCEEDED_4)
+                    },
+                    showFailureRequest = {
+                        FireBaseManager.logEvent(FirebaseKey.AD_SHOW_FAILED_4, adUnitId, it)
+                    },
+                    showSuccessRequest = {
+                        FireBaseManager.logEvent(FirebaseKey.THE_AD_SHOW_SUCCESS_4)
+                    },
+                    clickRequest = {
+                        FireBaseManager.logEvent(FirebaseKey.CLICK_AD_4)
+                    })
+                binding.root.addView(adView)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
