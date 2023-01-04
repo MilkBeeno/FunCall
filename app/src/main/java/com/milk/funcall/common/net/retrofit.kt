@@ -1,8 +1,7 @@
 package com.milk.funcall.common.net
 
-import com.milk.funcall.common.response.ApiResponse
 import com.milk.funcall.common.net.error.ApiErrorCode
-import com.milk.funcall.common.net.error.ApiErrorHandler
+import com.milk.funcall.common.response.ApiResponse
 
 internal suspend fun <T> retrofit(
     unifiedProcessing: Boolean = true,
@@ -15,12 +14,12 @@ internal suspend fun <T> retrofit(
                 response.success = true
             }
             unifiedProcessing -> {
-                ApiErrorHandler.post(response.code, response.message)
+                // 进行错误统一处理
             }
         }
         response
     } catch (e: Exception) {
-        ApiErrorHandler.post(ApiErrorCode.retrofitError, e.message.toString())
+        // 进行错误统一处理
         ApiResponse(ApiErrorCode.retrofitError, e.message.toString())
     }
 }
