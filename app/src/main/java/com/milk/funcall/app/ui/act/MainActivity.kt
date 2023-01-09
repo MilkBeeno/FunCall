@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
-import android.view.View
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -19,9 +18,6 @@ import com.milk.funcall.app.ui.dialog.NotificationDialog
 import com.milk.funcall.app.ui.view.BottomNavigation
 import com.milk.funcall.chat.repo.MessageRepository
 import com.milk.funcall.chat.ui.frag.ConversationFragment
-import com.milk.funcall.common.ad.AdConfig
-import com.milk.funcall.common.ad.AdManager
-import com.milk.funcall.common.constrant.AdCodeKey
 import com.milk.funcall.common.constrant.EventKey
 import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.common.constrant.KvKey
@@ -31,8 +27,12 @@ import com.milk.funcall.common.pay.PayManager
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.common.util.NotificationUtil
 import com.milk.funcall.databinding.ActivityMainBinding
+import com.milk.funcall.square.ui.frag.SquareFragment
 import com.milk.funcall.user.ui.frag.HomeFragment
-import com.milk.simple.ktx.*
+import com.milk.simple.ktx.collect
+import com.milk.simple.ktx.collectLatest
+import com.milk.simple.ktx.immersiveStatusBar
+import com.milk.simple.ktx.navigationBarPadding
 import com.milk.simple.log.Logger
 import com.milk.simple.mdr.KvManger
 import java.util.*
@@ -44,6 +44,7 @@ class MainActivity : AbstractActivity() {
     private val homeFragment = HomeFragment.create()
     private val messageFragment = ConversationFragment.create()
     private val mineFragment = MineFragment.create()
+    private val squareFragment = SquareFragment.create()
     private var serviceIntent: Intent? = null
     private var connection: ServiceConnection? = null
     private var timer: Timer? = null
@@ -66,7 +67,6 @@ class MainActivity : AbstractActivity() {
 
     private fun initializeView() {
         immersiveStatusBar()
-        binding.flContent.statusBarPadding()
         binding.root.navigationBarPadding()
         setTabSelection(homeFragment)
         binding.navigation.updateSelectNav(BottomNavigation.Type.Home)
@@ -76,6 +76,9 @@ class MainActivity : AbstractActivity() {
                     if (refresh) {
                         LiveEventBus.get<Boolean>(EventKey.REFRESH_HOME_LIST).post(true)
                     } else setTabSelection(homeFragment)
+                }
+                BottomNavigation.Type.Square -> {
+                    setTabSelection(squareFragment)
                 }
                 BottomNavigation.Type.Message -> {
                     setTabSelection(messageFragment)
@@ -164,6 +167,13 @@ class MainActivity : AbstractActivity() {
                 }
                 transaction.show(homeFragment)
             }
+            is SquareFragment -> {
+                if (!fragments.contains(squareFragment)) {
+                    fragments.add(squareFragment)
+                    transaction.add(binding.flContent.id, squareFragment)
+                }
+                transaction.show(squareFragment)
+            }
             is ConversationFragment -> {
                 if (!fragments.contains(messageFragment)) {
                     fragments.add(messageFragment)
@@ -184,6 +194,7 @@ class MainActivity : AbstractActivity() {
 
     private fun hideFragments(transaction: FragmentTransaction) {
         transaction.hide(homeFragment)
+        transaction.hide(squareFragment)
         transaction.hide(messageFragment)
         transaction.hide(mineFragment)
     }

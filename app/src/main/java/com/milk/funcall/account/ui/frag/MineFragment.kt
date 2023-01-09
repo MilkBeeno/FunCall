@@ -29,6 +29,7 @@ class MineFragment : AbstractFragment() {
     override fun getRootView(): View = binding.root
 
     override fun initializeView() {
+        binding.root.statusBarPadding()
         binding.llFollows.setOnClickListener(this)
         binding.llFans.setOnClickListener(this)
         binding.editProfile.setOnClickListener(this)

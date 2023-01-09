@@ -4,23 +4,22 @@ import android.content.Context
 import android.os.Build
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.ViewGroup
+import android.view.View
+import android.view.View.OnClickListener
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
 import androidx.annotation.ColorRes
 import com.milk.funcall.R
-import com.milk.funcall.databinding.LayoutBottomNavigationBinding
-import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.constrant.FirebaseKey
+import com.milk.funcall.common.firebase.FireBaseManager
+import com.milk.funcall.databinding.LayoutBottomNavigationBinding
 
-class BottomNavigation : FrameLayout {
-
+class BottomNavigation : FrameLayout, OnClickListener {
     private val binding = LayoutBottomNavigationBinding
         .inflate(LayoutInflater.from(context), this, true)
-
     private var lastClickTime: Long = 0
-    private var lastSelectType: Type? = null
+    private var lastSelectType: Type = Type.Home
     private val clickMinTimeInterval: Long = 300
     private var itemOnClickListener: ((Boolean, Type) -> Unit)? = null
 
@@ -35,27 +34,43 @@ class BottomNavigation : FrameLayout {
     constructor(ctx: Context, attrs: AttributeSet) : super(ctx, attrs)
     constructor(ctx: Context, attrs: AttributeSet, defAttr: Int) : super(ctx, attrs, defAttr)
 
+    init {
+        binding.llHome.setOnClickListener(this)
+        binding.llSquare.setOnClickListener(this)
+        binding.clMessage.setOnClickListener(this)
+        binding.llMine.setOnClickListener(this)
+    }
 
-    fun setItemOnClickListener(listener: ((Boolean, Type) -> Unit)) {
+    internal fun setItemOnClickListener(listener: ((Boolean, Type) -> Unit)) {
         itemOnClickListener = listener
     }
 
-    fun updateSelectNav(type: Type) {
+    internal fun updateSelectNav(type: Type) {
         when (type) {
             Type.Home -> {
                 updateHomeNav(true)
+                updateSquareNav(false)
                 updateMessageNav(false)
                 updateMineNav(false)
                 lastSelectType = Type.Home
             }
+            Type.Square -> {
+                updateHomeNav(false)
+                updateSquareNav(true)
+                updateMessageNav(false)
+                updateMineNav(false)
+                lastSelectType = Type.Square
+            }
             Type.Message -> {
                 updateHomeNav(false)
+                updateSquareNav(false)
                 updateMessageNav(true)
                 updateMineNav(false)
                 lastSelectType = Type.Message
             }
             Type.Mine -> {
                 updateHomeNav(false)
+                updateSquareNav(false)
                 updateMessageNav(false)
                 updateMineNav(true)
                 lastSelectType = Type.Mine
@@ -79,13 +94,17 @@ class BottomNavigation : FrameLayout {
             binding.tvHome.setTextColor(getColor(R.color.FF5B5D66))
             binding.ivHomeMedium.clearAnimation()
         }
-        binding.llHome.backPressureClickListener(Type.Home) {
-            if (lastSelectType == Type.Home)
-                itemOnClickListener?.invoke(true, Type.Home)
-            else {
-                itemOnClickListener?.invoke(false, Type.Home)
-                updateSelectNav(Type.Home)
-            }
+    }
+
+    private fun updateSquareNav(select: Boolean = false) {
+        if (select) {
+            binding.ivSquare.startAnimation(zoomAnimation)
+            binding.tvSquare.setTextColor(getColor(R.color.FF8E58FB))
+            binding.ivSquare.setImageResource(R.drawable.main_nav_square_select)
+        } else {
+            binding.ivSquare.clearAnimation()
+            binding.tvSquare.setTextColor(getColor(R.color.FF5B5D66))
+            binding.ivSquare.setImageResource(R.drawable.main_nav_square)
         }
     }
 
@@ -98,12 +117,6 @@ class BottomNavigation : FrameLayout {
             binding.ivMessage.clearAnimation()
             binding.tvMessage.setTextColor(getColor(R.color.FF5B5D66))
             binding.ivMessage.setImageResource(R.drawable.main_nav_message)
-        }
-        binding.clMessage.backPressureClickListener(Type.Message) {
-            if (lastSelectType != Type.Message) {
-                itemOnClickListener?.invoke(false, Type.Message)
-                updateSelectNav(Type.Message)
-            }
         }
     }
 
@@ -118,34 +131,56 @@ class BottomNavigation : FrameLayout {
             binding.tvMine.setTextColor(getColor(R.color.FF5B5D66))
             binding.ivMine.setImageResource(R.drawable.main_nav_mine)
         }
-        binding.llMine.backPressureClickListener(Type.Mine) {
-            if (lastSelectType != Type.Mine) {
-                itemOnClickListener?.invoke(false, Type.Mine)
-                updateSelectNav(Type.Mine)
-            }
-        }
-    }
-
-    private fun ViewGroup.backPressureClickListener(type: Type, action: () -> Unit) {
-        setOnClickListener {
-            val currentTime = System.currentTimeMillis()
-            if (currentTime - lastClickTime > clickMinTimeInterval || type != lastSelectType) {
-                action()
-                lastClickTime = currentTime
-            }
-        }
     }
 
     private fun getColor(@ColorRes resId: Int): Int {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             resources.getColor(resId, context.theme)
-        else
+        } else {
             resources.getColor(resId)
+        }
     }
 
     internal fun updateUnReadCount(count: Int) {
         binding.messageRedDotView.updateMessageCount(count)
     }
 
-    enum class Type { Home, Message, Mine }
+    override fun onClick(v: View?) {
+        val currentTime = System.currentTimeMillis()
+        val clickEnable = currentTime - lastClickTime > clickMinTimeInterval
+        when (v) {
+            binding.llHome -> {
+                if (clickEnable && lastSelectType == Type.Home) {
+                    itemOnClickListener?.invoke(true, Type.Home)
+                } else if (clickEnable || lastSelectType != Type.Home) {
+                    itemOnClickListener?.invoke(false, Type.Home)
+                    updateSelectNav(Type.Home)
+                    lastClickTime = currentTime
+                }
+            }
+            binding.llSquare -> {
+                if (clickEnable || lastSelectType != Type.Square) {
+                    itemOnClickListener?.invoke(false, Type.Square)
+                    updateSelectNav(Type.Square)
+                    lastClickTime = currentTime
+                }
+            }
+            binding.clMessage -> {
+                if (clickEnable || lastSelectType != Type.Message) {
+                    itemOnClickListener?.invoke(false, Type.Message)
+                    updateSelectNav(Type.Message)
+                    lastClickTime = currentTime
+                }
+            }
+            binding.llMine -> {
+                if (clickEnable || lastSelectType != Type.Mine) {
+                    itemOnClickListener?.invoke(false, Type.Mine)
+                    updateSelectNav(Type.Mine)
+                    lastClickTime = currentTime
+                }
+            }
+        }
+    }
+
+    enum class Type { Home, Message, Square, Mine }
 }

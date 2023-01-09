@@ -30,6 +30,7 @@ class ConversationFragment : AbstractFragment() {
     override fun getRootView(): View = binding.root
 
     override fun initializeView() {
+        binding.headerToolbar.statusBarPadding()
         binding.headerToolbar.setTitle(R.string.chat_message_title)
         binding.rvConversation.layoutManager = LinearLayoutManager(requireContext())
         binding.rvConversation.adapter = conversationAdapter

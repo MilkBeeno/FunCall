@@ -60,6 +60,7 @@
     <string name="preset_profile_profile_update_failed">Name or picture update failed.</string>
     <!--主页面翻译-->
     <string name="main_nav_message">Message</string>
+    <string name="main_nav_square">Match</string>
     <string name="main_nav_home">Home</string>
     <string name="main_nav_mine">Mine</string>
     <!--Home页面翻译-->
@@ -148,4 +149,5 @@
     <string name="dialog_subscribe_discount_desc"><![CDATA[Remove ads & unlock all features]]></string>
     <string name="dialog_subscribe_discount_price_desc">Just XX /year</string>
     <string name="dialog_subscribe_confirm">CONFIRM</string>
+    <string name="square_title">Match</string>
 </resources>

@@ -43,6 +43,7 @@ class HomeFragment : AbstractFragment() {
         super.initializeData()
         checkNewClientOnHome()
         loadingDialog.show()
+        binding.headerToolbar.statusBarPadding()
         homeViewModel.loadSayHiAd(requireActivity())
         adapter.addRefreshedListener {
             loadingDialog.dismiss()

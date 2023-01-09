@@ -36,6 +36,29 @@
             android:visibility="gone" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/llSquare"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivSquare"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:scaleType="centerCrop" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSquare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:text="@string/main_nav_square"
+            android:textSize="11sp" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clMessage"
         android:layout_width="0dp"

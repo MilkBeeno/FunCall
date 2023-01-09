@@ -374,7 +374,7 @@ class UserInfoActivity : AbstractActivity() {
                         PayManager.googlePay.payProduct(this, AppConfig.subsWeekId)
                         PayManager.updateCountPayAlert(AppConfig.subsWeekId)
                     }
-                    userInfo.videoUnlocked || userInfo.imageUnlocked -> {
+                    /*userInfo.videoUnlocked || userInfo.imageUnlocked -> {
                         // 点击直接查看
                         if (userInfo.unlockMethod == 1) {
                             FireBaseManager.logEvent(FirebaseKey.CLICK_FREE_UNLOCK_CONTACT)
@@ -393,11 +393,28 @@ class UserInfoActivity : AbstractActivity() {
                             viewAdDialog.show()
                             viewAdDialog.setOnConfirmRequest { loadLinkAd() }
                         }
-                    }
+                    }*/
                     else -> {
-                        FireBaseManager
+                       /* FireBaseManager
                             .logEvent(FirebaseKey.SHOW_FIRST_UNLOCK_VIDEO_OR_PICTURE)
-                        loadImages()
+                        loadImages()*/
+                        if (userInfo.unlockMethod == 1) {
+                            FireBaseManager.logEvent(FirebaseKey.CLICK_FREE_UNLOCK_CONTACT)
+                            binding.link.flLinkLocked.gone()
+                            userInfoViewModel.changeUnlockStatus(
+                                DeviceManager.number,
+                                UnlockType.Link,
+                                userInfo.targetId
+                            )
+                        } else {
+                            // 观看广告后可查看
+                            FireBaseManager
+                                .logEvent(FirebaseKey.CLICK_AD_TO_UNLOCK_THE_CONTACT_INFORMATION)
+                            FireBaseManager
+                                .logEvent(FirebaseKey.SHOW_CONTACT_POPUP_DOUBLE_CHECK)
+                            viewAdDialog.show()
+                            viewAdDialog.setOnConfirmRequest { loadLinkAd() }
+                        }
                     }
                 }
             }
@@ -420,7 +437,7 @@ class UserInfoActivity : AbstractActivity() {
             success = {
                 loadingDialog.dismiss()
                 binding.link.flLinkLocked.gone()
-                userInfoViewModel.changeUnlockStatus(
+                userInfoViewModel.changeUnlockStatus( 
                     DeviceManager.number,
                     UnlockType.Link,
                     userInfo.targetId
