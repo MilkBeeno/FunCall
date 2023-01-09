@@ -150,4 +150,5 @@
     <string name="dialog_subscribe_discount_price_desc">Just XX /year</string>
     <string name="dialog_subscribe_confirm">CONFIRM</string>
     <string name="square_title">Match</string>
+    <string name="square_online_number_desc">Men in real-time interaction</string>
 </resources>

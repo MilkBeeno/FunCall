@@ -1,70 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clSquare"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/square_background">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clSquare"
+    <FrameLayout
+        android:id="@+id/headerToolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/square_background">
-
-        <FrameLayout
-            android:id="@+id/headerToolbar"
-            android:layout_width="match_parent"
-            android:layout_height="42dp"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/square_title"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/ivRules"
-                android:layout_width="23dp"
-                android:layout_height="23dp"
-                android:layout_gravity="end|center_vertical"
-                android:layout_marginEnd="14dp"
-                android:src="@drawable/square_rules" />
-        </FrameLayout>
-
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/squareLottieView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"
-            app:lottie_autoPlay="true" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="187dp"
-            android:layout_height="54dp"
-            android:layout_marginTop="31dp"
-            android:src="@drawable/square_online"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/headerToolbar" />
+        android:layout_height="42dp"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvStart"
-            android:layout_width="match_parent"
-            android:layout_height="43dp"
-            android:layout_marginStart="29dp"
-            android:layout_marginEnd="29dp"
-            android:layout_marginBottom="48dp"
-            android:background="@drawable/shape_common_next_background"
-            android:gravity="center"
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/square_title"
             android:textColor="@color/white"
             android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:text="Start (0/5)" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</FrameLayout>
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivRules"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="14dp"
+            android:src="@drawable/square_rules" />
+    </FrameLayout>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivCircle"
+        android:layout_width="match_parent"
+        android:layout_height="485dp"
+        android:layout_marginTop="20dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/square_circle"
+        app:layout_constraintTop_toBottomOf="@+id/headerToolbar" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivCenter"
+        android:layout_width="330dp"
+        android:layout_height="352dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/square_center"
+        app:layout_constraintBottom_toBottomOf="@+id/ivCircle"
+        app:layout_constraintEnd_toEndOf="@+id/ivCircle"
+        app:layout_constraintStart_toStartOf="@+id/ivCircle"
+        app:layout_constraintTop_toTopOf="@+id/ivCircle" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvOnlineNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="38dp"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/ivCenter"
+        app:layout_constraintEnd_toEndOf="@+id/ivCenter"
+        app:layout_constraintStart_toStartOf="@+id/ivCenter"
+        app:layout_constraintTop_toTopOf="@+id/ivCenter"
+        tools:text="500" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="@string/square_online_number_desc"
+        android:textColor="@color/white_70"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="@+id/ivCenter"
+        app:layout_constraintStart_toStartOf="@+id/ivCenter"
+        app:layout_constraintTop_toBottomOf="@+id/tvOnlineNumber" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="187dp"
+        android:layout_height="54dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/square_online"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headerToolbar" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvStart"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginEnd="29dp"
+        android:layout_marginBottom="48dp"
+        android:background="@drawable/shape_common_next_background"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="Start (0/5)" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,8 +12,6 @@ class SquareFragment : AbstractFragment() {
 
     override fun initializeView() {
         binding.headerToolbar.statusBarPadding()
-        binding.squareLottieView.setAnimation("square_match.json")
-        binding.squareLottieView.playAnimation()
     }
 
     companion object {
