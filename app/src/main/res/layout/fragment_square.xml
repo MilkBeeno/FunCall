@@ -52,6 +52,14 @@
         app:layout_constraintStart_toStartOf="@+id/ivCircle"
         app:layout_constraintTop_toTopOf="@+id/ivCircle" />
 
+    <com.milk.funcall.square.ui.view.SquareLayout
+        android:id="@+id/squareLayout"
+        android:layout_width="match_parent"
+        android:layout_height="489dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/ivCircle"
+        app:layout_constraintTop_toTopOf="@+id/ivCircle" />
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvOnlineNumber"
         android:layout_width="wrap_content"
