@@ -1,6 +1,8 @@
 package com.milk.funcall.app
 
 import com.milk.funcall.common.constrant.AppConfigKey
+import com.milk.funcall.common.constrant.KvKey
+import com.milk.simple.mdr.KvManger
 
 object AppConfig {
 
@@ -95,6 +97,50 @@ object AppConfig {
                 e.printStackTrace()
                 field
             }
+        }
+
+    /** 每次看广告可匹配次数 */
+    internal val matchAdRewardTime: Int = 5
+        get() {
+            return try {
+                current[AppConfigKey.MATCH_AD_REWARD_TIME]?.toInt() ?: 0
+            } catch (e: Exception) {
+                e.printStackTrace()
+                field
+            }
+        }
+
+    /** 免费匹配次数 */
+    internal val freeMatchTimes: Int = 3
+        get() {
+            return try {
+                current[AppConfigKey.FREE_MATCH_TIMES]?.toInt() ?: 0
+            } catch (e: Exception) {
+                e.printStackTrace()
+                field
+            }
+        }
+
+    /** 当前设备匹配的次数 */
+    internal var squareMatchTimes: Int = 0
+        set(value) {
+            KvManger.put(KvKey.SQUARE_MATCH_TIMES, value)
+            field = value
+        }
+        get() {
+            field = KvManger.getInt(KvKey.SQUARE_MATCH_TIMES)
+            return field
+        }
+
+    /** 当前设备免费匹配的次数 */
+    internal var squareFreeMatchTimes: Int = 0
+        set(value) {
+            KvManger.put(KvKey.SQUARE_MATCH_FREE_TIMES, value)
+            field = value
+        }
+        get() {
+            field = KvManger.getInt(KvKey.SQUARE_MATCH_FREE_TIMES)
+            return field
         }
 
     internal fun save(config: MutableMap<String, String>) {

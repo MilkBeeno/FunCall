@@ -10,13 +10,14 @@ import com.milk.funcall.R
 import com.milk.funcall.account.Account
 import com.milk.funcall.app.ui.act.MainActivity
 import com.milk.funcall.common.constrant.EventKey
+import com.milk.funcall.common.constrant.FirebaseKey
+import com.milk.funcall.common.firebase.FireBaseManager
 import com.milk.funcall.common.ui.AbstractActivity
 import com.milk.funcall.databinding.ActivityGenderBinding
-import com.milk.funcall.common.firebase.FireBaseManager
-import com.milk.funcall.common.constrant.FirebaseKey
 import com.milk.funcall.user.status.Gender
 import com.milk.simple.ktx.color
 import com.milk.simple.ktx.immersiveStatusBar
+import com.milk.simple.ktx.ioScope
 import com.milk.simple.ktx.navigationBarPadding
 
 class GenderActivity : AbstractActivity() {
@@ -61,8 +62,8 @@ class GenderActivity : AbstractActivity() {
             }
             binding.tvGenderNext -> {
                 Account.userGender = selectGender.value
-                LiveEventBus.get<Boolean>(EventKey.REFRESH_HOME_LIST)
-                    .post(false)
+                ioScope { Account.userGenderFlow.emit(selectGender.value) }
+                LiveEventBus.get<Boolean>(EventKey.REFRESH_HOME_LIST).post(false)
                 MainActivity.create(this)
                 finish()
             }

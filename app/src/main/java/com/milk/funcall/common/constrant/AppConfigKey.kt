@@ -30,4 +30,10 @@ object AppConfigKey {
 
     /** 是否展示折扣商品弹窗 1—>展示  0—>不展示 默认是展示的 */
     const val SHOW_DISCOUNT_PRODUCT_DIALOG = "Subscribe_to_open_promotions"
+
+    /** 每次看广告可匹配次数 */
+    const val MATCH_AD_REWARD_TIME = "matc_AD_reward_time"
+
+    /** 免费匹配次数 */
+    const val FREE_MATCH_TIMES = "free_match_times"
 }

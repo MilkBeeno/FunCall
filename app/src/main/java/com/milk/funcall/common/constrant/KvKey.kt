@@ -66,4 +66,10 @@ object KvKey {
 
     /** 订阅商品折扣期开始时间 */
     const val SUBSCRIBE_DISCOUNT_PRODUCT_START = "SUBSCRIBE_DISCOUNT_PRODUCT_START"
+
+    /** 速配页面查看个人次数 */
+    const val SQUARE_MATCH_TIMES = "SQUARE_MATCH_TIMES"
+
+    /** 速配页面查看个人免费次数 */
+    const val SQUARE_MATCH_FREE_TIMES = "SQUARE_MATCH_FREE_TIMES"
 }

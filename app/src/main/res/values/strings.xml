@@ -149,7 +149,9 @@
     <string name="dialog_subscribe_discount_desc"><![CDATA[Remove ads & unlock all features]]></string>
     <string name="dialog_subscribe_discount_price_desc">Just XX /year</string>
     <string name="dialog_subscribe_confirm">CONFIRM</string>
+    <!--速配页面功能翻译-->
     <string name="square_title">Match</string>
+    <string name="square_start">Start</string>
     <string name="square_online_number_desc">Men in real-time interaction</string>
     <string name="dialog_square_title">Speed dating rules</string>
     <string name="dialog_square_point_1">Each new user can experience M times for free.</string>
