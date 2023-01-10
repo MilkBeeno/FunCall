@@ -16,7 +16,7 @@
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="143dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/login_max_client_number"
+            android:src="@drawable/common_close"
             app:layout_constraintBottom_toTopOf="@+id/llContent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
