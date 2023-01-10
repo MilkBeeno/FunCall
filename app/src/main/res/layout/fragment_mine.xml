@@ -132,12 +132,6 @@
                 android:layout_marginTop="10dp" />
 
             <com.milk.funcall.account.ui.view.MineOptions
-                android:id="@+id/recharge"
-                android:layout_width="match_parent"
-                android:layout_height="53dp"
-                android:layout_marginTop="10dp" />
-
-            <com.milk.funcall.account.ui.view.MineOptions
                 android:id="@+id/blackedList"
                 android:layout_width="match_parent"
                 android:layout_height="53dp" />
@@ -156,6 +150,18 @@
                 android:id="@+id/signOut"
                 android:layout_width="match_parent"
                 android:layout_height="53dp" />
+
+            <androidx.legacy.widget.Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivRecharge"
+                android:layout_width="match_parent"
+                android:layout_height="77dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/mine_subscribe" />
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.appcompat.widget.LinearLayoutCompat>
     <!-- 未登录高斯模糊显示布局 -->

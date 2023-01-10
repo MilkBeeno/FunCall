@@ -33,18 +33,13 @@ class MineFragment : AbstractFragment() {
         binding.llFollows.setOnClickListener(this)
         binding.llFans.setOnClickListener(this)
         binding.editProfile.setOnClickListener(this)
-        binding.recharge.setOnClickListener(this)
+        binding.ivRecharge.setOnClickListener(this)
         binding.blackedList.setOnClickListener(this)
         binding.aboutUs.setOnClickListener(this)
         binding.signOut.setOnClickListener(this)
         binding.tvLogin.setOnClickListener(this)
         binding.flNotSigned.setOnClickListener(this)
         binding.editProfile.setOption(R.drawable.mine_edit_profile, R.string.mine_edit_profile)
-        binding.recharge.setOption(
-            R.drawable.mine_recharge,
-            R.string.mine_recharge,
-            requireContext().color(R.color.FF744311)
-        )
         binding.blackedList.setOption(R.drawable.mine_blacked_list, R.string.mine_blacked_list)
         binding.aboutUs.setOption(R.drawable.mine_about_us, R.string.mine_about_us)
         binding.signOut.setOption(
@@ -115,7 +110,7 @@ class MineFragment : AbstractFragment() {
                 FireBaseManager.logEvent(FirebaseKey.CLICK_ON_EDIT_PROFILE)
                 EditProfileActivity.create(requireContext())
             }
-            binding.recharge -> {
+            binding.ivRecharge -> {
                 FireBaseManager.logEvent(FirebaseKey.CLICK_THE_SUBSCRIPTION_PORTAL)
                 RechargeActivity.create(requireContext())
             }
