@@ -8,6 +8,7 @@ import com.milk.funcall.account.Account
 import com.milk.funcall.app.AppConfig
 import com.milk.funcall.common.ui.AbstractFragment
 import com.milk.funcall.databinding.FragmentSquareBinding
+import com.milk.funcall.square.ui.dialog.MatchingDialog
 import com.milk.funcall.square.ui.dialog.SquareRulesDialog
 import com.milk.funcall.square.ui.vm.SquareViewModel
 import com.milk.simple.ktx.collectLatest
@@ -18,12 +19,19 @@ class SquareFragment : AbstractFragment() {
     private val binding by lazy { FragmentSquareBinding.inflate(layoutInflater) }
     private val squareViewModel by viewModels<SquareViewModel>()
     private val squareRulesDialog by lazy { SquareRulesDialog(requireActivity()) }
+    private val matchingDialog by lazy { MatchingDialog(requireActivity()) }
 
     override fun getRootView() = binding.root
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden) squareViewModel.getSquareInfo()
+    }
 
     override fun initializeView() {
         binding.headerToolbar.statusBarPadding()
         binding.ivRules.setOnClickListener(this)
+        binding.tvStart.setOnClickListener(this)
     }
 
     override fun initializeData() {
@@ -50,11 +58,11 @@ class SquareFragment : AbstractFragment() {
     }
 
     override fun initializeObserver() {
-        Account.userGenderFlow.collectLatest(this) {
-            squareViewModel.getSquareInfo()
-        }
         squareViewModel.squareInfoFlow.collectLatest(this) { squareModel ->
-            squareModel.userAvatarList?.let { binding.squareLayout.setUserAvatars(it) }
+            squareModel.userAvatarList?.let {
+                binding.squareLayout.setUserAvatars(it)
+                matchingDialog.setUserAvatars(it)
+            }
         }
         squareViewModel.onlineNumberFlow.collectLatest(this) {
             binding.tvOnlineNumber.text = it.toString()
@@ -66,6 +74,9 @@ class SquareFragment : AbstractFragment() {
         when (view) {
             binding.ivRules -> {
                 squareRulesDialog.show()
+            }
+            binding.tvStart -> {
+                matchingDialog.show()
             }
         }
     }

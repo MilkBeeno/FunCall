@@ -16,6 +16,7 @@ abstract class SimpleDialog<T : ViewBinding>(val activity: FragmentActivity) {
     private var windowAnimations: Int = 0
     private var cancelable: Boolean = true
     private var widthMatchParent: Boolean = false
+    private var heightMatchParent: Boolean = false
     private var canceledOnTouchOutside: Boolean = true
     private var dismissRequest: (() -> Unit)? = null
     protected val binding: T by lazy { getViewBinding() }
@@ -42,11 +43,12 @@ abstract class SimpleDialog<T : ViewBinding>(val activity: FragmentActivity) {
                 window?.apply {
                     addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
                     setBackgroundDrawableResource(android.R.color.transparent)
-                    if (widthMatchParent) {
-                        val params = attributes
+                    val params = attributes
+                    if (widthMatchParent)
                         params.width = WindowManager.LayoutParams.MATCH_PARENT
-                        attributes = params
-                    }
+                    if (heightMatchParent)
+                        params.height = WindowManager.LayoutParams.MATCH_PARENT
+                    attributes = params
                     if (gravity != 0) setGravity(gravity)
                     if (windowAnimations != 0) setWindowAnimations(windowAnimations)
                 }
@@ -87,6 +89,10 @@ abstract class SimpleDialog<T : ViewBinding>(val activity: FragmentActivity) {
 
     open fun setWidthMatchParent(matchParent: Boolean) {
         widthMatchParent = matchParent
+    }
+
+    open fun setHeightMatchParent(matchParent: Boolean) {
+        heightMatchParent = matchParent
     }
 
     open fun setCancelable(flag: Boolean) {

@@ -41,6 +41,7 @@
                 android:background="@drawable/shape_dialog_square_rules_point" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvPoint1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
@@ -86,6 +87,7 @@
                 android:background="@drawable/shape_dialog_square_rules_point" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvPoint3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"

@@ -154,7 +154,7 @@
     <string name="square_start">Start</string>
     <string name="square_online_number_desc">Men in real-time interaction</string>
     <string name="dialog_square_title">Speed dating rules</string>
-    <string name="dialog_square_point_1">Each new user can experience M times for free.</string>
+    <string name="dialog_square_point_1">Each new user can experience XX times for free.</string>
     <string name="dialog_square_point_2">After that, you have to redeem them by watching the incentive video.</string>
-    <string name="dialog_square_point_3">Every time you watch an incentive video, you will get N free hits)</string>
+    <string name="dialog_square_point_3">Every time you watch an incentive video, you will get XX free hits)</string>
 </resources>

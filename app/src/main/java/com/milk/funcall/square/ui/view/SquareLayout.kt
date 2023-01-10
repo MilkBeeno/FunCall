@@ -14,14 +14,17 @@ import com.milk.simple.ktx.visible
 class SquareLayout : FrameLayout {
     private val binding = LayoutSquareBinding
         .inflate(LayoutInflater.from(context), this, true)
-    private val targetGender =
-        if (Account.userGender == Gender.Man.value) Gender.Woman.value else Gender.Man.value
 
     constructor(ctx: Context) : super(ctx)
     constructor(ctx: Context, attrs: AttributeSet) : super(ctx, attrs)
     constructor(ctx: Context, attrs: AttributeSet, defAttr: Int) : super(ctx, attrs, defAttr)
 
     internal fun setUserAvatars(avatars: MutableList<String>) {
+        val targetGender = if (Account.userGender == Gender.Man.value) {
+            Gender.Woman.value
+        } else {
+            Gender.Man.value
+        }
         // 1
         if (avatars.isNotEmpty()) {
             binding.ivFirstUser.visible()
